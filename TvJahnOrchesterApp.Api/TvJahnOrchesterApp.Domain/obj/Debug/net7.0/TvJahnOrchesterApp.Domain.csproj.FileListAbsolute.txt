@@ -1,0 +1,12 @@
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\bin\Debug\net7.0\TvJahnOrchesterApp.Domain.deps.json
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\bin\Debug\net7.0\TvJahnOrchesterApp.Domain.dll
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\bin\Debug\net7.0\TvJahnOrchesterApp.Domain.pdb
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\TvJahnOrchesterApp.Domain.csproj.AssemblyReference.cache
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\TvJahnOrchesterApp.Domain.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\TvJahnOrchesterApp.Domain.AssemblyInfoInputs.cache
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\TvJahnOrchesterApp.Domain.AssemblyInfo.cs
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\TvJahnOrchesterApp.Domain.csproj.CoreCompileInputs.cache
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\TvJahnOrchesterApp.Domain.dll
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\refint\TvJahnOrchesterApp.Domain.dll
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\TvJahnOrchesterApp.Domain.pdb
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\ref\TvJahnOrchesterApp.Domain.dll

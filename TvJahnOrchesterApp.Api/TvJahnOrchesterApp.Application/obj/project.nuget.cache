@@ -1,0 +1,12 @@
+{
+  "version": 2,
+  "dgSpecHash": "k5N5zODptDRCWHqyxyxOvw0M6V32B/tCTr4SM2m7QeR86Dtyb6bTegE3ihFSt54TwzZ9NmPdIJO/Otp8ik2yRg==",
+  "success": true,
+  "projectFilePath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Application\\TvJahnOrchesterApp.Application.csproj",
+  "expectedPackageFiles": [
+    "C:\\Users\\timke\\.nuget\\packages\\mediatr\\12.1.1\\mediatr.12.1.1.nupkg.sha512",
+    "C:\\Users\\timke\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",
+    "C:\\Users\\timke\\.nuget\\packages\\microsoft.extensions.dependencyinjection.abstractions\\7.0.0\\microsoft.extensions.dependencyinjection.abstractions.7.0.0.nupkg.sha512"
+  ],
+  "logs": []
+}

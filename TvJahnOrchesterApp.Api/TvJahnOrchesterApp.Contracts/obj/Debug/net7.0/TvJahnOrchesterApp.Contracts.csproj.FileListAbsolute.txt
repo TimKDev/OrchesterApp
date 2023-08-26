@@ -1,0 +1,12 @@
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\bin\Debug\net7.0\TvJahnOrchesterApp.Contracts.deps.json
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\bin\Debug\net7.0\TvJahnOrchesterApp.Contracts.dll
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\bin\Debug\net7.0\TvJahnOrchesterApp.Contracts.pdb
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\TvJahnOrchesterApp.Contracts.csproj.AssemblyReference.cache
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\TvJahnOrchesterApp.Contracts.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\TvJahnOrchesterApp.Contracts.AssemblyInfoInputs.cache
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\TvJahnOrchesterApp.Contracts.AssemblyInfo.cs
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\TvJahnOrchesterApp.Contracts.csproj.CoreCompileInputs.cache
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\TvJahnOrchesterApp.Contracts.dll
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\refint\TvJahnOrchesterApp.Contracts.dll
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\TvJahnOrchesterApp.Contracts.pdb
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\ref\TvJahnOrchesterApp.Contracts.dll

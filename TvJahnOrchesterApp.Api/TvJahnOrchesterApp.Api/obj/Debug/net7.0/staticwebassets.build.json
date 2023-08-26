@@ -1,0 +1,11 @@
+{
+  "Version": 1,
+  "Hash": "z4Wm6a7BjFnLdQBGACqsGrRNkrlK46N0V+pA9SD7TLY=",
+  "Source": "TvJahnOrchesterApp.Api",
+  "BasePath": "_content/TvJahnOrchesterApp.Api",
+  "Mode": "Default",
+  "ManifestType": "Build",
+  "ReferencedProjectsConfiguration": [],
+  "DiscoveryPatterns": [],
+  "Assets": []
+}
