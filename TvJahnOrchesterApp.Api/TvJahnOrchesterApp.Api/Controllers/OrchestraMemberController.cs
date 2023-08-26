@@ -1,4 +1,6 @@
-﻿using MediatR;
+﻿using BuberDinner.Api.Controllers;
+using MediatR;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http.HttpResults;
 using Microsoft.AspNetCore.Mvc;
 using TvJahnOrchesterApp.Application.OrchestraMembers.Commands.Create;
@@ -7,7 +9,9 @@ using TvJahnOrchesterApp.Contracts.OrchestraMembers;
 
 namespace TvJahnOrchesterApp.Api.Controllers
 {
-    public class OrchestraMemberController: ControllerBase
+    
+    [AllowAnonymous]
+    public class OrchestraMemberController: ApiController
     {
         private readonly ISender sender;
 
@@ -16,6 +20,13 @@ namespace TvJahnOrchesterApp.Api.Controllers
             this.sender = sender;
         }
 
+        [HttpGet]
+        public async Task<IActionResult> GetAsync(CancellationToken cancellationToken)
+        {
+            return Ok("HUi");
+        }
+
+        [HttpPost]
         public async Task<IActionResult> CreateAsync(OrchestraMemberContract orchesterMemberContract, CancellationToken none)
         {
             if (!orchesterMemberContract.IsValid())

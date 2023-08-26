@@ -2,6 +2,7 @@
 using TvJahnOrchesterApp.Domain.Common.Models;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterEigentum.ValueObjects;
+using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.Enums;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects;
 
@@ -19,6 +20,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
         public DateTime Geburtstag { get; private set; }
         public string Telefonnummer { get; private set; } = null!;  
         public string Handynummer { get; private set; } = null!;
+        public Position Position { get; private set; }
         public Instrument DefaultInstrument { get; private set; } = null!;
         public Notenstimme DefaultNotenStimme { get; private set; }
         public IReadOnlyList<TerminId> ZugesagteTermine => _zugesagteTermine.AsReadOnly();
@@ -28,7 +30,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         private OrchesterMitglied() { }
        
-        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, Instrument defaultInstrument, Notenstimme defaultNotenStimme): base(id)
+        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, Instrument defaultInstrument, Notenstimme defaultNotenStimme, Position position): base(id)
         {
             Vorname = vorname;
             Nachname = nachname;
@@ -38,11 +40,12 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             Handynummer = handynummer;
             DefaultInstrument = defaultInstrument;
             DefaultNotenStimme = defaultNotenStimme;
+            Position = position;
         }
 
-        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, Instrument defaultInstrument, Notenstimme defaultNotenStimme)
+        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, Instrument defaultInstrument, Notenstimme defaultNotenStimme, Position position)
         {
-            return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag, telefonnummer, handynummer, defaultInstrument, defaultNotenStimme);
+            return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag, telefonnummer, handynummer, defaultInstrument, defaultNotenStimme, position);
         }
     }
 }
