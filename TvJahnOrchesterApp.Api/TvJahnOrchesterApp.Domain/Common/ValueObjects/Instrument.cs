@@ -1,13 +1,30 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TvJahnOrchesterApp.Domain.Common.Enums;
+using TvJahnOrchesterApp.Domain.Common.Models;
 
 namespace TvJahnOrchesterApp.Domain.Common.ValueObjects
 {
-    public sealed class Instrument
+    public sealed class Instrument : ValueObject
     {
-        //Name, Art des Instruments (Holz, Blech, Schlagwerk)
+        public string Name { get; private set; }
+        public ArtInstrument ArtInstrument { get; private set; }
+
+        private Instrument() { }
+
+        private Instrument(string name, ArtInstrument artInstrument)
+        {
+            Name = name;
+            ArtInstrument = artInstrument;
+        }
+
+        public override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Name;
+            yield return ArtInstrument;
+        }
+
+        public static Instrument Create(string name, ArtInstrument artInstrument)
+        {
+            return new Instrument(name, artInstrument);
+        }
     }
 }

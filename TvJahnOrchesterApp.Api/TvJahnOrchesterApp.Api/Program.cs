@@ -1,3 +1,4 @@
+using TvJahnOrchesterApp.Api.Middlewares;
 using TvJahnOrchesterApp.Application;
 using TvJahnOrchesterApp.Infrastructure;
 
@@ -22,6 +23,7 @@ namespace TvJahnOrchesterApp.Api
                     app.UseSwagger();
                     app.UseSwaggerUI();
                 }
+                //app.UseMiddleware<ErrorHandelingMiddleware>();
                 app.UseHttpsRedirection();
                 app.UseAuthorization();
                 app.MapControllers();

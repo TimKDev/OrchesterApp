@@ -27,5 +27,10 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects
         {
             return new OrchesterMitgliedsId { Value = Guid.NewGuid() };
         }
+
+        public static OrchesterMitgliedsId Create(Guid value)
+        {
+            return new OrchesterMitgliedsId(value);
+        }
     }
 }

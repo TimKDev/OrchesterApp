@@ -8,11 +8,12 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.Enums
 {
     public enum Position
     {
+        KeinePosition,
         Dirigent,
         Obmann,
         Kassierer,
         Notenwart,
         Zeugwart,
-        Thekenteam
+        Thekenteam,
     }
 }
