@@ -3,7 +3,7 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 17
 VisualStudioVersion = 17.5.33530.505
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TvJahnOrchesterApp.Api", "TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Api.csproj", "{587F9929-FBA9-44C1-BFE7-55C4A2C81BD1}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TvJahnOrchesterApp.Api2", "TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Api2.csproj", "{587F9929-FBA9-44C1-BFE7-55C4A2C81BD1}"
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TvJahnOrchesterApp.Application", "TvJahnOrchesterApp.Application\TvJahnOrchesterApp.Application.csproj", "{8E5F8E29-55D4-4DE2-BF92-C0EE1A4629D9}"
 EndProject
@@ -15,7 +15,9 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TvJahnOrchesterApp.Contract
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Tests", "Tests", "{B5C7BC49-BA90-4CC8-8479-188BE7790A7C}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvJahnOrchesterApp.Api.Tests", "TvJahnOrchesterApp.Api.Tests\TvJahnOrchesterApp.Api.Tests.csproj", "{28E15501-4EEE-4A81-BD5C-1FC242F5ECFC}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "TvJahnOrchesterApp.Api.Tests", "TvJahnOrchesterApp.Api.Tests\TvJahnOrchesterApp.Api.Tests.csproj", "{28E15501-4EEE-4A81-BD5C-1FC242F5ECFC}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "TvJahnOrchesterApp.Api", "OrchesterApp.Api\TvJahnOrchesterApp.Api.csproj", "{E7D1B09D-8463-42C6-A809-C2359ADD38DA}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -47,6 +49,10 @@ Global
 		{28E15501-4EEE-4A81-BD5C-1FC242F5ECFC}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{28E15501-4EEE-4A81-BD5C-1FC242F5ECFC}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{28E15501-4EEE-4A81-BD5C-1FC242F5ECFC}.Release|Any CPU.Build.0 = Release|Any CPU
+		{E7D1B09D-8463-42C6-A809-C2359ADD38DA}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{E7D1B09D-8463-42C6-A809-C2359ADD38DA}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{E7D1B09D-8463-42C6-A809-C2359ADD38DA}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{E7D1B09D-8463-42C6-A809-C2359ADD38DA}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

@@ -2820,7 +2820,7 @@
           "build/netcoreapp3.1/xunit.runner.visualstudio.props": {}
         }
       },
-      "TvJahnOrchesterApp.Api/1.0.0": {
+      "TvJahnOrchesterApp.Api2/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
         "dependencies": {
@@ -2832,10 +2832,10 @@
           "TvJahnOrchesterApp.Infrastructure": "1.0.0"
         },
         "compile": {
-          "bin/placeholder/TvJahnOrchesterApp.Api.dll": {}
+          "bin/placeholder/TvJahnOrchesterApp.Api2.dll": {}
         },
         "runtime": {
-          "bin/placeholder/TvJahnOrchesterApp.Api.dll": {}
+          "bin/placeholder/TvJahnOrchesterApp.Api2.dll": {}
         },
         "frameworkReferences": [
           "Microsoft.AspNetCore.App"
@@ -8742,10 +8742,10 @@
         "xunit.runner.visualstudio.nuspec"
       ]
     },
-    "TvJahnOrchesterApp.Api/1.0.0": {
+    "TvJahnOrchesterApp.Api2/1.0.0": {
       "type": "project",
-      "path": "../TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Api.csproj",
-      "msbuildProject": "../TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Api.csproj"
+      "path": "../TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Api2.csproj",
+      "msbuildProject": "../TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Api2.csproj"
     },
     "TvJahnOrchesterApp.Application/1.0.0": {
       "type": "project",
@@ -8773,7 +8773,7 @@
       "FluentAssertions >= 6.11.0",
       "Microsoft.NET.Test.Sdk >= 17.5.0",
       "Moq >= 4.20.69",
-      "TvJahnOrchesterApp.Api >= 1.0.0",
+      "TvJahnOrchesterApp.Api2 >= 1.0.0",
       "coverlet.collector >= 3.2.0",
       "xunit >= 2.4.2",
       "xunit.runner.visualstudio >= 2.4.5"
@@ -8806,8 +8806,8 @@
         "net7.0": {
           "targetAlias": "net7.0",
           "projectReferences": {
-            "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api.csproj": {
-              "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api.csproj"
+            "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api2.csproj": {
+              "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api2.csproj"
             }
           }
         }

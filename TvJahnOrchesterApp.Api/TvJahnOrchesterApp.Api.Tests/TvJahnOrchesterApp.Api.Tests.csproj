@@ -29,7 +29,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Api.csproj" />
+    <ProjectReference Include="..\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Api2.csproj" />
   </ItemGroup>
 
 </Project>

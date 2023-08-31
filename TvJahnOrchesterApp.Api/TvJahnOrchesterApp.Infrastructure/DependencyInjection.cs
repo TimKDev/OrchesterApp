@@ -11,7 +11,7 @@ namespace TvJahnOrchesterApp.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services)
         {
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
-            services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer("Server=localhost;Database=BuberDinner;User Id=sa;Password=amiko123!;Encrypt=false"));
+            services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer("Server=localhost;Database=OrchesterAppDB;User Id=sa;Password=amiko123!;Encrypt=false"));
             return services;
         }
     }

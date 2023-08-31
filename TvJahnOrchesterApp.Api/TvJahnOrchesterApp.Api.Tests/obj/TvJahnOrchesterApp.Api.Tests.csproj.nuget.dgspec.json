@@ -28,8 +28,8 @@
           "net7.0": {
             "targetAlias": "net7.0",
             "projectReferences": {
-              "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api.csproj": {
-                "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api.csproj"
+              "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api2.csproj": {
+                "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api2.csproj"
               }
             }
           }
@@ -93,12 +93,12 @@
         }
       }
     },
-    "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api.csproj": {
+    "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api2.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api.csproj",
-        "projectName": "TvJahnOrchesterApp.Api",
-        "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api.csproj",
+        "projectUniqueName": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api2.csproj",
+        "projectName": "TvJahnOrchesterApp.Api2",
+        "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api2.csproj",
         "packagesPath": "C:\\Users\\timke\\.nuget\\packages\\",
         "outputPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Api\\obj\\",
         "projectStyle": "PackageReference",
