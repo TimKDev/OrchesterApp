@@ -13,7 +13,7 @@ namespace OrchesterApp.Api
             {
                 builder.Services
                     .AddPresentation()
-                    .AddInfrastructure()
+                    .AddInfrastructure(builder.Configuration)
                     .AddApplication();
             }
 
@@ -28,6 +28,7 @@ namespace OrchesterApp.Api
                 app.UseHttpsRedirection();
                 app.UseStaticFiles();
                 app.UseRouting();
+                app.UseAuthentication();
                 app.UseAuthorization();
                 app.MapControllers();
                 app.MapFallbackToFile("index.html");

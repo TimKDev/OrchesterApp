@@ -1,14 +1,16 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
+using TvJahnOrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Infrastructure.Persistence
 {
-    public class OrchesterDbContext: DbContext
+    public class OrchesterDbContext: IdentityDbContext<User>
     {
         public OrchesterDbContext(DbContextOptions<OrchesterDbContext> options) : base(options)
         {
