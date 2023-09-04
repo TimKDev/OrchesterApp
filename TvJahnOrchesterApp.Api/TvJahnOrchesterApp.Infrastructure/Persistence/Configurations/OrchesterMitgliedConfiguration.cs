@@ -2,6 +2,7 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
+using TvJahnOrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations
 {
@@ -27,6 +28,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations
             builder.OwnsOne(m => m.Adresse); // Dies erzeugt eine Owned Entity Adresse mit dem Owner Orchestermitglied, d.h. die Spalten von Adresse werden den Spalten der Orchestermitgliedstabelle hinzugefügt => Dadurch bekommt man das gewünschte Verhalten, dass die Owned Property gelöscht wird, wenn der Owner gelöscht wird. Adresse benötigt in diesem Fall keinen PK.
 
             builder.OwnsOne(m => m.DefaultInstrument);
+            builder.HasOne<User>().WithOne().HasForeignKey<OrchesterMitglied>(o => o.ConnectedUserId);
 
             builder.Ignore(m => m.Positions);
             builder.Ignore(m => m.TerminRückmeldungen);

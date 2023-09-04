@@ -19,4 +19,8 @@
     <ProjectReference Include="..\TvJahnOrchesterApp.Domain\TvJahnOrchesterApp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Authentication\Queries\" />
+  </ItemGroup>
+
 </Project>

@@ -7,8 +7,10 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Domain.UserAggregate;
+using TvJahnOrchesterApp.Infrastructure.Authentication;
 using TvJahnOrchesterApp.Infrastructure.Persistence;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
 
@@ -61,6 +63,8 @@ namespace TvJahnOrchesterApp.Infrastructure
                     ClockSkew = TimeSpan.Zero
                 };
             });
+
+            services.AddTransient<ITokenService, TokenService>();
 
             return services;
         }
