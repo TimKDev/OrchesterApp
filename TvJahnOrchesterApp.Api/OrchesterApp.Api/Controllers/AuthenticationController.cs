@@ -4,6 +4,7 @@ using MediatR;
 using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using TvJahnOrchesterApp.Application.Authentication.Commands.Register;
+using TvJahnOrchesterApp.Application.Authentication.Queries.Login;
 using TvJahnOrchesterApp.Contracts.Authentication;
 
 namespace TvJahnOrchesterApp.Api.Controllers
@@ -20,8 +21,6 @@ namespace TvJahnOrchesterApp.Api.Controllers
             this.sender = sender;
         }
 
-        
-
         [HttpPost("register")]
         public async Task<IActionResult> Register([FromBody] RegisterRequest registerRequest)
         {
@@ -32,8 +31,21 @@ namespace TvJahnOrchesterApp.Api.Controllers
 
             var registerCommand = mapper.Map<RegisterCommand>(registerRequest);
             var result = await sender.Send(registerCommand);
-            return Ok();
+
+            var registerResponse = mapper.Map<RegisterResponse>(registerCommand);
+
+            return Ok(registerResponse);
               
+        }
+
+        [HttpPost("login")]
+        public async Task<IActionResult> Login(LoginRequest request)
+        {
+            var query = mapper.Map<LoginQuery>(request);
+            var authResult = await sender.Send(query);
+
+            var loginResponse = mapper.Map<LoginResponse>(authResult);
+            return Ok(loginResponse);
         }
     }
 }

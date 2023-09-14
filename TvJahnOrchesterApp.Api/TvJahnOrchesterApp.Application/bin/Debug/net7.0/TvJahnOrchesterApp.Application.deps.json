@@ -226,6 +226,9 @@
       "Microsoft.Extensions.Primitives/7.0.0": {},
       "System.Threading.Tasks.Extensions/4.5.4": {},
       "TvJahnOrchesterApp.Contracts/1.0.0": {
+        "dependencies": {
+          "TvJahnOrchesterApp.Domain": "1.0.0"
+        },
         "runtime": {
           "TvJahnOrchesterApp.Contracts.dll": {}
         }

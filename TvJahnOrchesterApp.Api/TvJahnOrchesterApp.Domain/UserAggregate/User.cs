@@ -18,14 +18,15 @@ namespace TvJahnOrchesterApp.Domain.UserAggregate
 
         private User() { }
 
-        private User(UserId id, OrchesterMitgliedsId orchesterMitgliedsId)
+        private User(UserId id, OrchesterMitgliedsId orchesterMitgliedsId, string email)
         {
             OrchesterMitgliedsId = orchesterMitgliedsId;
+            Email = email;
         }
 
-        public static User Create(OrchesterMitgliedsId orchesterMitgliedsId)
+        public static User Create(OrchesterMitgliedsId orchesterMitgliedsId, string email)
         {
-            return new User(UserId.CreateUnique(), orchesterMitgliedsId);
+            return new User(UserId.CreateUnique(), orchesterMitgliedsId, email);
         }
 
         public void SetRefreshToken(string? refreshToken)

@@ -10,3 +10,6 @@ C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchest
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\refint\TvJahnOrchesterApp.Contracts.dll
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\TvJahnOrchesterApp.Contracts.pdb
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\ref\TvJahnOrchesterApp.Contracts.dll
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\bin\Debug\net7.0\TvJahnOrchesterApp.Domain.dll
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\bin\Debug\net7.0\TvJahnOrchesterApp.Domain.pdb
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Contracts\obj\Debug\net7.0\TvJahnOrchesterApp.Contracts.csproj.CopyComplete

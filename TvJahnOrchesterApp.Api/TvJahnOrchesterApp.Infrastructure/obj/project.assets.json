@@ -1353,6 +1353,9 @@
       "TvJahnOrchesterApp.Contracts/1.0.0": {
         "type": "project",
         "framework": ".NETCoreApp,Version=v7.0",
+        "dependencies": {
+          "TvJahnOrchesterApp.Domain": "1.0.0"
+        },
         "compile": {
           "bin/placeholder/TvJahnOrchesterApp.Contracts.dll": {}
         },

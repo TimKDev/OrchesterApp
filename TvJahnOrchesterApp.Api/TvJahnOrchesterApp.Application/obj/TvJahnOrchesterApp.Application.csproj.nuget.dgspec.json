@@ -111,7 +111,11 @@
         "frameworks": {
           "net7.0": {
             "targetAlias": "net7.0",
-            "projectReferences": {}
+            "projectReferences": {
+              "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj": {
+                "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj"
+              }
+            }
           }
         },
         "warningProperties": {

@@ -9,8 +9,10 @@ using Microsoft.IdentityModel.Tokens;
 using System.Text;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 using TvJahnOrchesterApp.Infrastructure.Authentication;
+using TvJahnOrchesterApp.Infrastructure.Common.Interfaces;
 using TvJahnOrchesterApp.Infrastructure.Persistence;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
 
@@ -20,9 +22,21 @@ namespace TvJahnOrchesterApp.Infrastructure
     {
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
-            services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
+            services
+                .AddPersistence()
+                .AddAuthentication(configuration);
+
+            return services;
+        }
+
+        public static IServiceCollection AddPersistence(this IServiceCollection services)
+        {
             services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer("Server=localhost;Database=OrchesterAppDB;User Id=sa;Password=amiko123!;Encrypt=false"));
-            services.AddAuthentication(configuration);
+
+            services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
+            services.AddScoped<IUnitOfWork, UnitOfWork>();
+            services.AddScoped<ITerminRepository, TerminRepository>();
+
             return services;
         }
 
@@ -64,7 +78,9 @@ namespace TvJahnOrchesterApp.Infrastructure
                 };
             });
 
+            services.AddScoped<IJwtHandler, JwtHandler>();
             services.AddTransient<ITokenService, TokenService>();
+            services.AddScoped<ICurrentUserService, CurrentUserService>();
 
             return services;
         }

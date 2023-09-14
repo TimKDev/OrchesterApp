@@ -3,16 +3,17 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Domain.UserAggregate;
+using TvJahnOrchesterApp.Infrastructure.Common.Interfaces;
 
 namespace TvJahnOrchesterApp.Infrastructure.Authentication
 {
     public class TokenService : ITokenService
     {
-        private readonly JwtHandler _jwtHandler;
+        private readonly IJwtHandler _jwtHandler;
         private readonly UserManager<User> _userManager;
 
         public TokenService(
-            JwtHandler jwtHandler,
+            IJwtHandler jwtHandler,
             UserManager<User> userManager
         )
         {

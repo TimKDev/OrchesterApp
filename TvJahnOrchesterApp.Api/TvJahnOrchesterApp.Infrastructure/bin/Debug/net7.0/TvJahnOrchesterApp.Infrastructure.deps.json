@@ -770,6 +770,9 @@
         }
       },
       "TvJahnOrchesterApp.Contracts/1.0.0": {
+        "dependencies": {
+          "TvJahnOrchesterApp.Domain": "1.0.0"
+        },
         "runtime": {
           "TvJahnOrchesterApp.Contracts.dll": {}
         }

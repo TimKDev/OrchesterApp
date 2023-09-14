@@ -6,10 +6,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using TvJahnOrchesterApp.Domain.UserAggregate;
+using TvJahnOrchesterApp.Infrastructure.Common.Interfaces;
 
 namespace TvJahnOrchesterApp.Infrastructure.Authentication
 {
-    public class JwtHandler
+    public class JwtHandler: IJwtHandler
     {
         private readonly JwtSettings _jwtSettings;
         private readonly UserManager<User> _userManager;

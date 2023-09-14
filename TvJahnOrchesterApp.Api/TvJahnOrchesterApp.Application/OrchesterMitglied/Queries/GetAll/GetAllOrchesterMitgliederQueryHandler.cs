@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 
 namespace TvJahnOrchesterApp.Application.OrchesterMitglied.Queries.GetAll
 {

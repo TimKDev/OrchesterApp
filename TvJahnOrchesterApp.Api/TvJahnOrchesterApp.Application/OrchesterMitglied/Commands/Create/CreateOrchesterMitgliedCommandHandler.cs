@@ -1,5 +1,5 @@
 ﻿using MediatR;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.OrchesterMitglied.Common.Errors;
 using TvJahnOrchesterApp.Domain.Common.Enums;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
@@ -26,7 +26,7 @@ namespace TvJahnOrchesterApp.Application.OrchestraMembers.Commands.Create
                 throw new DuplicatedOrchesterMitgliedsNameException($"Name: {request.Vorname} {request.Nachname} existiert bereits.");
             }
 
-            var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, instrument, notenstimme);
+            var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, instrument, notenstimme, request.RegisterKey);
 
             await _orchesterMitgliedRepository.CreateAsync(orchesterMitglied, cancellationToken);
             return orchesterMitglied;

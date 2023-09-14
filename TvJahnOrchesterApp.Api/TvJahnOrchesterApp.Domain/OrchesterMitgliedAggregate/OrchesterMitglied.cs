@@ -1,4 +1,5 @@
-﻿using System.Security.Cryptography;
+﻿using Microsoft.EntityFrameworkCore.Metadata.Internal;
+using System.Security.Cryptography;
 using System.Text;
 using TvJahnOrchesterApp.Domain.Common.Enums;
 using TvJahnOrchesterApp.Domain.Common.Models;
@@ -6,6 +7,7 @@ using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterEigentum.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.Enums;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
+using TvJahnOrchesterApp.Domain.UserAggregate.ValueObjects;
 
 namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 {
@@ -35,7 +37,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         private OrchesterMitglied() { }
        
-        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, Instrument defaultInstrument, Notenstimme defaultNotenStimme): base(id)
+        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, Instrument defaultInstrument, Notenstimme defaultNotenStimme, string? registrationKey = null) : base(id)
         {
             Vorname = vorname;
             Nachname = nachname;
@@ -45,11 +47,26 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             Handynummer = handynummer;
             DefaultInstrument = defaultInstrument;
             DefaultNotenStimme = defaultNotenStimme;
+            RegisterKey = registrationKey;
+        }
+
+        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, Instrument defaultInstrument, Notenstimme defaultNotenStimme, string registrationKey)
+        {
+            return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag, telefonnummer, handynummer, defaultInstrument, defaultNotenStimme, GetHashString(registrationKey));
         }
 
         public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, Instrument defaultInstrument, Notenstimme defaultNotenStimme)
         {
             return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag, telefonnummer, handynummer, defaultInstrument, defaultNotenStimme);
+        }
+
+        public static string GetHashString(string inputString)
+        {
+            StringBuilder sb = new StringBuilder();
+            foreach (byte b in SHA256.HashData(Encoding.UTF8.GetBytes(inputString)))
+                sb.Append(b.ToString("X2"));
+
+            return sb.ToString();
         }
 
         public void SetRegisterKey(string key)
@@ -58,29 +75,21 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             RegisterKeyExpirationDate = DateTime.Now.AddDays(RegistrationKeyExpireDays);
         }
 
-        public bool UseRegisterKey(string userId, string key)
+        public void ConnectWithUser(string userId)
         {
-            if(ConnectedUserId is null)
+            ConnectedUserId = userId;
+            UserFirstConnected = DateTime.Now;
+        }
+
+        public bool ValidateRegistrationKey(string key)
+        {
+            //TTODO: Exception sollte hier eigentlich sagen, was falsch läuft => Schwierig mit klassischen Exceptions, vllt. doch ErrorOr verwenden?
+            if (ConnectedUserId is not null && RegisterKey == GetHashString(key) && RegisterKeyExpirationDate <= DateTime.Now)
             {
-                throw new InvalidOperationException("Für dieses Orchestermitglied wurde bereits ein User verknüpft.");
-            }
-            if(RegisterKey == GetHashString(key) && RegisterKeyExpirationDate <= DateTime.Now)
-            {
-                ConnectedUserId = userId;
                 RegisterKey = null;
-                UserFirstConnected = DateTime.Now;
                 return true;
             }
             return false;
-        }
-
-        private static string GetHashString(string inputString)
-        {
-            StringBuilder sb = new StringBuilder();
-            foreach (byte b in SHA256.HashData(Encoding.UTF8.GetBytes(inputString)))
-                sb.Append(b.ToString("X2"));
-
-            return sb.ToString();
         }
     }
 }

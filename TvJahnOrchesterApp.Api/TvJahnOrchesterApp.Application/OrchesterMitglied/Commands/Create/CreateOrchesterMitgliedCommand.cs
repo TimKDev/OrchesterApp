@@ -1,35 +1,9 @@
 ﻿using MediatR;
-using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
+using TvJahnOrchesterApp.Contracts.OrchestraMembers;
+using TvJahnOrchesterApp.Domain.Common.Enums;
+using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.Enums;
 
 namespace TvJahnOrchesterApp.Application.OrchestraMembers.Commands.Create
 {
-    public record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, AdresseCommand Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, InstrumentCommand DefaultInstrument, NotenstimmeCommand DefaultNotenStimme, PositionCommand Position) : IRequest<Domain.OrchesterMitgliedAggregate.OrchesterMitglied>;
-
-    public record AdresseCommand(string Straße,
-        string Hausnummer,
-        string Postleitzahl,
-        string Stadt);
-
-    public record InstrumentCommand(string Name, ArtInstrumentCommand ArtInstrument);
-
-    public enum ArtInstrumentCommand
-    {
-        Holz, Blech, Schlagwerk, Dirigent
-    }
-
-    public enum NotenstimmeCommand
-    {
-        AltSaxophon1,
-        AltSaxophon2,
-    }
-
-    public enum PositionCommand
-    {
-        Dirigent,
-        Obmann,
-        Kassierer,
-        Notenwart,
-        Zeugwart,
-        Thekenteam
-    }
+    public record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, AdresseDto Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, InstrumentDto DefaultInstrument, Notenstimme DefaultNotenStimme, Position Position, string RegisterKey) : IRequest<Domain.OrchesterMitgliedAggregate.OrchesterMitglied>;
 }
