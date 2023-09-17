@@ -1,12 +1,16 @@
 ﻿using Mapster;
 using TvJahnOrchesterApp.Application.Termin.Commands.Create;
+using TvJahnOrchesterApp.Application.Termin.Commands.EinsatzplanUpdate;
+using TvJahnOrchesterApp.Application.Termin.Commands.EinsatzplanZeitblockUpdate;
 using TvJahnOrchesterApp.Application.Termin.Commands.Rückmeldung;
+using TvJahnOrchesterApp.Application.Termin.Commands.RückmeldungChangeInstrumentsAndNotes;
 using TvJahnOrchesterApp.Application.Termin.Commands.RückmeldungForOtherUser;
 using TvJahnOrchesterApp.Application.Termin.Commands.Update;
 using TvJahnOrchesterApp.Application.Termin.Commands.UpdateAnwesenheit;
 using TvJahnOrchesterApp.Application.Termin.Common;
 using TvJahnOrchesterApp.Contracts.Termine.AnwesenheitsListe;
 using TvJahnOrchesterApp.Contracts.Termine.Dto;
+using TvJahnOrchesterApp.Contracts.Termine.Einsatzplan;
 using TvJahnOrchesterApp.Contracts.Termine.Main;
 using TvJahnOrchesterApp.Contracts.Termine.Rückmeldung;
 using TvJahnOrchesterApp.Domain.TerminAggregate;
@@ -24,19 +28,13 @@ namespace TvJahnOrchesterApp.Api.Common.Mapping
                 .Map(d => d.TerminId, s => s.Id.Value)
                 .Map(d => d.OrchestermitgliedIds, s => s.TerminRückmeldungOrchesterMitglieder.Select(e => e.OrchesterMitgliedsId.Value).ToArray());
 
-            config.NewConfig< (string Vorname, string Nachname, string? VornameOther, string? NachnameOther, TerminRückmeldungOrchestermitglied TerminRückmeldungOrchestermitglied), TerminRückmeldungOrchestermitgliedDto>()
-                .Map(d => d, s => s.TerminRückmeldungOrchestermitglied)
-                .Map(d => d.Vorname, s => s.Vorname)
-                .Map(d => d.Nachname, s => s.Nachname)
-                .Map(d => d.VornameRückmelder, s => s.VornameOther)
-                .Map(d => d.NachnameRückmelder, s => s.NachnameOther);
-
             config.NewConfig<EinsatzPlan, EinsatzPlanDto>();
 
-            config.NewConfig<TerminResponse, GetTerminResponse>()
-                .Map(d => d.TerminId, s => s.Termin.Id.Value)
-                .Map(d => d, s => s.Termin)
-                .Map(d => d.TerminRückmeldungOrchesterMitglieder, s => s.TerminRückmeldungOrchestermitglied);
+            config.NewConfig<ZeitBlock, ZeitBlockDto>()
+                .Map(d => d.ZeitBlockId, s => s.Id.Value);
+
+            config.NewConfig<Termin, GetTerminResponse>()
+                .Map(d => d.TerminId, s => s.Id.Value);
 
             config.NewConfig<Termin, GetAllTerminResponse>()
                 .Map(d => d.TerminId, s => s.Id.Value)
@@ -68,6 +66,38 @@ namespace TvJahnOrchesterApp.Api.Common.Mapping
 
             config.NewConfig<UpdateTerminAnwesenheitsListenRequest, UpdateAnwesenheitCommand>()
                 .Map(d => d.UpdateAnwesenheitsListe, s => s.TerminAnwesenheitsListe);
+
+            config.NewConfig<UpdateAnwesenheitsListeResponse, UpdateTerminAnwesenheitsListenResponse>();
+
+            config.NewConfig<GlobalAnwesenheitsListe, GetAnwesenheitsListeResponse>()
+                .Map(d => d.GlobalAnwesenheitsListe, s => s.GlobalAnwesenheitsListenEinträge);
+
+            config.NewConfig<(UpdateEinsatzplanRequest request, Guid terminId), EinsatzplanUpdateCommand>()
+                .Map(d => d.TerminId, s => s.terminId)
+                .Map(d => d, s => s.request);
+
+            config.NewConfig<UpdateEinsatzplanRequest, UpdateEinsatzplanResponse>();
+
+            config.NewConfig<(UpdateCreateZeitblockRequest request, Guid terminId), EinsatzplanZeitblockUpdateCommand>()
+                .Map(d => d.TerminId, s => s.terminId)
+                .Map(d => d, s => s.request);
+
+            config.NewConfig<UpdateCreateZeitblockRequest, UpdateCreateZeitblockResponse>();
+
+            config.NewConfig<TerminRückmeldungsResponse, GetRückmeldungenTerminResponse>()
+                .Map(d => d.TerminRückmeldungOrchesterMitglieder, s => s.TerminRückmeldungOrchestermitglied);
+
+            config.NewConfig<(string Vorname, string Nachname, string? VornameOther, string? NachnameOther, TerminRückmeldungOrchestermitglied TerminRückmeldungOrchestermitglied), TerminRückmeldungOrchestermitgliedDto>()
+                .Map(d => d.RückmeldungsId, s => s.TerminRückmeldungOrchestermitglied.Id.Value)
+                .Map(d => d, s => s.TerminRückmeldungOrchestermitglied)
+                .Map(d => d.Vorname, s => s.Vorname)
+                .Map(d => d.Nachname, s => s.Nachname)
+                .Map(d => d.VornameRückmelder, s => s.VornameOther)
+                .Map(d => d.NachnameRückmelder, s => s.NachnameOther);
+
+            config.NewConfig<(Guid terminId, RückmeldungenChangeRequest request), RückmeldungChangeInstrumentsAndNotesCommand>()
+                .Map(d => d.TerminId, s => s.terminId)
+                .Map(d => d, s => s.request);
 
         }
     }

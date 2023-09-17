@@ -10,8 +10,4 @@
     <ProjectReference Include="..\TvJahnOrchesterApp.Domain\TvJahnOrchesterApp.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Termine\Einsatzplan\" />
-  </ItemGroup>
-
 </Project>

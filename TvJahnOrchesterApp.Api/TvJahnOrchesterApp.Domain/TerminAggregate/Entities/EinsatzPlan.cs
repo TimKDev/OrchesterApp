@@ -8,8 +8,8 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
     public sealed class EinsatzPlan : Entity<EinsatzplanId>
     {
         private readonly List<ZeitBlock> _zeitBlocks = new();
-        private readonly List<Noten> _noten = new();
-        private readonly List<Uniform> _uniform = new();
+        private List<Noten> _noten = new();
+        private List<Uniform> _uniform = new();
 
         public DateTime StartZeit { get; private set; }
         public DateTime EndZeit { get; private set; }
@@ -20,26 +20,30 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
         public string? WeitereInformationen { get; private set; }
 
         private EinsatzPlan() { }
-        private EinsatzPlan(EinsatzplanId id, DateTime startZeit, DateTime endZeit, Adresse treffpunkt, string? weitereInformationen = null): base(id)
+        private EinsatzPlan(EinsatzplanId id, DateTime startZeit, DateTime endZeit, Adresse treffpunkt, List<Noten> noten, List<Uniform> uniform, string? weitereInformationen = null): base(id)
         {
             StartZeit = startZeit;
             EndZeit = endZeit;
             Treffpunkt = treffpunkt;
+            _noten = noten;
+            _uniform = uniform;
             WeitereInformationen = weitereInformationen;
         }
 
-        public static EinsatzPlan Create(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, string? weitereInformationen = null)
+        public static EinsatzPlan Create(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, List<Noten> noten, List<Uniform> uniform, string? weitereInformationen = null)
         {
             //Validiere dass startZeit vor Endzeit ist
-            return new EinsatzPlan(EinsatzplanId.CreateUnique(), startZeit, endZeit, treffpunkt);
+            return new EinsatzPlan(EinsatzplanId.CreateUnique(), startZeit, endZeit, treffpunkt, noten, uniform, weitereInformationen);
         }
 
-        public void UpdateEinsatzPlan(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, string? weitereInformationen = null)
+        public void UpdateEinsatzPlan(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, Noten[] noten, Uniform[] uniform, string? weitereInformationen = null)
         {
             //Validiere dass startZeit vor Endzeit ist
             StartZeit = startZeit;
             EndZeit = endZeit;
             Treffpunkt = treffpunkt;
+            _noten = noten.ToList();
+            _uniform = uniform.ToList();    
             WeitereInformationen = weitereInformationen;
         }
 
@@ -68,44 +72,6 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
                 throw new Exception("ZeitBlock könnte nicht gefunden werden");
             }
             _zeitBlocks.Remove(zeitBlock);
-        }
-
-        public void AddNoten(List<Noten> notesToAdd)
-        {
-            foreach (var note in notesToAdd)
-            {
-                if (!_noten.Contains(note))
-                {
-                    _noten.Add(note);
-                }
-            }
-        }
-
-        public void removeNoten(List<Noten> notesToDelete)
-        {
-            foreach(var note in notesToDelete)
-            {
-                _noten.Remove(note);
-            }
-        }
-
-        public void AddUniform(List<Uniform> uniformToAdd)
-        {
-            foreach (var uniform in uniformToAdd)
-            {
-                if (!_uniform.Contains(uniform))
-                {
-                    _uniform.Add(uniform);
-                }
-            }
-        }
-
-        public void removeUniform(List<Uniform> uniformToDelete)
-        {
-            foreach (var uniform in uniformToDelete)
-            {
-                _uniform.Remove(uniform);
-            }
         }
     }
 }

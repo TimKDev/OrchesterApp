@@ -23,6 +23,11 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects
             return new ZeitblockId(Guid.NewGuid());
         }
 
+        public static ZeitblockId Create(Guid zeitBlockId)
+        {
+            return new ZeitblockId(zeitBlockId);
+        }
+
         public override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;
