@@ -1,11 +1,7 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
+using TvJahnOrchesterApp.Domain.TerminAggregate;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Infrastructure.Persistence
@@ -23,5 +19,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence
         }
 
         public DbSet<OrchesterMitglied> OrchesterMitglieder { get; set; } = null!;
+        public DbSet<Termin> Termin{ get; set; } = null!;
     }
 }

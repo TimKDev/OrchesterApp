@@ -33,13 +33,18 @@ namespace TvJahnOrchesterApp.Api.Common.Mapping
             config.NewConfig<ZeitBlock, ZeitBlockDto>()
                 .Map(d => d.ZeitBlockId, s => s.Id.Value);
 
-            config.NewConfig<Termin, GetTerminResponse>()
-                .Map(d => d.TerminId, s => s.Id.Value);
+            config.NewConfig<(Termin termin, TerminRückmeldungOrchestermitglied rückmeldung), GetTerminResponse>()
+                .Map(d => d.TerminId, s => s.termin.Id.Value)
+                .Map(d => d.UserRückmeldung, s => s.rückmeldung)
+                .Map(d => d.UserRückmeldung.RückmeldungsId, s => s.rückmeldung.Id.Value)
+                .Map(d => d, s => s.termin);
 
-            config.NewConfig<Termin, GetAllTerminResponse>()
-                .Map(d => d.TerminId, s => s.Id.Value)
-                .Map(d => d.StartZeit, s => s.EinsatzPlan.StartZeit)
-                .Map(d => d.EndZeit, s => s.EinsatzPlan.EndZeit);
+            config.NewConfig<(Termin termin, TerminRückmeldungOrchestermitglied rückmeldung), GetAllTerminResponse>()
+                .Map(d => d.TerminId, s => s.termin.Id.Value)
+                .Map(d => d.StartZeit, s => s.termin.EinsatzPlan.StartZeit)
+                .Map(d => d.EndZeit, s => s.termin.EinsatzPlan.EndZeit)
+                .Map(d => d.IstAnwesend, s => s.rückmeldung.IstAnwesend)
+                .Map(d => d.Zugesagt, s => s.rückmeldung.Zugesagt);
 
             config.NewConfig<UpdateTerminRequest, UpdateTerminCommand>();
 

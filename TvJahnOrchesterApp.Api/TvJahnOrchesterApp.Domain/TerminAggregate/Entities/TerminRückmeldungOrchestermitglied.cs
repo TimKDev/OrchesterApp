@@ -13,7 +13,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
         private List<Notenstimme> _notenstimmen = new();
 
         public IReadOnlyList<Instrument> Instruments => _instruments.AsReadOnly();
-        public IReadOnlyList<Notenstimme> Notenstimmme => _notenstimmen.AsReadOnly();
+        public IReadOnlyList<Notenstimme> Notenstimme => _notenstimmen.AsReadOnly();
         public OrchesterMitgliedsId OrchesterMitgliedsId { get; private set; }
         public Rückmeldungsart Zugesagt { get; private set; } = Rückmeldungsart.NichtZurückgemeldet;
         public string? KommentarZusage { get; private set; }
