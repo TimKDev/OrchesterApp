@@ -28,6 +28,9 @@
   </ItemGroup>
 
   <ItemGroup>
+    <ProjectReference Include="..\Authentication\Authentication.csproj" />
+    <ProjectReference Include="..\OrchesterMitglieder\OrchesterMitglieder.csproj" />
+    <ProjectReference Include="..\Termine\Termine.csproj" />
     <ProjectReference Include="..\TvJahnOrchesterApp.Application\TvJahnOrchesterApp.Application.csproj" />
     <ProjectReference Include="..\TvJahnOrchesterApp.Contracts\TvJahnOrchesterApp.Contracts.csproj" />
     <ProjectReference Include="..\TvJahnOrchesterApp.Infrastructure\TvJahnOrchesterApp.Infrastructure.csproj" />

@@ -1,0 +1,26 @@
+﻿using TvJahnOrchesterApp.Domain.Common.Models;
+
+namespace TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects
+{
+    public sealed class TerminId : AggregateRootId<Guid>
+    {
+        public override Guid Value { get; protected set; }
+
+        private TerminId() { }
+
+        private TerminId(Guid value)
+        {
+            Value = value;
+        }
+
+        public override IEnumerable<object> GetEqualityComponents()
+        {
+            yield return Value;
+        }
+
+        public static TerminId CreateUnique()
+        {
+            return new TerminId(Guid.NewGuid());
+        }
+    }
+}
