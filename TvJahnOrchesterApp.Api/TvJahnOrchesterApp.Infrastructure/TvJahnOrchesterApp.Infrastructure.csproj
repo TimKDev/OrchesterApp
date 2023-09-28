@@ -25,4 +25,8 @@
     <ProjectReference Include="..\TvJahnOrchesterApp.Application\TvJahnOrchesterApp.Application.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Common\Interfaces\" />
+  </ItemGroup>
+
 </Project>

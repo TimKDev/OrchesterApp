@@ -10,11 +10,13 @@ using System.Text;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 using TvJahnOrchesterApp.Infrastructure.Authentication;
 using TvJahnOrchesterApp.Infrastructure.Common.Interfaces;
 using TvJahnOrchesterApp.Infrastructure.Persistence;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
+using TvJahnOrchesterApp.Infrastructure.Services;
 
 namespace TvJahnOrchesterApp.Infrastructure
 {
@@ -24,6 +26,7 @@ namespace TvJahnOrchesterApp.Infrastructure
         {
             services
                 .AddPersistence()
+                .AddServices()
                 .AddAuthentication(configuration);
 
             return services;
@@ -36,6 +39,13 @@ namespace TvJahnOrchesterApp.Infrastructure
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITerminRepository, TerminRepository>();
+
+            return services;
+        }
+
+        public static IServiceCollection AddServices(this IServiceCollection services)
+        {
+            services.AddScoped<IEmailService, EmailService>();
 
             return services;
         }

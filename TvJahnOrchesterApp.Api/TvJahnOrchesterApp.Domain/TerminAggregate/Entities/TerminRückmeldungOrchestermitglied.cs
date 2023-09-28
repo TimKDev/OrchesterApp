@@ -1,5 +1,4 @@
-﻿using TvJahnOrchesterApp.Domain.Common.Enums;
-using TvJahnOrchesterApp.Domain.Common.Models;
+﻿using TvJahnOrchesterApp.Domain.Common.Models;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Enums;
@@ -31,9 +30,9 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
             _notenstimmen = notenstimmen;
         }
 
-        public static TerminRückmeldungOrchestermitglied Create(OrchesterMitgliedsId orchesterMitgliedsId, List<Instrument> defaultInstruments, List<Notenstimme> defaultNotenstimmen)
+        public static TerminRückmeldungOrchestermitglied Create(OrchesterMitgliedsId orchesterMitgliedsId, List<Instrument> defaultInstruments, List<NotenstimmeEnum> defaultNotenstimmen)
         {
-            return new TerminRückmeldungOrchestermitglied(RückgemeldetePersonId.CreateUnique(), orchesterMitgliedsId, defaultInstruments, defaultNotenstimmen);
+            return new TerminRückmeldungOrchestermitglied(RückgemeldetePersonId.CreateUnique(), orchesterMitgliedsId, defaultInstruments, defaultNotenstimmen.Select(Common.ValueObjects.Notenstimme.Create).ToList());
         }
 
         public void ChangeZusage(bool zugesagt, string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)

@@ -1,4 +1,5 @@
 ﻿using System.Linq;
+using System.Security.Cryptography.X509Certificates;
 using TvJahnOrchesterApp.Domain.AbstimmungsAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.Common.Models;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
@@ -31,7 +32,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
             
         }
 
-        public static Termin Create(TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, TerminArt terminArt, DateTime startZeit, DateTime endZeit, Adresse treffPunkt, List<Noten> noten, List<Uniform> uniform, AbstimmungsId? abstimmungsId = null, string? zusätzlicheInfo = null)
+        public static Termin Create(TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, TerminArt terminArt, DateTime startZeit, DateTime endZeit, Adresse treffPunkt, List<NotenEnum> noten, List<UniformEnum> uniform, AbstimmungsId? abstimmungsId = null, string? zusätzlicheInfo = null)
         {
             var einsatzplan = EinsatzPlan.Create(startZeit, endZeit, treffPunkt, noten, uniform, zusätzlicheInfo);
 
@@ -42,6 +43,16 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
         {
             var terminRückmeldungOrchesterMitglied = _terminRückmeldungOrchesterMitglieder.Find(t => t.OrchesterMitgliedsId == orchesterMitgliedsId) ?? throw new ArgumentException("Orchestermitglied wurde nicht gefunden.");
             terminRückmeldungOrchesterMitglied.ChangeZusage(istAnwesend, kommentar, otherOrchesterId);
+        }
+
+        public bool IstZugeordnet(OrchesterMitgliedsId orchesterMitgliedsId)
+        {
+            return _terminRückmeldungOrchesterMitglieder.Select(x => x.OrchesterMitgliedsId).Contains(orchesterMitgliedsId);
+        }
+
+        public bool NichtZurückgemeldet(OrchesterMitgliedsId orchesterMitgliedsId)
+        {
+            return _terminRückmeldungOrchesterMitglieder.First(i => i.OrchesterMitgliedsId == orchesterMitgliedsId).Zugesagt == Rückmeldungsart.NichtZurückgemeldet;
         }
 
         public void UpdateName(string name)

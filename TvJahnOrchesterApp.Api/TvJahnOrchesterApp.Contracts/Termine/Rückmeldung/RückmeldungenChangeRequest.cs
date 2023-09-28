@@ -1,7 +1,7 @@
 ﻿using TvJahnOrchesterApp.Contracts.OrchestraMembers;
-using TvJahnOrchesterApp.Domain.Common.Enums;
+using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 
 namespace TvJahnOrchesterApp.Contracts.Termine.Rückmeldung
 {
-    public record RückmeldungenChangeRequest(Guid RückmeldungsId, InstrumentDto[] Instruments, Notenstimme[] Notenstimme);
+    public record RückmeldungenChangeRequest(Guid RückmeldungsId, InstrumentDto[] Instruments, NotenstimmeEnum[] Notenstimme);
 }

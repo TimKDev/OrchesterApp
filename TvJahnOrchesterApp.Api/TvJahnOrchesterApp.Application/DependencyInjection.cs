@@ -3,6 +3,7 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using TvJahnOrchesterApp.Application.Common.Behaviors;
+using TvJahnOrchesterApp.Application.Features.Authorization;
 
 namespace TvJahnOrchesterApp.Application
 {
@@ -16,6 +17,8 @@ namespace TvJahnOrchesterApp.Application
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(ValidationBehavior<,>));
 
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
+
+            services.AddAuthorizationFeature();
 
             return services;
         }

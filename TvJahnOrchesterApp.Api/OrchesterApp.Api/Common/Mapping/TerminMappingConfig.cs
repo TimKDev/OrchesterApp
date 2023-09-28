@@ -13,8 +13,10 @@ using TvJahnOrchesterApp.Contracts.Termine.Dto;
 using TvJahnOrchesterApp.Contracts.Termine.Einsatzplan;
 using TvJahnOrchesterApp.Contracts.Termine.Main;
 using TvJahnOrchesterApp.Contracts.Termine.Rückmeldung;
+using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
+using TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects;
 
 namespace TvJahnOrchesterApp.Api.Common.Mapping
 {
@@ -39,12 +41,23 @@ namespace TvJahnOrchesterApp.Api.Common.Mapping
                 .Map(d => d.UserRückmeldung.RückmeldungsId, s => s.rückmeldung.Id.Value)
                 .Map(d => d, s => s.termin);
 
+            config.NewConfig<Notenstimme, NotenstimmeEnum>()
+                .Map(d => d, s => s.Stimme);
+
+            config.NewConfig<Noten, NotenEnum>()
+                .Map(d => d, s => s.NotenEnum);
+
+            config.NewConfig<Uniform, UniformEnum>()
+                .Map(d => d, s => s.UniformEnum);
+
             config.NewConfig<(Termin termin, TerminRückmeldungOrchestermitglied rückmeldung), GetAllTerminResponse>()
                 .Map(d => d.TerminId, s => s.termin.Id.Value)
+                .Map(d => d.Name, s => s.termin.Name)
                 .Map(d => d.StartZeit, s => s.termin.EinsatzPlan.StartZeit)
                 .Map(d => d.EndZeit, s => s.termin.EinsatzPlan.EndZeit)
                 .Map(d => d.IstAnwesend, s => s.rückmeldung.IstAnwesend)
                 .Map(d => d.Zugesagt, s => s.rückmeldung.Zugesagt);
+
 
             config.NewConfig<UpdateTerminRequest, UpdateTerminCommand>();
 

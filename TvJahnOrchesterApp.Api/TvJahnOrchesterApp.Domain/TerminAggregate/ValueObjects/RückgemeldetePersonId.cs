@@ -22,5 +22,10 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects
         {
             return new RückgemeldetePersonId(Guid.NewGuid());
         }
+
+        public static RückgemeldetePersonId Create(Guid id)
+        {
+            return new RückgemeldetePersonId(id);
+        }
     }
 }

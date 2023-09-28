@@ -18,6 +18,11 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects
             return new EinsatzplanId(Guid.NewGuid());
         }
 
+        public static EinsatzplanId Create(Guid id)
+        {
+            return new EinsatzplanId(id);
+        }
+
         public override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;

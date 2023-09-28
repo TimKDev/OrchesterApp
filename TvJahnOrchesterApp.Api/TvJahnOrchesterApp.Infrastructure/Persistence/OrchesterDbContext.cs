@@ -19,6 +19,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence
         }
 
         public DbSet<OrchesterMitglied> OrchesterMitglieder { get; set; } = null!;
-        public DbSet<Termin> Termin{ get; set; } = null!;
+        public DbSet<Termin> Termin { get; set; } = null!;
     }
 }

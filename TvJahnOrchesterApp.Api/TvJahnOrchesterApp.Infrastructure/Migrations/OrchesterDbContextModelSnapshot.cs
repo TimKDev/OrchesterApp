@@ -163,9 +163,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                     b.Property<string>("ConnectedUserId")
                         .HasColumnType("nvarchar(450)");
 
-                    b.Property<int>("DefaultNotenStimme")
-                        .HasColumnType("int");
-
                     b.Property<DateTime>("Geburtstag")
                         .HasColumnType("datetime2");
 
@@ -201,6 +198,28 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                         .HasFilter("[ConnectedUserId] IS NOT NULL");
 
                     b.ToTable("Orchestermitglieder", (string)null);
+                });
+
+            modelBuilder.Entity("TvJahnOrchesterApp.Domain.TerminAggregate.Termin", b =>
+                {
+                    b.Property<Guid>("Id")
+                        .HasColumnType("uniqueidentifier")
+                        .HasColumnName("TerminId");
+
+                    b.Property<Guid?>("AbstimmungsId")
+                        .HasColumnType("uniqueidentifier");
+
+                    b.Property<string>("Name")
+                        .IsRequired()
+                        .HasMaxLength(100)
+                        .HasColumnType("nvarchar(100)");
+
+                    b.Property<int>("TerminArt")
+                        .HasColumnType("int");
+
+                    b.HasKey("Id");
+
+                    b.ToTable("Termine", (string)null);
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.UserAggregate.User", b =>
@@ -395,11 +414,342 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                                 .HasForeignKey("OrchesterMitgliedId");
                         });
 
+                    b.OwnsOne("TvJahnOrchesterApp.Domain.Common.ValueObjects.Notenstimme", "DefaultNotenStimme", b1 =>
+                        {
+                            b1.Property<Guid>("OrchesterMitgliedId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Stimme")
+                                .HasColumnType("int");
+
+                            b1.HasKey("OrchesterMitgliedId");
+
+                            b1.ToTable("Orchestermitglieder");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrchesterMitgliedId");
+                        });
+
                     b.Navigation("Adresse")
                         .IsRequired();
 
                     b.Navigation("DefaultInstrument")
                         .IsRequired();
+
+                    b.Navigation("DefaultNotenStimme")
+                        .IsRequired();
+                });
+
+            modelBuilder.Entity("TvJahnOrchesterApp.Domain.TerminAggregate.Termin", b =>
+                {
+                    b.OwnsOne("TvJahnOrchesterApp.Domain.TerminAggregate.Entities.EinsatzPlan", "EinsatzPlan", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("EinsatzplanId");
+
+                            b1.Property<Guid>("TerminId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<DateTime>("EndZeit")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<DateTime>("StartZeit")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<string>("WeitereInformationen")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.HasKey("Id", "TerminId");
+
+                            b1.HasIndex("TerminId")
+                                .IsUnique();
+
+                            b1.ToTable("Einsatzpläne", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("TerminId");
+
+                            b1.OwnsOne("TvJahnOrchesterApp.Domain.Common.ValueObjects.Adresse", "Treffpunkt", b2 =>
+                                {
+                                    b2.Property<Guid>("EinsatzPlanId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<Guid>("EinsatzPlanTerminId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<string>("Hausnummer")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<decimal?>("Latitude")
+                                        .HasColumnType("decimal(18,2)");
+
+                                    b2.Property<decimal?>("Longitide")
+                                        .HasColumnType("decimal(18,2)");
+
+                                    b2.Property<string>("Postleitzahl")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<string>("Stadt")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<string>("Straße")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<string>("Zusatz")
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.HasKey("EinsatzPlanId", "EinsatzPlanTerminId");
+
+                                    b2.ToTable("Einsatzpläne");
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("EinsatzPlanId", "EinsatzPlanTerminId");
+                                });
+
+                            b1.OwnsMany("TvJahnOrchesterApp.Domain.TerminAggregate.Entities.ZeitBlock", "ZeitBlocks", b2 =>
+                                {
+                                    b2.Property<Guid>("Id")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<Guid>("EinsatzplanId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<Guid>("TerminId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<string>("Beschreibung")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.Property<DateTime>("Endzeit")
+                                        .HasColumnType("datetime2");
+
+                                    b2.Property<DateTime>("Startzeit")
+                                        .HasColumnType("datetime2");
+
+                                    b2.HasKey("Id", "EinsatzplanId", "TerminId");
+
+                                    b2.HasIndex("EinsatzplanId", "TerminId");
+
+                                    b2.ToTable("Zeitblöcke", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("EinsatzplanId", "TerminId");
+
+                                    b2.OwnsOne("TvJahnOrchesterApp.Domain.Common.ValueObjects.Adresse", "Adresse", b3 =>
+                                        {
+                                            b3.Property<Guid>("ZeitBlockId")
+                                                .HasColumnType("uniqueidentifier");
+
+                                            b3.Property<Guid>("ZeitBlockEinsatzplanId")
+                                                .HasColumnType("uniqueidentifier");
+
+                                            b3.Property<Guid>("ZeitBlockTerminId")
+                                                .HasColumnType("uniqueidentifier");
+
+                                            b3.Property<string>("Hausnummer")
+                                                .IsRequired()
+                                                .HasColumnType("nvarchar(max)");
+
+                                            b3.Property<decimal?>("Latitude")
+                                                .HasColumnType("decimal(18,2)");
+
+                                            b3.Property<decimal?>("Longitide")
+                                                .HasColumnType("decimal(18,2)");
+
+                                            b3.Property<string>("Postleitzahl")
+                                                .IsRequired()
+                                                .HasColumnType("nvarchar(max)");
+
+                                            b3.Property<string>("Stadt")
+                                                .IsRequired()
+                                                .HasColumnType("nvarchar(max)");
+
+                                            b3.Property<string>("Straße")
+                                                .IsRequired()
+                                                .HasColumnType("nvarchar(max)");
+
+                                            b3.Property<string>("Zusatz")
+                                                .HasColumnType("nvarchar(max)");
+
+                                            b3.HasKey("ZeitBlockId", "ZeitBlockEinsatzplanId", "ZeitBlockTerminId");
+
+                                            b3.ToTable("Zeitblöcke");
+
+                                            b3.WithOwner()
+                                                .HasForeignKey("ZeitBlockId", "ZeitBlockEinsatzplanId", "ZeitBlockTerminId");
+                                        });
+
+                                    b2.Navigation("Adresse");
+                                });
+
+                            b1.OwnsMany("TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects.Noten", "Noten", b2 =>
+                                {
+                                    b2.Property<Guid>("EinsatzplanId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<Guid>("TerminId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("int");
+
+                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
+
+                                    b2.Property<int>("NotenEnum")
+                                        .HasColumnType("int");
+
+                                    b2.HasKey("EinsatzplanId", "TerminId", "Id");
+
+                                    b2.ToTable("EinsatzplanNoten", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("EinsatzplanId", "TerminId");
+                                });
+
+                            b1.OwnsMany("TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects.Uniform", "Uniform", b2 =>
+                                {
+                                    b2.Property<Guid>("EinsatzplanId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<Guid>("TerminId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("int");
+
+                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
+
+                                    b2.Property<int>("UniformEnum")
+                                        .HasColumnType("int");
+
+                                    b2.HasKey("EinsatzplanId", "TerminId", "Id");
+
+                                    b2.ToTable("EinsatzplanUniform", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("EinsatzplanId", "TerminId");
+                                });
+
+                            b1.Navigation("Noten");
+
+                            b1.Navigation("Treffpunkt")
+                                .IsRequired();
+
+                            b1.Navigation("Uniform");
+
+                            b1.Navigation("ZeitBlocks");
+                        });
+
+                    b.OwnsMany("TvJahnOrchesterApp.Domain.TerminAggregate.Entities.TerminRückmeldungOrchestermitglied", "TerminRückmeldungOrchesterMitglieder", b1 =>
+                        {
+                            b1.Property<Guid>("Id")
+                                .HasColumnType("uniqueidentifier")
+                                .HasColumnName("TerminRückmeldungsId");
+
+                            b1.Property<Guid>("TerminId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<bool>("IstAnwesend")
+                                .HasColumnType("bit");
+
+                            b1.Property<string>("KommentarAnwesenheit")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<string>("KommentarZusage")
+                                .HasColumnType("nvarchar(max)");
+
+                            b1.Property<DateTime?>("LetzteRückmeldung")
+                                .HasColumnType("datetime2");
+
+                            b1.Property<Guid>("OrchesterMitgliedsId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<Guid?>("RückmeldungDurchAnderesOrchestermitglied")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("Zugesagt")
+                                .HasColumnType("int");
+
+                            b1.HasKey("Id", "TerminId");
+
+                            b1.HasIndex("TerminId");
+
+                            b1.ToTable("TerminRückmeldungen", (string)null);
+
+                            b1.WithOwner()
+                                .HasForeignKey("TerminId");
+
+                            b1.OwnsMany("TvJahnOrchesterApp.Domain.Common.ValueObjects.Instrument", "Instruments", b2 =>
+                                {
+                                    b2.Property<Guid>("TerminRückmeldungsId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<Guid>("TerminId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("int");
+
+                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
+
+                                    b2.Property<int>("ArtInstrument")
+                                        .HasColumnType("int");
+
+                                    b2.Property<string>("Name")
+                                        .IsRequired()
+                                        .HasColumnType("nvarchar(max)");
+
+                                    b2.HasKey("TerminRückmeldungsId", "TerminId", "Id");
+
+                                    b2.ToTable("RückmeldungInstruments", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("TerminRückmeldungsId", "TerminId");
+                                });
+
+                            b1.OwnsMany("TvJahnOrchesterApp.Domain.Common.ValueObjects.Notenstimme", "Notenstimme", b2 =>
+                                {
+                                    b2.Property<Guid>("TerminRückmeldungsId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<Guid>("TerminId")
+                                        .HasColumnType("uniqueidentifier");
+
+                                    b2.Property<int>("Id")
+                                        .ValueGeneratedOnAdd()
+                                        .HasColumnType("int");
+
+                                    SqlServerPropertyBuilderExtensions.UseIdentityColumn(b2.Property<int>("Id"));
+
+                                    b2.Property<int>("Stimme")
+                                        .HasColumnType("int");
+
+                                    b2.HasKey("TerminRückmeldungsId", "TerminId", "Id");
+
+                                    b2.ToTable("RückmeldungNotenstimmen", (string)null);
+
+                                    b2.WithOwner()
+                                        .HasForeignKey("TerminRückmeldungsId", "TerminId");
+                                });
+
+                            b1.Navigation("Instruments");
+
+                            b1.Navigation("Notenstimme");
+                        });
+
+                    b.Navigation("EinsatzPlan")
+                        .IsRequired();
+
+                    b.Navigation("TerminRückmeldungOrchesterMitglieder");
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.UserAggregate.User", b =>

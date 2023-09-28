@@ -58,17 +58,13 @@ namespace TvJahnOrchesterApp.Infrastructure.Authentication
 
         public ClaimsPrincipal GetPrincipalFromExpiredToken(string token)
         {
-            // Token Validation Parameter sind dafür da, dass der Server überprüfen kann, dass es Token nicht gefälscht 
-            // wurde. Wird ein Parameter auf false gesetzt, heißt das einfach, dass der entsprechende Wert nicht überprüft
-            // wird. Daher ist es umso sicherer, je mehr Validierungsparameter an dieser Stelle gesetzt werden
             var tokenValidationParameters = new TokenValidationParameters
             {
                 ValidateAudience = false,
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
-                ValidateLifetime = false // dieser Wert muss auf false sein, da das Token ja abgelaufen ist und trotzdem verwendet
-                                         // werden soll
+                ValidateLifetime = false 
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;

@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System.Security.Cryptography.X509Certificates;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Domain.TerminAggregate;
 
@@ -15,7 +16,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Repositories
 
         public async Task<bool> Delete(Guid guid, CancellationToken cancellationToken)
         {
-            var itemToRemove = _context.Set<Termin>().First(i => i.Id.Value == guid);
+            var itemToRemove = await GetById(guid, cancellationToken);
             _context.Set<Termin>().Remove(itemToRemove);
             await _context.SaveChangesAsync(cancellationToken);
             return true;
@@ -26,9 +27,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Repositories
             return _context.Set<Termin>().ToArrayAsync(cancellationToken);
         }
 
-        public Task<Termin> GetById(Guid guid, CancellationToken cancellationToken)
+        public async Task<Termin> GetById(Guid guid, CancellationToken cancellationToken)
         {
-            return _context.Set<Termin>().FirstAsync(i => i.Id.Value == guid);
+            return (await _context.Set<Termin>().ToListAsync(cancellationToken)).First(i => i.Id.Value == guid);
         }
 
         public async Task<Termin> Save(Termin termin, CancellationToken cancellationToken)

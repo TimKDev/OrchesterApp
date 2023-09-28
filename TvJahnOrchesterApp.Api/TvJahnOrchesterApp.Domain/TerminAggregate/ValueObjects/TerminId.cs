@@ -22,5 +22,10 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects
         {
             return new TerminId(Guid.NewGuid());
         }
+
+        public static TerminId Create(Guid id)
+        {
+            return new TerminId(id);
+        }
     }
 }

@@ -18,6 +18,11 @@ namespace TvJahnOrchesterApp.Domain.AbstimmungsAggregate.ValueObjects
             return new(Guid.NewGuid());
         }
 
+        public static AbstimmungsId Create(Guid id)
+        {
+            return new AbstimmungsId(id);
+        }
+
         public override IEnumerable<object> GetEqualityComponents()
         {
             yield return Value;

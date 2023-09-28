@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
-using TvJahnOrchesterApp.Domain.Common.Enums;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
@@ -30,7 +29,7 @@ namespace TvJahnOrchesterApp.Application.Termin.Commands.Create
                 orchesterMitglieder = await orchesterMitgliedRepository.GetAllAsync(cancellationToken);
             }
 
-            var terminRückmeldungOrchesterMitglieder = orchesterMitglieder.Select(o => TerminRückmeldungOrchestermitglied.Create(o.Id, new List<Instrument> { o.DefaultInstrument }, new List<Notenstimme> { o.DefaultNotenStimme })).ToArray();
+            var terminRückmeldungOrchesterMitglieder = orchesterMitglieder.Select(o => TerminRückmeldungOrchestermitglied.Create(o.Id, new List<Instrument> { o.DefaultInstrument }, new List<NotenstimmeEnum> { o.DefaultNotenStimme.Stimme })).ToArray();
 
             var treffpunkt = Adresse.Create(request.TreffPunkt.Straße, request.TreffPunkt.Hausnummer, request.TreffPunkt.Postleitzahl, request.TreffPunkt.Stadt);
 

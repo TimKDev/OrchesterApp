@@ -1,5 +1,5 @@
 ﻿using TvJahnOrchesterApp.Contracts.OrchestraMembers;
-using TvJahnOrchesterApp.Domain.Common.Enums;
+using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 
 namespace TvJahnOrchesterApp.Contracts.Termine.Rückmeldung
 {

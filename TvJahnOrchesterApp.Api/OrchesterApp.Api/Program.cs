@@ -1,6 +1,7 @@
 using TvJahnOrchesterApp.Api;
 using TvJahnOrchesterApp.Api.Middlewares;
 using TvJahnOrchesterApp.Application;
+using TvJahnOrchesterApp.Application.Features;
 using TvJahnOrchesterApp.Infrastructure;
 
 namespace OrchesterApp.Api
@@ -31,6 +32,7 @@ namespace OrchesterApp.Api
                 app.UseAuthentication();
                 app.UseAuthorization();
                 app.MapControllers();
+                app.RegisterEndpointsFeatures();
                 app.MapFallbackToFile("index.html");
                 app.Run();
             }

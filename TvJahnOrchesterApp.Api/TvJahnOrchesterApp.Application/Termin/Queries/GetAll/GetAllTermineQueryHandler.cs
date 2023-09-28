@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
 
@@ -25,7 +26,7 @@ namespace TvJahnOrchesterApp.Application.Termin.Queries.GetAll
             {
                 var currentOrchesterMitglied = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
                 var currrentUserRückmeldung = termin.TerminRückmeldungOrchesterMitglieder.FirstOrDefault(r => r.OrchesterMitgliedsId == currentOrchesterMitglied.Id);
-                result.Add((termin, currrentUserRückmeldung ?? TerminRückmeldungOrchestermitglied.Create(OrchesterMitgliedsId.CreateUnique(), new List<Domain.Common.ValueObjects.Instrument>(), new List<Domain.Common.Enums.Notenstimme>())));
+                result.Add((termin, currrentUserRückmeldung ?? TerminRückmeldungOrchestermitglied.Create(OrchesterMitgliedsId.CreateUnique(), new List<Instrument>(), new List<NotenstimmeEnum>())));
             }
 
             return result.ToArray();

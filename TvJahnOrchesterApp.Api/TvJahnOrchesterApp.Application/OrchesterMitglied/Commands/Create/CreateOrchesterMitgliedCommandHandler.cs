@@ -19,7 +19,7 @@ namespace TvJahnOrchesterApp.Application.OrchestraMembers.Commands.Create
         {
             var adresse = Adresse.Create(request.Adresse.Straße, request.Adresse.Hausnummer, request.Adresse.Postleitzahl, request.Adresse.Stadt);
             var instrument = Instrument.Create(request.DefaultInstrument.Name, MapEnumByName<ArtInstrument>(request.DefaultInstrument.ArtInstrument));
-            var notenstimme = MapEnumByName<Notenstimme>(request.DefaultNotenStimme);
+            var notenstimme = Notenstimme.Create(request.DefaultNotenStimme);
 
             if(await _orchesterMitgliedRepository.GetByNameAsync(request.Vorname, request.Nachname, cancellationToken) is not null)
             {

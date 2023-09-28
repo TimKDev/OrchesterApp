@@ -1,6 +1,5 @@
 ﻿using TvJahnOrchesterApp.Domain.Common.Models;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
-using TvJahnOrchesterApp.Domain.TerminAggregate.Enums;
 using TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects;
 
 namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
@@ -30,10 +29,10 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
             WeitereInformationen = weitereInformationen;
         }
 
-        public static EinsatzPlan Create(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, List<Noten> noten, List<Uniform> uniform, string? weitereInformationen = null)
+        public static EinsatzPlan Create(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, List<NotenEnum> noten, List<UniformEnum> uniform, string? weitereInformationen = null)
         {
             //Validiere dass startZeit vor Endzeit ist
-            return new EinsatzPlan(EinsatzplanId.CreateUnique(), startZeit, endZeit, treffpunkt, noten, uniform, weitereInformationen);
+            return new EinsatzPlan(EinsatzplanId.CreateUnique(), startZeit, endZeit, treffpunkt, noten.Select(ValueObjects.Noten.Create).ToList(), uniform.Select(ValueObjects.Uniform.Create).ToList(), weitereInformationen);
         }
 
         public void UpdateEinsatzPlan(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, Noten[] noten, Uniform[] uniform, string? weitereInformationen = null)
