@@ -9,6 +9,9 @@ namespace TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositor
         Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied?> GetByNameAsync(string vorname, string lastname, CancellationToken cancellationToken);
         Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied?> GetByRegistrationKeyAsync(string registrationKey, CancellationToken cancellationToken);
         Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied> GetByIdAsync(OrchesterMitgliedsId id, CancellationToken cancellationToken);
+
+        Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied?> GetByUserIdAsync(string userId, CancellationToken cancellationToken);
         Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied[]> QueryByIdAsync(OrchesterMitgliedsId[] ids, CancellationToken cancellationToken);
+        Task DeleteByIdAsync(OrchesterMitgliedsId orchesterMitgliedsId, CancellationToken cancellationToken);
     }
 }

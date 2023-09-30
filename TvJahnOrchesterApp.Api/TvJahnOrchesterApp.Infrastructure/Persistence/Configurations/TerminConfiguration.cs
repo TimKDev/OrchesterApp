@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TvJahnOrchesterApp.Domain.AbstimmungsAggregate.ValueObjects;
+using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
@@ -30,7 +31,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Name)
                 .HasMaxLength(100);
 
-            builder.OwnsOne(x => x.EinsatzPlan, einsatzPlanBuilder => ConfigureEinsatzplanTable(einsatzPlanBuilder));
+            builder.OwnsOne(x => x.EinsatzPlan, ConfigureEinsatzplanTable);
 
             builder.OwnsMany(x => x.TerminRückmeldungOrchesterMitglieder, terminRückmeldungOrchesterMitgliederBuilder => ConfigureTerminRückmeldungOrchesterMitgliederTable(terminRückmeldungOrchesterMitgliederBuilder));
 
@@ -113,12 +114,16 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations
                     value => OrchesterMitgliedsId.Create(value)
                 );
 
+            builder.HasOne<OrchesterMitglied>().WithMany().HasForeignKey(x => x.OrchesterMitgliedsId);
+
             builder.Property(x => x.RückmeldungDurchAnderesOrchestermitglied)
                 .ValueGeneratedNever()
                 .HasConversion(
                     id => id.Value,
                     value => OrchesterMitgliedsId.Create(value)
                 );
+
+            builder.HasOne<OrchesterMitglied>().WithMany().HasForeignKey(x => x.RückmeldungDurchAnderesOrchestermitglied);
 
             builder.OwnsMany(x => x.Instruments, instrumentBuilder =>
             {

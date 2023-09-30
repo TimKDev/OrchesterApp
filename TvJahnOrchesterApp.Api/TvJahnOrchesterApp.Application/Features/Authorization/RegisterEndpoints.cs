@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Features.Authorization.Endpoints;
-using TvJahnOrchesterApp.Application.Features.TerminDashboard;
+using TvJahnOrchesterApp.Application.Features.OrchesterMitglied;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization
 {
@@ -14,6 +14,11 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization
             app.MapForgotPasswordEndpoint();
             app.MapResetPasswordEndpoint();
             app.MapLoginUserEndpoint();
+            app.MapDeleteUserEndpoint();
+            app.MapDeleteOrchesterMitgliedEndpoint();
+            app.MapGetUserAdminInfosEndpoint();
+            app.MapAddRegistrationKeyEndpoint();
+            app.MapRevokeUserLockedOutEndpoint();
         }
     }
 }

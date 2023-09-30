@@ -45,5 +45,17 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Repositories
         {
             return await _context.Set<OrchesterMitglied>().Where(o => ids.Contains(o.Id)).ToArrayAsync(cancellationToken);
         }
+
+        public async Task DeleteByIdAsync(OrchesterMitgliedsId orchesterMitgliedsId, CancellationToken cancellationToken)
+        {
+            var orchesterMitglied = await GetByIdAsync(orchesterMitgliedsId, cancellationToken);
+            _context.Remove(orchesterMitglied);
+            await _context.SaveChangesAsync(cancellationToken);
+        }
+
+        public async Task<OrchesterMitglied?> GetByUserIdAsync(string userId, CancellationToken cancellationToken)
+        {
+            return await _context.Set<OrchesterMitglied>().FirstOrDefaultAsync(m => m.ConnectedUserId == userId);
+        }
     }
 }

@@ -6,6 +6,8 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Common.Models;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
@@ -41,14 +43,18 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
         public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthenticationResult>
         {
             private readonly UserManager<User> userManager;
+            private readonly IOrchesterMitgliedRepository orchesterMitgliedRepo;
             private readonly ITokenService tokenService;
             private readonly IEmailService emailService;
+            private readonly IUnitOfWork unitOfWork;
 
-            public LoginQueryHandler(UserManager<User> userManager, ITokenService tokenService, IEmailService emailService)
+            public LoginQueryHandler(UserManager<User> userManager, ITokenService tokenService, IEmailService emailService, IOrchesterMitgliedRepository orchesterMitgliedRepo, IUnitOfWork unitOfWork)
             {
                 this.userManager = userManager;
                 this.tokenService = tokenService;
                 this.emailService = emailService;
+                this.orchesterMitgliedRepo = orchesterMitgliedRepo;
+                this.unitOfWork = unitOfWork;
             }
 
             //TTODO Refactor in kleinere Methoden
@@ -83,6 +89,11 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 await tokenService.AddRefreshTokenToUserInDBAsync(user, refreshToken);
 
                 await userManager.ResetAccessFailedCountAsync(user);
+
+                var orchesterMitglied = await orchesterMitgliedRepo.GetByUserIdAsync(user.Id, cancellationToken);
+
+                orchesterMitglied!.UserLogin();
+                await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return new AuthenticationResult(user.Id, user.Email, token, refreshToken);
             }

@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Features.TerminDashboard;
+using TvJahnOrchesterApp.Application.Features.TerminDashboard.Endpoints;
 
 namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
 {

@@ -175,6 +175,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("RegisterKey")
+                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime>("RegisterKeyExpirationDate")
@@ -184,7 +185,10 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
-                    b.Property<DateTime>("UserFirstConnected")
+                    b.Property<DateTime?>("UserFirstConnected")
+                        .HasColumnType("datetime2");
+
+                    b.Property<DateTime?>("UserLastLogin")
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Vorname")
@@ -430,6 +434,22 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                                 .HasForeignKey("OrchesterMitgliedId");
                         });
 
+                    b.OwnsOne("TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects.MitgliedsStatus", "OrchesterMitgliedsStatus", b1 =>
+                        {
+                            b1.Property<Guid>("OrchesterMitgliedId")
+                                .HasColumnType("uniqueidentifier");
+
+                            b1.Property<int>("MitgliedsStatusEnum")
+                                .HasColumnType("int");
+
+                            b1.HasKey("OrchesterMitgliedId");
+
+                            b1.ToTable("Orchestermitglieder");
+
+                            b1.WithOwner()
+                                .HasForeignKey("OrchesterMitgliedId");
+                        });
+
                     b.Navigation("Adresse")
                         .IsRequired();
 
@@ -437,6 +457,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                         .IsRequired();
 
                     b.Navigation("DefaultNotenStimme")
+                        .IsRequired();
+
+                    b.Navigation("OrchesterMitgliedsStatus")
                         .IsRequired();
                 });
 
@@ -680,9 +703,23 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
 
                             b1.HasKey("Id", "TerminId");
 
+                            b1.HasIndex("OrchesterMitgliedsId");
+
+                            b1.HasIndex("RückmeldungDurchAnderesOrchestermitglied");
+
                             b1.HasIndex("TerminId");
 
                             b1.ToTable("TerminRückmeldungen", (string)null);
+
+                            b1.HasOne("TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.OrchesterMitglied", null)
+                                .WithMany()
+                                .HasForeignKey("OrchesterMitgliedsId")
+                                .OnDelete(DeleteBehavior.Cascade)
+                                .IsRequired();
+
+                            b1.HasOne("TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.OrchesterMitglied", null)
+                                .WithMany()
+                                .HasForeignKey("RückmeldungDurchAnderesOrchestermitglied");
 
                             b1.WithOwner()
                                 .HasForeignKey("TerminId");

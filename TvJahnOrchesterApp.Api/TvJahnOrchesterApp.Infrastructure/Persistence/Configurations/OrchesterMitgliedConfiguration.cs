@@ -29,6 +29,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations
 
             builder.OwnsOne(m => m.DefaultInstrument);
             builder.OwnsOne(m => m.DefaultNotenStimme);
+            builder.OwnsOne(m => m.OrchesterMitgliedsStatus);
             builder.HasOne<User>().WithOne().HasForeignKey<OrchesterMitglied>(o => o.ConnectedUserId);
 
             builder.Ignore(m => m.Positions);

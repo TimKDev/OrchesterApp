@@ -1,6 +1,4 @@
-﻿using System.Linq;
-using System.Security.Cryptography.X509Certificates;
-using TvJahnOrchesterApp.Domain.AbstimmungsAggregate.ValueObjects;
+﻿using TvJahnOrchesterApp.Domain.AbstimmungsAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.Common.Models;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;

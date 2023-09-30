@@ -56,17 +56,17 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 this.verificationEmailService = verificationEmailService;
             }
 
-            //TTODO: Duplizierte Logik in Services auslagern, damit diese wiederverwendet werden kann, Methode in kleinere Methoden unterteilen (Clean Code). Versuchen möglichst viel Logik in die Domäne zu verlegen.
+            //TTODO: Methode in kleinere Methoden unterteilen (Clean Code). Versuchen möglichst viel Logik in die Domäne zu verlegen.
             public async Task<AuthenticationResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
             {
-                var orchesterMitglied = await orchesterMitgliedRepository.GetByRegistrationKeyAsync(Domain.OrchesterMitgliedAggregate.OrchesterMitglied.GetHashString(request.RegisterationKey), cancellationToken);
+                var orchesterMitglied = await orchesterMitgliedRepository.GetByRegistrationKeyAsync(request.RegisterationKey, cancellationToken);
 
                 if (orchesterMitglied is null)
                 {
                     throw new InvalidRegistrationKeyException();
                 }
 
-                if (orchesterMitglied.ValidateRegistrationKey(request.RegisterationKey))
+                if (!orchesterMitglied.ValidateRegistrationKey(request.RegisterationKey))
                 {
                     throw new InvalidRegistrationKeyException();
                 }
@@ -87,7 +87,6 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 await verificationEmailService.SendTo(user, request.ClientUri);
 
-                //TTODO Duplizierte Einlog Funktionalität zwischen Register und Login
                 var token = await tokenService.GenerateAccessTokenAsync(createdUser);
                 var refreshToken = tokenService.GenerateRefreshToken();
 

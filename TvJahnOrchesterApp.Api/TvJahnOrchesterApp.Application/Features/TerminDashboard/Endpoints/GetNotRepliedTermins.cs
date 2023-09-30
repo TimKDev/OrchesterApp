@@ -5,7 +5,7 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using static TvJahnOrchesterApp.Application.Features.TerminDashboard.GetNextTermins;
 
-namespace TvJahnOrchesterApp.Application.Features.TerminDashboard
+namespace TvJahnOrchesterApp.Application.Features.TerminDashboard.Endpoints
 {
     public static class GetNotRepliedTermins
     {
@@ -38,15 +38,15 @@ namespace TvJahnOrchesterApp.Application.Features.TerminDashboard
                 var terminsInFuture = (await terminRepository.GetAll(cancellationToken)).Where(t =>
                 (t.EinsatzPlan.StartZeit - DateTime.Now).Days >= 0);
 
-            var currentOrchesterMember = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
+                var currentOrchesterMember = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
 
-            return terminsInFuture
-                    .Where(t => t.IstZugeordnet(currentOrchesterMember.Id))
-                    .Where(t => t.NichtZurückgemeldet(currentOrchesterMember.Id))
-                    .Select(x => new TerminOverview(x.Id.Value, x.Name, x.TerminArt, x.EinsatzPlan.StartZeit)).ToArray();
+                return terminsInFuture
+                        .Where(t => t.IstZugeordnet(currentOrchesterMember.Id))
+                        .Where(t => t.NichtZurückgemeldet(currentOrchesterMember.Id))
+                        .Select(x => new TerminOverview(x.Id.Value, x.Name, x.TerminArt, x.EinsatzPlan.StartZeit)).ToArray();
             }
         }
     }
 
-    
+
 }
