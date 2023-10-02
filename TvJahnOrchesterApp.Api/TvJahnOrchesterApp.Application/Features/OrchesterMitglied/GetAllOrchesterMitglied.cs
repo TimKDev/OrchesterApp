@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 
 namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
 {
@@ -20,9 +21,11 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
             return Results.Ok(allOrchesterMitglieder);
         }
 
-        public record GetAllOrchesterMitgliederQuery : IRequest<Domain.OrchesterMitgliedAggregate.OrchesterMitglied[]> { };
+        public record GetAllOrchesterMitgliederResponse(Guid id, string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, int defaultInstrument, int defaultNotenStimme);
 
-        public class GetAllOrchesterMitgliederQueryHandler : IRequestHandler<GetAllOrchesterMitgliederQuery, Domain.OrchesterMitgliedAggregate.OrchesterMitglied[]>
+        public record GetAllOrchesterMitgliederQuery : IRequest<GetAllOrchesterMitgliederResponse[]> { };
+
+        public class GetAllOrchesterMitgliederQueryHandler : IRequestHandler<GetAllOrchesterMitgliederQuery, GetAllOrchesterMitgliederResponse[]>
         {
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
 
@@ -31,10 +34,11 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
             }
 
-            public async Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied[]> Handle(GetAllOrchesterMitgliederQuery request, CancellationToken cancellationToken)
+            public async Task<GetAllOrchesterMitgliederResponse[]> Handle(GetAllOrchesterMitgliederQuery request, CancellationToken cancellationToken)
             {
                 var orchesterMitglieder = await orchesterMitgliedRepository.GetAllAsync(cancellationToken);
-                return orchesterMitglieder;
+                return orchesterMitglieder
+                    .Select(o => new GetAllOrchesterMitgliederResponse(o.Id.Value, o.Vorname, o.Nachname, o.Adresse, o.Geburtstag, o.Telefonnummer, o.Handynummer, o.DefaultInstrument.Value, o.DefaultNotenStimme.Value)).ToArray();
             }
         }
     }

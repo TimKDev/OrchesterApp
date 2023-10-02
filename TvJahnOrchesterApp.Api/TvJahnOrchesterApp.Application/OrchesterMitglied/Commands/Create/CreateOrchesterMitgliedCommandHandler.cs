@@ -18,15 +18,15 @@ namespace TvJahnOrchesterApp.Application.OrchestraMembers.Commands.Create
         public async Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied> Handle(CreateOrchesterMitgliedCommand request, CancellationToken cancellationToken)
         {
             var adresse = Adresse.Create(request.Adresse.Straße, request.Adresse.Hausnummer, request.Adresse.Postleitzahl, request.Adresse.Stadt);
-            var instrument = Instrument.Create(request.DefaultInstrument.Name, MapEnumByName<ArtInstrument>(request.DefaultInstrument.ArtInstrument));
-            var notenstimme = Notenstimme.Create(request.DefaultNotenStimme);
+            var instrument = InstrumentId.Create(request.DefaultInstrument);
+            var notenstimme = NotenstimmeId.Create(request.DefaultNotenStimme);
 
             if(await _orchesterMitgliedRepository.GetByNameAsync(request.Vorname, request.Nachname, cancellationToken) is not null)
             {
                 throw new DuplicatedOrchesterMitgliedsNameException($"Name: {request.Vorname} {request.Nachname} existiert bereits.");
             }
 
-            var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, instrument, notenstimme, request.RegisterKey);
+            var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, instrument, notenstimme, request.RegisterKey, null); //TTODO: Setze Status auf aktiv
 
             await _orchesterMitgliedRepository.CreateAsync(orchesterMitglied, cancellationToken);
             return orchesterMitglied;

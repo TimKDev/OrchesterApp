@@ -29,7 +29,7 @@ namespace TvJahnOrchesterApp.Application.Termin.Commands.Create
                 orchesterMitglieder = await orchesterMitgliedRepository.GetAllAsync(cancellationToken);
             }
 
-            var terminRückmeldungOrchesterMitglieder = orchesterMitglieder.Select(o => TerminRückmeldungOrchestermitglied.Create(o.Id, new List<Instrument> { o.DefaultInstrument }, new List<NotenstimmeEnum> { o.DefaultNotenStimme.Stimme })).ToArray();
+            var terminRückmeldungOrchesterMitglieder = orchesterMitglieder.Select(o => TerminRückmeldungOrchestermitglied.Create(o.Id, new List<InstrumentId> { o.DefaultInstrument }, new List<NotenstimmeId> { o.DefaultNotenStimme })).ToArray();
 
             var treffpunkt = Adresse.Create(request.TreffPunkt.Straße, request.TreffPunkt.Hausnummer, request.TreffPunkt.Postleitzahl, request.TreffPunkt.Stadt);
 

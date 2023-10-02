@@ -24,8 +24,8 @@ namespace TvJahnOrchesterApp.Application.Termin.Commands.RückmeldungChangeInstr
             {
                 throw new Exception("Füge hier eine Custom Exception ein");
             }
-            rückmeldung.ChangeInstruments(request.Instruments.Select(i => Instrument.Create(i.Name, i.ArtInstrument)).ToList());
-            rückmeldung.ChangeNotenstimme(request.Notenstimme.Select(Notenstimme.Create).ToList());
+            rückmeldung.ChangeInstruments(request.Instruments.Select(InstrumentId.Create).ToList());
+            rückmeldung.ChangeNotenstimme(request.Notenstimme.Select(NotenstimmeId.Create).ToList());
 
             await unitOfWork.SaveChangesAsync(cancellationToken);
 

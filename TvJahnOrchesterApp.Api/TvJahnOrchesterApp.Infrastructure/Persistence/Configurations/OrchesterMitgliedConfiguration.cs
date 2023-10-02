@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
+using TvJahnOrchesterApp.Domain.Common.Entities;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.UserAggregate;
@@ -13,30 +14,43 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations
             ConfigureOrchesterMitgliedsTable(builder);
         }
         
-
         private void ConfigureOrchesterMitgliedsTable(EntityTypeBuilder<OrchesterMitglied> builder)
         {
             builder.ToTable("Orchestermitglieder");
             builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id) // Es soll ja direkt der Wert der OrchesterMitgliedsId als PK verwendet werden und nicht noch eine extra Tabelle für die ValueObjects OrchesterMitgliedsId erstellt werden!
+            builder.Property(m => m.Id) 
                 .ValueGeneratedNever()
+                .HasColumnName("OrchesterMitgliedsId")
                 .HasConversion(
                     id => id.Value,
                     value => OrchesterMitgliedsId.Create(value)
                 );
 
-            builder.OwnsOne(m => m.Adresse); // Dies erzeugt eine Owned Entity Adresse mit dem Owner Orchestermitglied, d.h. die Spalten von Adresse werden den Spalten der Orchestermitgliedstabelle hinzugefügt => Dadurch bekommt man das gewünschte Verhalten, dass die Owned Property gelöscht wird, wenn der Owner gelöscht wird. Adresse benötigt in diesem Fall keinen PK.
+            builder.OwnsOne(m => m.Adresse);
 
-            builder.OwnsOne(m => m.DefaultInstrument);
-            builder.OwnsOne(m => m.DefaultNotenStimme);
-            builder.OwnsOne(m => m.OrchesterMitgliedsStatus);
-            builder.HasOne<User>().WithOne().HasForeignKey<OrchesterMitglied>(o => o.ConnectedUserId);
+            builder.HasOne<Instrument>().WithMany().HasForeignKey(m => m.DefaultInstrument).OnDelete(DeleteBehavior.SetNull);
 
-            builder.Ignore(m => m.Positions);
-            builder.Ignore(m => m.TerminRückmeldungen);
-            builder.Ignore(m => m.AusgeliehendesOrchesterEigentum);
+            builder.HasOne<Notenstimme>().WithMany().HasForeignKey(m => m.DefaultNotenStimme).OnDelete(DeleteBehavior.SetNull);
 
+            builder.HasOne<MitgliedsStatus>().WithMany().HasForeignKey(m => m.OrchesterMitgliedsStatus).OnDelete(DeleteBehavior.SetNull);
 
+            builder.HasOne<User>().WithOne().HasForeignKey<OrchesterMitglied>(o => o.ConnectedUserId).OnDelete(DeleteBehavior.SetNull);
+
+            builder.OwnsMany(m => m.PositionMappings, positionsMappingBuilder =>
+            {
+                positionsMappingBuilder.ToTable("OrchestermitgliedPositions");
+                positionsMappingBuilder.HasKey(m => m.Id);
+                positionsMappingBuilder.Property(m => m.Id)
+                    .ValueGeneratedNever()
+                    .HasConversion(
+                        id => id.Value,
+                        value => OrchesterMitgliedPositionsMappingId.Create(value)
+                    );
+                positionsMappingBuilder.HasOne<Position>().WithMany().HasForeignKey(m => m.PositionId);
+                positionsMappingBuilder.WithOwner().HasForeignKey("OrchesterMitgliedsId");
+            });
+
+            builder.Metadata.FindNavigation(nameof(OrchesterMitglied.PositionMappings))!.SetPropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

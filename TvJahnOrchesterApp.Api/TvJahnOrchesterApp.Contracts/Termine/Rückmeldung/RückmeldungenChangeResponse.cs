@@ -3,5 +3,5 @@ using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 
 namespace TvJahnOrchesterApp.Contracts.Termine.Rückmeldung
 {
-    public record RückmeldungenChangeResponse(Guid RückmeldungsId, InstrumentDto[] Instruments, Notenstimme[] Notenstimme);
+    public record RückmeldungenChangeResponse(Guid RückmeldungsId, int[] Instruments, int[] Notenstimme);
 }

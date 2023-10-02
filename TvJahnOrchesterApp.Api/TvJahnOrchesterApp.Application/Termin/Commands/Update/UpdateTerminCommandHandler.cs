@@ -2,7 +2,6 @@
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
-using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
 
@@ -32,7 +31,7 @@ namespace TvJahnOrchesterApp.Application.Termin.Commands.Update
 
             var orchesterMitglieder = await orchesterMitgliedRepository.QueryByIdAsync(request.OrchestermitgliedIds.Select(OrchesterMitgliedsId.Create).ToArray(), cancellationToken);
 
-            var terminRückmeldungOrchesterMitglieder = orchesterMitglieder.Select(o => TerminRückmeldungOrchestermitglied.Create(o.Id, new List<Instrument> { o.DefaultInstrument }, new List<NotenstimmeEnum> { o.DefaultNotenStimme.Stimme })).ToArray();
+            var terminRückmeldungOrchesterMitglieder = orchesterMitglieder.Select(o => TerminRückmeldungOrchestermitglied.Create(o.Id, new List<InstrumentId> { o.DefaultInstrument }, new List<NotenstimmeId> { o.DefaultNotenStimme })).ToArray();
 
             termin.UpdateTerminRückmeldungOrchestermitglied(terminRückmeldungOrchesterMitglieder);
             await unitOfWork.SaveChangesAsync(cancellationToken);

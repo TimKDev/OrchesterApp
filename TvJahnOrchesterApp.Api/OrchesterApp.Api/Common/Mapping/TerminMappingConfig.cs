@@ -41,8 +41,6 @@ namespace TvJahnOrchesterApp.Api.Common.Mapping
                 .Map(d => d.UserRückmeldung.RückmeldungsId, s => s.rückmeldung.Id.Value)
                 .Map(d => d, s => s.termin);
 
-            config.NewConfig<Notenstimme, NotenstimmeEnum>()
-                .Map(d => d, s => s.Stimme);
 
             config.NewConfig<Noten, NotenEnum>()
                 .Map(d => d, s => s.NotenEnum);

@@ -5,7 +5,6 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
-using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.Enums;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 
@@ -42,7 +41,8 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
             {
                 var orchesterMitgliedsId = OrchesterMitgliedsId.Create(request.OrchesterMitgliedsId);
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(orchesterMitgliedsId, cancellationToken);
-                orchesterMitglied.ChangeMitgliedsStatus(MitgliedsStatusEnum.ausgetreten);
+                //TTODO
+                //orchesterMitglied.ChangeMitgliedsStatus(MitgliedsStatusEnum.ausgetreten);
                 if (orchesterMitglied.ConnectedUserId is not null)
                 {
                     var user = await userManager.FindByIdAsync(orchesterMitglied.ConnectedUserId) ?? throw new Exception("User not found");

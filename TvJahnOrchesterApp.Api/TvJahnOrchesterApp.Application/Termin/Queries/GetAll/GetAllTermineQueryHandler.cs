@@ -26,7 +26,7 @@ namespace TvJahnOrchesterApp.Application.Termin.Queries.GetAll
             {
                 var currentOrchesterMitglied = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
                 var currrentUserRückmeldung = termin.TerminRückmeldungOrchesterMitglieder.FirstOrDefault(r => r.OrchesterMitgliedsId == currentOrchesterMitglied.Id);
-                result.Add((termin, currrentUserRückmeldung ?? TerminRückmeldungOrchestermitglied.Create(OrchesterMitgliedsId.CreateUnique(), new List<Instrument>(), new List<NotenstimmeEnum>())));
+                result.Add((termin, currrentUserRückmeldung ?? TerminRückmeldungOrchestermitglied.Create(OrchesterMitgliedsId.CreateUnique(), new List<InstrumentId>(), new List<NotenstimmeId>())));
             }
 
             return result.ToArray();

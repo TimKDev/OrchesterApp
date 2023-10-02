@@ -8,11 +8,11 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
 {
     public sealed class TerminRückmeldungOrchestermitglied : Entity<RückgemeldetePersonId>
     {
-        private List<Instrument> _instruments = new();
-        private List<Notenstimme> _notenstimmen = new();
+        private List<InstrumentId> _instruments = new();
+        private List<NotenstimmeId> _notenstimmen = new();
 
-        public IReadOnlyList<Instrument> Instruments => _instruments.AsReadOnly();
-        public IReadOnlyList<Notenstimme> Notenstimme => _notenstimmen.AsReadOnly();
+        public IReadOnlyList<InstrumentId> Instruments => _instruments.AsReadOnly();
+        public IReadOnlyList<NotenstimmeId> Notenstimme => _notenstimmen.AsReadOnly();
         public OrchesterMitgliedsId OrchesterMitgliedsId { get; private set; }
         public Rückmeldungsart Zugesagt { get; private set; } = Rückmeldungsart.NichtZurückgemeldet;
         public string? KommentarZusage { get; private set; }
@@ -23,16 +23,16 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
 
         private TerminRückmeldungOrchestermitglied() { }
 
-        private TerminRückmeldungOrchestermitglied(RückgemeldetePersonId id, OrchesterMitgliedsId orchesterMitgliedsId, List<Instrument> instruments, List<Notenstimme> notenstimmen): base(id)
+        private TerminRückmeldungOrchestermitglied(RückgemeldetePersonId id, OrchesterMitgliedsId orchesterMitgliedsId, List<InstrumentId> instruments, List<NotenstimmeId> notenstimmen): base(id)
         {
             OrchesterMitgliedsId = orchesterMitgliedsId;
             _instruments = instruments;
             _notenstimmen = notenstimmen;
         }
 
-        public static TerminRückmeldungOrchestermitglied Create(OrchesterMitgliedsId orchesterMitgliedsId, List<Instrument> defaultInstruments, List<NotenstimmeEnum> defaultNotenstimmen)
+        public static TerminRückmeldungOrchestermitglied Create(OrchesterMitgliedsId orchesterMitgliedsId, List<InstrumentId> defaultInstruments, List<NotenstimmeId> defaultNotenstimmen)
         {
-            return new TerminRückmeldungOrchestermitglied(RückgemeldetePersonId.CreateUnique(), orchesterMitgliedsId, defaultInstruments, defaultNotenstimmen.Select(Common.ValueObjects.Notenstimme.Create).ToList());
+            return new TerminRückmeldungOrchestermitglied(RückgemeldetePersonId.CreateUnique(), orchesterMitgliedsId, defaultInstruments, defaultNotenstimmen);
         }
 
         public void ChangeZusage(bool zugesagt, string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)
@@ -52,12 +52,12 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
             KommentarAnwesenheit = kommentar;
         }
 
-        public void ChangeInstruments(List<Instrument> instruments)
+        public void ChangeInstruments(List<InstrumentId> instruments)
         {
             _instruments = instruments;
         }
 
-        public void ChangeNotenstimme(List<Notenstimme> notenstimmen)
+        public void ChangeNotenstimme(List<NotenstimmeId> notenstimmen)
         {
             _notenstimmen = notenstimmen;
         }
