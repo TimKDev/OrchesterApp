@@ -1,6 +1,6 @@
 ﻿using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Features.Authorization.Endpoints;
-using TvJahnOrchesterApp.Application.Features.OrchesterMitglied;
+using TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization
 {

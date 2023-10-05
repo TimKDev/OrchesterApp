@@ -1,6 +1,4 @@
-﻿using TvJahnOrchesterApp.Domain.TerminAggregate.Enums;
-
-namespace TvJahnOrchesterApp.Contracts.Termine.Main
+﻿namespace TvJahnOrchesterApp.Contracts.Termine.Main
 {
-    public record CreateTerminResponse(Guid TerminId, string Name, TerminArt TerminArt, Guid[]? OrchestermitgliedIds);
+    public record CreateTerminResponse(Guid TerminId, string Name, int TerminArt, Guid[]? OrchestermitgliedIds);
 }

@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using Microsoft.EntityFrameworkCore;
 using TvJahnOrchesterApp.Domain.Common.Entities;
-using TvJahnOrchesterApp.Domain.Common.ValueObjects;
+using TvJahnOrchesterApp.Domain.Common.Enums;
 
 namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations.DropdownConfigurations
 {
@@ -11,21 +11,15 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations.DropdownC
         {
             builder.ToTable("Instrumente");
             builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id)
-                .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => InstrumentId.Create(value)
-                );
 
             builder.HasOne<ArtInstrument>().WithMany().HasForeignKey(m => m.ArtInstrumentId);
 
             builder.HasData(new[]
             {
-                Instrument.Create(1, "Saxophon", ArtInstrumentId.Create(1)),
-                Instrument.Create(2, "Trompete", ArtInstrumentId.Create(2)),
-                Instrument.Create(3, "Trommel", ArtInstrumentId.Create(3)),
-                Instrument.Create(4, "Dirigent", ArtInstrumentId.Create(4))
+                Instrument.Create((int)InstrumentEnum.Saxophon, "Saxophon", (int)ArtInstrumentEnum.Holz),
+                Instrument.Create((int)InstrumentEnum.Trompete, "Trompete", (int)ArtInstrumentEnum.Blech),
+                Instrument.Create((int)InstrumentEnum.Trommel, "Trommel", (int)ArtInstrumentEnum.Schlagwerk),
+                Instrument.Create((int)InstrumentEnum.Dirigent, "Dirigent", (int)ArtInstrumentEnum.Dirigent)
             });
         }
     }

@@ -9,6 +9,7 @@
   <ItemGroup>
     <Folder Include="AbstimmungsAggregate\Enums\" />
     <Folder Include="OrchesterMitgliedAggregate\Enums\" />
+    <Folder Include="TerminAggregate\Enums\" />
     <Folder Include="UserAggregate\Entities\" />
     <Folder Include="UserAggregate\Enums\" />
   </ItemGroup>

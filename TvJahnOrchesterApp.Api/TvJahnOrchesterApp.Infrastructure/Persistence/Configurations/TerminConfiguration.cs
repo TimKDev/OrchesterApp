@@ -1,6 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TvJahnOrchesterApp.Domain.AbstimmungsAggregate.ValueObjects;
+using TvJahnOrchesterApp.Domain.Common.Entities;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate;
@@ -28,12 +29,16 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations
                     value => TerminId.Create(value)
                 );
 
+            builder.HasOne<TerminArt>().WithMany().HasForeignKey(m => m.TerminArt).OnDelete(DeleteBehavior.SetNull);
+
+            builder.HasOne<TerminStatus>().WithMany().HasForeignKey(m => m.TerminStatus).OnDelete(DeleteBehavior.SetNull);
+
             builder.Property(x => x.Name)
                 .HasMaxLength(100);
 
             builder.OwnsOne(x => x.EinsatzPlan, ConfigureEinsatzplanTable);
 
-            builder.OwnsMany(x => x.TerminRückmeldungOrchesterMitglieder, terminRückmeldungOrchesterMitgliederBuilder => ConfigureTerminRückmeldungOrchesterMitgliederTable(terminRückmeldungOrchesterMitgliederBuilder));
+            builder.OwnsMany(x => x.TerminRückmeldungOrchesterMitglieder, ConfigureTerminRückmeldungOrchesterMitgliederTable);
 
             builder.Metadata.FindNavigation(nameof(Termin.TerminRückmeldungOrchesterMitglieder))!.SetPropertyAccessMode(PropertyAccessMode.Field);
 
@@ -56,28 +61,32 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations
                 value => EinsatzplanId.Create(value)
             );
             builder.OwnsOne(x => x.Treffpunkt);
-            builder.OwnsMany(x => x.ZeitBlocks, zeitBlockBuilder => ConfigureZeitBlock(zeitBlockBuilder));
+            builder.OwnsMany(x => x.ZeitBlocks, ConfigureZeitBlock);
 
-            builder.OwnsMany(x => x.Noten, notenBuilder =>
+            builder.OwnsMany(m => m.EinsatzplanNotenMappings, einsatzplanNotenMappingBuilder =>
             {
-                notenBuilder.ToTable("EinsatzplanNoten");
-                notenBuilder.WithOwner().HasForeignKey("EinsatzplanId", "TerminId");
+                einsatzplanNotenMappingBuilder.ToTable("EinsatzplanNotenMapping");
+                einsatzplanNotenMappingBuilder.HasKey(x => x.Id);
+                einsatzplanNotenMappingBuilder.HasOne<Noten>().WithMany().HasForeignKey(m => m.NotenId);
+                einsatzplanNotenMappingBuilder.WithOwner().HasForeignKey("EinsatzplanId", "TerminId");
             });
 
-            builder.OwnsMany(x => x.Uniform, uniformBuilder =>
+            builder.OwnsMany(m => m.EinsatzplanUniformMappings, einsatzplanUniformMappingBuilder =>
             {
-                uniformBuilder.ToTable("EinsatzplanUniform");
-                uniformBuilder.WithOwner().HasForeignKey("EinsatzplanId", "TerminId");
+                einsatzplanUniformMappingBuilder.ToTable("EinsatzplanUniformMapping");
+                einsatzplanUniformMappingBuilder.HasKey(x => x.Id);
+                einsatzplanUniformMappingBuilder.HasOne<Uniform>().WithMany().HasForeignKey(m => m.UniformId);
+                einsatzplanUniformMappingBuilder.WithOwner().HasForeignKey("EinsatzplanId", "TerminId");
             });
 
             builder.Navigation(s => s.ZeitBlocks).Metadata.SetField("_zeitBlocks");
             builder.Navigation(s => s.ZeitBlocks).UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Navigation(s => s.Noten).Metadata.SetField("_noten");
-            builder.Navigation(s => s.Noten).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Navigation(s => s.EinsatzplanNotenMappings).Metadata.SetField("_einsatzplanNotenMappings");
+            builder.Navigation(s => s.EinsatzplanNotenMappings).UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Navigation(s => s.Uniform).Metadata.SetField("_uniform");
-            builder.Navigation(s => s.Uniform).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Navigation(s => s.EinsatzplanUniformMappings).Metadata.SetField("_einsatzplanUniformMappings");
+            builder.Navigation(s => s.EinsatzplanUniformMappings).UsePropertyAccessMode(PropertyAccessMode.Field);
         }
 
         private void ConfigureZeitBlock(OwnedNavigationBuilder<EinsatzPlan, ZeitBlock> builder)
@@ -125,23 +134,28 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations
 
             builder.HasOne<OrchesterMitglied>().WithMany().HasForeignKey(x => x.RückmeldungDurchAnderesOrchestermitglied);
 
-            builder.OwnsMany(x => x.Instruments, instrumentBuilder =>
+            builder.OwnsMany(m => m.TerminRückmeldungNotenstimmenMappings, terminRückmeldungNotenstimmeMappingBuilder =>
             {
-                instrumentBuilder.ToTable("RückmeldungInstruments");
-                instrumentBuilder.WithOwner().HasForeignKey("TerminRückmeldungsId", "TerminId");
+                terminRückmeldungNotenstimmeMappingBuilder.ToTable("TerminRückmeldungNotenstimmeMapping");
+                terminRückmeldungNotenstimmeMappingBuilder.HasKey(x => x.Id);
+                terminRückmeldungNotenstimmeMappingBuilder.HasOne<Notenstimme>().WithMany().HasForeignKey(m => m.NotenstimmenId);
+                terminRückmeldungNotenstimmeMappingBuilder.WithOwner().HasForeignKey("TerminRückmeldungsId", "TerminId");
             });
 
-            builder.OwnsMany(x => x.Notenstimme, notenStimmenBuilder =>
+
+            builder.OwnsMany(m => m.TerminRückmeldungInstrumentMappings, terminRückmeldungInstrumentMappingBuilder =>
             {
-                notenStimmenBuilder.ToTable("RückmeldungNotenstimmen");
-                notenStimmenBuilder.WithOwner().HasForeignKey("TerminRückmeldungsId", "TerminId");
+                terminRückmeldungInstrumentMappingBuilder.ToTable("TerminRückmeldungInstrumentMapping");
+                terminRückmeldungInstrumentMappingBuilder.HasKey(x => x.Id);
+                terminRückmeldungInstrumentMappingBuilder.HasOne<Instrument>().WithMany().HasForeignKey(m => m.InstrumentId);
+                terminRückmeldungInstrumentMappingBuilder.WithOwner().HasForeignKey("TerminRückmeldungsId", "TerminId");
             });
 
-            builder.Navigation(s => s.Notenstimme).Metadata.SetField("_notenstimmen");
-            builder.Navigation(s => s.Notenstimme).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Navigation(s => s.TerminRückmeldungNotenstimmenMappings).Metadata.SetField("_terminRückmeldungNotenstimmenMappings");
+            builder.Navigation(s => s.TerminRückmeldungNotenstimmenMappings).UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Navigation(s => s.Instruments).Metadata.SetField("_instruments");
-            builder.Navigation(s => s.Instruments).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Navigation(s => s.TerminRückmeldungInstrumentMappings).Metadata.SetField("_terminRückmeldungInstrumentMappings");
+            builder.Navigation(s => s.TerminRückmeldungInstrumentMappings).UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using TvJahnOrchesterApp.Domain.Common.Entities;
 using TvJahnOrchesterApp.Domain.Common.Enums;
-using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 
 namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations.DropdownConfigurations
 {
@@ -12,12 +11,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations.DropdownC
         {
             builder.ToTable("Positions");
             builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id)
-                .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => PositionId.Create(value)
-                );
 
             builder.HasData(new[]
             {

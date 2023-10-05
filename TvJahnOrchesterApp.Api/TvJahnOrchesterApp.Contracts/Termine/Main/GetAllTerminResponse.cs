@@ -1,6 +1,4 @@
-﻿using TvJahnOrchesterApp.Domain.TerminAggregate.Enums;
-
-namespace TvJahnOrchesterApp.Contracts.Termine.Main
+﻿namespace TvJahnOrchesterApp.Contracts.Termine.Main
 {
-    public record GetAllTerminResponse(Guid TerminId, string Name, TerminArt TerminArt, DateTime StartZeit, DateTime EndZeit, bool IstAnwesend, Rückmeldungsart Zugesagt);
+    public record GetAllTerminResponse(Guid TerminId, string Name, int TerminArt, DateTime StartZeit, DateTime EndZeit, bool IstAnwesend, int Zugesagt);
 }

@@ -1,26 +1,25 @@
 ﻿using TvJahnOrchesterApp.Domain.Common.Interfaces;
 using TvJahnOrchesterApp.Domain.Common.Models;
-using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 
 namespace TvJahnOrchesterApp.Domain.Common.Entities
 {
-    public sealed class Instrument: Entity<InstrumentId>, IDropdownEntity<InstrumentId>
+    public sealed class Instrument: Entity<int>, IDropdownEntity
     {
         public string Value { get; private set; } = null!;
-        public ArtInstrumentId ArtInstrumentId { get; private set; } = null!;
+        public int ArtInstrumentId { get; private set; } 
 
         private Instrument() { }
 
-        private Instrument(InstrumentId instrumentId, string value, ArtInstrumentId artInstrumentId)
+        private Instrument(int instrumentId, string value, int artInstrumentId)
         {
             Id = instrumentId;
             Value = value;
             ArtInstrumentId = artInstrumentId;
         }
 
-        public static Instrument Create(int id, string name, ArtInstrumentId artInstrumentId)
+        public static Instrument Create(int id, string name, int artInstrumentId)
         {
-            return new Instrument(InstrumentId.Create(id), name, artInstrumentId);
+            return new Instrument(id, name, artInstrumentId);
         }
     }
 }

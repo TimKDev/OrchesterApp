@@ -12,12 +12,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations.DropdownC
         {
             builder.ToTable("ArtInstrument");
             builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id)
-                .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => ArtInstrumentId.Create(value)
-                );
             // Seed Data
             builder.HasData(new[]
             {

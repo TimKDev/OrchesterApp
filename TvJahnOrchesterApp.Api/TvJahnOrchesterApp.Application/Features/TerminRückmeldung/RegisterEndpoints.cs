@@ -1,5 +1,5 @@
 ﻿using Microsoft.AspNetCore.Routing;
-using TvJahnOrchesterApp.Application.Features.TerminDashboard;
+using TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints;
 
 namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung
 {
@@ -7,6 +7,10 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung
     {
         public static void RegisterEndpointsTerminRückmeldungFeature(this IEndpointRouteBuilder app)
         {
+            app.MapGetRückmeldungTerminEndpoint();
+            app.MapUpdateInstrumentAndNotesRückmeldungEndpoint();
+            app.MapUpdateRückmeldungEndpoint();
+            app.MapUpdateRückmeldungForOtherUserEndpoint();
         }
     }
 }

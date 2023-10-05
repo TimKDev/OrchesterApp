@@ -12,12 +12,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Configurations.DropdownC
         {
             builder.ToTable("Notenstimme");
             builder.HasKey(m => m.Id);
-            builder.Property(m => m.Id)
-                .ValueGeneratedNever()
-                .HasConversion(
-                    id => id.Value,
-                    value => NotenstimmeId.Create(value)
-                );
 
             builder.HasData(new[]
             {

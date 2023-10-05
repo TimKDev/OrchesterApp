@@ -1,13 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Runtime.CompilerServices;
-using System.Text;
-using System.Threading.Tasks;
+﻿using TvJahnOrchesterApp.Domain.Common.Interfaces;
 
 namespace TvJahnOrchesterApp.Domain.Common.Models
 {
-    public abstract class Entity<TId> : IEquatable<Entity<TId>> where TId : ValueObject
+    public abstract class Entity<TId> : IEquatable<Entity<TId>> where TId : notnull
     {
         public TId Id { get; protected set; }
         protected Entity(TId id)

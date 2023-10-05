@@ -1,20 +1,19 @@
-﻿using TvJahnOrchesterApp.Domain.Common.Models;
-using TvJahnOrchesterApp.Domain.Common.ValueObjects;
+﻿using TvJahnOrchesterApp.Domain.Common.Enums;
+using TvJahnOrchesterApp.Domain.Common.Models;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
-using TvJahnOrchesterApp.Domain.TerminAggregate.Enums;
 using TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects;
 
 namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
 {
     public sealed class TerminRückmeldungOrchestermitglied : Entity<RückgemeldetePersonId>
     {
-        private List<InstrumentId> _instruments = new();
-        private List<NotenstimmeId> _notenstimmen = new();
+        private List<TerminRückmeldungInstrumentMapping> _terminRückmeldungInstrumentMappings = new();
+        private List<TerminRückmeldungNotenstimmenMapping> _terminRückmeldungNotenstimmenMappings = new();
 
-        public IReadOnlyList<InstrumentId> Instruments => _instruments.AsReadOnly();
-        public IReadOnlyList<NotenstimmeId> Notenstimme => _notenstimmen.AsReadOnly();
+        public IReadOnlyList<TerminRückmeldungInstrumentMapping> TerminRückmeldungInstrumentMappings => _terminRückmeldungInstrumentMappings.AsReadOnly();
+        public IReadOnlyList<TerminRückmeldungNotenstimmenMapping> TerminRückmeldungNotenstimmenMappings => _terminRückmeldungNotenstimmenMappings.AsReadOnly();
         public OrchesterMitgliedsId OrchesterMitgliedsId { get; private set; }
-        public Rückmeldungsart Zugesagt { get; private set; } = Rückmeldungsart.NichtZurückgemeldet;
+        public int Zugesagt { get; private set; } = (int)RückmeldungsartEnum.NichtZurückgemeldet;
         public string? KommentarZusage { get; private set; }
         public DateTime? LetzteRückmeldung { get; private set; }
         public OrchesterMitgliedsId? RückmeldungDurchAnderesOrchestermitglied { get; private set; }
@@ -23,21 +22,19 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
 
         private TerminRückmeldungOrchestermitglied() { }
 
-        private TerminRückmeldungOrchestermitglied(RückgemeldetePersonId id, OrchesterMitgliedsId orchesterMitgliedsId, List<InstrumentId> instruments, List<NotenstimmeId> notenstimmen): base(id)
+        private TerminRückmeldungOrchestermitglied(RückgemeldetePersonId id, OrchesterMitgliedsId orchesterMitgliedsId): base(id)
         {
             OrchesterMitgliedsId = orchesterMitgliedsId;
-            _instruments = instruments;
-            _notenstimmen = notenstimmen;
         }
 
-        public static TerminRückmeldungOrchestermitglied Create(OrchesterMitgliedsId orchesterMitgliedsId, List<InstrumentId> defaultInstruments, List<NotenstimmeId> defaultNotenstimmen)
+        public static TerminRückmeldungOrchestermitglied Create(OrchesterMitgliedsId orchesterMitgliedsId, List<int?> defaultInstruments, List<int?> defaultNotenstimmen)
         {
-            return new TerminRückmeldungOrchestermitglied(RückgemeldetePersonId.CreateUnique(), orchesterMitgliedsId, defaultInstruments, defaultNotenstimmen);
+            return new TerminRückmeldungOrchestermitglied(RückgemeldetePersonId.CreateUnique(), orchesterMitgliedsId);
         }
 
         public void ChangeZusage(bool zugesagt, string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)
         {
-            Zugesagt = zugesagt ? Rückmeldungsart.Zugesagt : Rückmeldungsart.Abgesagt;
+            Zugesagt = zugesagt ? (int)RückmeldungsartEnum.Zugesagt : (int)RückmeldungsartEnum.Abgesagt;
             LetzteRückmeldung = DateTime.Now;
             KommentarZusage = kommentar;
             if(otherOrchesterId is not null)
@@ -50,16 +47,6 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
         {
             IstAnwesend = istAnwesend;
             KommentarAnwesenheit = kommentar;
-        }
-
-        public void ChangeInstruments(List<InstrumentId> instruments)
-        {
-            _instruments = instruments;
-        }
-
-        public void ChangeNotenstimme(List<NotenstimmeId> notenstimmen)
-        {
-            _notenstimmen = notenstimmen;
         }
     }
 }

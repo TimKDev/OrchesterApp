@@ -1,10 +1,9 @@
 ﻿using TvJahnOrchesterApp.Domain.Common.Interfaces;
 using TvJahnOrchesterApp.Domain.Common.Models;
-using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 
 namespace TvJahnOrchesterApp.Domain.Common.Entities
 {
-    public sealed class ArtInstrument : Entity<ArtInstrumentId>, IDropdownEntity<ArtInstrumentId>
+    public sealed class ArtInstrument : Entity<int>, IDropdownEntity
     {
         public string Value { get; private set; } = null!;
 
@@ -12,7 +11,7 @@ namespace TvJahnOrchesterApp.Domain.Common.Entities
 
         private ArtInstrument(int id, string value)
         {
-            Id = ArtInstrumentId.Create(id);
+            Id = id;
             Value = value;
         }
 

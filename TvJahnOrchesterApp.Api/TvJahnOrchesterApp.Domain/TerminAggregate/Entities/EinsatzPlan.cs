@@ -7,42 +7,38 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
     public sealed class EinsatzPlan : Entity<EinsatzplanId>
     {
         private readonly List<ZeitBlock> _zeitBlocks = new();
-        private List<Noten> _noten = new();
-        private List<Uniform> _uniform = new();
+        private List<EinsatzplanNotenMapping> _einsatzplanNotenMappings = new();
+        private List<EinsatzplanUniformMapping> _einsatzplanUniformMappings = new();
 
         public DateTime StartZeit { get; private set; }
         public DateTime EndZeit { get; private set; }
         public Adresse Treffpunkt { get; private set; } = null!;
         public IReadOnlyList<ZeitBlock> ZeitBlocks => _zeitBlocks.AsReadOnly();
-        public IReadOnlyList<Noten> Noten => _noten.AsReadOnly();
-        public IReadOnlyList<Uniform> Uniform => _uniform.AsReadOnly();
+        public IReadOnlyList<EinsatzplanNotenMapping> EinsatzplanNotenMappings=> _einsatzplanNotenMappings.AsReadOnly();
+        public IReadOnlyList<EinsatzplanUniformMapping> EinsatzplanUniformMappings => _einsatzplanUniformMappings.AsReadOnly();
         public string? WeitereInformationen { get; private set; }
 
         private EinsatzPlan() { }
-        private EinsatzPlan(EinsatzplanId id, DateTime startZeit, DateTime endZeit, Adresse treffpunkt, List<Noten> noten, List<Uniform> uniform, string? weitereInformationen = null): base(id)
+        private EinsatzPlan(EinsatzplanId id, DateTime startZeit, DateTime endZeit, Adresse treffpunkt, string? weitereInformationen = null): base(id)
         {
             StartZeit = startZeit;
             EndZeit = endZeit;
             Treffpunkt = treffpunkt;
-            _noten = noten;
-            _uniform = uniform;
             WeitereInformationen = weitereInformationen;
         }
 
-        public static EinsatzPlan Create(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, List<NotenEnum> noten, List<UniformEnum> uniform, string? weitereInformationen = null)
+        public static EinsatzPlan Create(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, string? weitereInformationen = null)
         {
             //Validiere dass startZeit vor Endzeit ist
-            return new EinsatzPlan(EinsatzplanId.CreateUnique(), startZeit, endZeit, treffpunkt, noten.Select(ValueObjects.Noten.Create).ToList(), uniform.Select(ValueObjects.Uniform.Create).ToList(), weitereInformationen);
+            return new EinsatzPlan(EinsatzplanId.CreateUnique(), startZeit, endZeit, treffpunkt, weitereInformationen);
         }
 
-        public void UpdateEinsatzPlan(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, Noten[] noten, Uniform[] uniform, string? weitereInformationen = null)
+        public void UpdateEinsatzPlan(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, string? weitereInformationen = null)
         {
             //Validiere dass startZeit vor Endzeit ist
             StartZeit = startZeit;
             EndZeit = endZeit;
-            Treffpunkt = treffpunkt;
-            _noten = noten.ToList();
-            _uniform = uniform.ToList();    
+            Treffpunkt = treffpunkt;   
             WeitereInformationen = weitereInformationen;
         }
 

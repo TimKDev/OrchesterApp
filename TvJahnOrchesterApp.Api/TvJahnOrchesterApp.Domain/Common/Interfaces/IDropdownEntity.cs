@@ -2,9 +2,9 @@
 
 namespace TvJahnOrchesterApp.Domain.Common.Interfaces
 {
-    public interface IDropdownEntity<T> where T : IDropdownId
+    public interface IDropdownEntity
     {
-        public T Id { get; }
+        public int Id { get; }
         public string Value { get; }
     }
 }
