@@ -23,7 +23,10 @@
     "@angular/platform-browser-dynamic": "^15.1.5",
     "@angular/platform-server": "^15.1.5",
     "@angular/router": "^15.1.5",
+    "@ionic/angular": "^7.4.3",
+    "@ionic/cordova-builders": "^10.0.0",
     "bootstrap": "^5.2.3",
+    "cordova-android": "12.0.1",
     "jquery": "^3.6.3",
     "oidc-client": "^1.11.5",
     "popper.js": "^1.16.0",
@@ -36,9 +39,15 @@
     "@angular-devkit/build-angular": "^15.1.6",
     "@angular/cli": "^15.1.6",
     "@angular/compiler-cli": "^15.1.5",
+    "@ionic/angular-toolkit": "latest",
     "@types/jasmine": "~4.3.1",
     "@types/jasminewd2": "~2.0.10",
     "@types/node": "^18.14.0",
+    "cordova-plugin-device": "2.0.2",
+    "cordova-plugin-ionic-keyboard": "^2.0.5",
+    "cordova-plugin-ionic-webview": "^5.0.0",
+    "cordova-plugin-splashscreen": "5.0.2",
+    "cordova-plugin-statusbar": "^2.4.2",
     "jasmine-core": "~4.5.0",
     "karma": "~6.4.1",
     "karma-chrome-launcher": "~3.1.1",
@@ -50,5 +59,16 @@
   "overrides": {
     "autoprefixer": "10.4.5"
   },
-  "optionalDependencies": {}
+  "cordova": {
+    "plugins": {
+      "cordova-plugin-statusbar": {},
+      "cordova-plugin-device": {},
+      "cordova-plugin-splashscreen": {},
+      "cordova-plugin-ionic-webview": {},
+      "cordova-plugin-ionic-keyboard": {}
+    },
+    "platforms": [
+      "android"
+    ]
+  }
 }

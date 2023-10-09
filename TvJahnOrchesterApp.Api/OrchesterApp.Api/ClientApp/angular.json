@@ -3,11 +3,14 @@
   "version": 1,
   "newProjectRoot": "projects",
   "projects": {
-    "OrchesterApp.Api": {
+    "OrchesterApp": {
       "projectType": "application",
       "schematics": {
         "@schematics/angular:application": {
           "strict": true
+        },
+        "@schematics/angular:component": {
+          "style": "scss"
         }
       },
       "root": "",
@@ -27,11 +30,49 @@
               "oidc-client"
             ],
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              }
             ],
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
-              "src/styles.css"
+              "src/styles.scss",
+              {
+                "input": "node_modules/@ionic/angular/css/core.css"
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/normalize.css"
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/structure.css"
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/typography.css"
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/display.css"
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/padding.css"
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/float-elements.css"
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/text-alignment.css"
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/text-transformation.css"
+              },
+              {
+                "input": "node_modules/@ionic/angular/css/flex-utils.css"
+              },
+              {
+                "input": "src/theme/variables.scss"
+              }
             ],
             "scripts": []
           },
@@ -72,10 +113,10 @@
           "builder": "@angular-devkit/build-angular:dev-server",
           "configurations": {
             "production": {
-              "browserTarget": "OrchesterApp.Api:build:production"
+              "browserTarget": "OrchesterApp:build:production"
             },
             "development": {
-              "browserTarget": "OrchesterApp.Api:build:development",
+              "browserTarget": "OrchesterApp:build:development",
               "proxyConfig": "proxy.conf.js"
             }
           },
@@ -84,7 +125,7 @@
         "extract-i18n": {
           "builder": "@angular-devkit/build-angular:extract-i18n",
           "options": {
-            "browserTarget": "OrchesterApp.Api:build"
+            "browserTarget": "OrchesterApp:build"
           }
         },
         "test": {
@@ -95,10 +136,15 @@
             "tsConfig": "tsconfig.spec.json",
             "karmaConfig": "karma.conf.js",
             "assets": [
-              "src/assets"
+              "src/assets",
+              {
+                "glob": "**/*.svg",
+                "input": "node_modules/ionicons/dist/ionicons/svg",
+                "output": "./svg"
+              }
             ],
             "styles": [
-              "src/styles.css"
+              "src/styles.scss"
             ],
             "scripts": []
           }
@@ -106,7 +152,7 @@
         "server": {
           "builder": "@angular-devkit/build-angular:server",
           "options": {
-            "outputPath": "dist-server",
+            "outputPath": "www",
             "main": "src/main.ts",
             "tsConfig": "tsconfig.server.json"
           },
@@ -128,9 +174,33 @@
               "vendorChunk": false
             }
           }
+        },
+        "ionic-cordova-serve": {
+          "builder": "@ionic/cordova-builders:cordova-build",
+          "options": {
+            "cordovaBuildTarget": "OrchesterApp:ionic-cordova-build",
+            "devServerTarget": "OrchesterApp:serve"
+          },
+          "configurations": {
+            "production": {
+              "cordovaBuildTarget": "OrchesterApp:ionic-cordova-build:production",
+              "devServerTarget": "OrchesterApp:serve:production"
+            }
+          }
+        },
+        "ionic-cordova-build": {
+          "builder": "@ionic/cordova-builders:cordova-build",
+          "options": {
+            "browserTarget": "OrchesterApp:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "OrchesterApp:build:production"
+            }
+          }
         }
       }
     }
   },
-  "defaultProject": "OrchesterApp.Api"
+  "defaultProject": "OrchesterApp"
 }
