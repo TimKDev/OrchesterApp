@@ -16,20 +16,19 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
     {
         public static void MapCreateOrchesterMitgliedEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/OrchesterMitglied", PostOrchesterMitglied)
+            app.MapPost("api/orchesterMitglied", PostOrchesterMitglied)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> PostOrchesterMitglied([FromBody] CreateOrchesterMitgliedCommand deleteOrchesterMitgliedCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostOrchesterMitglied([FromBody] CreateOrchesterMitgliedCommand deleteOrchesterMitgliedCommand, ISender sender, CancellationToken cancellationToken)
         {
-            var result = await sender.Send(deleteOrchesterMitgliedCommand);
-            //TTODO: Map
-            return Results.Ok(result);
+            await sender.Send(deleteOrchesterMitgliedCommand);
+            return Results.Ok("Orchestermitglied wurde erfolgreich erstellt.");
         }
 
-        public record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, AdresseDto Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int[] Position, string RegisterKey) : IRequest<Domain.OrchesterMitgliedAggregate.OrchesterMitglied>;
+        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, AdresseDto Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int[] Position, string RegisterKey) : IRequest<Unit>;
 
-        public class CreateOrchesterMitgliedCommandValidation : AbstractValidator<CreateOrchesterMitgliedCommand>
+        private class CreateOrchesterMitgliedCommandValidation : AbstractValidator<CreateOrchesterMitgliedCommand>
         {
             public CreateOrchesterMitgliedCommandValidation()
             {
@@ -38,7 +37,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             }
         }
 
-        public class CreateOrchesterMitgliedCommandHandler : IRequestHandler<CreateOrchesterMitgliedCommand, Domain.OrchesterMitgliedAggregate.OrchesterMitglied>
+        private class CreateOrchesterMitgliedCommandHandler : IRequestHandler<CreateOrchesterMitgliedCommand, Unit>
         {
             private readonly IOrchesterMitgliedRepository _orchesterMitgliedRepository;
 
@@ -47,7 +46,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 _orchesterMitgliedRepository = orchesterMitgliedRepository;
             }
 
-            public async Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied> Handle(CreateOrchesterMitgliedCommand request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(CreateOrchesterMitgliedCommand request, CancellationToken cancellationToken)
             {
                 var adresse = Adresse.Create(request.Adresse.Straße, request.Adresse.Hausnummer, request.Adresse.Postleitzahl, request.Adresse.Stadt);
 
@@ -59,7 +58,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.RegisterKey, (int)MitgliedsStatusEnum.aktiv);
 
                 await _orchesterMitgliedRepository.CreateAsync(orchesterMitglied, cancellationToken);
-                return orchesterMitglied;
+                return Unit.Value;
 
             }
         }

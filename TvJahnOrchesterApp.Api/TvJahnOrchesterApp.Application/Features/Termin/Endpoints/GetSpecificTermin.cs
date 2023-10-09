@@ -12,19 +12,21 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
     {
         public static void MapGetSpecificTerminEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/Termin/getById/{id}", GetTerminById)
+            app.MapGet("api/termin/getById/{id}", GetTerminById)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> GetTerminById(Guid id, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> GetTerminById(Guid id, ISender sender, CancellationToken cancellationToken)
         {
             var response = await sender.Send(new GetTerminByIdQuery(id), cancellationToken);
-            return Results.Ok(response);
+            return Results.Ok(new GetTerminByIdResponse(response.Item1, response.Item2));
         }
 
-        public record GetTerminByIdQuery(Guid Id) : IRequest<(Domain.TerminAggregate.Termin, TerminRückmeldungOrchestermitglied)>;
+        private record GetTerminByIdQuery(Guid Id) : IRequest<(Domain.TerminAggregate.Termin, TerminRückmeldungOrchestermitglied)>;
 
-        public class GetTerminByIdQueryHandler : IRequestHandler<GetTerminByIdQuery, (Domain.TerminAggregate.Termin, TerminRückmeldungOrchestermitglied)>
+        private record GetTerminByIdResponse(Domain.TerminAggregate.Termin Termin, TerminRückmeldungOrchestermitglied TerminRückmeldung);
+
+        private class GetTerminByIdQueryHandler : IRequestHandler<GetTerminByIdQuery, (Domain.TerminAggregate.Termin, TerminRückmeldungOrchestermitglied)>
         {
             private readonly ITerminRepository terminRepository;
             private readonly ICurrentUserService currentUserService;

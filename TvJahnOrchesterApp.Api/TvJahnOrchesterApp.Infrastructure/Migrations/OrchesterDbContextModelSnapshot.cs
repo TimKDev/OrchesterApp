@@ -214,6 +214,32 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                     b.HasIndex("ArtInstrumentId");
 
                     b.ToTable("Instrumente", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            ArtInstrumentId = 1,
+                            Value = "Saxophon"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            ArtInstrumentId = 2,
+                            Value = "Trompete"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            ArtInstrumentId = 3,
+                            Value = "Trommel"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            ArtInstrumentId = 4,
+                            Value = "Dirigent"
+                        });
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.Common.Entities.MitgliedsStatus", b =>
@@ -232,6 +258,22 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
 
                     b.ToTable("MitgliedsStatus", (string)null);
 
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "aktiv"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "passiv"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "ausgetreten"
+                        });
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.Common.Entities.Noten", b =>
@@ -250,6 +292,42 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
 
                     b.ToTable("Noten", (string)null);
 
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "Schwarzes Marschbuch"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "Blaues Marschbuch"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "Rotes Marschbuch"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Value = "Konzertmappe"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Value = "St. Martin Noten"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Value = "Karnevalsnoten"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Value = "Weihnachtsnoten"
+                        });
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.Common.Entities.Notenstimme", b =>
@@ -267,6 +345,43 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Notenstimme", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "Alt Saxophon 1"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "Alt Saxophon 2"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "Sopran Saxophon"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Value = "Trompete 1"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Value = "Trompete 2"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Value = "Trompete 3"
+                        },
+                        new
+                        {
+                            Id = 7,
+                            Value = "Schlagzeug"
+                        });
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.Common.Entities.Position", b =>
@@ -284,6 +399,38 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Positions", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "Dirigent"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "Obmann"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "Kassierer"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Value = "Notenwart"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Value = "Zeugwart"
+                        },
+                        new
+                        {
+                            Id = 6,
+                            Value = "Thekenteam"
+                        });
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.Common.Entities.Rückmeldungsart", b =>
@@ -301,6 +448,23 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Rückmeldungsarten", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "Nicht Zurückgemeldet"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "Zugesagt"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "Abgesagt"
+                        });
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.Common.Entities.TerminArt", b =>
@@ -318,6 +482,33 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TerminArten", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "Auftritt"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "Konzert"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "Probe"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Value = "Freizeit"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Value = "Reise"
+                        });
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.Common.Entities.TerminStatus", b =>
@@ -335,6 +526,23 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("TerminStatus", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "Angefragt"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "Zugesagt"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "Abgesagt"
+                        });
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.Common.Entities.Uniform", b =>
@@ -352,6 +560,33 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Uniform", (string)null);
+
+                    b.HasData(
+                        new
+                        {
+                            Id = 1,
+                            Value = "Blaues Hemd"
+                        },
+                        new
+                        {
+                            Id = 2,
+                            Value = "Weiße Hose"
+                        },
+                        new
+                        {
+                            Id = 3,
+                            Value = "Jacket"
+                        },
+                        new
+                        {
+                            Id = 4,
+                            Value = "Winter Jacke"
+                        },
+                        new
+                        {
+                            Id = 5,
+                            Value = "Zivil"
+                        });
                 });
 
             modelBuilder.Entity("TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.OrchesterMitglied", b =>

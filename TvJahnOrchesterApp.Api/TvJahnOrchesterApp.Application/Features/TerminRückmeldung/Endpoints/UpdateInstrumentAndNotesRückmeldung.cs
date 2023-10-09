@@ -12,7 +12,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
     {
         public static void MapUpdateInstrumentAndNotesRückmeldungEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/Termin/Rückmeldung/ChangeInstrumentsAndNotes", PutInstrumentAndNotesRückmeldung)
+            app.MapPut("api/termin/rückmeldung/changeInstrumentsAndNotes", PutInstrumentAndNotesRückmeldung)
                 .RequireAuthorization();
         }
 
@@ -23,9 +23,9 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
             return Results.Ok("Rückmeldung wurde erfolgreich geupdated.");
         }
 
-        public record RückmeldungChangeInstrumentsAndNotesCommand(Guid TerminId, Guid RückmeldungsId, int[] Instruments, int[] Notenstimme) : IRequest<Unit>;
+        private record RückmeldungChangeInstrumentsAndNotesCommand(Guid TerminId, Guid RückmeldungsId, int[] Instruments, int[] Notenstimme) : IRequest<Unit>;
 
-        internal class RückmeldungChangeInstrumentsAndNotesCommandHandler : IRequestHandler<RückmeldungChangeInstrumentsAndNotesCommand, Unit>
+        private class RückmeldungChangeInstrumentsAndNotesCommandHandler : IRequestHandler<RückmeldungChangeInstrumentsAndNotesCommand, Unit>
         {
             private readonly ITerminRepository terminRepository;
             private readonly IUnitOfWork unitOfWork;

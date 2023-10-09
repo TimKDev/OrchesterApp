@@ -16,20 +16,20 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
     {
         public static void MapTerminCreateEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Termin/create", PostTerminCreate)
+            app.MapPost("api/termin/create", PostTerminCreate)
                 .RequireAuthorization();
         }
 
-        private static async Task<IResult> PostTerminCreate([FromBody] CreateOrchesterMitgliedCommand createOrchesterMitgliedCommand, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> PostTerminCreate([FromBody] CreateTerminCommand createTerminCommand, ISender sender, CancellationToken cancellationToken)
         {
-            var result = await sender.Send(createOrchesterMitgliedCommand, cancellationToken);
+            var result = await sender.Send(createTerminCommand, cancellationToken);
 
             return Results.Ok(result);
         }
 
-        public record CreateTerminCommand(string Name, int TerminArt, DateTime StartZeit, DateTime EndZeit, AdresseDto TreffPunkt, int[] Noten, int[] Uniform, Guid[]? OrchestermitgliedIds) : IRequest<Domain.TerminAggregate.Termin>;
+        private record CreateTerminCommand(string Name, int TerminArt, DateTime StartZeit, DateTime EndZeit, AdresseDto TreffPunkt, int[] Noten, int[] Uniform, Guid[]? OrchestermitgliedIds) : IRequest<Domain.TerminAggregate.Termin>;
 
-        public class CreateTerminCommandHandler : IRequestHandler<CreateTerminCommand, Domain.TerminAggregate.Termin>
+        private class CreateTerminCommandHandler : IRequestHandler<CreateTerminCommand, Domain.TerminAggregate.Termin>
         {
             private readonly ITerminRepository terminRepository;
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
@@ -45,7 +45,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 Domain.OrchesterMitgliedAggregate.OrchesterMitglied[] orchesterMitglieder;
                 if (request.OrchestermitgliedIds is not null && request.OrchestermitgliedIds.Length > 0)
                 {
-                    orchesterMitglieder = await orchesterMitgliedRepository.QueryByIdAsync(request.OrchestermitgliedIds.Select(id => OrchesterMitgliedsId.Create(id)).ToArray(), cancellationToken);
+                    orchesterMitglieder = await orchesterMitgliedRepository.QueryByIdAsync(request.OrchestermitgliedIds.Select(OrchesterMitgliedsId.Create).ToArray(), cancellationToken);
                 }
                 else
                 {

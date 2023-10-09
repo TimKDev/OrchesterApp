@@ -11,18 +11,18 @@ namespace TvJahnOrchesterApp.Application.Features.TerminDashboard.Endpoints
     {
         public static void MapNotRepliedTerminEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/Dashboard/NotReplied", GetNotRepliedTerminDashboard)
+            app.MapGet("api/dashboard/notReplied", GetNotRepliedTerminDashboard)
                 .RequireAuthorization();
         }
 
-        public static async Task<TerminOverview[]> GetNotRepliedTerminDashboard(CancellationToken cancellationToken, ISender sender)
+        private static async Task<TerminOverview[]> GetNotRepliedTerminDashboard(CancellationToken cancellationToken, ISender sender)
         {
             return await sender.Send(new GetNotRepliedTerminsQuery());
         }
 
-        public record GetNotRepliedTerminsQuery() : IRequest<TerminOverview[]>;
+        private record GetNotRepliedTerminsQuery() : IRequest<TerminOverview[]>;
 
-        public class GetNotRepliedTerminsQueryHandler : IRequestHandler<GetNotRepliedTerminsQuery, TerminOverview[]>
+        private class GetNotRepliedTerminsQueryHandler : IRequestHandler<GetNotRepliedTerminsQuery, TerminOverview[]>
         {
             private readonly ITerminRepository terminRepository;
             private readonly ICurrentUserService currentUserService;

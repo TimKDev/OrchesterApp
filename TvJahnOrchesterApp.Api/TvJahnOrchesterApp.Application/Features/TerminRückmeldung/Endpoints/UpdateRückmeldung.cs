@@ -15,7 +15,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
     {
         public static void MapUpdateRückmeldungEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/Termin/Rückmeldung", UpdateTerminRückmeldung)
+            app.MapPut("api/termin/rückmeldung", UpdateTerminRückmeldung)
                 .RequireAuthorization();
         }
 
@@ -26,9 +26,9 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
             return Results.Ok("Rückmeldung erfolgreich gespeichert.");
         }
 
-        public record RückmeldungCommand(Guid TerminId, bool Zugesagt, string? Kommentar) : IRequest<Unit>;
+        private record RückmeldungCommand(Guid TerminId, bool Zugesagt, string? Kommentar) : IRequest<Unit>;
 
-        public class RückmeldungCommandHandler : IRequestHandler<RückmeldungCommand, Unit>
+        private class RückmeldungCommandHandler : IRequestHandler<RückmeldungCommand, Unit>
         {
             private readonly ICurrentUserService currentUserService;
             private readonly ITerminRepository terminRepository;

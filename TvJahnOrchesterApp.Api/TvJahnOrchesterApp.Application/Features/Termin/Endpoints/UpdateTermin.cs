@@ -13,19 +13,19 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
     {
         public static void MapUpdateTerminEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/Termin/getById/{id}", GetTerminById)
+            app.MapPut("api/termin/getById/{id}", GetTerminById)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> GetTerminById(UpdateTerminCommand updateTerminCommand, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> GetTerminById(UpdateTerminCommand updateTerminCommand, ISender sender, CancellationToken cancellationToken)
         {
             var response = await sender.Send(updateTerminCommand, cancellationToken);
             return Results.Ok(response);
         }
 
-        public record UpdateTerminCommand(Guid TerminId, string Name, int TerminArt, Guid[]? OrchestermitgliedIds) : IRequest<Domain.TerminAggregate.Termin>;
+        private record UpdateTerminCommand(Guid TerminId, string Name, int TerminArt, Guid[]? OrchestermitgliedIds) : IRequest<Domain.TerminAggregate.Termin>;
 
-        public class UpdateTerminCommandHandler : IRequestHandler<UpdateTerminCommand, Domain.TerminAggregate.Termin>
+        private class UpdateTerminCommandHandler : IRequestHandler<UpdateTerminCommand, Domain.TerminAggregate.Termin>
         {
             private readonly ITerminRepository terminRepository;
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;

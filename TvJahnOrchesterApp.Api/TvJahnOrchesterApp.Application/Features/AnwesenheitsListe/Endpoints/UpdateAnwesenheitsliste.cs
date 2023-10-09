@@ -13,19 +13,19 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
     {
         public static void MapUpdateAnwesenheitsListeEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/Termin/anwesenheit/{terminId}", UpdateAnwesenheitTermin)
+            app.MapPut("api/termin/anwesenheit/{terminId}", UpdateAnwesenheitTermin)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> UpdateAnwesenheitTermin(UpdateAnwesenheitCommand updateAnwesenheitCommand, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> UpdateAnwesenheitTermin(UpdateAnwesenheitCommand updateAnwesenheitCommand, ISender sender, CancellationToken cancellationToken)
         {
             await sender.Send(updateAnwesenheitCommand, cancellationToken);
             return Results.Ok("Anwesenheitsliste wurde erfolgreich geupdated.");
         }
 
-        public record UpdateAnwesenheitCommand(Guid TerminId, UpdateAnwesenheitsEintrag[] UpdateAnwesenheitsListe) : IRequest<Unit>;
+        private record UpdateAnwesenheitCommand(Guid TerminId, UpdateAnwesenheitsEintrag[] UpdateAnwesenheitsListe) : IRequest<Unit>;
 
-        internal class UpdateAnwesenheitCommandHandler : IRequestHandler<UpdateAnwesenheitCommand, Unit>
+        private class UpdateAnwesenheitCommandHandler : IRequestHandler<UpdateAnwesenheitCommand, Unit>
         {
             private readonly ITerminRepository terminRepository;
             private readonly IUnitOfWork unitOfWork;

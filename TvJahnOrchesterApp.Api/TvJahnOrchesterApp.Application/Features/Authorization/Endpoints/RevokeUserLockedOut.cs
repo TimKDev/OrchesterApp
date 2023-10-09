@@ -12,19 +12,19 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapRevokeUserLockedOutEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Authentication/removeUserLockedOut", PostRevokeUserLockedOut)
+            app.MapPost("api/authentication/removeUserLockedOut", PostRevokeUserLockedOut)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> PostRevokeUserLockedOut([FromBody] RevokeUserLockedOutCommand revokeUserLockedOutCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostRevokeUserLockedOut([FromBody] RevokeUserLockedOutCommand revokeUserLockedOutCommand, CancellationToken cancellationToken, ISender sender)
         {
             await sender.Send(revokeUserLockedOutCommand);
             return Results.Ok("Accountsperre für User erfolgreich zurückgesetzt.");
         }
 
-        public record RevokeUserLockedOutCommand(string UserId) : IRequest<Unit>;
+        private record RevokeUserLockedOutCommand(string UserId) : IRequest<Unit>;
 
-        public class RevokeUserLockedOutCommandHandler : IRequestHandler<RevokeUserLockedOutCommand, Unit>
+        private class RevokeUserLockedOutCommandHandler : IRequestHandler<RevokeUserLockedOutCommand, Unit>
         {
             private readonly UserManager<User> userManager;
 

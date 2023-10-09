@@ -10,19 +10,19 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
     {
         public static void MapDeleteTerminEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapDelete("api/Termin/delete/{id}", DeleteTerminById)
+            app.MapDelete("api/termin/delete/{id}", DeleteTerminById)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> DeleteTerminById(Guid id, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> DeleteTerminById(Guid id, CancellationToken cancellationToken, ISender sender)
         {
             await sender.Send(new DeleteTerminCommand(id));
             return Results.Ok("Termin wurde gelöscht.");
         }
 
-        public record DeleteTerminCommand(Guid Id) : IRequest<Unit>;
+        private record DeleteTerminCommand(Guid Id) : IRequest<Unit>;
 
-        public class DeleteTerminCommandHandler : IRequestHandler<DeleteTerminCommand, Unit>
+        private class DeleteTerminCommandHandler : IRequestHandler<DeleteTerminCommand, Unit>
         {
             private readonly ITerminRepository terminRepository;
 

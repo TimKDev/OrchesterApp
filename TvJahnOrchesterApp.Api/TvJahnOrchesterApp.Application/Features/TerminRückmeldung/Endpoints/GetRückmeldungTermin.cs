@@ -12,7 +12,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
     {
         public static void MapGetRückmeldungTerminEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/Termin/Rückmeldung/{terminId}", GetRückmeldungTerminById)
+            app.MapGet("api/termin/rückmeldung/{terminId}", GetRückmeldungTerminById)
                 .RequireAuthorization();
         }
 
@@ -23,9 +23,9 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
             return Results.Ok(result);
         }
 
-        public record GetRückmeldungenTerminQuery(Guid TerminId) : IRequest<TerminRückmeldungsResponse>;
+        private record GetRückmeldungenTerminQuery(Guid TerminId) : IRequest<TerminRückmeldungsResponse>;
 
-        internal class GetRückmeldungenTerminQueryHandler : IRequestHandler<GetRückmeldungenTerminQuery, TerminRückmeldungsResponse>
+        private class GetRückmeldungenTerminQueryHandler : IRequestHandler<GetRückmeldungenTerminQuery, TerminRückmeldungsResponse>
         {
             private readonly ITerminRepository terminRepository;
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;

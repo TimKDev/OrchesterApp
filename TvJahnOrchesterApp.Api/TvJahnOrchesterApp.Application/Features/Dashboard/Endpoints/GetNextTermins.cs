@@ -17,18 +17,18 @@ namespace TvJahnOrchesterApp.Application.Features.TerminDashboard
     {
         public static void MapGetNextTerminEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/Dashboard/NextTermins", GetNextTerminsDashboard)
+            app.MapGet("api/dashboard/nextTermins", GetNextTerminsDashboard)
                 .RequireAuthorization();
         }
 
-        public static async Task<TerminOverview[]> GetNextTerminsDashboard(CancellationToken cancellationToken, ISender sender)
+        private static async Task<TerminOverview[]> GetNextTerminsDashboard(CancellationToken cancellationToken, ISender sender)
         {
             return await sender.Send(new GetNextTerminsQuery());
         }
 
-        public record GetNextTerminsQuery() : IRequest<TerminOverview[]>;
+        private record GetNextTerminsQuery() : IRequest<TerminOverview[]>;
 
-        public class GetNextTerminsQueryHandler : IRequestHandler<GetNextTerminsQuery, TerminOverview[]>
+        private class GetNextTerminsQueryHandler : IRequestHandler<GetNextTerminsQuery, TerminOverview[]>
         {
             private const int DAYS_TO_INCLUDE_TERMIN = 14;
             

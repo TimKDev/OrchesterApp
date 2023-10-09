@@ -15,18 +15,18 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapForgotPasswordEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Authentication/forgotPassword", PostRegisterUser);
+            app.MapPost("api/authentication/forgotPassword", PostRegisterUser);
         }
 
-        public static async Task<IResult> PostRegisterUser([FromBody] ForgotPasswordCommand registerUserCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostRegisterUser([FromBody] ForgotPasswordCommand registerUserCommand, CancellationToken cancellationToken, ISender sender)
         {
-            var authResult = await sender.Send(registerUserCommand);
-            return Results.Ok(authResult);
+            await sender.Send(registerUserCommand);
+            return Results.Ok($"Link zum Reseten des Passworts wurde an die Email {registerUserCommand.Email} versendet.");
         }
 
-        public record ForgotPasswordCommand(string Email, string ClientUri) : IRequest<Unit>;
+        private record ForgotPasswordCommand(string Email, string ClientUri) : IRequest<Unit>;
 
-        public class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, Unit>
+        private class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, Unit>
         {
             private readonly UserManager<User> userManager;
             private readonly IEmailService emailService;

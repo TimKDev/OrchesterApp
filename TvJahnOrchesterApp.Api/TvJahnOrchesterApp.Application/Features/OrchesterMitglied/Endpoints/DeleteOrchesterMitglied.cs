@@ -15,18 +15,19 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
     {
         public static void MapDeleteOrchesterMitgliedEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapDelete("api/OrchesterMitglied", DeleteDeleteOrchesterMitglied);
+            app.MapDelete("api/orchesterMitglied", DeleteDeleteOrchesterMitglied)
+                .RequireAuthorization();
         }
 
-        public static async Task<IResult> DeleteDeleteOrchesterMitglied([FromBody] DeleteOrchesterMitgliedCommand deleteOrchesterMitgliedCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> DeleteDeleteOrchesterMitglied([FromBody] DeleteOrchesterMitgliedCommand deleteOrchesterMitgliedCommand, CancellationToken cancellationToken, ISender sender)
         {
             var message = await sender.Send(deleteOrchesterMitgliedCommand);
             return Results.Ok(message);
         }
 
-        public record DeleteOrchesterMitgliedCommand(Guid OrchesterMitgliedsId) : IRequest<string>;
+        private record DeleteOrchesterMitgliedCommand(Guid OrchesterMitgliedsId) : IRequest<string>;
 
-        public class DeleteOrchesterMitgliedCommandHandler : IRequestHandler<DeleteOrchesterMitgliedCommand, string>
+        private class DeleteOrchesterMitgliedCommandHandler : IRequestHandler<DeleteOrchesterMitgliedCommand, string>
         {
             private IOrchesterMitgliedRepository orchesterMitgliedRepository;
             private readonly UserManager<User> userManager;
@@ -41,21 +42,13 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             {
                 var orchesterMitgliedsId = OrchesterMitgliedsId.Create(request.OrchesterMitgliedsId);
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(orchesterMitgliedsId, cancellationToken);
-                //TTODO
-                //orchesterMitglied.ChangeMitgliedsStatus(MitgliedsStatusEnum.ausgetreten);
                 if (orchesterMitglied.ConnectedUserId is not null)
                 {
                     var user = await userManager.FindByIdAsync(orchesterMitglied.ConnectedUserId) ?? throw new Exception("User not found");
                     await userManager.DeleteAsync(user);
                 }
-                try
-                {
-                    await orchesterMitgliedRepository.DeleteByIdAsync(orchesterMitgliedsId, cancellationToken);
-                }
-                catch
-                {
-                    return "Orchestermitglied wurde auf den Status 'ausgetreten' gesetzt und der verbundene User wurde gelöscht. Das Orchestermitglied selbst konnte nicht gelöscht werden, da es noch mit anderen Entitäten verbunden ist.";
-                }
+                await orchesterMitgliedRepository.DeleteByIdAsync(orchesterMitgliedsId, cancellationToken);
+                
                 return "Orchestermitglied wurde vollständig gelöscht.";
 
             }

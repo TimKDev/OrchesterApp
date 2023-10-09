@@ -11,6 +11,8 @@ namespace TvJahnOrchesterApp.Api
             services.AddControllers();
             services.AddMappings();
             services.AddEndpointsApiExplorer();
+            services.AddEndpointsApiExplorer();
+            services.AddSwaggerGen();
             return services;
         }
 

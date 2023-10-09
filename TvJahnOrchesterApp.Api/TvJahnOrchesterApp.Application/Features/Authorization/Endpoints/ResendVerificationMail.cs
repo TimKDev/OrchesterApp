@@ -13,18 +13,18 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapResendVerificationMailEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Authentication/resendMail", PostResendVerificationMail);
+            app.MapPost("api/authentication/resendMail", PostResendVerificationMail);
         }
 
-        public static async Task<IResult> PostResendVerificationMail([FromBody] ResendVerficationMailCommand resendVerficationMailCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostResendVerificationMail([FromBody] ResendVerficationMailCommand resendVerficationMailCommand, CancellationToken cancellationToken, ISender sender)
         {
             await sender.Send(resendVerficationMailCommand);
             return Results.Ok("Mail wurde erneut versendet.");
         }
 
-        public record ResendVerficationMailCommand(string Email, string ClientUri) : IRequest<Unit>;
+        private record ResendVerficationMailCommand(string Email, string ClientUri) : IRequest<Unit>;
 
-        public class ResendVerficationMailCommandHandler : IRequestHandler<ResendVerficationMailCommand, Unit>
+        private class ResendVerficationMailCommandHandler : IRequestHandler<ResendVerficationMailCommand, Unit>
         {
             private readonly UserManager<User> userManager;
             private readonly IVerificationEmailService verificationEmailService;

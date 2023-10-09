@@ -15,18 +15,19 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapAddRegistrationKeyEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Authentication/addRegistrationKey", PostAddRegistrationKey);
+            app.MapPost("api/authentication/addRegistrationKey", PostAddRegistrationKey)
+                .RequireAuthorization();
         }
 
-        public static async Task<IResult> PostAddRegistrationKey([FromBody] AddRegistrationKeyCommand addRegistrationKeyCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostAddRegistrationKey([FromBody] AddRegistrationKeyCommand addRegistrationKeyCommand, CancellationToken cancellationToken, ISender sender)
         {
             await sender.Send(addRegistrationKeyCommand);
             return Results.Ok("Registration Key wurde erfolgreich hinzugefügt.");
         }
 
-        public record AddRegistrationKeyCommand(Guid OrchesterMitgliedsId, string NewRegistrationKey) : IRequest<Unit>;
+        private record AddRegistrationKeyCommand(Guid OrchesterMitgliedsId, string NewRegistrationKey) : IRequest<Unit>;
 
-        public class AddRegistrationKeyCommandHandler : IRequestHandler<AddRegistrationKeyCommand, Unit>
+        private class AddRegistrationKeyCommandHandler : IRequestHandler<AddRegistrationKeyCommand, Unit>
         {
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
             private readonly IUnitOfWork unitOfWork;

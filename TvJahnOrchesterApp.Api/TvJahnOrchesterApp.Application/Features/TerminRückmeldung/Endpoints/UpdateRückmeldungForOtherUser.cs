@@ -15,7 +15,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
     {
         public static void MapUpdateRückmeldungForOtherUserEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/Termin/Rückmeldung/forUser", UpdateTerminRückmeldungForUser)
+            app.MapPut("api/termin/rückmeldung/forUser", UpdateTerminRückmeldungForUser)
                 .RequireAuthorization();
         }
 
@@ -26,9 +26,9 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
             return Results.Ok("Rückmeldung für anderen User wurde erfolgreich gespeichert.");
         }
 
-        public record RückmeldungForOtherUserCommand(Guid TerminId, Guid OrchesterMitgliedsId, bool Zugesagt, string? Kommentar) : IRequest<Unit>;
+        private record RückmeldungForOtherUserCommand(Guid TerminId, Guid OrchesterMitgliedsId, bool Zugesagt, string? Kommentar) : IRequest<Unit>;
 
-        internal class RückmeldungForOtherUserCommandHandler : IRequestHandler<RückmeldungForOtherUserCommand, Unit>
+        private class RückmeldungForOtherUserCommandHandler : IRequestHandler<RückmeldungForOtherUserCommand, Unit>
         {
             private readonly ITerminRepository terminRepository;
             private readonly ICurrentUserService currentUserService;

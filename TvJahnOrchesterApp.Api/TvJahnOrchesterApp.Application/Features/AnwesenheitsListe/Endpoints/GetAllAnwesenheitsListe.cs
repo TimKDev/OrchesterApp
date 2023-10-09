@@ -10,19 +10,19 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
     {
         public static void MapGetAllAnwesenheitsListeEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/Termin/anwesenheit/all", GetAnwesenheitsListe)
+            app.MapGet("api/termin/anwesenheit/all", GetAnwesenheitsListe)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> GetAnwesenheitsListe(ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> GetAnwesenheitsListe(ISender sender, CancellationToken cancellationToken)
         {
             var response = await sender.Send(new GetAllAnwesenheitsListeQuery(), cancellationToken);
             return Results.Ok(response);
         }
 
-        public record GetAllAnwesenheitsListeQuery() : IRequest<GlobalAnwesenheitsListenEintrag[]>;
+        private record GetAllAnwesenheitsListeQuery() : IRequest<GlobalAnwesenheitsListenEintrag[]>;
 
-        internal class GetAllAnwesenheitsListeQueryHandler : IRequestHandler<GetAllAnwesenheitsListeQuery, GlobalAnwesenheitsListenEintrag[]>
+        private class GetAllAnwesenheitsListeQueryHandler : IRequestHandler<GetAllAnwesenheitsListeQuery, GlobalAnwesenheitsListenEintrag[]>
         {
             private readonly IOrchesterMitgliedRepository _orchesterMitgliedRepository;
             private readonly ITerminRepository _terminRepository;

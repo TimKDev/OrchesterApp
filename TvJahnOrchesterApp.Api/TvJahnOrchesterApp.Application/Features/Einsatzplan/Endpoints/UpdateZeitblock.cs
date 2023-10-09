@@ -15,19 +15,19 @@ namespace TvJahnOrchesterApp.Application.Features.Einsatzplan.Endpoints
     {
         public static void MapUpdateZeitblockEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Termin/EinsatzPlan/{terminId}/Zeitblock", UpdateEinsatzplanZeitblock)
+            app.MapPost("api/termin/einsatzPlan/{terminId}/zeitblock", UpdateEinsatzplanZeitblock)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> UpdateEinsatzplanZeitblock(Guid terminId, [FromBody] EinsatzplanZeitblockUpdateCommand einsatzplanZeitblockUpdateCommand, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> UpdateEinsatzplanZeitblock(Guid terminId, [FromBody] EinsatzplanZeitblockUpdateCommand einsatzplanZeitblockUpdateCommand, ISender sender, CancellationToken cancellationToken)
         {
             await sender.Send(einsatzplanZeitblockUpdateCommand, cancellationToken);
             return Results.Ok("Zeitblock wurde erfolgreich geupdated.");
         }
 
-        public record EinsatzplanZeitblockUpdateCommand(Guid TerminId, Guid? ZeitblockId, DateTime StartZeit, DateTime EndZeit, AdresseDto? Adresse, string Beschreibung) : IRequest<Unit>;
+        private record EinsatzplanZeitblockUpdateCommand(Guid TerminId, Guid? ZeitblockId, DateTime StartZeit, DateTime EndZeit, AdresseDto? Adresse, string Beschreibung) : IRequest<Unit>;
 
-        internal class EinsatzplanZeitblockUpdateCommandHandler : IRequestHandler<EinsatzplanZeitblockUpdateCommand, Unit>
+        private class EinsatzplanZeitblockUpdateCommandHandler : IRequestHandler<EinsatzplanZeitblockUpdateCommand, Unit>
         {
             private readonly ITerminRepository terminRepository;
             private readonly IUnitOfWork unitOfWork;

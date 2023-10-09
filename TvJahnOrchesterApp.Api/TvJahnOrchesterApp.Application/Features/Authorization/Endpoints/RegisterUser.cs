@@ -19,18 +19,18 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapRegisterUserEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Authentication/register", PostRegisterUser);
+            app.MapPost("api/authentication/register", PostRegisterUser);
         }
 
-        public static async Task<IResult> PostRegisterUser([FromBody] RegisterUserCommand registerUserCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostRegisterUser([FromBody] RegisterUserCommand registerUserCommand, CancellationToken cancellationToken, ISender sender)
         {
             var authResult = await sender.Send(registerUserCommand);
             return Results.Ok(authResult);
         }
 
-        public record RegisterUserCommand(string RegisterationKey, string Email, string Password, string ClientUri) : IRequest<AuthenticationResult>;
+        private record RegisterUserCommand(string RegisterationKey, string Email, string Password, string ClientUri) : IRequest<AuthenticationResult>;
 
-        public class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
+        private class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
         {
             public RegisterUserCommandValidator()
             {
@@ -39,7 +39,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             }
         }
 
-        public class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthenticationResult>
+        private class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthenticationResult>
         {
             private readonly UserManager<User> userManager;
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
@@ -80,7 +80,6 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                     throw new IdentityRegistrationException(string.Join(", ", result.Errors.Select(e => e.Description)));
                 }
 
-                //Irgendwie muss hier noch die ConnectedUserId auf dem Orchestermitgliedsobjekt gesetzt werden 
                 var createdUser = await userManager.FindByEmailAsync(request.Email);
                 orchesterMitglied.ConnectWithUser(createdUser!.Id);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
@@ -92,7 +91,6 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 await tokenService.AddRefreshTokenToUserInDBAsync(user, refreshToken);
 
-                // Resete den Zähler für falsche Passworteingabe, wenn der User ein korrektes Passwort eingibt:
                 await userManager.ResetAccessFailedCountAsync(user);
 
                 return new AuthenticationResult(createdUser.Id, createdUser.Email!, token, refreshToken);

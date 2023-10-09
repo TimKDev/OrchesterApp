@@ -12,19 +12,19 @@ namespace TvJahnOrchesterApp.Application.Features.Einsatzplan.Endpoints
     {
         public static void MapDeleteZeitblockEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapDelete("api/Termin/EinsatzPlan/{terminId}/Zeitblock/{zeitBlockId}", DeleteEinsatzplanZeitblock)
+            app.MapDelete("api/termin/einsatzPlan/{terminId}/zeitblock/{zeitBlockId}", DeleteEinsatzplanZeitblock)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> DeleteEinsatzplanZeitblock(Guid terminId, Guid zeitBlockId, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> DeleteEinsatzplanZeitblock(Guid terminId, Guid zeitBlockId, ISender sender, CancellationToken cancellationToken)
         {
             await sender.Send(new EinsatzplanZeitblockDeleteCommand(terminId, zeitBlockId), cancellationToken);
             return Results.Ok("Zeitblock wurde erfolgreich gelöscht.");
         }
 
-        public record EinsatzplanZeitblockDeleteCommand(Guid TerminId, Guid ZeitBlockId) : IRequest<Unit>;
+        private record EinsatzplanZeitblockDeleteCommand(Guid TerminId, Guid ZeitBlockId) : IRequest<Unit>;
 
-        internal class EinsatzplanZeitblockDeleteCommandHandler : IRequestHandler<EinsatzplanZeitblockDeleteCommand, Unit>
+        private class EinsatzplanZeitblockDeleteCommandHandler : IRequestHandler<EinsatzplanZeitblockDeleteCommand, Unit>
         {
             private readonly ITerminRepository terminRepository;
             private readonly IUnitOfWork unitOfWork;

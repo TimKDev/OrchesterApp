@@ -12,18 +12,18 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapResetPasswordEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Authentication/resetPassword", PostResetPassword);
+            app.MapPost("api/authentication/resetPassword", PostResetPassword);
         }
 
-        public static async Task<IResult> PostResetPassword([FromBody] ResetPasswordCommand resetPasswordCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostResetPassword([FromBody] ResetPasswordCommand resetPasswordCommand, CancellationToken cancellationToken, ISender sender)
         {
             await sender.Send(resetPasswordCommand);
             return Results.Ok("Passwort wurde resetet.");
         }
 
-        public record ResetPasswordCommand(string Email, string Password, string ResetPasswordToken) : IRequest<Unit>;
+        private record ResetPasswordCommand(string Email, string Password, string ResetPasswordToken) : IRequest<Unit>;
 
-        public class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, Unit>
+        private class ResetPasswordCommandHandler : IRequestHandler<ResetPasswordCommand, Unit>
         {
             private readonly UserManager<User> userManager;
 

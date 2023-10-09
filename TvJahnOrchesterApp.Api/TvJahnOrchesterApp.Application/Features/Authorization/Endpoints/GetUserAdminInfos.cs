@@ -13,21 +13,21 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapGetUserAdminInfosEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/Authentication/userAdminInfos", UserAdminInfos)
+            app.MapGet("api/authentication/userAdminInfos", UserAdminInfos)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> UserAdminInfos(CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> UserAdminInfos(CancellationToken cancellationToken, ISender sender)
         {
             var queryResult = await sender.Send(new GetUserAdminInfosQuery());
             return Results.Ok(queryResult);
         }
 
-        public record GetUserAdminInfosQuery() : IRequest<GetUserAdminInfosResponse[]>;
+        private record GetUserAdminInfosQuery() : IRequest<GetUserAdminInfosResponse[]>;
 
-        public record GetUserAdminInfosResponse(Guid OrchesterMitgliedsId, string? UserId, string RegistrationKey, DateTime RegisterKeyExpirationDate, string? Email, bool AccountLocked, DateTime? LastLogin, DateTime? FirstLogin);
+        private record GetUserAdminInfosResponse(Guid OrchesterMitgliedsId, string? UserId, string RegistrationKey, DateTime RegisterKeyExpirationDate, string? Email, bool AccountLocked, DateTime? LastLogin, DateTime? FirstLogin);
 
-        public class GetUserAdminInfosQueryHandler : IRequestHandler<GetUserAdminInfosQuery, GetUserAdminInfosResponse[]>
+        private class GetUserAdminInfosQueryHandler : IRequestHandler<GetUserAdminInfosQuery, GetUserAdminInfosResponse[]>
         {
             private IOrchesterMitgliedRepository orchesterMitgliedRepository;
             private readonly UserManager<User> userManager;

@@ -14,19 +14,19 @@ namespace TvJahnOrchesterApp.Application.Features.Einsatzplan.Endpoints
     {
         public static void MapUpdateEinsatzplanEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/Termin/EinsatzPlan/{terminId}", UpdateUpdateEinsatzplan)
+            app.MapPut("api/termin/einsatzPlan/{terminId}", UpdateUpdateEinsatzplan)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> UpdateUpdateEinsatzplan([FromBody] EinsatzplanUpdateCommand einsatzplanUpdateCommand, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> UpdateUpdateEinsatzplan([FromBody] EinsatzplanUpdateCommand einsatzplanUpdateCommand, ISender sender, CancellationToken cancellationToken)
         {
             await sender.Send(einsatzplanUpdateCommand, cancellationToken);
             return Results.Ok("Einsatzplan wurrde erfolgreich geupdated.");
         }
 
-        public record EinsatzplanUpdateCommand(Guid TerminId, DateTime StartZeit, DateTime EndZeit, AdresseDto TreffPunkt, int[] Noten, int[] Uniform, string? WeitereInformationen) : IRequest<Unit>;
+        private record EinsatzplanUpdateCommand(Guid TerminId, DateTime StartZeit, DateTime EndZeit, AdresseDto TreffPunkt, int[] Noten, int[] Uniform, string? WeitereInformationen) : IRequest<Unit>;
 
-        internal class EinsatzplanUpdateCommandHandler : IRequestHandler<EinsatzplanUpdateCommand, Unit>
+        private class EinsatzplanUpdateCommandHandler : IRequestHandler<EinsatzplanUpdateCommand, Unit>
         {
             private readonly ITerminRepository terminRepository;
             private readonly IUnitOfWork unitOfWork;

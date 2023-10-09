@@ -16,18 +16,18 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapRefreshTokenEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Authentication/refresh", PostRefreshToken);
+            app.MapPost("api/authentication/refresh", PostRefreshToken);
         }
 
-        public static async Task<IResult> PostRefreshToken([FromBody] RefreshTokenQuery refreshTokenQuery, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostRefreshToken([FromBody] RefreshTokenQuery refreshTokenQuery, CancellationToken cancellationToken, ISender sender)
         {
             var authResult = await sender.Send(refreshTokenQuery);
             return Results.Ok(authResult);
         }
 
-        public record RefreshTokenQuery(string Token, string RefreshToken) : IRequest<AuthenticationResult>;
+        private record RefreshTokenQuery(string Token, string RefreshToken) : IRequest<AuthenticationResult>;
 
-        public class RefreshTokenQueryHandler : IRequestHandler<RefreshTokenQuery, AuthenticationResult>
+        private class RefreshTokenQueryHandler : IRequestHandler<RefreshTokenQuery, AuthenticationResult>
         {
             private readonly IJwtHandler jwtHandler;
             private readonly UserManager<User> userManager;

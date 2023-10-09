@@ -14,19 +14,19 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapDeleteUserEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapDelete("api/Authentication/deleteUser", DeleteDeleteUser)
+            app.MapDelete("api/authentication/deleteUser", DeleteDeleteUser)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> DeleteDeleteUser([FromBody] DeleteUserCommand deleteUserCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> DeleteDeleteUser([FromBody] DeleteUserCommand deleteUserCommand, CancellationToken cancellationToken, ISender sender)
         {
             await sender.Send(deleteUserCommand);
             return Results.Ok("User erfolgreich gelöscht");
         }
 
-        public record DeleteUserCommand(string UserId) : IRequest<Unit>;
+        private record DeleteUserCommand(string UserId) : IRequest<Unit>;
 
-        public class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Unit>
+        private class DeleteUserCommandHandler : IRequestHandler<DeleteUserCommand, Unit>
         {
             private readonly UserManager<User> userManager;
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;

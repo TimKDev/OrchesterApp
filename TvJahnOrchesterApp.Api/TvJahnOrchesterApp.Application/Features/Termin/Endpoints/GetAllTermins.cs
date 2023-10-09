@@ -13,19 +13,21 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
     {
         public static void MapGetAllTerminsEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/Termin/all", GetGetAllTermins)
+            app.MapGet("api/termin/all", GetGetAllTermins)
                 .RequireAuthorization();
         }
 
-        public static async Task<IResult> GetGetAllTermins(ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> GetGetAllTermins(ISender sender, CancellationToken cancellationToken)
         {
             var response = await sender.Send(new GetAllTermineQuery(), cancellationToken);
-            return Results.Ok(response);
+            return Results.Ok(response.Select(c => new GetAllTermineResponse(c.Item1, c.Item2)));
         }
 
-        public record GetAllTermineQuery() : IRequest<(Domain.TerminAggregate.Termin, TerminRückmeldungOrchestermitglied?)[]>;
+        private record GetAllTermineQuery() : IRequest<(Domain.TerminAggregate.Termin, TerminRückmeldungOrchestermitglied?)[]>;
 
-        public class GetAllTermineQueryHandler : IRequestHandler<GetAllTermineQuery, (Domain.TerminAggregate.Termin, TerminRückmeldungOrchestermitglied?)[]>
+        private record GetAllTermineResponse(Domain.TerminAggregate.Termin Termin, TerminRückmeldungOrchestermitglied TerminRückmeldung);
+
+        private class GetAllTermineQueryHandler : IRequestHandler<GetAllTermineQuery, (Domain.TerminAggregate.Termin, TerminRückmeldungOrchestermitglied?)[]>
         {
             private readonly ITerminRepository terminRepository;
             private readonly ICurrentUserService currentUserService;

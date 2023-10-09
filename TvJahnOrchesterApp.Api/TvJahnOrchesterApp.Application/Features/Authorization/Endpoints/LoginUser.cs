@@ -20,18 +20,18 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapLoginUserEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/Authentication/login", PostLoginUser);
+            app.MapPost("api/authentication/login", PostLoginUser);
         }
 
-        public static async Task<IResult> PostLoginUser([FromBody] LoginQuery loginQuery, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostLoginUser([FromBody] LoginQuery loginQuery, ISender sender, CancellationToken cancellationToken)
         {
             var authResult = await sender.Send(loginQuery);
             return Results.Ok(authResult);
         }
 
-        public record LoginQuery(string Email, string Password, string ClientUri) : IRequest<AuthenticationResult>;
+        private record LoginQuery(string Email, string Password, string ClientUri) : IRequest<AuthenticationResult>;
 
-        public class LoginQueryValidator : AbstractValidator<LoginQuery>
+        private class LoginQueryValidator : AbstractValidator<LoginQuery>
         {
             public LoginQueryValidator()
             {
@@ -40,7 +40,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             }
         }
 
-        public class LoginQueryHandler : IRequestHandler<LoginQuery, AuthenticationResult>
+        private class LoginQueryHandler : IRequestHandler<LoginQuery, AuthenticationResult>
         {
             private readonly UserManager<User> userManager;
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepo;
