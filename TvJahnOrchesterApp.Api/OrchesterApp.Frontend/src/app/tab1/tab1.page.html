@@ -12,7 +12,11 @@
       <ion-title size="large">Tab 1</ion-title>
     </ion-toolbar>
   </ion-header>
-
-  <app-explore-container name="Tab 1 page"></app-explore-container>
+  
   <button (click)="loadData()">Load from API</button>
+  <ng-container *ngIf="loading">
+    <pre *ngIf="data$ | async as data; else loading">>{{data | json}}</pre>
+    <ng-template #loading>Loading....</ng-template>
+  </ng-container>
+  
 </ion-content>

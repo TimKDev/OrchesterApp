@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Component } from '@angular/core';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-tab1',
@@ -8,14 +9,15 @@ import { Component } from '@angular/core';
 })
 export class Tab1Page {
 
+  public data$!: Observable<any>;
+  public loading = false;
+
   constructor(
     private http: HttpClient
   ) {}
 
   loadData(){
-    console.log("Button");
-    this.http.get("https://localhost:44331/api/OrchesterMitglied/GetAll").subscribe(data => {
-      debugger;
-    })
+    this.loading = true;
+    this.data$ = this.http.get("https://localhost:44331/api/OrchesterMitglied/GetAll");
   }
 }
