@@ -11,8 +11,8 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
     {
         public static void MapOrchesterMitgliedGetAllEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/orchesterMitglied/getAll", GetAllOrchesterMitglieder)
-                .RequireAuthorization();
+            app.MapGet("api/orchesterMitglied/getAll", GetAllOrchesterMitglieder);
+                //.RequireAuthorization();
         }
 
         private static async Task<IResult> GetAllOrchesterMitglieder(ISender sender, CancellationToken cancellationToken)

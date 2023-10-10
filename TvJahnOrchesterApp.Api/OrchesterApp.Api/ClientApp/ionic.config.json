@@ -1,7 +1,0 @@
-{
-  "name": "OrchesterApp",
-  "integrations": {
-    "cordova": {}
-  },
-  "type": "angular"
-}
