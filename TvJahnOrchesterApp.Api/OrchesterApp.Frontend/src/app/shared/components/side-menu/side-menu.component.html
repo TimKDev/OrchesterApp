@@ -1,0 +1,34 @@
+<ion-list>
+
+  <div class="user-info">
+    <div class="user-name">Tim Kempkens</div>
+    <div class="user-mail">tim.kempkens@googlemail.com</div>
+    <div class="button-wrapper">
+      <ion-button fill="outline" text-capitalize=“false” size="small">
+        Logout
+        <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      </ion-button>
+    </div>
+  </div>
+
+  <ion-menu-toggle autoHide="false" *ngFor="let p of mainPages; let i = index">
+    <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
+      <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
+      <ion-label>
+        {{p.title}}
+      </ion-label>
+    </ion-item>
+  </ion-menu-toggle>
+  <ion-list-header>
+    Verwaltung
+  </ion-list-header>
+  <ion-menu-toggle autoHide="false" *ngFor="let p of managementPages; let i = index">
+    <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
+      <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
+      <ion-label>
+        {{p.title}}
+      </ion-label>
+    </ion-item>
+  </ion-menu-toggle>
+
+</ion-list>

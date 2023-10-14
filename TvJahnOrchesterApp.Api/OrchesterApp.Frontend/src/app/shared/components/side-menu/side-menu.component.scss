@@ -1,0 +1,28 @@
+@import './../../../../theme/variables.scss';
+
+.user-info{
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  border-bottom: 1px solid #ffffff47;
+
+  .user-name{
+    font-size: 22px;
+    margin-bottom: 8px;
+  }
+
+  .user-mail{
+    font-size: 13px;
+    margin-bottom: 20px;
+  }
+
+  .button-wrapper{
+    display: flex;
+    justify-content: end;
+
+    ion-button{
+      text-transform: none;
+    }
+  }
+}
