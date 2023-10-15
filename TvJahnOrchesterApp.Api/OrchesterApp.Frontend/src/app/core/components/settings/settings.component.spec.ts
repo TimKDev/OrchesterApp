@@ -1,19 +1,19 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { MitgliederManagementComponent } from './mitglieder-management.component';
+import { SettingsComponent } from './settings.component';
 
-describe('MitgliederManagementComponent', () => {
-  let component: MitgliederManagementComponent;
-  let fixture: ComponentFixture<MitgliederManagementComponent>;
+describe('SettingsComponent', () => {
+  let component: SettingsComponent;
+  let fixture: ComponentFixture<SettingsComponent>;
 
   beforeEach(waitForAsync(() => {
     TestBed.configureTestingModule({
-      declarations: [ MitgliederManagementComponent ],
+      declarations: [ SettingsComponent ],
       imports: [IonicModule.forRoot()]
     }).compileComponents();
 
-    fixture = TestBed.createComponent(MitgliederManagementComponent);
+    fixture = TestBed.createComponent(SettingsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   }));

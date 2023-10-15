@@ -10,36 +10,26 @@ export class SideMenuComponent  implements OnInit {
   mainPages = [
     {
       title: 'Einstellungen',
-      url: '/tabs/mitglieder/management',
+      url: '/tabs/settings',
       icon: 'calendar'
     },
     {
       title: 'Hilfe',
-      url: '/app/tabs/speakers',
+      url: '/tabs/help',
       icon: 'people'
     },
     {
       title: 'Feedback',
-      url: '/app/tabs/map',
+      url: '/tabs/feedback',
       icon: 'map'
     },
   ];
 
   managementPages = [
     {
-      title: 'Mitgliedsverwaltung',
-      url: '/tabs/mitglieder/management',
-      icon: 'calendar'
-    },
-    {
       title: 'Accountverwaltung',
-      url: '/app/tabs/speakers',
+      url: '/tabs/account-management',
       icon: 'people'
-    },
-    {
-      title: 'Terminverwaltung',
-      url: '/app/tabs/map',
-      icon: 'map'
     }
   ];
 

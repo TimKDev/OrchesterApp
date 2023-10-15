@@ -1,6 +1,10 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { TabsComponent } from './components/tabs/tabs.component';
+import { SettingsComponent } from './components/settings/settings.component';
+import { UserHelpComponent } from './components/user-help/user-help.component';
+import { UserFeedbackComponent } from './components/user-feedback/user-feedback.component';
+import { AccountManagementComponent } from './components/account-management/account-management.component';
 
 const routes: Routes = [
   {
@@ -22,6 +26,22 @@ const routes: Routes = [
       {
         path: 'anwesenheit',
         loadChildren: () => import('../anwesenheit/anwesenheit.module').then(m => m.AnwesenheitModule)
+      },
+      {
+        path: 'settings',
+        component: SettingsComponent
+      },
+      {
+        path: 'help',
+        component: UserHelpComponent
+      },
+      {
+        path: 'feedback',
+        component: UserFeedbackComponent
+      },
+      {
+        path: 'account-management',
+        component: AccountManagementComponent
       },
       {
         path: '',
