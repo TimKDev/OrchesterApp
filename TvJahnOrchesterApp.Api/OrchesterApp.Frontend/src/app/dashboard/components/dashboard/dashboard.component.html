@@ -1,3 +1,6 @@
 <app-toolbar [header]="'Dashboard'">
   Dies wird das Dashboard.
+  <ng-container *ngIf="data$ | async as data">
+    <pre>{{data | json}}</pre>
+  </ng-container>
 </app-toolbar>

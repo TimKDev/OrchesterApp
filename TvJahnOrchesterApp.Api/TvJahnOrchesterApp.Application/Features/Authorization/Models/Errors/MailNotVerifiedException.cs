@@ -12,7 +12,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors
             this.userEmail = userEmail;
         }
 
-        public HttpStatusCode StatusCode => HttpStatusCode.Unauthorized;
+        public HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 
         public string Title => "E-Mail nicht verifiziert.";
 

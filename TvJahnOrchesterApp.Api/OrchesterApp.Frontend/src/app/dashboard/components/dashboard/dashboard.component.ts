@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { AuthHttpClientService } from 'src/app/core/services/auth-http-client.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -7,7 +8,9 @@ import { Component, OnInit } from '@angular/core';
 })
 export class DashboardComponent  implements OnInit {
 
-  constructor() { }
+  constructor(private http: AuthHttpClientService) { }
+
+  data$ = this.http.get('api/dashboard/nextTermins');
 
   ngOnInit() {}
 

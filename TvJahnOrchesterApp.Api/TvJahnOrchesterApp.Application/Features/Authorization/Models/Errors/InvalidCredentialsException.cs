@@ -5,7 +5,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors
 {
     internal class InvalidCredentialsException : Exception, IServiceException
     {
-        public HttpStatusCode StatusCode => HttpStatusCode.Unauthorized;
+        public HttpStatusCode StatusCode => HttpStatusCode.BadRequest;
 
         public string Title => "Ungültige Login Daten";
 

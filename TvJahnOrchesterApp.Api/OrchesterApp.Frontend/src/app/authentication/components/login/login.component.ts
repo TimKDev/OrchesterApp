@@ -3,7 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthenticationService } from '../../services/authentication.service';
-import { catchError } from 'rxjs';
+import { NEVER, catchError } from 'rxjs';
+import { ReturnStatement } from '@angular/compiler';
 
 @Component({
   selector: 'app-login',
@@ -38,21 +39,21 @@ export class LoginComponent implements OnInit {
         catchError(async (error) => {
           await loading.dismiss();
           const alert = await this.alertController.create({
-            header: 'Login failed',
-            message: error.error.error,
+            header: error.error.title,
+            message: error.error.detail,
             buttons: ['OK']
           });
           await alert.present();
         })
       )
       .subscribe(async (res) => {
+          if(!res) return;
           await loading.dismiss();
           this.router.navigateByUrl('/tabs', { replaceUrl: true });
         }
       );
   }
 
-  // Easy access for form fields
   get email() {
     return this.credentials.get('email');
   }

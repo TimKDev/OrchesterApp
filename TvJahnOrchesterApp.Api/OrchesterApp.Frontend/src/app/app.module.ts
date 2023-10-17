@@ -6,13 +6,33 @@ import { IonicModule, IonicRouteStrategy } from '@ionic/angular';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { SharedModule } from './shared/shared.module';
+import { JwtModule } from '@auth0/angular-jwt';
+import { Preferences } from '@capacitor/preferences';
+import { TOKEN_KEY } from './authentication/services/authentication.service';
+import { RefreshTokenInterceptor } from './core/interceptor/refresh-token-interceptor';
+
+export async function tokenGetter() {
+  return (await Preferences.get({ key: TOKEN_KEY })).value;
+}
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, SharedModule],
-  providers: [{ provide: RouteReuseStrategy, useClass: IonicRouteStrategy }],
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, SharedModule, JwtModule.forRoot({
+    config: {
+      tokenGetter: tokenGetter,
+      allowedDomains: ["localhost:8001", "notesapp1.azurewebsites.net"]
+    }
+  }),],
+  providers: [
+    { provide: RouteReuseStrategy, useClass: IonicRouteStrategy },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: RefreshTokenInterceptor,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}
