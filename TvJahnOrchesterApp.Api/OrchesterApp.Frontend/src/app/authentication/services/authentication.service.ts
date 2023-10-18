@@ -26,7 +26,6 @@ export class AuthenticationService {
     const refreshToken = await Preferences.get({ key: REFRESH_TOKEN_KEY });
     this.token = token.value;
     this.refreshToken = refreshToken.value;
-    return 
   }
 
   login(credentials: LoginRequest) {

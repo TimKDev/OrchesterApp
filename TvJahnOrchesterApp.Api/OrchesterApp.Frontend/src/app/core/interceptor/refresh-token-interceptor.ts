@@ -18,7 +18,6 @@ export class RefreshTokenInterceptor {
   intercept(req: HttpRequest<unknown>, next: HttpHandler): Observable<HttpEvent<unknown>> {
     return next.handle(req).pipe(
       catchError(error => {
-        debugger;
         if(error instanceof HttpErrorResponse && error.status === 401 && !req.url.includes("login")) {
           return this.tryToRefreshTokenAndResendRequest(req, next);
         }
@@ -30,7 +29,6 @@ export class RefreshTokenInterceptor {
   private tryToRefreshTokenAndResendRequest(req: HttpRequest<unknown>, next: HttpHandler){
     return this.authenticationService.refresh().pipe(
       switchMap((res: LoginResponse) => {
-        debugger;
         let reqWithNewToken = req.clone({headers: req.headers.set("Authorization", `Bearer ${res.token}`)});
         return next.handle(reqWithNewToken);
       }),

@@ -3,8 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { AuthenticationService } from '../../services/authentication.service';
-import { NEVER, catchError } from 'rxjs';
-import { ReturnStatement } from '@angular/compiler';
+import { catchError } from 'rxjs';
 
 @Component({
   selector: 'app-login',

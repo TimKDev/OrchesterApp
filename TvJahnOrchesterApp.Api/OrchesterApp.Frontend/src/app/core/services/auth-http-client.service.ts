@@ -13,18 +13,21 @@ export class AuthHttpClientService {
   constructor(private http: HttpClient, private authService: AuthenticationService) { }
 
   get<T>(url: string, params?: HttpParams): Observable<T>{
-    let authHeader = new HttpHeaders({
-      'Content-Type': 'application/json',
-      'Authorization': `Bearer ${this.authService.token}`
-    });
-    return this.http.get<T>(this.BASE_PATH + url, {params, headers: authHeader});
+    return this.http.get<T>(this.BASE_PATH + url, {params, headers: this.createAuthHeader()});
   }
 
   post<T>(url: string, body: any): Observable<T>{
-    return this.http.post<T>(this.BASE_PATH + url, body);
+    return this.http.post<T>(this.BASE_PATH + url, body, {headers: this.createAuthHeader()});
   }
 
   put<T>(url: string, body: any): Observable<T>{
-    return this.http.put<T>(this.BASE_PATH + url, body);
+    return this.http.put<T>(this.BASE_PATH + url, body, {headers: this.createAuthHeader()});
+  }
+
+  private createAuthHeader(){
+    return new HttpHeaders({
+      'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.token}`
+    });
   }
 }
