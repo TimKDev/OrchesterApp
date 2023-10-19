@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors;
 using TvJahnOrchesterApp.Domain.UserAggregate;
@@ -32,12 +33,14 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             private readonly IJwtHandler jwtHandler;
             private readonly UserManager<User> userManager;
             private readonly ITokenService tokenService;
+            private readonly IOrchesterMitgliedRepository orchesterMitgliedRepo;
 
-            public RefreshTokenQueryHandler(IJwtHandler jwtHandler, UserManager<User> userManager, ITokenService tokenService)
+            public RefreshTokenQueryHandler(IJwtHandler jwtHandler, UserManager<User> userManager, ITokenService tokenService, IOrchesterMitgliedRepository orchesterMitgliedRepo)
             {
                 this.jwtHandler = jwtHandler;
                 this.userManager = userManager;
                 this.tokenService = tokenService;
+                this.orchesterMitgliedRepo = orchesterMitgliedRepo;
             }
 
             public async Task<AuthenticationResult> Handle(RefreshTokenQuery request, CancellationToken cancellationToken)
@@ -61,8 +64,13 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 var newRefreshToken = tokenService.GenerateRefreshToken();
 
                 await tokenService.AddRefreshTokenToUserInDBAsync(user, newRefreshToken);
+                var orchesterMitglied = await orchesterMitgliedRepo.GetByUserIdAsync(user.Id, cancellationToken);
+                if(orchesterMitglied is null)
+                {
+                    throw new Exception("Orchestermitglied wurde nicht gefunden");
+                }
 
-                return new AuthenticationResult(user.Id, user.Email, newToken, newRefreshToken);
+                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, newToken, newRefreshToken);
             }
         }
 

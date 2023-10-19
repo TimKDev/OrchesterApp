@@ -8,6 +8,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Models
 {
     public record AuthenticationResult(
         string Id, 
+        string Name,
         string Email,
         string Token,
         string RefreshToken

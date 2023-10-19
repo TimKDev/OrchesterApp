@@ -12,6 +12,7 @@ import { JwtModule } from '@auth0/angular-jwt';
 import { Preferences } from '@capacitor/preferences';
 import { TOKEN_KEY } from './authentication/services/authentication.service';
 import { RefreshTokenInterceptor } from './core/interceptor/refresh-token-interceptor';
+import { ErrorHandelingInterceptor } from './core/interceptor/error-handeling-interceptor';
 
 export async function tokenGetter() {
   return (await Preferences.get({ key: TOKEN_KEY })).value;
@@ -30,6 +31,11 @@ export async function tokenGetter() {
     {
       provide: HTTP_INTERCEPTORS,
       useClass: RefreshTokenInterceptor,
+      multi: true
+    },
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: ErrorHandelingInterceptor,
       multi: true
     }
   ],

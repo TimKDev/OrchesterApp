@@ -1,11 +1,11 @@
 <ion-list>
 
   <div class="user-info">
-    <div class="user-name">Tim Kempkens</div>
-    <div class="user-mail">tim.kempkens@googlemail.com</div>
+    <div class="user-name">{{authService.connectedOrchesterMitgliedsName}}</div>
+    <div class="user-mail">{{authService.userEmail}}</div>
     <div class="button-wrapper">
       <ion-menu-toggle>
-        <ion-button (click)="logout()" fill="outline" text-capitalize=“false” size="small">
+        <ion-button (click)="logout()" fill="outline" size="small">
           Logout
           <ion-icon slot="start" name="log-out-outline"></ion-icon>
         </ion-button>

@@ -17,7 +17,6 @@ export class LoginComponent implements OnInit {
   constructor(
     private fb: FormBuilder,
     private authService: AuthenticationService,
-    private alertController: AlertController,
     private router: Router,
     private loadingController: LoadingController
   ) { }
@@ -37,12 +36,6 @@ export class LoginComponent implements OnInit {
       .pipe(
         catchError(async (error) => {
           await loading.dismiss();
-          const alert = await this.alertController.create({
-            header: error.error.title,
-            message: error.error.detail,
-            buttons: ['OK']
-          });
-          await alert.present();
         })
       )
       .subscribe(async (res) => {

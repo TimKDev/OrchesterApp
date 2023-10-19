@@ -36,7 +36,7 @@ export class SideMenuComponent implements OnInit {
   ];
 
 
-  constructor(private authService: AuthenticationService, private router: Router) { }
+  constructor(public authService: AuthenticationService, private router: Router) { }
 
   ngOnInit() { }
 

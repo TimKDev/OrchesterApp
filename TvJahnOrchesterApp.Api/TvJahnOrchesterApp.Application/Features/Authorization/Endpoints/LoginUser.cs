@@ -95,7 +95,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 orchesterMitglied!.UserLogin();
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return new AuthenticationResult(user.Id, user.Email, token, refreshToken);
+                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, token, refreshToken);
             }
         }
 

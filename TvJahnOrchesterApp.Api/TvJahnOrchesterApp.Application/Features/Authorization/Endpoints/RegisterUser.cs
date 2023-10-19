@@ -93,7 +93,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 await userManager.ResetAccessFailedCountAsync(user);
 
-                return new AuthenticationResult(createdUser.Id, createdUser.Email!, token, refreshToken);
+                return new AuthenticationResult(createdUser.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", createdUser.Email!, token, refreshToken);
             }
         }
     }

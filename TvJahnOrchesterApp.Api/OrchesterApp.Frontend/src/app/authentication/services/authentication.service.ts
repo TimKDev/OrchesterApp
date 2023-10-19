@@ -7,14 +7,18 @@ import { UnauthorizedHttpClientService } from 'src/app/core/services/unauthorize
 
 export const TOKEN_KEY = 'token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';
+export const CONNECTED_ORCHESTER_MITGLIED_KEY = 'connected-orchester-mitglieds-name';
+export const USER_EMAIL_KEY = 'user-email';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AuthenticationService {
   // isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
-  token: string | null = null;
-  refreshToken: string | null = null;
+  public token: string | null = null;
+  public refreshToken: string | null = null;
+  public connectedOrchesterMitgliedsName: string | null = null; 
+  public userEmail: string | null = null; 
 
   constructor(
     private http: UnauthorizedHttpClientService,
@@ -24,14 +28,18 @@ export class AuthenticationService {
   async loadTokensFromStorage() {
     const token = await Preferences.get({ key: TOKEN_KEY });
     const refreshToken = await Preferences.get({ key: REFRESH_TOKEN_KEY });
+    const connectedOrchesterMitgliedsName = await Preferences.get({ key: CONNECTED_ORCHESTER_MITGLIED_KEY });
+    const userEmail = await Preferences.get({ key: USER_EMAIL_KEY });
     this.token = token.value;
     this.refreshToken = refreshToken.value;
+    this.connectedOrchesterMitgliedsName = connectedOrchesterMitgliedsName.value;
+    this.userEmail = userEmail.value;
   }
 
   login(credentials: LoginRequest) {
     return this.http.post<LoginResponse>('api/authentication/login', credentials).pipe(
       tap(async (res: LoginResponse) => {
-        await this.setTokens(res.token, res.refreshToken);
+        await this.setTokens(res.token, res.refreshToken, res.name, res.email);
         // this.isAuthenticated.next(true);
       })
     );
@@ -41,6 +49,8 @@ export class AuthenticationService {
     // this.isAuthenticated.next(false);
     await Preferences.remove({ key: TOKEN_KEY });
     await Preferences.remove({ key: REFRESH_TOKEN_KEY });
+    await Preferences.remove({ key: CONNECTED_ORCHESTER_MITGLIED_KEY });
+    await Preferences.remove({ key: USER_EMAIL_KEY });
   }
 
   public refresh(){
@@ -50,16 +60,20 @@ export class AuthenticationService {
     return this.http.post<LoginResponse>("api/authentication/refresh", { token: this.token, refreshToken: this.refreshToken })
     .pipe(
       tap( async res => {
-        await this.setTokens(res.token, res.refreshToken);
+        await this.setTokens(res.token, res.refreshToken, res.name, res.email);
       })
     );
   }
 
-  private async setTokens(token: string, refreshToken: string) {
+  private async setTokens(token: string, refreshToken: string, name: string, userEmail: string) {
     this.token = token;
     this.refreshToken = refreshToken;
+    this.connectedOrchesterMitgliedsName = name;
+    this.userEmail = userEmail;
     await Preferences.set({ key: TOKEN_KEY, value: token });
     await Preferences.set({ key: REFRESH_TOKEN_KEY, value: refreshToken });
+    await Preferences.set({ key: CONNECTED_ORCHESTER_MITGLIED_KEY, value: name });
+    await Preferences.set({ key: USER_EMAIL_KEY, value: userEmail });
   }
 
   // public isUserAdmin = (): boolean => {
