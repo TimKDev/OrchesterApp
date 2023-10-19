@@ -28,7 +28,6 @@
     <div *ngIf="(password?.dirty || password?.touched) && password?.errors" class="errors">
      <span *ngIf="password?.errors?.['required']">Passwort wird benötigt. </span>
      <span *ngIf="password?.errors?.['minlength']">Passwort muss mindestens 6 Zeichen enthalten. </span>
-     <span *ngIf="password?.errors?.['mustMatch']">Passwörter stimmen nicht überein. </span>
     </div>
 
     <ion-item>

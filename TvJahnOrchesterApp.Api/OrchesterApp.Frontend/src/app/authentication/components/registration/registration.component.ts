@@ -34,16 +34,11 @@ export class RegistrationComponent implements OnInit {
       Validators.minLength(6),
       this.validateConfirmPassword(this.registerForm.get('password'))
     ]);
-
-    this.registerForm.get('password')?.setValidators([
-      Validators.required,
-      Validators.minLength(6),
-      this.validatePassword(this.registerForm.get('confirmPassword'))
-    ]);
   }
 
 
   async register() {
+    //Check is passwords match => Else modal 
     const loading = await this.loadingController.create();
     await loading.present();
 
@@ -72,18 +67,6 @@ export class RegistrationComponent implements OnInit {
 
   get confirmPassword() {
     return this.registerForm.get('confirmPassword');
-  }
-
-  private validatePassword(confirmationControl: AbstractControl | null): ValidatorFn {
-    return (passwordControl: AbstractControl): { [key: string]: boolean } | null => {
-      const passwordValue = passwordControl.value;
-      const confirmValue = confirmationControl?.value;
-      if(!confirmValue) return null;
-      if (confirmValue !== passwordValue) {
-        return { mustMatch: true }
-      }
-      return null;
-    };
   }
 
   private validateConfirmPassword(passwordControl: AbstractControl | null): ValidatorFn {
