@@ -4,6 +4,7 @@ import { BehaviorSubject, tap } from 'rxjs';
 import { LoginRequest } from '../interfaces/login-request';
 import { LoginResponse } from '../interfaces/login-response';
 import { UnauthorizedHttpClientService } from 'src/app/core/services/unauthorized-http-client.service';
+import { RegisterRequest } from '../interfaces/register-request';
 
 export const TOKEN_KEY = 'token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';
@@ -41,6 +42,14 @@ export class AuthenticationService {
       tap(async (res: LoginResponse) => {
         await this.setTokens(res.token, res.refreshToken, res.name, res.email);
         // this.isAuthenticated.next(true);
+      })
+    );
+  }
+
+  register(registerRequest: RegisterRequest){
+    return this.http.post<LoginResponse>('api/authentication/register', registerRequest).pipe(
+      tap(async (res: LoginResponse) => {
+        await this.setTokens(res.token, res.refreshToken, res.name, res.email);
       })
     );
   }

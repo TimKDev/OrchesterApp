@@ -1,9 +1,11 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from '@angular/forms';
 import { Router } from '@angular/router';
-import { LoadingController } from '@ionic/angular';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { catchError } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
+import { RegisterRequest } from '../../interfaces/register-request';
+import { BASE_PATH } from 'src/app/core/services/unauthorized-http-client.service';
 
 @Component({
   selector: 'app-registration',
@@ -18,31 +20,40 @@ export class RegistrationComponent implements OnInit {
     private fb: FormBuilder,
     private authService: AuthenticationService,
     private router: Router,
-    private loadingController: LoadingController
+    private loadingController: LoadingController,
+    private alertController: AlertController,
   ) { }
 
   ngOnInit() {
     this.registerForm = this.fb.group({
-      registerKey: ['', [Validators.required]],
+      registerationKey: ['', [Validators.required]],
       email: ['', [Validators.required, Validators.email]],
       password: ['', [Validators.required, Validators.minLength(6)]],
-      confirmPassword: [''],
+      confirmPassword: ['', [Validators.required, Validators.minLength(6)]],
     });
-
-    this.registerForm.get('confirmPassword')?.setValidators([
-      Validators.required,
-      Validators.minLength(6),
-      this.validateConfirmPassword(this.registerForm.get('password'))
-    ]);
   }
 
 
   async register() {
-    //Check is passwords match => Else modal 
+    if(this.password?.value !== this.confirmPassword?.value){
+      let alert = await this.alertController.create({
+        header: "Registrierungsfehler",
+        message: "Passwort stimmt nicht mit dem wiederholten Passwort überein. Wiederholen sie die Passworteingabe.",
+        buttons: ['OK']
+      });
+      return await alert.present();
+    }
     const loading = await this.loadingController.create();
     await loading.present();
 
-    this.authService.login(this.registerForm.value)
+    let registerRequest: RegisterRequest = {
+      registerationKey: this.registerationKey?.value,
+      email: this.email?.value,
+      password: this.password?.value,
+      clientUri: `${BASE_PATH}auth/email-confirmation`
+    };
+
+    this.authService.register(registerRequest)
       .pipe(
         catchError(async () => await loading.dismiss())
       )
@@ -53,8 +64,8 @@ export class RegistrationComponent implements OnInit {
       });
   }
 
-  get registerKey() {
-    return this.registerForm.get('registerKey');
+  get registerationKey() {
+    return this.registerForm.get('registerationKey');
   }
 
   get email() {
@@ -67,16 +78,5 @@ export class RegistrationComponent implements OnInit {
 
   get confirmPassword() {
     return this.registerForm.get('confirmPassword');
-  }
-
-  private validateConfirmPassword(passwordControl: AbstractControl | null): ValidatorFn {
-    return (confirmationControl: AbstractControl): { [key: string]: boolean } | null => {
-      const confirmValue = confirmationControl.value;
-      const passwordValue = passwordControl?.value;
-      if (confirmValue !== passwordValue) {
-        return { mustMatch: true }
-      }
-      return null;
-    };
   }
 }

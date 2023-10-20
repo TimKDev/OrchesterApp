@@ -73,10 +73,10 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                     throw new Exception("Account wurde wegen zu vieler falscher Passworteingaben gesperrt.");
                 }
-                if (!await userManager.IsEmailConfirmedAsync(user))
-                {
-                    throw new MailNotVerifiedException(request.Email);
-                }
+                //if (!await userManager.IsEmailConfirmedAsync(user))
+                //{
+                //    throw new MailNotVerifiedException(request.Email);
+                //}
                 if (!await userManager.CheckPasswordAsync(user, request.Password))
                 {
                     await userManager.AccessFailedAsync(user);
