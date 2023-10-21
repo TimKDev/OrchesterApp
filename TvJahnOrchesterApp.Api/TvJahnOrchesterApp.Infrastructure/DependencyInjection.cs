@@ -14,9 +14,9 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 using TvJahnOrchesterApp.Infrastructure.Authentication;
 using TvJahnOrchesterApp.Infrastructure.Common.Interfaces;
+using TvJahnOrchesterApp.Infrastructure.Email;
 using TvJahnOrchesterApp.Infrastructure.Persistence;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
-using TvJahnOrchesterApp.Infrastructure.Services;
 
 namespace TvJahnOrchesterApp.Infrastructure
 {
@@ -26,7 +26,7 @@ namespace TvJahnOrchesterApp.Infrastructure
         {
             services
                 .AddPersistence()
-                .AddServices()
+                .AddEmail(configuration)
                 .AddAuthentication(configuration);
 
             return services;
@@ -43,8 +43,12 @@ namespace TvJahnOrchesterApp.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddServices(this IServiceCollection services)
+        public static IServiceCollection AddEmail(this IServiceCollection services, ConfigurationManager configuration)
         {
+            var emailConfig = new EmailConfiguration();
+            configuration.Bind(EmailConfiguration.SectionName, emailConfig);
+
+            services.AddSingleton(emailConfig);
             services.AddScoped<IEmailService, EmailService>();
 
             return services;

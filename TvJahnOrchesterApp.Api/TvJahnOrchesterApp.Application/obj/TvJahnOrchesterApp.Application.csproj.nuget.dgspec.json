@@ -67,10 +67,6 @@
               "target": "Package",
               "version": "[7.0.0, )"
             },
-            "MimeKit": {
-              "target": "Package",
-              "version": "[4.2.0, )"
-            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[6.21.0, )"

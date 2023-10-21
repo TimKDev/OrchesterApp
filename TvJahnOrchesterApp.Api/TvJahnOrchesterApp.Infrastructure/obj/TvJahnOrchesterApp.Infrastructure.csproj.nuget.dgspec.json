@@ -67,10 +67,6 @@
               "target": "Package",
               "version": "[7.0.0, )"
             },
-            "MimeKit": {
-              "target": "Package",
-              "version": "[4.2.0, )"
-            },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
               "version": "[6.21.0, )"
@@ -286,6 +282,10 @@
               "suppressParent": "All",
               "target": "Package",
               "version": "[7.0.10, )"
+            },
+            "NETCore.MailKit": {
+              "target": "Package",
+              "version": "[2.1.0, )"
             }
           },
           "imports": [

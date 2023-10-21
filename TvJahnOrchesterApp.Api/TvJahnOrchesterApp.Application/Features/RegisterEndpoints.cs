@@ -22,6 +22,7 @@ namespace TvJahnOrchesterApp.Application.Features
             app.RegisterEndpointsTerminFeature();
             app.RegisterEndpointsTerminRückmeldungFeature();
             app.RegisterEndpointsAnwesenheitsListeFeature();
+            app.MapAddTestEndpoint();
         }
     }
 }
