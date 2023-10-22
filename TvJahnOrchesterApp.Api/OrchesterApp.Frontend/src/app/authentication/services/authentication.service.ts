@@ -5,6 +5,8 @@ import { LoginRequest } from '../interfaces/login-request';
 import { LoginResponse } from '../interfaces/login-response';
 import { UnauthorizedHttpClientService } from 'src/app/core/services/unauthorized-http-client.service';
 import { RegisterRequest } from '../interfaces/register-request';
+import { ChangeEmailRequest } from '../interfaces/change-email-request';
+import { ResendVerificationMailRequest } from '../interfaces/resend-verification-mail-request';
 
 export const TOKEN_KEY = 'token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';
@@ -73,6 +75,14 @@ export class AuthenticationService {
         await this.setTokens(res.token, res.refreshToken, res.name, res.email);
       })
     );
+  }
+
+  public changeEmail(changeEmailRequest: ChangeEmailRequest){
+    return this.http.put<void>('api/authentication/change-user-email', changeEmailRequest);
+  }
+
+  public resendVerificationMail(resendVerificationMailRequest: ResendVerificationMailRequest){
+    return this.http.post<void>('api/authentication/resend-mail', resendVerificationMailRequest);
   }
 
   private async setTokens(token: string, refreshToken: string, name: string, userEmail: string) {

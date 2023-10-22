@@ -18,6 +18,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization
             app.MapGetUserAdminInfosEndpoint();
             app.MapAddRegistrationKeyEndpoint();
             app.MapRevokeUserLockedOutEndpoint();
+            app.MapChangeEmailUserEndpoint();
         }
     }
 }

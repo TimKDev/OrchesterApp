@@ -38,7 +38,6 @@
           <ion-input aria-label="Passwort Bestätigung" type="password" placeholder="Wiederhole Passwort"
             formControlName="confirmPassword"></ion-input>
         </app-show-hide-password>
-
       </ion-item>
       <div *ngIf="(confirmPassword?.dirty || confirmPassword?.touched) && confirmPassword?.errors" class="errors">
         <span *ngIf="confirmPassword?.errors?.['required']">Passwort wird benötigt. </span>

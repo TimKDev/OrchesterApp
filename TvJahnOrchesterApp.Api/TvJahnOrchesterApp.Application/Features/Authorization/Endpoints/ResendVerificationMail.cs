@@ -13,7 +13,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapResendVerificationMailEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/authentication/resendMail", PostResendVerificationMail);
+            app.MapPost("api/authentication/resend-mail", PostResendVerificationMail);
         }
 
         private static async Task<IResult> PostResendVerificationMail([FromBody] ResendVerficationMailCommand resendVerficationMailCommand, CancellationToken cancellationToken, ISender sender)

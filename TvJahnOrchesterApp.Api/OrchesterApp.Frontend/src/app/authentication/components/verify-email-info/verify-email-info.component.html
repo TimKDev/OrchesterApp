@@ -1,6 +1,6 @@
 <ion-header>
   <ion-toolbar color="primary">
-    <ion-title>Verifiziere deine Email</ion-title>
+    <ion-title>Verifiziere deine E-Mail</ion-title>
   </ion-toolbar>
 </ion-header>
 
@@ -9,7 +9,7 @@
     dieser Mail, um deine E-Mail zu verifizieren. Falls du keine Mail finden kannst, denke daran auch in den Spamordner zu gucken.
   </p>
   <p class="info-text-2">
-    Nachdem deine Mail verifiziert wurde, kannst du dich ganz normal anmelden, indem du den Button "Zurück zum Login" drückst.
+    Nachdem deine Mail verifiziert wurde, kannst du dich ganz normal anmelden, indem du zurück zum <a routerLink="/auth/">Login</a> gehst.
   </p>
   
     <ion-button (click)="resendVerificationMail()" type="button" expand="block" fill="clear"
@@ -25,12 +25,23 @@
   <form *ngIf="showChangeEmailForm" (ngSubmit)="changeEmail()" [formGroup]="changeEmailFormGroup">
     <div class="input-group">
       <ion-item>
-        <ion-input aria-label="Email" type="email" placeholder="Email" formControlName="email"></ion-input>
+        <ion-input type="email" placeholder="Neue Email" formControlName="newEmail"></ion-input>
       </ion-item>
-      <div *ngIf="(email?.dirty || email?.touched) && email?.errors" class="errors">
-        <span *ngIf="email?.errors?.['required']">Email wird benötigt. </span>
+      <div *ngIf="(newEmail?.dirty || newEmail?.touched) && newEmail?.errors" class="errors">
+        <span *ngIf="newEmail?.errors?.['required']">Neue Email wird benötigt. </span>
+      </div>
+      <ion-item>
+        <app-show-hide-password>
+          <ion-input type="password" placeholder="Altes Passwort" formControlName="password"></ion-input>
+        </app-show-hide-password>
+      </ion-item>
+      <div *ngIf="(password?.dirty || password?.touched) && password?.errors" class="errors">
+        <span *ngIf="password?.errors?.['required']">Passwort wird benötigt. </span>
+        <span *ngIf="password?.errors?.['minlength']">Passwort muss mindestens 6 Zeichen enthalten. </span>
       </div>
     </div>
+
+    
 
     <ion-button type="submit" expand="block" [disabled]="!changeEmailFormGroup.valid">Ändere Email</ion-button>
   </form>
