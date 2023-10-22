@@ -1,3 +1,12 @@
-<p>
-  email-confirmed works!
-</p>
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Email Verifizierung</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <ng-container *ngIf="showSuccessMessage">
+    <p>Deine E-Mail wurde erfolgreich verifiziert. Falls du die native Android App verwendest, kannst du jetzt zu dieser zurückkehren und dich einloggen. 
+      Falls du die Webversion der App verwenden möchtest, kannst du dich <a routerLink="/auth/">hier</a> einloggen. </p>
+  </ng-container>
+</ion-content>

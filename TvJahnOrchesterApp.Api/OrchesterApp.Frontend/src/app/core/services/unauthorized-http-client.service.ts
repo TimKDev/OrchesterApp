@@ -4,6 +4,7 @@ import { HttpParams } from '@capacitor/core';
 import { Observable } from 'rxjs';
 
 export const BASE_PATH = 'https://localhost:44331/';
+export const BASE_PATH_FRONTEND = 'http://localhost:8100/'
 
 @Injectable({
   providedIn: 'root'

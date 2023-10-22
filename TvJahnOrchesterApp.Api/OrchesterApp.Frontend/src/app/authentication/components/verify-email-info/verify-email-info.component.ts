@@ -4,7 +4,7 @@ import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { catchError, throwError } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
-import { BASE_PATH } from 'src/app/core/services/unauthorized-http-client.service';
+import { BASE_PATH, BASE_PATH_FRONTEND } from 'src/app/core/services/unauthorized-http-client.service';
 
 @Component({
   selector: 'app-verify-email-info',
@@ -16,7 +16,7 @@ export class VerifyEmailInfoComponent  implements OnInit {
   showChangeEmailForm = false;
   changeEmailFormGroup!: FormGroup;
 
-  private readonly clientUri = `${BASE_PATH}auth/email-confirmation`;
+  private readonly clientUri = `${BASE_PATH_FRONTEND}auth/email-confirmation`;
 
 
   constructor(

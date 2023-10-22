@@ -5,7 +5,7 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { catchError } from 'rxjs';
 import { AuthenticationService } from '../../services/authentication.service';
 import { RegisterRequest } from '../../interfaces/register-request';
-import { BASE_PATH } from 'src/app/core/services/unauthorized-http-client.service';
+import { BASE_PATH, BASE_PATH_FRONTEND } from 'src/app/core/services/unauthorized-http-client.service';
 
 @Component({
   selector: 'app-registration',
@@ -50,7 +50,7 @@ export class RegistrationComponent implements OnInit {
       registerationKey: this.registerationKey?.value,
       email: this.email?.value,
       password: this.password?.value,
-      clientUri: `${BASE_PATH}auth/email-confirmation`
+      clientUri: `${BASE_PATH_FRONTEND}auth/email-confirmation`
     };
 
     this.authService.register(registerRequest)
