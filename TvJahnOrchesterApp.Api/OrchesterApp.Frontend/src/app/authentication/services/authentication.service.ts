@@ -38,6 +38,7 @@ export class AuthenticationService {
   }
 
   login(credentials: LoginRequest) {
+    this.userEmail = credentials.email;
     return this.http.post<LoginResponse>('api/authentication/login', credentials).pipe(
       tap(async (res: LoginResponse) => {
         await this.setTokens(res.token, res.refreshToken, res.name, res.email);

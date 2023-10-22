@@ -1,0 +1,41 @@
+<ion-header>
+  <ion-toolbar color="primary">
+    <ion-title>Verifiziere deine Email</ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content>
+  <p class="info-text">An die von dir eingegebene E-Mail Adresse {{authService.userEmail}} wurde ein Verifizierungslink verschickt. Bitte klicke auf den Link in
+    dieser Mail, um deine E-Mail zu verifizieren. Falls du keine Mail finden kannst, denke daran auch in den Spamordner zu gucken.
+  </p>
+  <p class="info-text-2">
+    Nachdem deine Mail verifiziert wurde, kannst du dich ganz normal anmelden, indem du den Button "Zurück zum Login" drückst.
+  </p>
+  
+    <ion-button (click)="resendVerificationMail()" type="button" expand="block" fill="clear"
+    class="resend-mail-button">
+    Versende die E-Mail erneut
+  </ion-button>
+
+  <ion-button (click)="showChangeEmailForm = !showChangeEmailForm;" type="button" expand="block" fill="clear"
+    class="change-email-button">
+    E-Mail Adresse ändern
+  </ion-button>
+
+  <form *ngIf="showChangeEmailForm" (ngSubmit)="changeEmail()" [formGroup]="changeEmailFormGroup">
+    <div class="input-group">
+      <ion-item>
+        <ion-input aria-label="Email" type="email" placeholder="Email" formControlName="email"></ion-input>
+      </ion-item>
+      <div *ngIf="(email?.dirty || email?.touched) && email?.errors" class="errors">
+        <span *ngIf="email?.errors?.['required']">Email wird benötigt. </span>
+      </div>
+    </div>
+
+    <ion-button type="submit" expand="block" [disabled]="!changeEmailFormGroup.valid">Ändere Email</ion-button>
+  </form>
+  <ion-button routerLink="/auth/" type="button" expand="block" fill="clear"
+    class="back-to-login-button">
+    Zurück zum Login
+  </ion-button>
+</ion-content>

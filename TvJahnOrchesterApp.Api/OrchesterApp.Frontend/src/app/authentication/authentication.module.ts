@@ -7,13 +7,17 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RegistrationComponent } from './components/registration/registration.component';
 import { ShowHidePasswordComponent } from './components/show-hide-password/show-hide-password.component';
+import { VerifyEmailInfoComponent } from './components/verify-email-info/verify-email-info.component';
+import { EmailConfirmedComponent } from './components/email-confirmed/email-confirmed.component';
 
 
 @NgModule({
   declarations: [
     LoginComponent,
     RegistrationComponent,
-    ShowHidePasswordComponent
+    ShowHidePasswordComponent,
+    VerifyEmailInfoComponent,
+    EmailConfirmedComponent,
   ],
   imports: [
     CommonModule,
