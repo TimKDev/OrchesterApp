@@ -52,6 +52,11 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 {
                     throw new Exception("Unauthorized");
                 }
+                var userWithNewMail = await userManager.FindByEmailAsync(request.NewEmail);
+                if(userWithNewMail is not null)
+                {
+                    throw new Exception("Email adresse is already taken!");
+                }
                 var validUserEmailToken = await userManager.GenerateChangeEmailTokenAsync(user, request.NewEmail);
                 await userManager.ChangeEmailAsync(user, request.NewEmail, validUserEmailToken);
                 user.EmailConfirmed = false;

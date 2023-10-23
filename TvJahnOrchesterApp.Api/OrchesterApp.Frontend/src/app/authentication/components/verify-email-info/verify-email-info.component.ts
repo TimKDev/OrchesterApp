@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { catchError, throwError } from 'rxjs';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService, CLIENT_URI_EMAIL_CONFIRMATION } from '../../services/authentication.service';
 import { BASE_PATH, BASE_PATH_FRONTEND } from 'src/app/core/services/unauthorized-http-client.service';
 
 @Component({
@@ -15,8 +15,6 @@ export class VerifyEmailInfoComponent  implements OnInit {
 
   showChangeEmailForm = false;
   changeEmailFormGroup!: FormGroup;
-
-  private readonly clientUri = `${BASE_PATH_FRONTEND}auth/email-confirmation`;
 
 
   constructor(
@@ -37,7 +35,7 @@ export class VerifyEmailInfoComponent  implements OnInit {
   async changeEmail() {
     const loading = await this.loadingController.create();
     await loading.present();
-    this.authService.changeEmail({...this.changeEmailFormGroup.value, oldEmail: this.authService.userEmail!, clientUri: this.clientUri})
+    this.authService.changeEmail({...this.changeEmailFormGroup.value, oldEmail: this.authService.userEmail!, clientUri: CLIENT_URI_EMAIL_CONFIRMATION})
       .pipe(catchError(async () => {
         await loading.dismiss()
         return {error: true}
@@ -60,7 +58,7 @@ export class VerifyEmailInfoComponent  implements OnInit {
   async resendVerificationMail(){
     const loading = await this.loadingController.create();
     await loading.present();
-    this.authService.resendVerificationMail({email: this.authService.userEmail!, clientUri: this.clientUri})
+    this.authService.resendVerificationMail({email: this.authService.userEmail!, clientUri: CLIENT_URI_EMAIL_CONFIRMATION})
       .pipe(catchError(async () => await loading.dismiss()))
       .subscribe(async () => {
         await loading.dismiss();

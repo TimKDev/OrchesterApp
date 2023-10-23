@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Routing;
 using Microsoft.AspNetCore.WebUtilities;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Common.Models;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
@@ -15,7 +16,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapForgotPasswordEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/authentication/forgotPassword", PostRegisterUser);
+            app.MapPost("api/authentication/forgot-password", PostRegisterUser);
         }
 
         private static async Task<IResult> PostRegisterUser([FromBody] ForgotPasswordCommand registerUserCommand, CancellationToken cancellationToken, ISender sender)
@@ -44,6 +45,10 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 {
                     throw new Exception("Invalid Request");
                 }
+                if (!user.EmailConfirmed)
+                {
+                    throw new MailNotVerifiedException(user.Email!);
+                }
 
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
                 var param = new Dictionary<string, string?>
@@ -53,7 +58,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 };
 
                 var callback = QueryHelpers.AddQueryString(request.ClientUri, param);
-                var message = new Message(new string[] { user.Email }, "Reset password token", callback);
+                var message = new Message(new string[] { user.Email! }, "Reset password token", callback);
 
                 await emailService.SendEmailAsync(message);
 

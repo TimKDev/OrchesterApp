@@ -25,7 +25,8 @@
 
       <ion-item>
         <app-show-hide-password>
-          <ion-input aria-label="Passwort" type="password" placeholder="Passwort" formControlName="password"></ion-input>
+          <ion-input aria-label="Passwort" type="password" placeholder="Passwort"
+            formControlName="password"></ion-input>
         </app-show-hide-password>
       </ion-item>
       <div *ngIf="(password?.dirty || password?.touched) && password?.errors" class="errors">
@@ -46,6 +47,10 @@
       </div>
     </div>
 
-    <ion-button slot="bottom" type="submit" expand="block" [disabled]="!registerForm.valid">Registriere dich</ion-button>
+    <ion-button slot="bottom" type="submit" expand="block" [disabled]="!registerForm.valid">Registriere
+      dich</ion-button>
   </form>
+  <ion-button routerLink="/auth/" type="button" expand="block" fill="clear" class="back-to-login-button">
+    Zurück zum Login
+  </ion-button>
 </ion-content>

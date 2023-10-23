@@ -3,16 +3,20 @@ import { Preferences } from '@capacitor/preferences';
 import { BehaviorSubject, tap } from 'rxjs';
 import { LoginRequest } from '../interfaces/login-request';
 import { LoginResponse } from '../interfaces/login-response';
-import { UnauthorizedHttpClientService } from 'src/app/core/services/unauthorized-http-client.service';
+import { BASE_PATH_FRONTEND, UnauthorizedHttpClientService } from 'src/app/core/services/unauthorized-http-client.service';
 import { RegisterRequest } from '../interfaces/register-request';
 import { ChangeEmailRequest } from '../interfaces/change-email-request';
 import { ResendVerificationMailRequest } from '../interfaces/resend-verification-mail-request';
 import { ConfirmEmailRequest } from '../interfaces/confirm-email-request';
+import { ForgotPasswordRequest } from '../interfaces/forgot-password-request';
+import { ResetPasswordRequest } from '../interfaces/reset-password-request';
 
 export const TOKEN_KEY = 'token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';
 export const CONNECTED_ORCHESTER_MITGLIED_KEY = 'connected-orchester-mitglieds-name';
 export const USER_EMAIL_KEY = 'user-email';
+export const CLIENT_URI_EMAIL_CONFIRMATION = `${BASE_PATH_FRONTEND}auth/email-confirmation`;
+export const CLIENT_URI_PASSWORD_RESET = `${BASE_PATH_FRONTEND}auth/reset-password`;
 
 @Injectable({
   providedIn: 'root'
@@ -88,6 +92,14 @@ export class AuthenticationService {
 
   public confirmEmail(confirmEmailRequest: ConfirmEmailRequest){
     return this.http.post<void>('api/authentication/confirm-email', confirmEmailRequest);
+  }
+
+  public forgotPassword(request: ForgotPasswordRequest){
+    return this.http.post<string>('api/authentication/forgot-password', request);
+  }
+
+  public resetPassword(request: ResetPasswordRequest){
+    return this.http.post<string>('api/authentication/resetPassword', request);
   }
 
   private async setTokens(token: string, refreshToken: string, name: string, userEmail: string) {

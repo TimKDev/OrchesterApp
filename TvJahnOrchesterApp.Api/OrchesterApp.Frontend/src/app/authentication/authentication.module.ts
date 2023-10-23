@@ -9,7 +9,6 @@ import { RegistrationComponent } from './components/registration/registration.co
 import { ShowHidePasswordComponent } from './components/show-hide-password/show-hide-password.component';
 import { VerifyEmailInfoComponent } from './components/verify-email-info/verify-email-info.component';
 import { EmailConfirmedComponent } from './components/email-confirmed/email-confirmed.component';
-import { PasswordResetConfirmedComponent } from './components/password-reset-confirmed/password-reset-confirmed.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 
 
@@ -20,7 +19,6 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     ShowHidePasswordComponent,
     VerifyEmailInfoComponent,
     EmailConfirmedComponent,
-    PasswordResetConfirmedComponent,
     ForgotPasswordComponent
   ],
   imports: [

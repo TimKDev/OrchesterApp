@@ -3,7 +3,7 @@ import { FormGroup, FormBuilder, Validators, AbstractControl, ValidatorFn } from
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
 import { catchError } from 'rxjs';
-import { AuthenticationService } from '../../services/authentication.service';
+import { AuthenticationService, CLIENT_URI_EMAIL_CONFIRMATION } from '../../services/authentication.service';
 import { RegisterRequest } from '../../interfaces/register-request';
 import { BASE_PATH, BASE_PATH_FRONTEND } from 'src/app/core/services/unauthorized-http-client.service';
 
@@ -50,7 +50,7 @@ export class RegistrationComponent implements OnInit {
       registerationKey: this.registerationKey?.value,
       email: this.email?.value,
       password: this.password?.value,
-      clientUri: `${BASE_PATH_FRONTEND}auth/email-confirmation`
+      clientUri: CLIENT_URI_EMAIL_CONFIRMATION
     };
 
     this.authService.register(registerRequest)
