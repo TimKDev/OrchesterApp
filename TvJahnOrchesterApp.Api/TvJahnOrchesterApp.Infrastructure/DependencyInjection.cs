@@ -6,6 +6,8 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using System;
+using System.Runtime.CompilerServices;
 using System.Text;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
@@ -63,11 +65,12 @@ namespace TvJahnOrchesterApp.Infrastructure
                 opt.Password.RequireUppercase = false;
                 opt.User.RequireUniqueEmail = true;
                 opt.Lockout.AllowedForNewUsers = true;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(2);
+                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
                 opt.Lockout.MaxFailedAccessAttempts = 3;
                 opt.SignIn.RequireConfirmedEmail = false;
             }).AddEntityFrameworkStores<OrchesterDbContext>()
-            .AddDefaultTokenProviders();
+            .AddDefaultTokenProviders()
+            ;
 
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings.SectionName, jwtSettings);

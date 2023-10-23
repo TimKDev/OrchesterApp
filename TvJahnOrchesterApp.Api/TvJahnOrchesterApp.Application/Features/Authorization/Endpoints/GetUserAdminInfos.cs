@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
@@ -13,8 +14,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapGetUserAdminInfosEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/authentication/userAdminInfos", UserAdminInfos)
-                .RequireAuthorization();
+            app.MapGet("api/authentication/user-admin-infos", UserAdminInfos)
+                .RequireAuthorization(r => r.RequireRole(new string[] {RoleNames.Admin}));
         }
 
         private static async Task<IResult> UserAdminInfos(CancellationToken cancellationToken, ISender sender)
@@ -25,7 +26,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
         private record GetUserAdminInfosQuery() : IRequest<GetUserAdminInfosResponse[]>;
 
-        private record GetUserAdminInfosResponse(Guid OrchesterMitgliedsId, string? UserId, string RegistrationKey, DateTime RegisterKeyExpirationDate, string? Email, bool AccountLocked, DateTime? LastLogin, DateTime? FirstLogin);
+        private record GetUserAdminInfosResponse(Guid OrchesterMitgliedsId, string? UserId, string RegistrationKey, DateTime RegisterKeyExpirationDate, string? Email, bool AccountLocked, DateTime? LastLogin, DateTime? FirstLogin, string[] RoleNames);
 
         private class GetUserAdminInfosQueryHandler : IRequestHandler<GetUserAdminInfosQuery, GetUserAdminInfosResponse[]>
         {
@@ -45,11 +46,13 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 {
                     var user = orchesterMitglied.ConnectedUserId is null ? null : await userManager.FindByIdAsync(orchesterMitglied.ConnectedUserId);
                     var userLocked = false;
+                    string[] userRoles = Array.Empty<string>();
                     if (user is not null)
                     {
                         userLocked = await userManager.IsLockedOutAsync(user);
+                        userRoles = (await userManager.GetRolesAsync(user)).ToArray();
                     }
-                    result.Add(new GetUserAdminInfosResponse(orchesterMitglied.Id.Value, user?.Id, orchesterMitglied.RegisterKey, orchesterMitglied.RegisterKeyExpirationDate, user?.Email, userLocked, orchesterMitglied.UserLastLogin, orchesterMitglied.UserFirstConnected));
+                    result.Add(new GetUserAdminInfosResponse(orchesterMitglied.Id.Value, user?.Id, orchesterMitglied.RegisterKey, orchesterMitglied.RegisterKeyExpirationDate, user?.Email, userLocked, orchesterMitglied.UserLastLogin, orchesterMitglied.UserFirstConnected, userRoles));
                 }
 
                 return result.ToArray();
