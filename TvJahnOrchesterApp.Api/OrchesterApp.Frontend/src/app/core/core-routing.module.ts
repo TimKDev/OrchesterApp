@@ -4,7 +4,6 @@ import { TabsComponent } from './components/tabs/tabs.component';
 import { SettingsComponent } from './components/settings/settings.component';
 import { UserHelpComponent } from './components/user-help/user-help.component';
 import { UserFeedbackComponent } from './components/user-feedback/user-feedback.component';
-import { AccountManagementComponent } from './components/account-management/account-management.component';
 
 const routes: Routes = [
   {
@@ -38,10 +37,6 @@ const routes: Routes = [
       {
         path: 'feedback',
         component: UserFeedbackComponent
-      },
-      {
-        path: 'account-management',
-        component: AccountManagementComponent
       },
       {
         path: '',

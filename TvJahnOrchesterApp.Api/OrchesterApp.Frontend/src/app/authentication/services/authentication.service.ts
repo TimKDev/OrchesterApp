@@ -15,6 +15,8 @@ export const TOKEN_KEY = 'token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';
 export const CONNECTED_ORCHESTER_MITGLIED_KEY = 'connected-orchester-mitglieds-name';
 export const USER_EMAIL_KEY = 'user-email';
+export const USER_ROLES_KEY = 'user-roles';
+
 export const CLIENT_URI_EMAIL_CONFIRMATION = `${BASE_PATH_FRONTEND}auth/email-confirmation`;
 export const CLIENT_URI_PASSWORD_RESET = `${BASE_PATH_FRONTEND}auth/reset-password`;
 
@@ -22,11 +24,12 @@ export const CLIENT_URI_PASSWORD_RESET = `${BASE_PATH_FRONTEND}auth/reset-passwo
   providedIn: 'root'
 })
 export class AuthenticationService {
-  // isAuthenticated: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   public token: string | null = null;
   public refreshToken: string | null = null;
   public connectedOrchesterMitgliedsName: string | null = null; 
   public userEmail: string | null = null; 
+  public userRoles: string[] | null = null;
+  public userRoleSubject = new BehaviorSubject<string[]>([]); 
 
   constructor(
     private http: UnauthorizedHttpClientService,
@@ -38,36 +41,34 @@ export class AuthenticationService {
     const refreshToken = await Preferences.get({ key: REFRESH_TOKEN_KEY });
     const connectedOrchesterMitgliedsName = await Preferences.get({ key: CONNECTED_ORCHESTER_MITGLIED_KEY });
     const userEmail = await Preferences.get({ key: USER_EMAIL_KEY });
+    const userRoles = await Preferences.get({key: USER_ROLES_KEY });
     this.token = token.value;
     this.refreshToken = refreshToken.value;
     this.connectedOrchesterMitgliedsName = connectedOrchesterMitgliedsName.value;
     this.userEmail = userEmail.value;
+    this.userRoles = userRoles.value?.split(',') ?? [];
+    this.userRoleSubject.next(this.userRoles);
   }
 
   login(credentials: LoginRequest) {
     this.userEmail = credentials.email;
     return this.http.post<LoginResponse>('api/authentication/login', credentials).pipe(
       tap(async (res: LoginResponse) => {
-        await this.setTokens(res.token, res.refreshToken, res.name, res.email);
-        // this.isAuthenticated.next(true);
+        await this.setTokens(res.token, res.refreshToken, res.name, res.email, res.userRoles);
       })
     );
   }
 
   register(registerRequest: RegisterRequest){
-    return this.http.post<LoginResponse>('api/authentication/register', registerRequest).pipe(
-      tap(async (res: LoginResponse) => {
-        await this.setTokens(res.token, res.refreshToken, res.name, res.email);
-      })
-    );
+    return this.http.post<string>('api/authentication/register', registerRequest);
   }
 
   async logout() {
-    // this.isAuthenticated.next(false);
     await Preferences.remove({ key: TOKEN_KEY });
     await Preferences.remove({ key: REFRESH_TOKEN_KEY });
     await Preferences.remove({ key: CONNECTED_ORCHESTER_MITGLIED_KEY });
     await Preferences.remove({ key: USER_EMAIL_KEY });
+    await Preferences.remove({ key: USER_ROLES_KEY });
   }
 
   public refresh(){
@@ -77,7 +78,7 @@ export class AuthenticationService {
     return this.http.post<LoginResponse>("api/authentication/refresh", { token: this.token, refreshToken: this.refreshToken })
     .pipe(
       tap( async res => {
-        await this.setTokens(res.token, res.refreshToken, res.name, res.email);
+        await this.setTokens(res.token, res.refreshToken, res.name, res.email, res.userRoles);
       })
     );
   }
@@ -102,15 +103,18 @@ export class AuthenticationService {
     return this.http.post<string>('api/authentication/resetPassword', request);
   }
 
-  private async setTokens(token: string, refreshToken: string, name: string, userEmail: string) {
+  private async setTokens(token: string, refreshToken: string, name: string, userEmail: string, userRoles: string[]) {
     this.token = token;
     this.refreshToken = refreshToken;
     this.connectedOrchesterMitgliedsName = name;
     this.userEmail = userEmail;
+    this.userRoles = userRoles;
+    this.userRoleSubject.next(userRoles);
     await Preferences.set({ key: TOKEN_KEY, value: token });
     await Preferences.set({ key: REFRESH_TOKEN_KEY, value: refreshToken });
     await Preferences.set({ key: CONNECTED_ORCHESTER_MITGLIED_KEY, value: name });
     await Preferences.set({ key: USER_EMAIL_KEY, value: userEmail });
+    await Preferences.set({key: USER_ROLES_KEY, value: userRoles.toString()})
   }
 
   // public isUserAdmin = (): boolean => {

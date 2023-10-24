@@ -8,7 +8,7 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { UserFeedbackComponent } from './components/user-feedback/user-feedback.component';
 import { UserHelpComponent } from './components/user-help/user-help.component';
 import { SharedModule } from '../shared/shared.module';
-import { AccountManagementComponent } from './components/account-management/account-management.component';
+import { AccountManagementComponent } from '../authentication/components/account-management/account-management.component';
 
 
 @NgModule({
@@ -16,8 +16,7 @@ import { AccountManagementComponent } from './components/account-management/acco
     TabsComponent,
     SettingsComponent,
     UserFeedbackComponent,
-    UserHelpComponent,
-    AccountManagementComponent
+    UserHelpComponent
   ],
   imports: [
     SharedModule,

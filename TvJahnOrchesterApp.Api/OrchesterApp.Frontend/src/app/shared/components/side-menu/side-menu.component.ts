@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
+import { RolesService } from 'src/app/authentication/services/roles.service';
 
 @Component({
   selector: 'app-side-menu',
@@ -30,13 +31,15 @@ export class SideMenuComponent implements OnInit {
   managementPages = [
     {
       title: 'Accountverwaltung',
-      url: '/tabs/account-management',
+      url: '/auth/account-management',
       icon: 'people'
     }
   ];
 
-
-  constructor(public authService: AuthenticationService, private router: Router) { }
+  constructor(
+    public authService: AuthenticationService, 
+    public rolesService: RolesService,
+    private router: Router) { }
 
   ngOnInit() { }
 

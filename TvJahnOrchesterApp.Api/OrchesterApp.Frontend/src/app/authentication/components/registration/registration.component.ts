@@ -5,7 +5,6 @@ import { AlertController, LoadingController } from '@ionic/angular';
 import { catchError } from 'rxjs';
 import { AuthenticationService, CLIENT_URI_EMAIL_CONFIRMATION } from '../../services/authentication.service';
 import { RegisterRequest } from '../../interfaces/register-request';
-import { BASE_PATH, BASE_PATH_FRONTEND } from 'src/app/core/services/unauthorized-http-client.service';
 
 @Component({
   selector: 'app-registration',
@@ -60,7 +59,13 @@ export class RegistrationComponent implements OnInit {
       .subscribe(async (res) => {
         if (!res) return;
         await loading.dismiss();
-        this.router.navigateByUrl('/tabs', { replaceUrl: true });
+        this.router.navigate(['auth']);
+        let alert = await this.alertController.create({
+          header: "Registrierung erfolgreich",
+          message: "Dein Account wurde erfolgreich angelegt. Du kannst ihn jetzt verwenden, um dich einzuloggen.",
+          buttons: ['OK']
+        });
+        return await alert.present();
       });
   }
 

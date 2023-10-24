@@ -10,6 +10,8 @@ import { ShowHidePasswordComponent } from './components/show-hide-password/show-
 import { VerifyEmailInfoComponent } from './components/verify-email-info/verify-email-info.component';
 import { EmailConfirmedComponent } from './components/email-confirmed/email-confirmed.component';
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
+import { AccountManagementComponent } from './components/account-management/account-management.component';
+import { SharedModule } from '../shared/shared.module';
 
 
 @NgModule({
@@ -19,7 +21,8 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     ShowHidePasswordComponent,
     VerifyEmailInfoComponent,
     EmailConfirmedComponent,
-    ForgotPasswordComponent
+    ForgotPasswordComponent,
+    AccountManagementComponent
   ],
   imports: [
     CommonModule,
@@ -27,6 +30,7 @@ import { ForgotPasswordComponent } from './components/forgot-password/forgot-pas
     IonicModule,
     FormsModule,
     ReactiveFormsModule,
+    SharedModule
   ]
 })
 export class AuthenticationModule { }

@@ -60,6 +60,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                     throw new MailNotVerifiedException(user.Email);
                 }
 
+                var roles = await userManager.GetRolesAsync(user);
+
                 var newToken = await tokenService.GenerateAccessTokenAsync(user);
                 var newRefreshToken = tokenService.GenerateRefreshToken();
 
@@ -70,7 +72,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                     throw new Exception("Orchestermitglied wurde nicht gefunden");
                 }
 
-                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, newToken, newRefreshToken);
+                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, newToken, newRefreshToken, roles.ToArray());
             }
         }
 

@@ -23,7 +23,7 @@ export async function tokenGetter() {
   imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, SharedModule, JwtModule.forRoot({
     config: {
       tokenGetter: tokenGetter,
-      allowedDomains: ["localhost:8001", "notesapp1.azurewebsites.net"]
+      allowedDomains: ["localhost:8100", "notesapp1.azurewebsites.net"]
     }
   }),],
   providers: [

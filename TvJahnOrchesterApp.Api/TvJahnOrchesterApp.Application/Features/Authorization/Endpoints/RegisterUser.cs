@@ -24,11 +24,11 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
         private static async Task<IResult> PostRegisterUser([FromBody] RegisterUserCommand registerUserCommand, CancellationToken cancellationToken, ISender sender)
         {
-            var authResult = await sender.Send(registerUserCommand);
-            return Results.Ok(authResult);
+            await sender.Send(registerUserCommand);
+            return Results.Ok("Registrierung war erfolgreich.");
         }
 
-        private record RegisterUserCommand(string RegisterationKey, string Email, string Password, string ClientUri) : IRequest<AuthenticationResult>;
+        private record RegisterUserCommand(string RegisterationKey, string Email, string Password, string ClientUri) : IRequest<Unit>;
 
         private class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
         {
@@ -39,7 +39,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             }
         }
 
-        private class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, AuthenticationResult>
+        private class RegisterUserCommandHandler : IRequestHandler<RegisterUserCommand, Unit>
         {
             private readonly UserManager<User> userManager;
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
@@ -57,7 +57,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             }
 
             //TTODO: Methode in kleinere Methoden unterteilen (Clean Code). Versuchen möglichst viel Logik in die Domäne zu verlegen.
-            public async Task<AuthenticationResult> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
+            public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
             {
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByRegistrationKeyAsync(request.RegisterationKey, cancellationToken);
 
@@ -86,14 +86,14 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 await verificationEmailService.SendTo(user, request.ClientUri);
 
-                var token = await tokenService.GenerateAccessTokenAsync(createdUser);
-                var refreshToken = tokenService.GenerateRefreshToken();
+                //var token = await tokenService.GenerateAccessTokenAsync(createdUser);
+                //var refreshToken = tokenService.GenerateRefreshToken();
 
-                await tokenService.AddRefreshTokenToUserInDBAsync(user, refreshToken);
+                //await tokenService.AddRefreshTokenToUserInDBAsync(user, refreshToken);
 
-                await userManager.ResetAccessFailedCountAsync(user);
+                //await userManager.ResetAccessFailedCountAsync(user);
 
-                return new AuthenticationResult(createdUser.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", createdUser.Email!, token, refreshToken);
+                return Unit.Value;
             }
         }
     }

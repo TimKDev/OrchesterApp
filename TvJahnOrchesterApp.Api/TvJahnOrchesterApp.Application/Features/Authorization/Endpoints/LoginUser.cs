@@ -90,12 +90,14 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 await userManager.ResetAccessFailedCountAsync(user);
 
+                var roles = await userManager.GetRolesAsync(user);
+
                 var orchesterMitglied = await orchesterMitgliedRepo.GetByUserIdAsync(user.Id, cancellationToken);
 
                 orchesterMitglied!.UserLogin();
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, token, refreshToken);
+                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, token, refreshToken, roles.ToArray());
             }
         }
 
