@@ -6,6 +6,9 @@
     <ion-title>
       {{header}}
     </ion-title>
+    <ion-buttons *ngIf="showBack" slot="end">
+      <ion-button (click)="cancel()" [strong]="true">Zurück</ion-button>
+    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 

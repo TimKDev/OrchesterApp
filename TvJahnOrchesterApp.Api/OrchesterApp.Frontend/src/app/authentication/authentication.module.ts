@@ -12,6 +12,8 @@ import { EmailConfirmedComponent } from './components/email-confirmed/email-conf
 import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
 import { AccountManagementComponent } from './components/account-management/account-management.component';
 import { SharedModule } from '../shared/shared.module';
+import { AccountCardComponent } from './components/account-card/account-card.component';
+import { AccountDetailsComponent } from './components/account-details/account-details.component';
 
 
 @NgModule({
@@ -22,7 +24,9 @@ import { SharedModule } from '../shared/shared.module';
     VerifyEmailInfoComponent,
     EmailConfirmedComponent,
     ForgotPasswordComponent,
-    AccountManagementComponent
+    AccountManagementComponent,
+    AccountCardComponent,
+    AccountDetailsComponent
   ],
   imports: [
     CommonModule,

@@ -48,7 +48,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 var principal = jwtHandler.GetPrincipalFromExpiredToken(request.Token);
                 var username = principal?.Identity?.Name;
 
-                var user = await userManager.FindByNameAsync(username);
+                var user = await userManager.FindByEmailAsync(username);
 
                 if (user is null || user.Email is null || !tokenService.IsRefreshTokenValid(user, request.RefreshToken))
                 {

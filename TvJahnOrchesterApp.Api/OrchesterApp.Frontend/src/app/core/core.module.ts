@@ -8,7 +8,6 @@ import { SettingsComponent } from './components/settings/settings.component';
 import { UserFeedbackComponent } from './components/user-feedback/user-feedback.component';
 import { UserHelpComponent } from './components/user-help/user-help.component';
 import { SharedModule } from '../shared/shared.module';
-import { AccountManagementComponent } from '../authentication/components/account-management/account-management.component';
 
 
 @NgModule({

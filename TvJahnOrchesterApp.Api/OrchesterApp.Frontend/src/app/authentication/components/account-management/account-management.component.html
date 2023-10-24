@@ -1,3 +1,12 @@
 <app-toolbar [header]="'Accountverwaltung'">
-  Dies wird die Accountverwaltung.
+  <ng-container *ngIf="data$ | async as data">
+  <app-account-card 
+    *ngFor="let accountInfo of data"
+    (click)="openAccountInfo(accountInfo)"
+    [name]="accountInfo.orchesterMitgliedsName"
+    [email]="accountInfo.email"
+    [color]="'primary'">
+  </app-account-card>
+    
+  </ng-container>
 </app-toolbar>

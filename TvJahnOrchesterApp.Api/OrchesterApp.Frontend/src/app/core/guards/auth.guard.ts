@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
-import { ActivatedRouteSnapshot, CanActivate, CanLoad, Router, RouterStateSnapshot } from '@angular/router';
-import { JwtHelperService } from '@auth0/angular-jwt';
+import { ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot } from '@angular/router';
 import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 
 @Injectable({
@@ -9,7 +8,6 @@ import { AuthenticationService } from 'src/app/authentication/services/authentic
 export class AuthGuard implements CanActivate {
   constructor(
     private authService: AuthenticationService, 
-    private jwtHelper: JwtHelperService,
     private router: Router) { }
 
   async canActivate(route: ActivatedRouteSnapshot, state: RouterStateSnapshot){
