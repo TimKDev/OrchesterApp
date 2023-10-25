@@ -1,0 +1,22 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-title>Bearbeite Account</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="cancel()" [strong]="true">Zurück</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <h1>{{data.orchesterMitgliedsName}}</h1>
+
+  <ion-list lines="full">
+    <app-data-item label="Registrierungsschlüssel" [value]="data.registrationKey"></app-data-item>
+    <app-data-item label="Registrierungsschlüssel Ablaufdatum" [value]="data.registerKeyExpirationDate | date : 'dd.MM.yyyy hh:mm'"></app-data-item>
+    <app-data-item label="E-Mail" [value]="data.email ?? 'nicht verbunden'"></app-data-item>
+  </ion-list>
+
+  
+  <ion-item>
+    {{data | json}}
+  </ion-item>
+</ion-content>

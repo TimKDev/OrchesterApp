@@ -1,11 +1,11 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { LoginComponent } from './components/login/login.component';
-import { RegistrationComponent } from './components/registration/registration.component';
-import { EmailConfirmedComponent } from './components/email-confirmed/email-confirmed.component';
-import { VerifyEmailInfoComponent } from './components/verify-email-info/verify-email-info.component';
-import { ForgotPasswordComponent } from './components/forgot-password/forgot-password.component';
-import { AccountManagementComponent } from './components/account-management/account-management.component';
+import { LoginComponent } from './components/container/login/login.component';
+import { RegistrationComponent } from './components/container/registration/registration.component';
+import { EmailConfirmedComponent } from './components/container/email-confirmed/email-confirmed.component';
+import { VerifyEmailInfoComponent } from './components/container/verify-email-info/verify-email-info.component';
+import { ForgotPasswordComponent } from './components/container/forgot-password/forgot-password.component';
+import { AccountManagementComponent } from './components/container/account-management/account-management.component';
 import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
