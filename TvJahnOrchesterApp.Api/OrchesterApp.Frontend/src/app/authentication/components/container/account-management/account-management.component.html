@@ -1,9 +1,0 @@
-<app-toolbar [header]="'Accountverwaltung'">
-  <ng-container *ngIf="data$ | async as data">
-
-    <app-account-card *ngFor="let accountInfo of data" (click)="openAccountInfo(accountInfo)"
-      [name]="accountInfo.orchesterMitgliedsName" [email]="accountInfo.email" [lastLogin]="accountInfo.lastLogin" [color]="accountInfo | getCardColor">
-    </app-account-card>
-
-  </ng-container>
-</app-toolbar>

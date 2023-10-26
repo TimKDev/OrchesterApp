@@ -5,7 +5,7 @@ import { RegistrationComponent } from './components/container/registration/regis
 import { EmailConfirmedComponent } from './components/container/email-confirmed/email-confirmed.component';
 import { VerifyEmailInfoComponent } from './components/container/verify-email-info/verify-email-info.component';
 import { ForgotPasswordComponent } from './components/container/forgot-password/forgot-password.component';
-import { AccountManagementComponent } from './components/container/account-management/account-management.component';
+import { AccountManagementComponent } from '../core/components/container/account-management/account-management.component';
 import { AuthGuard } from '../core/guards/auth.guard';
 
 const routes: Routes = [
@@ -14,7 +14,6 @@ const routes: Routes = [
   {path: 'verify-email-info', component: VerifyEmailInfoComponent},
   {path: 'email-confirmation', component: EmailConfirmedComponent},
   {path: 'reset-password', component: ForgotPasswordComponent},
-  {path: 'account-management',component: AccountManagementComponent, canActivate: [AuthGuard]},
 ];
 
 @NgModule({

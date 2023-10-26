@@ -1,9 +1,12 @@
 import { NgModule } from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
-import { TabsComponent } from './components/tabs/tabs.component';
-import { SettingsComponent } from './components/settings/settings.component';
-import { UserHelpComponent } from './components/user-help/user-help.component';
-import { UserFeedbackComponent } from './components/user-feedback/user-feedback.component';
+import { TabsComponent } from './components/container/tabs/tabs.component';
+import { SettingsComponent } from './components/container/settings/settings.component';
+import { UserHelpComponent } from './components/container/user-help/user-help.component';
+import { UserFeedbackComponent } from './components/container/user-feedback/user-feedback.component';
+import { AccountManagementComponent } from './components/container/account-management/account-management.component';
+import { AuthGuard } from './guards/auth.guard';
+import { AccountDetailsComponent } from './components/container/account-details/account-details.component';
 
 const routes: Routes = [
   {
@@ -29,6 +32,11 @@ const routes: Routes = [
       {
         path: 'settings',
         component: SettingsComponent
+      },
+      {path: 'account-management', component: AccountManagementComponent, children: 
+        [
+          {path: 'details/{orchesterMitgliedsId}', component: AccountDetailsComponent}
+        ]
       },
       {
         path: 'help',

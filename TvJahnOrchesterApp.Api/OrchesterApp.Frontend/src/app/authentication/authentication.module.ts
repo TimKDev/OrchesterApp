@@ -10,12 +10,7 @@ import { ShowHidePasswordComponent } from './components/presentational/show-hide
 import { VerifyEmailInfoComponent } from './components/container/verify-email-info/verify-email-info.component';
 import { EmailConfirmedComponent } from './components/container/email-confirmed/email-confirmed.component';
 import { ForgotPasswordComponent } from './components/container/forgot-password/forgot-password.component';
-import { AccountManagementComponent } from './components/container/account-management/account-management.component';
 import { SharedModule } from '../shared/shared.module';
-import { AccountCardComponent } from './components/presentational/account-card/account-card.component';
-import { AccountDetailsComponent } from './components/container/account-details/account-details.component';
-import { GetCardColorPipe } from './pipes/get-card-color.pipe';
-import { DataItemComponent } from './components/presentational/data-item/data-item.component';
 
 
 @NgModule({
@@ -26,11 +21,6 @@ import { DataItemComponent } from './components/presentational/data-item/data-it
     VerifyEmailInfoComponent,
     EmailConfirmedComponent,
     ForgotPasswordComponent,
-    AccountManagementComponent,
-    AccountCardComponent,
-    AccountDetailsComponent,
-    GetCardColorPipe,
-    DataItemComponent
   ],
   imports: [
     CommonModule,

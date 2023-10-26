@@ -31,7 +31,7 @@ export class SideMenuComponent implements OnInit {
   managementPages = [
     {
       title: 'Accountverwaltung',
-      url: '/auth/account-management',
+      url: '/tabs/account-management',
       icon: 'people'
     }
   ];
