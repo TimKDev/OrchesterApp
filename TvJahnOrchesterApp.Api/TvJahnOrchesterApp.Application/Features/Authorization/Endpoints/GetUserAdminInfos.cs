@@ -10,7 +10,7 @@ using TvJahnOrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 {
-    public static class GetUserAdminInfos
+    public static partial class GetUserAdminInfos
     {
         public static void MapGetUserAdminInfosEndpoint(this IEndpointRouteBuilder app)
         {
@@ -24,9 +24,9 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             return Results.Ok(queryResult);
         }
 
-        private record GetUserAdminInfosQuery() : IRequest<GetUserAdminInfosResponse[]>;
-
         private record GetUserAdminInfosResponse(Guid OrchesterMitgliedsId, string? UserId, string RegistrationKey, DateTime RegisterKeyExpirationDate, string? Email, bool AccountLocked, DateTime? LastLogin, DateTime? FirstLogin, string[] RoleNames, string OrchesterMitgliedsName);
+
+        private record GetUserAdminInfosQuery() : IRequest<GetUserAdminInfosResponse[]>;
 
         private class GetUserAdminInfosQueryHandler : IRequestHandler<GetUserAdminInfosQuery, GetUserAdminInfosResponse[]>
         {

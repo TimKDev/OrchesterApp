@@ -2,7 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AuthHttpClientService } from 'src/app/core/services/auth-http-client.service';
 import { ModalController } from '@ionic/angular';
 import { AccountDetailsComponent } from '../account-details/account-details.component';
-import { GetAdminInfoResponse } from '../../../../authentication/interfaces/get-admin-info-response';
+import { GetAdminInfoResponse } from '../../../interfaces/get-admin-info-response';
+import { AccountManagementService } from 'src/app/core/services/account-management.service';
 
 @Component({
   selector: 'app-account-management',
@@ -12,10 +13,10 @@ import { GetAdminInfoResponse } from '../../../../authentication/interfaces/get-
 export class AccountManagementComponent  implements OnInit {
 
   constructor(
-    private http: AuthHttpClientService,
+    private accountManagementService: AccountManagementService,
   ) { }
 
-  data$ = this.http.get<GetAdminInfoResponse[]>('api/authentication/user-admin-infos');
+  data$ = this.accountManagementService.getManagementInfos();
 
   ngOnInit() {}
 }

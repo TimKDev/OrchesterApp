@@ -1,47 +1,41 @@
-<ion-header>
-  <ion-toolbar>
-    <ion-title>Bearbeite Account</ion-title>
-    <ion-buttons slot="end">
-      <ion-button (click)="cancel()" [strong]="true">Zurück</ion-button>
-    </ion-buttons>
-  </ion-toolbar>
-</ion-header>
-<ion-content class="ion-padding">
+<app-toolbar [header]="'Accountverwaltung'">
 
-  <ion-card>
-    <ion-card-header>
-      <ion-card-title>{{data.orchesterMitgliedsName}}</ion-card-title>
-    </ion-card-header>
-    <ion-list lines="full">
-      <app-data-item label="Registrierungsschlüssel" [value]="data.registrationKey"></app-data-item>
-      <app-data-item label="Registrierungsschlüssel Ablaufdatum"
-        [value]="data.registerKeyExpirationDate | date : 'dd.MM.yyyy hh:mm'"></app-data-item>
-      <app-data-item label="E-Mail" [value]="data.email ?? 'nicht verbunden'"></app-data-item>
-      <app-data-item label="Account locked"
-        [value]="data.accountLocked ? 'blockiert' : 'nicht blockiert'"></app-data-item>
-      <app-data-item label="Erste Anmeldung" [value]="data.firstLogin | date : 'dd.MM.yyyy hh:mm'"></app-data-item>
-      <app-data-item label="Letzte Anmeldung" [value]="data.lastLogin | date : 'dd.MM.yyyy hh:mm'"></app-data-item>
-    </ion-list>
-  </ion-card>
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>{{data.orchesterMitgliedsName}}</ion-card-title>
+      </ion-card-header>
+      <ion-list lines="full">
+        <app-data-item label="Registrierungsschlüssel" [value]="data.registrationKey"></app-data-item>
+        <app-data-item label="Registrierungsschlüssel Ablaufdatum"
+          [value]="data.registerKeyExpirationDate | date : 'dd.MM.yyyy hh:mm'"></app-data-item>
+        <app-data-item label="E-Mail" [value]="data.email ?? 'nicht verbunden'"></app-data-item>
+        <app-data-item label="Account locked"
+          [value]="data.accountLocked ? 'blockiert' : 'nicht blockiert'"></app-data-item>
+        <app-data-item label="Erste Anmeldung" [value]="data.firstLogin | date : 'dd.MM.yyyy hh:mm'"></app-data-item>
+        <app-data-item label="Letzte Anmeldung" [value]="data.lastLogin | date : 'dd.MM.yyyy hh:mm'"></app-data-item>
+      </ion-list>
+    </ion-card>
 
-  <ion-card *ngIf="data.email">
-    <ion-card-header>
-      <ion-card-title>Rollen von {{data.email}}</ion-card-title>
-    </ion-card-header>
-    <form (ngSubmit)="changeRoles()" [formGroup]="roleFormGroup">
-      <ion-item>
-        <ion-select label="Stacked label" label-placement="stacked" [multiple]="true" [formControlName]="'role'">
-          <ion-select-option *ngFor="let role of roles" [value]="role.value">{{role.text}}</ion-select-option>
-        </ion-select>
-      </ion-item>
-      <div class="button-div">
-        <ion-button fill="clear" [disabled]="!roleFormGroup.valid || !roleFormGroup.touched">Speichern</ion-button>
-      </div>
-    </form>
-  </ion-card>
+    <ion-card *ngIf="data.email">
+      <ion-card-header>
+        <ion-card-title>Rollen von {{data.email}}</ion-card-title>
+      </ion-card-header>
+      <form (ngSubmit)="changeRoles(data.email)" [formGroup]="roleFormGroup">
+        <ion-item>
+          <ion-select label="Stacked label" label-placement="stacked" [multiple]="true" [formControlName]="'role'">
+            <ion-select-option *ngFor="let role of roles" [value]="role.value">{{role.text}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <div class="button-div">
+          <ion-button type="submit" fill="clear" [disabled]="!roleFormGroup.valid || !roleFormGroup.touched">Speichern</ion-button>
+        </div>
+      </form>
+    </ion-card>
+  </ng-container>
 
+  <ng-template #loading>
+    LADEN
+  </ng-template>
 
-  <ion-item>
-    {{data | json}}
-  </ion-item>
-</ion-content>
+</app-toolbar>

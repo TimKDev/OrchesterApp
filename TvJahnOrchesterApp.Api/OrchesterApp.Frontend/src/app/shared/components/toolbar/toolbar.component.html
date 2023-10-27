@@ -6,13 +6,10 @@
     <ion-title>
       {{header}}
     </ion-title>
-    <ion-buttons *ngIf="showBack" slot="end">
-      <ion-button (click)="cancel()" [strong]="true">Zurück</ion-button>
-    </ion-buttons>
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true">
+<ion-content [fullscreen]="true" class="ion-padding">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">{{header}}</ion-title>

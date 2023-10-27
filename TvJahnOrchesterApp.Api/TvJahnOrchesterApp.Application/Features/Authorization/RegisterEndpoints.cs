@@ -22,6 +22,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization
             app.MapConfirmEmailEndpoint();
             app.MapUpdateUserRolesEndpoint();
             app.MapGetUserRolesEndpoint();
+            app.MapGetUserAdminInfosDetailsEndpoint();
         }
     }
 }

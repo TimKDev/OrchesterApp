@@ -1,5 +1,5 @@
 import { Pipe, PipeTransform } from '@angular/core';
-import { GetAdminInfoResponse } from '../../authentication/interfaces/get-admin-info-response';
+import { GetAdminInfoResponse } from '../interfaces/get-admin-info-response';
 
 @Pipe({
   name: 'getCardColor'

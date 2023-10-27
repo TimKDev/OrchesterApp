@@ -33,11 +33,8 @@ const routes: Routes = [
         path: 'settings',
         component: SettingsComponent
       },
-      {path: 'account-management', component: AccountManagementComponent, children: 
-        [
-          {path: 'details/{orchesterMitgliedsId}', component: AccountDetailsComponent}
-        ]
-      },
+      {path: 'account-management', component: AccountManagementComponent},
+      {path: 'account-management/details/:orchesterMitgliedsId', component: AccountDetailsComponent},
       {
         path: 'help',
         component: UserHelpComponent
