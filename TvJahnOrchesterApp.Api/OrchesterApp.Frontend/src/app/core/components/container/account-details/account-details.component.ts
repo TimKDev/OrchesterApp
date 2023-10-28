@@ -59,26 +59,29 @@ export class AccountDetailsComponent implements OnInit {
   isActionSheetOpen = false;
 
   setOpen(isOpen: boolean) {
-    debugger;
     this.isActionSheetOpen = isOpen;
   }
 
   public actionSheetButtons = [
     {
-      text: 'Delete',
+      text: 'Lösche User',
       role: 'destructive',
-      data: {
-        action: 'delete',
-      },
+      handler: () => {console.log("Lösche User");
+      }
     },
     {
-      text: 'Share',
+      text: 'Erneuere Registrierungsschlüssel',
       data: {
         action: 'share',
       },
+      handler: () => {console.log("Registrierungsschlüssel")}
     },
     {
-      text: 'Cancel',
+      text: 'Entferne Lockout',
+      handler: () => {console.log("Entferne Lockout")}
+    },
+    {
+      text: 'Zurück',
       role: 'cancel',
       data: {
         action: 'cancel',

@@ -2,10 +2,6 @@
 
   <ng-container *ngIf="data$ | async as data; else loading">
     <ion-card>
-      <ion-button class="icon" fill="clear" (click)="setOpen(true)">
-        Test
-        <!-- <ion-icon slot="icon-only" name="pencil"></ion-icon> -->
-      </ion-button>
       <ion-card-header>
         <ion-card-title>{{data.orchesterMitgliedsName}}</ion-card-title>
       </ion-card-header>
@@ -38,11 +34,9 @@
       </form>
     </ion-card>
 
-    <!-- <ion-button expand="block">Entferne Lockout</ion-button>
-    <ion-button expand="block">Erneuere Registrierungsschlüssel</ion-button>
-
-    <ion-button color="danger" expand="block">Lösche User</ion-button> -->
-    <!-- <ion-button id="open-action-sheet">Open</ion-button> -->
+    <ion-button fill="clear" expand="block" (click)="setOpen(true)">
+      Bearbeite Account
+    </ion-button>
     <ion-action-sheet [isOpen]="isActionSheetOpen" header="Actions" [buttons]="actionSheetButtons"  (didDismiss)="setOpen(false)"></ion-action-sheet>
   </ng-container>
 
