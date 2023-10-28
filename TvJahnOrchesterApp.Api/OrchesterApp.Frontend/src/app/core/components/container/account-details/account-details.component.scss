@@ -2,3 +2,14 @@
   display: flex;
   justify-content: end;
 }
+
+ion-button {
+  text-transform: none;
+  margin-top: 16px;
+}
+
+.icon {
+  position: absolute;
+  top: 0px;
+  right: 0px;
+}

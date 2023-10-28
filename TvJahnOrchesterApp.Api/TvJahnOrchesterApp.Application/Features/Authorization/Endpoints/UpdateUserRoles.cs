@@ -55,7 +55,10 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 //Remove existing Roles:
                 var rolesOfUser = await userManager.GetRolesAsync(user);
+                var test = rolesOfUser.Where(r => !request.RoleNames.Contains(r));
                 await userManager.RemoveFromRolesAsync(user, rolesOfUser.Where(r => !request.RoleNames.Contains(r)));
+
+                var rolesOfUser2 = await userManager.GetRolesAsync(user);
 
                 // Add new Roles:
                 foreach (var roleName in request.RoleNames)
@@ -66,7 +69,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                         await roleManager.CreateAsync(new IdentityRole(roleName));
                     }
                 }
-                await userManager.AddToRolesAsync(user, request.RoleNames);
+                await userManager.AddToRolesAsync(user, request.RoleNames.Where(r => !rolesOfUser.Contains(r)));
+                var rolesOfUser3 = await userManager.GetRolesAsync(user);
 
                 return Unit.Value;
             }

@@ -56,4 +56,34 @@ export class AccountDetailsComponent implements OnInit {
     return this.roleFormGroup.get('role');
   }
 
+  isActionSheetOpen = false;
+
+  setOpen(isOpen: boolean) {
+    debugger;
+    this.isActionSheetOpen = isOpen;
+  }
+
+  public actionSheetButtons = [
+    {
+      text: 'Delete',
+      role: 'destructive',
+      data: {
+        action: 'delete',
+      },
+    },
+    {
+      text: 'Share',
+      data: {
+        action: 'share',
+      },
+    },
+    {
+      text: 'Cancel',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ];
+
 }
