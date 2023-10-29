@@ -10,7 +10,7 @@ using TvJahnOrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 {
-    public static partial class GetUserAdminInfos
+    public static class GetUserAdminInfos
     {
         public static void MapGetUserAdminInfosEndpoint(this IEndpointRouteBuilder app)
         {
@@ -24,7 +24,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             return Results.Ok(queryResult);
         }
 
-        private record GetUserAdminInfosResponse(Guid OrchesterMitgliedsId, string? UserId, string RegistrationKey, DateTime RegisterKeyExpirationDate, string? Email, bool AccountLocked, DateTime? LastLogin, DateTime? FirstLogin, string[] RoleNames, string OrchesterMitgliedsName);
+        private record GetUserAdminInfosResponse(Guid OrchesterMitgliedsId, string? UserId, string? Email, DateTime? LastLogin, string OrchesterMitgliedsName);
 
         private record GetUserAdminInfosQuery() : IRequest<GetUserAdminInfosResponse[]>;
 
@@ -45,14 +45,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 foreach (var orchesterMitglied in orchesterMitglieder)
                 {
                     var user = orchesterMitglied.ConnectedUserId is null ? null : await userManager.FindByIdAsync(orchesterMitglied.ConnectedUserId);
-                    var userLocked = false;
-                    string[] userRoles = Array.Empty<string>();
-                    if (user is not null)
-                    {
-                        userLocked = await userManager.IsLockedOutAsync(user);
-                        userRoles = (await userManager.GetRolesAsync(user)).ToArray();
-                    }
-                    result.Add(new GetUserAdminInfosResponse(orchesterMitglied.Id.Value, user?.Id, orchesterMitglied.RegisterKey, orchesterMitglied.RegisterKeyExpirationDate, user?.Email, userLocked, orchesterMitglied.UserLastLogin, orchesterMitglied.UserFirstConnected, userRoles, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}"));
+                    result.Add(new GetUserAdminInfosResponse(orchesterMitglied.Id.Value, user?.Id, user?.Email, orchesterMitglied.UserLastLogin, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}"));
                 }
 
                 return result.ToArray();

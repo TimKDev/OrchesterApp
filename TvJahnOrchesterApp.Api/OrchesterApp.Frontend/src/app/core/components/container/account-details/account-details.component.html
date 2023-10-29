@@ -1,4 +1,20 @@
-<app-toolbar [header]="'Accountverwaltung'">
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Accountverwaltung
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Accountverwaltung</ion-title>
+    </ion-toolbar>
+  </ion-header>
 
   <ng-container *ngIf="data$ | async as data; else loading">
     <ion-card>
@@ -23,7 +39,7 @@
       </ion-card-header>
       <form (ngSubmit)="changeRoles(data.email)" [formGroup]="roleFormGroup">
         <ion-item>
-          <ion-select label="Stacked label" label-placement="stacked" [multiple]="true" [formControlName]="'role'">
+          <ion-select label="Account Rollen" label-placement="stacked" [multiple]="true" [formControlName]="'role'">
             <ion-select-option *ngFor="let role of roles" [value]="role.value">{{role.text}}</ion-select-option>
           </ion-select>
         </ion-item>
@@ -37,11 +53,12 @@
     <ion-button fill="clear" expand="block" (click)="setOpen(true)">
       Bearbeite Account
     </ion-button>
-    <ion-action-sheet [isOpen]="isActionSheetOpen" header="Actions" [buttons]="actionSheetButtons"  (didDismiss)="setOpen(false)"></ion-action-sheet>
+    <ion-action-sheet [isOpen]="isActionSheetOpen" header="Bearbeite Account"
+      [buttons]="data.email ? actionSheetButtons : actionSheetButtonsWithoutUser"
+      (didDismiss)="setOpen(false)"></ion-action-sheet>
   </ng-container>
 
   <ng-template #loading>
-    LADEN
+    <app-loader></app-loader>
   </ng-template>
-</app-toolbar>
-
+</ion-content>

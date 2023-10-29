@@ -12,7 +12,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapRevokeUserLockedOutEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/authentication/removeUserLockedOut", PostRevokeUserLockedOut)
+            app.MapPost("api/authentication/remove-user-locked-out", PostRevokeUserLockedOut)
                 .RequireAuthorization();
         }
 

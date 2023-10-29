@@ -4,6 +4,7 @@ import { ToolbarComponent } from './components/toolbar/toolbar.component';
 import { IonicModule } from '@ionic/angular';
 import { SideMenuComponent } from './components/side-menu/side-menu.component';
 import { RouterModule } from '@angular/router';
+import { LoaderComponent } from './components/loader/loader.component';
 
 
 
@@ -11,6 +12,7 @@ import { RouterModule } from '@angular/router';
   declarations: [
     ToolbarComponent,
     SideMenuComponent, 
+    LoaderComponent
   ],
   imports: [
     CommonModule, 
@@ -19,7 +21,8 @@ import { RouterModule } from '@angular/router';
   ],
   exports: [
     ToolbarComponent, 
-    SideMenuComponent
+    SideMenuComponent,
+    LoaderComponent
   ]
 })
 export class SharedModule { }

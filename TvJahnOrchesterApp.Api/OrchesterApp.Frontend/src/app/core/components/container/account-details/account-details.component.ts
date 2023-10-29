@@ -4,7 +4,7 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { AccountManagementService } from 'src/app/core/services/account-management.service';
 import { Observable, catchError, tap } from 'rxjs';
 import { GetAdminInfoDetailsResponse } from 'src/app/core/interfaces/get-admin-info-details-response';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { confirmDialog } from 'src/app/core/helper/confirm';
 
 @Component({
@@ -15,42 +15,49 @@ import { confirmDialog } from 'src/app/core/helper/confirm';
 export class AccountDetailsComponent implements OnInit {
 
   public readonly roles = [
-    {value: "Admin", text: "Admin"},
-    {value: "Musikalischer Leiter", text: "Musikalischer Leiter"},
-    {value: "Vorstand", text: "Vorstand"},
+    { value: "Admin", text: "Admin" },
+    { value: "Musikalischer Leiter", text: "Musikalischer Leiter" },
+    { value: "Vorstand", text: "Vorstand" },
   ];
 
-  data$!: Observable<GetAdminInfoDetailsResponse>;
+  data$!: Observable<GetAdminInfoDetailsResponse> | null;
   roleFormGroup!: FormGroup;
 
   private orchesterMitgliedsId!: string;
+  private userId!: string | null;
 
   constructor(
     private fb: FormBuilder,
     private accountManagementService: AccountManagementService,
     private route: ActivatedRoute,
     private loadingController: LoadingController,
-    private alertController: AlertController,
-  ) {}
+    public alertController: AlertController,
+    private router: Router
+  ) { }
 
   ngOnInit(): void {
     this.orchesterMitgliedsId = this.route.snapshot.params["orchesterMitgliedsId"];
-    this.data$ = this.accountManagementService.getManagementInfosDetails(this.orchesterMitgliedsId).pipe(
+    this.data$ = this.getData();
+  }
+
+  async changeRoles(email: string) {
+    if (!this.role?.value) return;
+    const loading = await this.loadingController.create();
+    await loading.present();
+    this.accountManagementService.updateRoles({ email, roleNames: this.role.value })
+      .pipe(catchError(async () => await loading.dismiss()))
+      .subscribe(async () => await loading.dismiss());
+  }
+
+  private getData() {
+    return this.accountManagementService.getManagementInfosDetails(this.orchesterMitgliedsId).pipe(
       tap(data => {
+        this.userId = data.userId;
         this.roleFormGroup = this.fb.group({
           role: [data.roleNames],
         });
       })
     );
-  }
-
-  async changeRoles(email: string){
-    if(!this.role?.value) return;
-    const loading = await this.loadingController.create();
-    await loading.present();
-    this.accountManagementService.updateRoles({email, roleNames: this.role.value })
-    .pipe(catchError(async () => await loading.dismiss()))
-    .subscribe(async () => await loading.dismiss());
   }
 
   get role() {
@@ -68,17 +75,18 @@ export class AccountDetailsComponent implements OnInit {
       text: 'Lösche User',
       role: 'destructive',
       handler: () => this.deleteUser()
+
     },
     {
       text: 'Erneuere Registrierungsschlüssel',
       data: {
         action: 'share',
       },
-      handler: () => {console.log("Registrierungsschlüssel")}
+      handler: () => this.updateRegistrationKey()
     },
     {
       text: 'Entferne Lockout',
-      handler: () => {console.log("Entferne Lockout")}
+      handler: () => this.removeLockOut()
     },
     {
       text: 'Zurück',
@@ -89,23 +97,65 @@ export class AccountDetailsComponent implements OnInit {
     },
   ];
 
-  @confirmDialog("Achtung", "Möchten sie diesen User wirklich löschen? Diese Operation kann nicht rückgängig gemacht werden.") 
-  private async deleteUser(){
-    
-    // Modal Sicherheitsabfrage
-    // Request auführen
-    // Laden anzeigen
-    // Auf Accountübersicht navigieren und die Daten für diese neu laden
+  public actionSheetButtonsWithoutUser = [
+    {
+      text: 'Erneuere Registrierungsschlüssel',
+      data: {
+        action: 'share',
+      },
+      handler: () => this.updateRegistrationKey()
+    },
+    {
+      text: 'Zurück',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ];
+
+  @confirmDialog("Achtung", "Möchten sie diesen User wirklich löschen? Diese Operation kann nicht rückgängig gemacht werden.")
+  private async deleteUser() {
+    if (!this.userId) return;
+    this.data$ = null;
+    this.accountManagementService.deleteUser(this.userId).subscribe(() => {
+      this.router.navigate(['tabs', 'account-management']);
+    })
   }
 
-  private updateRegistrationKey(){
-    // Request ausführen
-    // data$ löschen => Zeigt Ladesymbol an
-    // data$ dieses Accounts neu laden
+  private async updateRegistrationKey() {
+    const alert = await this.alertController.create({
+      header: 'Erstelle Registrierungsschlüssel',
+      inputs: [{
+        placeholder: 'Registrierungsschlüssel',
+        type: 'text',
+      }],
+      buttons: [{
+        text: 'Abbrechen',
+        role: 'cancel',
+      },
+      {
+        text: 'Erstellen',
+        role: 'confirm',
+      }],
+    });
+
+    await alert.present();
+    let alertResult = await alert.onDidDismiss();
+    if (alertResult.role === 'confirm') {
+      this.data$ = null;
+      this.accountManagementService.updateRegistrationKey({ newRegistrationKey: alertResult.data.values["0"], orchesterMitgliedsId: this.orchesterMitgliedsId }).subscribe(() => {
+        this.data$ = this.getData();
+      })
+    }
   }
 
-  private removeLockOut(){
-
+  private removeLockOut() {
+    if (!this.userId) return;
+    this.data$ = null;
+    this.accountManagementService.removeLockout({ userId: this.userId }).subscribe(() => {
+      this.data$ = this.getData();
+    });
   }
 
 }

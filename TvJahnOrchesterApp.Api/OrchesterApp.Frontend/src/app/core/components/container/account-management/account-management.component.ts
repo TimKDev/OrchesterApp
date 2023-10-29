@@ -1,22 +1,39 @@
-import { Component, OnInit } from '@angular/core';
-import { AuthHttpClientService } from 'src/app/core/services/auth-http-client.service';
-import { ModalController } from '@ionic/angular';
-import { AccountDetailsComponent } from '../account-details/account-details.component';
+import { Component, ElementRef, ViewChild } from '@angular/core';
 import { GetAdminInfoResponse } from '../../../interfaces/get-admin-info-response';
 import { AccountManagementService } from 'src/app/core/services/account-management.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-account-management',
   templateUrl: './account-management.component.html',
   styleUrls: ['./account-management.component.scss'],
 })
-export class AccountManagementComponent  implements OnInit {
+export class AccountManagementComponent {
+
+  data!: GetAdminInfoResponse[];
+  displayedData!: GetAdminInfoResponse[];
+  subscription!: Subscription;
+
+  @ViewChild('searchBar') searchBar!: any;
 
   constructor(
     private accountManagementService: AccountManagementService,
   ) { }
 
-  data$ = this.accountManagementService.getManagementInfos();
+  ionViewWillEnter() {
+    if(this.searchBar) this.searchBar.value = ""; 
+    this.subscription = this.accountManagementService.getManagementInfos().subscribe(data => {
+      this.data = data;
+      this.displayedData = data;
+    });
+  }
 
-  ngOnInit() {}
+  ionViewDidLeave(){
+    this.subscription.unsubscribe();
+  }
+
+  search(event: any) {
+    let searchString = (event.detail.value as string).toLowerCase();
+    this.displayedData = this.data.filter(e => e.orchesterMitgliedsName.toLowerCase().includes(searchString));
+  }
 }
