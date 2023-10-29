@@ -16,12 +16,16 @@ export class AuthHttpClientService {
     return this.http.get<T>(this.BASE_PATH + url, {params, headers: this.createAuthHeader()});
   }
 
-  post<T>(url: string, body: any): Observable<T>{
+  post<T>(url: string, body: unknown): Observable<T>{
     return this.http.post<T>(this.BASE_PATH + url, body, {headers: this.createAuthHeader()});
   }
 
   put<T>(url: string, body: any): Observable<T>{
     return this.http.put<T>(this.BASE_PATH + url, body, {headers: this.createAuthHeader()});
+  }
+
+  delete<T>(url: string){
+    return this.http.delete<T>(this.BASE_PATH + url, {headers: this.createAuthHeader()});
   }
 
   private createAuthHeader(){

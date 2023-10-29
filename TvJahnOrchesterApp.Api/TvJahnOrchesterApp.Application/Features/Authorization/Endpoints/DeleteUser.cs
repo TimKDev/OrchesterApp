@@ -14,13 +14,13 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapDeleteUserEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapDelete("api/authentication/deleteUser", DeleteDeleteUser)
+            app.MapDelete("api/authentication/delete-user/{userId}", DeleteDeleteUser)
                 .RequireAuthorization();
         }
 
-        private static async Task<IResult> DeleteDeleteUser([FromBody] DeleteUserCommand deleteUserCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> DeleteDeleteUser(string userId, CancellationToken cancellationToken, ISender sender)
         {
-            await sender.Send(deleteUserCommand);
+            await sender.Send(new DeleteUserCommand(userId));
             return Results.Ok("User erfolgreich gelöscht");
         }
 

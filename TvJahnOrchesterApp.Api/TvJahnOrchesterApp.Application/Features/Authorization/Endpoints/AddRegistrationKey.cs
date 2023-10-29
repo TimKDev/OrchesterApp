@@ -15,7 +15,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapAddRegistrationKeyEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/authentication/addRegistrationKey", PostAddRegistrationKey)
+            app.MapPost("api/authentication/add-registration-key", PostAddRegistrationKey)
                 .RequireAuthorization();
         }
 

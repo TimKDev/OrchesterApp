@@ -1,11 +1,11 @@
 import { Component, OnInit } from '@angular/core';
-import { LoadingController, ModalController } from '@ionic/angular';
-import { GetAdminInfoResponse } from '../../../interfaces/get-admin-info-response';
+import { AlertController, LoadingController } from '@ionic/angular';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { AccountManagementService } from 'src/app/core/services/account-management.service';
 import { Observable, catchError, tap } from 'rxjs';
 import { GetAdminInfoDetailsResponse } from 'src/app/core/interfaces/get-admin-info-details-response';
 import { ActivatedRoute } from '@angular/router';
+import { confirmDialog } from 'src/app/core/helper/confirm';
 
 @Component({
   selector: 'app-account-details',
@@ -30,6 +30,7 @@ export class AccountDetailsComponent implements OnInit {
     private accountManagementService: AccountManagementService,
     private route: ActivatedRoute,
     private loadingController: LoadingController,
+    private alertController: AlertController,
   ) {}
 
   ngOnInit(): void {
@@ -66,8 +67,7 @@ export class AccountDetailsComponent implements OnInit {
     {
       text: 'Lösche User',
       role: 'destructive',
-      handler: () => {console.log("Lösche User");
-      }
+      handler: () => this.deleteUser()
     },
     {
       text: 'Erneuere Registrierungsschlüssel',
@@ -88,5 +88,24 @@ export class AccountDetailsComponent implements OnInit {
       },
     },
   ];
+
+  @confirmDialog("Achtung", "Möchten sie diesen User wirklich löschen? Diese Operation kann nicht rückgängig gemacht werden.") 
+  private async deleteUser(){
+    
+    // Modal Sicherheitsabfrage
+    // Request auführen
+    // Laden anzeigen
+    // Auf Accountübersicht navigieren und die Daten für diese neu laden
+  }
+
+  private updateRegistrationKey(){
+    // Request ausführen
+    // data$ löschen => Zeigt Ladesymbol an
+    // data$ dieses Accounts neu laden
+  }
+
+  private removeLockOut(){
+
+  }
 
 }
