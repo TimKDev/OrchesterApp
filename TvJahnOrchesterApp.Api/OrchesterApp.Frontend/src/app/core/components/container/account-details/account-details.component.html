@@ -16,6 +16,10 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ng-container *ngIf="data$ | async as data; else loading">
     <ion-card>
       <ion-card-header>
@@ -59,6 +63,6 @@
   </ng-container>
 
   <ng-template #loading>
-    <app-loader></app-loader>
+    <app-loader *ngIf="!refreshing"></app-loader>
   </ng-template>
 </ion-content>

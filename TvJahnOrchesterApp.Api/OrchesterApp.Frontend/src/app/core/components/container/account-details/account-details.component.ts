@@ -6,13 +6,14 @@ import { Observable, catchError, tap } from 'rxjs';
 import { GetAdminInfoDetailsResponse } from 'src/app/core/interfaces/get-admin-info-details-response';
 import { ActivatedRoute, Router } from '@angular/router';
 import { confirmDialog } from 'src/app/core/helper/confirm';
+import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 
 @Component({
   selector: 'app-account-details',
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.scss'],
 })
-export class AccountDetailsComponent implements OnInit {
+export class AccountDetailsComponent extends Unsubscribe implements OnInit {
 
   public readonly roles = [
     { value: "Admin", text: "Admin" },
@@ -22,6 +23,7 @@ export class AccountDetailsComponent implements OnInit {
 
   data$!: Observable<GetAdminInfoDetailsResponse> | null;
   roleFormGroup!: FormGroup;
+  refreshing = false;
 
   private orchesterMitgliedsId!: string;
   private userId!: string | null;
@@ -33,7 +35,9 @@ export class AccountDetailsComponent implements OnInit {
     private loadingController: LoadingController,
     public alertController: AlertController,
     private router: Router
-  ) { }
+  ) {
+    super();
+  }
 
   ngOnInit(): void {
     this.orchesterMitgliedsId = this.route.snapshot.params["orchesterMitgliedsId"];
@@ -50,14 +54,14 @@ export class AccountDetailsComponent implements OnInit {
   }
 
   private getData() {
-    return this.accountManagementService.getManagementInfosDetails(this.orchesterMitgliedsId).pipe(
+    return this.unsubscribeOnDestroy<GetAdminInfoDetailsResponse>(this.accountManagementService.getManagementInfosDetails(this.orchesterMitgliedsId).pipe(
       tap(data => {
         this.userId = data.userId;
         this.roleFormGroup = this.fb.group({
           role: [data.roleNames],
         });
       })
-    );
+    ));
   }
 
   get role() {
@@ -156,6 +160,14 @@ export class AccountDetailsComponent implements OnInit {
     this.accountManagementService.removeLockout({ userId: this.userId }).subscribe(() => {
       this.data$ = this.getData();
     });
+  }
+
+  handleRefresh(event: any) {
+    this.refreshing = true;
+    this.data$ = this.getData().pipe(tap(() => {
+      event.target.complete();
+      this.refreshing = false;
+    }));
   }
 
 }

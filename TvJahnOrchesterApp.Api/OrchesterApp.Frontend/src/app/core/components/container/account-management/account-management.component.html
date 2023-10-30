@@ -17,6 +17,9 @@
   </ion-header>
 
   <ng-container *ngIf="displayedData; else loading">
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
     <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account" (ionInput)="search($event)"></ion-searchbar>
     <app-account-card *ngFor="let accountInfo of displayedData" [routerLink]="'details/' + accountInfo.orchesterMitgliedsId"
       [name]="accountInfo.orchesterMitgliedsName" [email]="accountInfo.email" [lastLogin]="accountInfo.lastLogin" [color]="accountInfo | getCardColor">
