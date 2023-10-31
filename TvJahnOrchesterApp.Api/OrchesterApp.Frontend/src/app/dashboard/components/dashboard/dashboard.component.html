@@ -1,6 +1,27 @@
-<app-toolbar [header]="'Dashboard'">
-  Dies wird das Dashboard.
-  <ng-container *ngIf="data$ | async as data">
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Dashboard
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Dashboard</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ng-container *ngIf="data$ | async as data; else loading">
+    Dies wird das Dashboard.
     <pre>{{data | json}}</pre>
   </ng-container>
-</app-toolbar>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+</ion-content>

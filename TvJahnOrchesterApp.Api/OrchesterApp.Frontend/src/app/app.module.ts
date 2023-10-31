@@ -13,6 +13,7 @@ import { Preferences } from '@capacitor/preferences';
 import { TOKEN_KEY } from './authentication/services/authentication.service';
 import { RefreshTokenInterceptor } from './core/interceptor/refresh-token-interceptor';
 import { ErrorHandelingInterceptor } from './core/interceptor/error-handeling-interceptor';
+import { CoreModule } from './core/core.module';
 
 export async function tokenGetter() {
   return (await Preferences.get({ key: TOKEN_KEY })).value;
@@ -20,7 +21,7 @@ export async function tokenGetter() {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, SharedModule, JwtModule.forRoot({
+  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, SharedModule, CoreModule, JwtModule.forRoot({
     config: {
       tokenGetter: tokenGetter,
       allowedDomains: ["localhost:8100", "notesapp1.azurewebsites.net"]

@@ -4,6 +4,7 @@ import { CommonModule } from '@angular/common';
 import { TerminRoutingModule } from './termin-routing.module';
 import { SharedModule } from '../shared/shared.module';
 import { TerminListeComponent } from './components/termin-liste/termin-liste.component';
+import { IonicModule } from '@ionic/angular';
 
 
 @NgModule({
@@ -13,7 +14,8 @@ import { TerminListeComponent } from './components/termin-liste/termin-liste.com
   imports: [
     SharedModule,
     CommonModule,
-    TerminRoutingModule
+    TerminRoutingModule,
+    IonicModule
   ]
 })
 export class TerminModule { }

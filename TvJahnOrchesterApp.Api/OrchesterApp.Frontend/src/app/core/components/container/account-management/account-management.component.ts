@@ -1,7 +1,7 @@
-import { Component, ElementRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { GetAdminInfoResponse } from '../../../interfaces/get-admin-info-response';
 import { AccountManagementService } from 'src/app/core/services/account-management.service';
-import { Subscription } from 'rxjs';
+import { interval } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 
 @Component({
@@ -25,14 +25,14 @@ export class AccountManagementComponent {
 
   ionViewWillEnter() {
     if(this.searchBar) this.searchBar.value = ""; 
-    this.accountManagementService.getManagementInfos().subscribe(data => {
+    this.us.autoUnsubscribe(this.accountManagementService.getManagementInfos()).subscribe(data => {
       this.data = data;
       this.displayedData = data;
     });
   }
 
   ionViewDidLeave(){
-    this.subscription.unsubscribe();
+    this.us.unsubscribe();
   }
 
   search(event: any) {
@@ -41,7 +41,7 @@ export class AccountManagementComponent {
   }
 
   handleRefresh(event: any){
-    this.accountManagementService.getManagementInfos().subscribe(data => {
+    this.us.autoUnsubscribe(this.accountManagementService.getManagementInfos()).subscribe(data => {
       this.data = data;
       this.displayedData = data;
       event.target.complete();

@@ -12,8 +12,9 @@ import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
   selector: 'app-account-details',
   templateUrl: './account-details.component.html',
   styleUrls: ['./account-details.component.scss'],
+  providers: [Unsubscribe]
 })
-export class AccountDetailsComponent extends Unsubscribe implements OnInit {
+export class AccountDetailsComponent {
 
   public readonly roles = [
     { value: "Admin", text: "Admin" },
@@ -34,14 +35,18 @@ export class AccountDetailsComponent extends Unsubscribe implements OnInit {
     private route: ActivatedRoute,
     private loadingController: LoadingController,
     public alertController: AlertController,
-    private router: Router
+    private router: Router,
+    private us: Unsubscribe 
   ) {
-    super();
   }
 
-  ngOnInit(): void {
+  ionViewWillEnter() {
     this.orchesterMitgliedsId = this.route.snapshot.params["orchesterMitgliedsId"];
     this.data$ = this.getData();
+  }
+
+  ionViewDidLeave(){
+    this.us.unsubscribe();
   }
 
   async changeRoles(email: string) {
@@ -54,7 +59,7 @@ export class AccountDetailsComponent extends Unsubscribe implements OnInit {
   }
 
   private getData() {
-    return this.unsubscribeOnDestroy<GetAdminInfoDetailsResponse>(this.accountManagementService.getManagementInfosDetails(this.orchesterMitgliedsId).pipe(
+    return this.us.autoUnsubscribe(this.accountManagementService.getManagementInfosDetails(this.orchesterMitgliedsId).pipe(
       tap(data => {
         this.userId = data.userId;
         this.roleFormGroup = this.fb.group({
