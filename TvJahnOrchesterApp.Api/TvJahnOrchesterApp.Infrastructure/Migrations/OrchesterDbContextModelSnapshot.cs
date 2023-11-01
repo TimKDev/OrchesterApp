@@ -611,6 +611,12 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<DateTime?>("MemberSince")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("MemberSinceInYears")
+                        .HasColumnType("int");
+
                     b.Property<string>("Nachname")
                         .IsRequired()
                         .HasColumnType("nvarchar(max)");

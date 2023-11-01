@@ -21,7 +21,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
             return Results.Ok(allOrchesterMitglieder);
         }
 
-        private record GetAllOrchesterMitgliederResponse(Guid Id, string Vorname, string Nachname, Adresse Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme);
+        private record GetAllOrchesterMitgliederResponse(Guid Id, string Vorname, string Nachname, string? DefaultInstrument, int? MemberSinceInYears);
 
         private record GetAllOrchesterMitgliederQuery : IRequest<GetAllOrchesterMitgliederResponse[]> { };
 
@@ -36,9 +36,16 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
 
             public async Task<GetAllOrchesterMitgliederResponse[]> Handle(GetAllOrchesterMitgliederQuery request, CancellationToken cancellationToken)
             {
+                var result = new List<GetAllOrchesterMitgliederResponse>();
                 var orchesterMitglieder = await orchesterMitgliedRepository.GetAllAsync(cancellationToken);
-                return orchesterMitglieder
-                    .Select(o => new GetAllOrchesterMitgliederResponse(o.Id.Value, o.Vorname, o.Nachname, o.Adresse, o.Geburtstag, o.Telefonnummer, o.Handynummer, o.DefaultInstrument, o.DefaultNotenStimme)).ToArray();
+                throw new NotImplementedException();
+                //foreach(var mitglied in orchesterMitglieder)
+                //{
+
+                //}
+
+                //return orchesterMitglieder
+                //    .Select(o => new GetAllOrchesterMitgliederResponse(o.Id.Value, o.Vorname, o.Nachname, o.Adresse, o.Geburtstag, o.Telefonnummer, o.Handynummer, o.DefaultInstrument, o.DefaultNotenStimme)).ToArray();
             }
         }
     }

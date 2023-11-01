@@ -27,6 +27,8 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
         public string? ConnectedUserId { get; private set; }
         public DateTime? UserFirstConnected { get; private set; }
         public DateTime? UserLastLogin { get; private set; }
+        public DateTime? MemberSince { get; private set; }
+        public int? MemberSinceInYears { get; private set; }
         public int? OrchesterMitgliedsStatus { get; private set; }
 
         private OrchesterMitglied() { }
@@ -83,6 +85,18 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
         public void UserLogin()
         {
             UserLastLogin = DateTime.Now;
+        }
+
+        public void SetMemberSince(DateTime dateTime)
+        {
+            MemberSince = dateTime;
+            var today = DateTime.Today;
+            var age = today.Year - dateTime.Year;
+            if (dateTime.Date > today.AddYears(-age))
+            {
+                age--;
+            }
+            MemberSinceInYears = age;
         }
     }
 }

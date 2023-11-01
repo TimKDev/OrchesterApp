@@ -20,13 +20,13 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 .RequireAuthorization();
         }
 
-        private static async Task<IResult> PostOrchesterMitglied([FromBody] CreateOrchesterMitgliedCommand deleteOrchesterMitgliedCommand, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> PostOrchesterMitglied([FromBody] CreateOrchesterMitgliedCommand createOrchesterMitgliedCommand, ISender sender, CancellationToken cancellationToken)
         {
-            await sender.Send(deleteOrchesterMitgliedCommand);
+            await sender.Send(createOrchesterMitgliedCommand);
             return Results.Ok("Orchestermitglied wurde erfolgreich erstellt.");
         }
 
-        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, AdresseDto Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int[] Position, string RegisterKey) : IRequest<Unit>;
+        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, AdresseDto Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int[] Position, string RegisterKey, DateTime? MemberSince) : IRequest<Unit>;
 
         private class CreateOrchesterMitgliedCommandValidation : AbstractValidator<CreateOrchesterMitgliedCommand>
         {
@@ -56,6 +56,11 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 }
 
                 var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.RegisterKey, (int)MitgliedsStatusEnum.aktiv);
+
+                if(request.MemberSince is not null)
+                {
+                    orchesterMitglied.SetMemberSince((DateTime)request.MemberSince);
+                }
 
                 await _orchesterMitgliedRepository.CreateAsync(orchesterMitglied, cancellationToken);
                 return Unit.Value;
