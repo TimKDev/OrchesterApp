@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 
 @Component({
   selector: 'app-mitglieder-liste',
@@ -7,7 +8,11 @@ import { Component, OnInit } from '@angular/core';
 })
 export class MitgliederListeComponent  implements OnInit {
 
-  constructor() { }
+  data$ = this.mitgliederService.getAllMitglieder();
+
+  constructor(
+    private mitgliederService: MitgliederService,
+  ) { }
 
   ngOnInit() {}
 

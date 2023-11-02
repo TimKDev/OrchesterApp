@@ -16,8 +16,20 @@
     </ion-toolbar>
   </ion-header>
 
-  <ion-list>
-    <app-contact-item [name]="'Tim Kempkens'" [instruments]="'Saxophon'" [memberSince]="'15'"></app-contact-item>
-  </ion-list>
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <ion-list>
+      <app-contact-item 
+        *ngFor="let contact of data" 
+        [name]="contact.vorname + ' ' + contact.nachname" 
+        [instruments]="contact.defaultInstrument" 
+        [memberSince]="contact.memberSinceInYears?.toString()"
+        [routerLink]="'details/' + contact.id">
+      </app-contact-item>
+    </ion-list>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
 
 </ion-content>

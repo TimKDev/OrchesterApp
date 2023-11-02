@@ -8,8 +8,8 @@ import { Component, Input, OnInit } from '@angular/core';
 export class ContactItemComponent  implements OnInit {
 
   @Input() name!: string;
-  @Input() instruments!: string;
-  @Input() memberSince!: string;
+  @Input() instruments?: string;
+  @Input() memberSince?: string;
 
   constructor() { }
 

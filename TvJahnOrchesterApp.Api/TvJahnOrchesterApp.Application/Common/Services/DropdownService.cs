@@ -8,5 +8,6 @@ namespace TvJahnOrchesterApp.Application.Common.Services
 {
     internal class DropdownService
     {
+        public DropdownService() { }
     }
 }

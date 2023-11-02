@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Domain.Common.Entities;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
+using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
 
 namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
 {
@@ -11,7 +13,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
     {
         public static void MapOrchesterMitgliedGetAllEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/orchesterMitglied/getAll", GetAllOrchesterMitglieder);
+            app.MapGet("api/orchester-mitglied/get-all", GetAllOrchesterMitglieder);
                 //.RequireAuthorization();
         }
 
@@ -28,24 +30,29 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
         private class GetAllOrchesterMitgliederQueryHandler : IRequestHandler<GetAllOrchesterMitgliederQuery, GetAllOrchesterMitgliederResponse[]>
         {
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
+            private readonly IInstrumentRepository instrumentRepository;
 
-            public GetAllOrchesterMitgliederQueryHandler(IOrchesterMitgliedRepository orchesterMitgliedRepository)
+            public GetAllOrchesterMitgliederQueryHandler(IOrchesterMitgliedRepository orchesterMitgliedRepository, IInstrumentRepository instrumentRepository)
             {
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
+                this.instrumentRepository = instrumentRepository;
             }
 
             public async Task<GetAllOrchesterMitgliederResponse[]> Handle(GetAllOrchesterMitgliederQuery request, CancellationToken cancellationToken)
             {
                 var result = new List<GetAllOrchesterMitgliederResponse>();
                 var orchesterMitglieder = await orchesterMitgliedRepository.GetAllAsync(cancellationToken);
-                throw new NotImplementedException();
-                //foreach(var mitglied in orchesterMitglieder)
-                //{
-
-                //}
-
-                //return orchesterMitglieder
-                //    .Select(o => new GetAllOrchesterMitgliederResponse(o.Id.Value, o.Vorname, o.Nachname, o.Adresse, o.Geburtstag, o.Telefonnummer, o.Handynummer, o.DefaultInstrument, o.DefaultNotenStimme)).ToArray();
+                foreach (var mitglied in orchesterMitglieder)
+                {
+                    Instrument? instrument = null;
+                    if(mitglied.DefaultInstrument is not null)
+                    {
+                        instrument = await instrumentRepository.GetByIdAsync((int)mitglied.DefaultInstrument, cancellationToken);
+                    }
+                    result.Add(new GetAllOrchesterMitgliederResponse(mitglied.Id.Value, mitglied.Vorname, mitglied.Nachname, instrument?.Value, mitglied.MemberSinceInYears));
+                   
+                }
+                return result.ToArray();
             }
         }
     }
