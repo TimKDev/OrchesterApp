@@ -1,5 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { Observable } from 'rxjs';
+import { GetSpecificMitgliederResponse } from 'src/app/mitglieder/interfaces/get-specific-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 
 @Component({
@@ -9,11 +11,17 @@ import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.servic
 })
 export class MitgliederDetailsComponent  implements OnInit {
 
+  data$!: Observable<GetSpecificMitgliederResponse>;
+  mitgliedsId!: string;
+
   constructor(
     private mitgliederService: MitgliederService,
     private route: ActivatedRoute
   ) { }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.mitgliedsId = this.route.snapshot.params["mitgliedsId"];
+    this.data$ = this.mitgliederService.getSpecificMitglied(this.mitgliedsId);
+  }
 
 }

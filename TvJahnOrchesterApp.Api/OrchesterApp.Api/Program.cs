@@ -3,6 +3,7 @@ using Microsoft.Extensions.DependencyInjection;
 using TvJahnOrchesterApp.Api;
 using TvJahnOrchesterApp.Api.Middlewares;
 using TvJahnOrchesterApp.Application;
+using TvJahnOrchesterApp.Application.Common;
 using TvJahnOrchesterApp.Application.Features;
 using TvJahnOrchesterApp.Infrastructure;
 
@@ -33,6 +34,7 @@ namespace OrchesterApp.Api
                 app.UseAuthorization();
                 app.MapControllers();
                 app.RegisterEndpointsFeatures();
+                app.RegisterEndpointsCommon();
                 app.UseSwagger();
                 app.UseSwaggerUI();
                 app.MapFallbackToFile("index.html");

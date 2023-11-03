@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Routing;
+using TvJahnOrchesterApp.Application.Common;
 using TvJahnOrchesterApp.Application.Features.Abstimmung;
 using TvJahnOrchesterApp.Application.Features.AnwesenheitsListe;
 using TvJahnOrchesterApp.Application.Features.Authorization;
@@ -22,7 +23,6 @@ namespace TvJahnOrchesterApp.Application.Features
             app.RegisterEndpointsTerminFeature();
             app.RegisterEndpointsTerminRückmeldungFeature();
             app.RegisterEndpointsAnwesenheitsListeFeature();
-            app.MapAddTestEndpoint();
         }
     }
 }
