@@ -12,6 +12,7 @@ namespace TvJahnOrchesterApp.Api
 
             services.ConfigureCorsPolicy();
             services.AddControllers();
+            services.AddOutputCache();
             services.AddMappings();
             services.AddEndpointsApiExplorer();
             services.AddEndpointsApiExplorer();

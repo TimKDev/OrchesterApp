@@ -3,8 +3,8 @@ using Microsoft.Extensions.DependencyInjection;
 using TvJahnOrchesterApp.Api;
 using TvJahnOrchesterApp.Api.Middlewares;
 using TvJahnOrchesterApp.Application;
-using TvJahnOrchesterApp.Application.Common;
 using TvJahnOrchesterApp.Application.Features;
+using TvJahnOrchesterApp.Application.Features.Dropdown;
 using TvJahnOrchesterApp.Infrastructure;
 
 namespace OrchesterApp.Api
@@ -27,6 +27,7 @@ namespace OrchesterApp.Api
                 app.UseHsts();
                 app.UseMiddleware<ErrorHandelingMiddleware>();
                 app.UseHttpsRedirection();
+                app.UseOutputCache();
                 app.UseStaticFiles();
                 app.UseRouting();
                 app.UseCors(TvJahnOrchesterApp.Api.DependencyInjection.MyCorsPolicy);
@@ -34,7 +35,7 @@ namespace OrchesterApp.Api
                 app.UseAuthorization();
                 app.MapControllers();
                 app.RegisterEndpointsFeatures();
-                app.RegisterEndpointsCommon();
+                app.RegisterEndpointsDaashboard();
                 app.UseSwagger();
                 app.UseSwaggerUI();
                 app.MapFallbackToFile("index.html");
