@@ -3,6 +3,7 @@ using TvJahnOrchesterApp.Application.Common;
 using TvJahnOrchesterApp.Application.Features.Abstimmung;
 using TvJahnOrchesterApp.Application.Features.AnwesenheitsListe;
 using TvJahnOrchesterApp.Application.Features.Authorization;
+using TvJahnOrchesterApp.Application.Features.Dropdown;
 using TvJahnOrchesterApp.Application.Features.Einsatzplan;
 using TvJahnOrchesterApp.Application.Features.OrchesterMitglied;
 using TvJahnOrchesterApp.Application.Features.Termin;
@@ -23,6 +24,7 @@ namespace TvJahnOrchesterApp.Application.Features
             app.RegisterEndpointsTerminFeature();
             app.RegisterEndpointsTerminRückmeldungFeature();
             app.RegisterEndpointsAnwesenheitsListeFeature();
+            app.RegisterEndpointsDropdown();
         }
     }
 }

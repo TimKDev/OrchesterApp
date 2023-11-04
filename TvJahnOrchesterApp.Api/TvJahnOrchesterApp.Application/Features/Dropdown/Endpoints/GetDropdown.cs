@@ -5,16 +5,15 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using static TvJahnOrchesterApp.Application.Features.TerminDashboard.GetNextTermins;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using Microsoft.AspNetCore.Builder;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Services;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
 using Microsoft.Extensions.Configuration.EnvironmentVariables;
-using static System.Runtime.InteropServices.JavaScript.JSType;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Enums;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.AspNetCore.Mvc;
 
 namespace TvJahnOrchesterApp.Application.Features.Dropdown.Endpoints
 {
@@ -23,7 +22,7 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Endpoints
         public static void MapGetDropdownEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapGet("api/dropdown/{dropdownName}", GetDropdownValues)
-                .CacheOutput()
+                .CacheOutput("OutputCacheWithAuthPolicy")
                 .RequireAuthorization();
         }
 

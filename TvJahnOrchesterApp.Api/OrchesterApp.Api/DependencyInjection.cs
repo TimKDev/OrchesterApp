@@ -1,10 +1,11 @@
 ﻿using Mapster;
 using MapsterMapper;
+using Microsoft.Extensions.Options;
 using System.Reflection;
 
 namespace TvJahnOrchesterApp.Api
 {
-    public static class DependencyInjection
+    public static partial class DependencyInjection
     {
         public static readonly string MyCorsPolicy = "MyCorsPolicy";
         public static IServiceCollection AddPresentation(this IServiceCollection services)
@@ -12,7 +13,13 @@ namespace TvJahnOrchesterApp.Api
 
             services.ConfigureCorsPolicy();
             services.AddControllers();
-            services.AddOutputCache();
+
+            services.AddOutputCache(opts =>
+            {
+                opts.AddBasePolicy(builder => builder.Cache());
+                opts.AddPolicy("OutputCacheWithAuthPolicy", OutputCacheWithAuthPolicy.Instance);
+            });
+            
             services.AddMappings();
             services.AddEndpointsApiExplorer();
             services.AddEndpointsApiExplorer();

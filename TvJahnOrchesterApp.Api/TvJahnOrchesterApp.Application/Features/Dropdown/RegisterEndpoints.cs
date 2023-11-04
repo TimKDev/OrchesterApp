@@ -10,7 +10,7 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown
 {
     public static class RegisterEndpoints
     {
-        public static void RegisterEndpointsDaashboard(this IEndpointRouteBuilder app)
+        public static void RegisterEndpointsDropdown(this IEndpointRouteBuilder app)
         {
             app.MapGetDropdownEndpoint();
         }

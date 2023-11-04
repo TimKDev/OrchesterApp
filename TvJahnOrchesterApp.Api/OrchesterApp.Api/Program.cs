@@ -5,6 +5,7 @@ using TvJahnOrchesterApp.Api.Middlewares;
 using TvJahnOrchesterApp.Application;
 using TvJahnOrchesterApp.Application.Features;
 using TvJahnOrchesterApp.Application.Features.Dropdown;
+using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
 using TvJahnOrchesterApp.Infrastructure;
 
 namespace OrchesterApp.Api
@@ -27,15 +28,14 @@ namespace OrchesterApp.Api
                 app.UseHsts();
                 app.UseMiddleware<ErrorHandelingMiddleware>();
                 app.UseHttpsRedirection();
-                app.UseOutputCache();
                 app.UseStaticFiles();
                 app.UseRouting();
                 app.UseCors(TvJahnOrchesterApp.Api.DependencyInjection.MyCorsPolicy);
+                app.UseOutputCache();
                 app.UseAuthentication();
                 app.UseAuthorization();
                 app.MapControllers();
                 app.RegisterEndpointsFeatures();
-                app.RegisterEndpointsDaashboard();
                 app.UseSwagger();
                 app.UseSwaggerUI();
                 app.MapFallbackToFile("index.html");
