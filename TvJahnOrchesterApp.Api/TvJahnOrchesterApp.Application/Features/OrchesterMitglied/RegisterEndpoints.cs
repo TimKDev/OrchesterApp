@@ -13,6 +13,8 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
             app.MapDeleteOrchesterMitgliedEndpoint();
             app.MapOrchesterMitgliedGetAllEndpoint();
             app.MapOrchesterMitgliedGetSpecificEndpoint();
+            app.MapOrchesterMitgliedUpdateAdminSpecificEndpoint();
+            app.MapOrchesterMitgliedUpdateSpecificEndpoint();
         }
     }
 }

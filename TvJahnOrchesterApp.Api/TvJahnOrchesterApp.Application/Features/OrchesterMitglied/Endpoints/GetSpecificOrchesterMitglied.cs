@@ -18,14 +18,14 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
     {
         public static void MapOrchesterMitgliedGetSpecificEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/orchester-mitglied/specific/{mitgliedsId}", GetAllOrchesterMitglieder);
-            //.RequireAuthorization();
+            app.MapGet("api/orchester-mitglied/specific/{mitgliedsId}", GetSpecificOrchesterMitglieder)
+            .RequireAuthorization();
         }
 
-        private static async Task<IResult> GetAllOrchesterMitglieder(Guid mitgliedsId, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> GetSpecificOrchesterMitglieder(Guid mitgliedsId, ISender sender, CancellationToken cancellationToken)
         {
-            var allOrchesterMitglieder = await sender.Send(new GetSpecificOrchesterMitgliederQuery(mitgliedsId));
-            return Results.Ok(allOrchesterMitglieder);
+            var specificOrchesterMitglied = await sender.Send(new GetSpecificOrchesterMitgliederQuery(mitgliedsId));
+            return Results.Ok(specificOrchesterMitglied);
         }
 
         private record GetSpecificOrchesterMitgliederResponse(Guid Id, string Vorname, string Nachname, Adresse Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, DateTime? MemberSince, int? MemberSinceInYears);

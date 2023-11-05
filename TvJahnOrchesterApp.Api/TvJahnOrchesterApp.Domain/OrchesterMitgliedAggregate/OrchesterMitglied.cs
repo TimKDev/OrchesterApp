@@ -1,4 +1,5 @@
-﻿using TvJahnOrchesterApp.Domain.Common.Models;
+﻿using TvJahnOrchesterApp.Domain.Common.Entities;
+using TvJahnOrchesterApp.Domain.Common.Models;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.Entities;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
@@ -97,6 +98,61 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
                 age--;
             }
             MemberSinceInYears = age;
+        }
+
+        public void AddPosition(int positionId)
+        {
+            if(_positionMappings.FirstOrDefault(p => p.PositionId == positionId) is null)
+            {
+                _positionMappings.Add(OrchesterMitgliedPositionsMapping.Create(positionId));
+            }
+        }
+
+        public void RemovePosition(int positionId)
+        {
+            var position = _positionMappings.FirstOrDefault(m => m.PositionId == positionId);
+            if (position is not null)
+            {
+                _positionMappings.Remove(position);
+            }
+        }
+
+        public void UpdatePositions(int[] positionIds)
+        {
+            foreach (var positionId in positionIds)
+            {
+                AddPosition(positionId);
+            }
+            foreach (var position in _positionMappings.ToList())
+            {
+                if (!positionIds.Contains(position.PositionId))
+                {
+                    RemovePosition(position.PositionId);
+                }
+            }
+        }
+
+        public void UserUpdates(Adresse adresse, DateTime geburtstag, string handynummer, string telefonnummer)
+        {
+            Adresse = adresse;
+            Geburtstag = geburtstag;
+            Handynummer = handynummer;
+            Telefonnummer = telefonnummer;
+        }
+
+        public void AdminUpdates(string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, int defaultInstrument, int defaultNotenStimme, int mitgliedsStatus, DateTime memberSince, int[] positionIds)
+        {
+            Vorname = vorname;
+            Nachname = nachname;
+            Adresse = adresse;
+            Geburtstag = geburtstag;
+            Telefonnummer = telefonnummer;
+            Handynummer = handynummer;
+            DefaultInstrument = defaultInstrument;
+            DefaultNotenStimme = defaultNotenStimme;
+            OrchesterMitgliedsStatus = mitgliedsStatus;
+            SetMemberSince(memberSince);
+            UpdatePositions(positionIds);
         }
     }
 }
