@@ -11,7 +11,6 @@ import { SharedModule } from '../shared/shared.module';
 import { AccountDetailsComponent } from './components/container/account-details/account-details.component';
 import { AccountManagementComponent } from './components/container/account-management/account-management.component';
 import { AccountCardComponent } from './components/presentational/account-card/account-card.component';
-import { DataItemComponent } from './components/presentational/data-item/data-item.component';
 import { GetCardColorPipe } from './pipes/get-card-color.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SideMenuComponent } from './components/container/side-menu/side-menu.component';
@@ -27,7 +26,6 @@ import { SideMenuComponent } from './components/container/side-menu/side-menu.co
     AccountCardComponent,
     AccountDetailsComponent,
     GetCardColorPipe,
-    DataItemComponent,
     SideMenuComponent, 
   ],
   imports: [

@@ -16,10 +16,39 @@
     </ion-toolbar>
   </ion-header>
 
-  <ng-container *ngIf="data$ | async as data; else loading">
-    <pre>
-      {{data | json}}
-    </pre>
+  <ng-container *ngIf="data$ | async as res; else loading">
+    <ion-button [routerLink]="'/tabs/mitglieder'" class="back-btn">
+      <ion-icon slot="start" name="arrow-back"></ion-icon>
+      Zurück zur Übersicht
+    </ion-button>
+    <ion-list lines="full">
+      <app-data-item label="Name" [value]="res.data.vorname + ' ' + res.data.nachname "></app-data-item>
+      <ng-container
+        *ngIf="res.data.adresse['straße'] && res.data.adresse.hausnummer && res.data.adresse.postleitzahl && res.data.adresse.stadt; else adresseNotGiven">
+        <ng-container *ngIf="res.data.adresse.zusatz; else adressWithoutAddition">
+          <app-data-item label="Adresse"
+            [value]="res.data.adresse['straße'] + ' ' + res.data.adresse.hausnummer + ', ' + res.data.adresse.postleitzahl + ' ' + res.data.adresse.stadt + ' (' + res.data.adresse.zusatz + ')'">
+          </app-data-item>
+        </ng-container>
+        <ng-template #adressWithoutAddition>
+          <app-data-item label="Adresse"
+            [value]="res.data.adresse['straße'] + ' ' + res.data.adresse.hausnummer + ', ' + res.data.adresse.postleitzahl + ' ' + res.data.adresse.stadt">
+          </app-data-item>
+        </ng-template>
+      </ng-container>
+      <ng-template #adresseNotGiven>
+        <app-data-item label="Adresse" [value]="'Nicht angegeben'"></app-data-item>
+      </ng-template>
+      <app-data-item label="Geburtstag" [value]="res.data.geburtstag | date : 'dd.MM.YYYY'"></app-data-item>
+      <app-data-item label="Telefonnummer" [value]="res.data.telefonnummer ?? 'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Handynummer" [value]="res.data.handynummer ?? 'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Instrument"
+        [value]="res.data.defaultInstrument | dropdown : res.instrumentDropdown ?? 'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Stimme"
+        [value]="res.data.defaultNotenStimme | dropdown : res.notenStimmeDropdown ?? 'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Orchestermitglied seit"
+        [value]="res.data.memberSince | date : 'dd.MM.YYYY' ?? 'Nicht angegeben'"></app-data-item>
+    </ion-list>
   </ng-container>
 
   <ng-template #loading>
