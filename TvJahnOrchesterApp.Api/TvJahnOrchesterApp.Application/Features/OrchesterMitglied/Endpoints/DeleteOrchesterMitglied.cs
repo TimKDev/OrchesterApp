@@ -15,13 +15,13 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
     {
         public static void MapDeleteOrchesterMitgliedEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapDelete("api/orchesterMitglied", DeleteDeleteOrchesterMitglied)
+            app.MapDelete("api/orchester-mitglied/{orchesterMitgliedsId}", DeleteDeleteOrchesterMitglied)
                 .RequireAuthorization();
         }
 
-        private static async Task<IResult> DeleteDeleteOrchesterMitglied([FromBody] DeleteOrchesterMitgliedCommand deleteOrchesterMitgliedCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> DeleteDeleteOrchesterMitglied(Guid orchesterMitgliedsId, CancellationToken cancellationToken, ISender sender)
         {
-            var message = await sender.Send(deleteOrchesterMitgliedCommand);
+            var message = await sender.Send(new DeleteOrchesterMitgliedCommand(orchesterMitgliedsId));
             return Results.Ok(message);
         }
 

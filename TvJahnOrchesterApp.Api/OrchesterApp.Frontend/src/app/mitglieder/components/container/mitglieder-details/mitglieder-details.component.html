@@ -49,6 +49,12 @@
       <app-data-item label="Orchestermitglied seit"
         [value]="res.data.memberSince | date : 'dd.MM.YYYY' ?? 'Nicht angegeben'"></app-data-item>
     </ion-list>
+    <ion-button fill="clear" expand="block" (click)="setOpen(true)">
+      Bearbeite Mitglied
+    </ion-button>
+    <ion-action-sheet [isOpen]="isActionSheetOpen" header="Bearbeite Mitglied" [buttons]="actionSheetButtons"
+      (didDismiss)="setOpen(false)"></ion-action-sheet>
+
   </ng-container>
 
   <ng-template #loading>

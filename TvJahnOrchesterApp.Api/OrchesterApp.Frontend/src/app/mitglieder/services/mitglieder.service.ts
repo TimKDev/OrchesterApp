@@ -19,4 +19,8 @@ export class MitgliederService {
   public getSpecificMitglied(mitgliedsId: string ){
     return this.http.get<GetSpecificMitgliederResponse>(`api/orchester-mitglied/specific/${mitgliedsId}`);
   }
+
+  public deleteMitglied(mitgliedsId: string){
+    return this.http.delete(`api/orchester-mitglied/${mitgliedsId}`);
+  }
 }
