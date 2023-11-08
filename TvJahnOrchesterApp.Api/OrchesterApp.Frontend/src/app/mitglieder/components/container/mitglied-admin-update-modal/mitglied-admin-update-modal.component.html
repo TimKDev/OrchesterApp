@@ -1,16 +1,58 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Cancel</ion-button>
+      <ion-button color="medium" (click)="cancel()">Zurück</ion-button>
     </ion-buttons>
-    <ion-title>Welcome</ion-title>
+    <ion-title>Bearbeite Orchestermitglied</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true">Confirm</ion-button>
+      <ion-button (click)="confirm()" [strong]="true">Speichern</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <ion-item>
-    <ion-input labelPlacement="stacked" label="Enter your name" [(ngModel)]="name" placeholder="Your name"></ion-input>
-  </ion-item>
+  <ng-container *ngIf="data$ | async; else loading">
+    <form [formGroup]="formGroup">
+      <ion-item>
+        <ion-input formControlName="vorname" labelPlacement="stacked" label="Vorname" placeholder="Vorname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="nachname" labelPlacement="stacked" label="Nachname" placeholder="Nachname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="hausnummer" labelPlacement="stacked" label="Hausnummer" placeholder="Hausnummer"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="postleitzahl" labelPlacement="stacked" label="Postleitzahl" placeholder="Postleitzahl"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="stadt" labelPlacement="stacked" label="Stadt" placeholder="Stadt"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="zusatz" labelPlacement="stacked" label="Zusatz" placeholder="Zusatz"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+      </ion-item>
+    </form>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+ 
 </ion-content>

@@ -80,6 +80,7 @@ export class MitgliederDetailsComponent  implements OnInit {
   private async openAdminUpdateOrchesterMemberModal() {
     const modal = await this.modalCtrl.create({
       component: MitgliedAdminUpdateModalComponent,
+      componentProps: {"mitgliedsId": this.mitgliedsId}
     });
     modal.present();
     this.setOpen(false);
