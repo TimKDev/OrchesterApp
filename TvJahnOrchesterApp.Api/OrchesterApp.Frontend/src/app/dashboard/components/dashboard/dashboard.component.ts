@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { switchMap, timer } from 'rxjs';
+import { Observable, switchMap, timer } from 'rxjs';
 import { AuthHttpClientService } from 'src/app/core/services/auth-http-client.service';
 
 @Component({
@@ -7,12 +7,14 @@ import { AuthHttpClientService } from 'src/app/core/services/auth-http-client.se
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.scss'],
 })
-export class DashboardComponent  implements OnInit {
+export class DashboardComponent{
 
   constructor(private http: AuthHttpClientService) { }
+  data$!: Observable<unknown>
 
-  data$ = this.http.get('api/dashboard/nextTermins');
-
-  ngOnInit() {}
+  ionViewWillEnter() {
+    debugger;
+    this.data$ = this.http.get('api/dashboard/nextTermins');
+  }
 
 }
