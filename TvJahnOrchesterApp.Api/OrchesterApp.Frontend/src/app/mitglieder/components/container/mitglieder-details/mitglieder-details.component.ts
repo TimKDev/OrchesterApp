@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { Observable, combineLatest, map } from 'rxjs';
+import { Observable, combineLatest, map, tap } from 'rxjs';
 import { confirmDialog } from 'src/app/core/helper/confirm';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
@@ -20,6 +20,8 @@ export class MitgliederDetailsComponent  implements OnInit {
 
   data$!: Observable<{data: GetSpecificMitgliederResponse, instrumentDropdown: DropdownItem[], notenStimmeDropdown: DropdownItem[]}> | null;
   mitgliedsId!: string;
+  dropdownItemsInstruments!: DropdownItem[];
+  dropdownItemsNotenstimme!: DropdownItem[];
 
   constructor(
     private mitgliederService: MitgliederService,
@@ -36,7 +38,13 @@ export class MitgliederDetailsComponent  implements OnInit {
       this.mitgliederService.getSpecificMitglied(this.mitgliedsId), 
       this.dropdownService.getDropdownElements('Instrument'),
       this.dropdownService.getDropdownElements('Notenstimme') 
-    ])).pipe(map(([data, instrumentDropdown, notenStimmeDropdown]) => ({data, instrumentDropdown, notenStimmeDropdown})));
+    ])).pipe(
+      map(([data, instrumentDropdown, notenStimmeDropdown]) => ({data, instrumentDropdown, notenStimmeDropdown})),
+      tap(result => {
+        this.dropdownItemsInstruments = result.instrumentDropdown;
+        this.dropdownItemsNotenstimme = result.notenStimmeDropdown;
+      })
+    );
   }
 
   isActionSheetOpen = false;
@@ -80,7 +88,11 @@ export class MitgliederDetailsComponent  implements OnInit {
   private async openAdminUpdateOrchesterMemberModal() {
     const modal = await this.modalCtrl.create({
       component: MitgliedAdminUpdateModalComponent,
-      componentProps: {"mitgliedsId": this.mitgliedsId}
+      componentProps: {
+        "mitgliedsId": this.mitgliedsId,
+        "dropdownItemsNotenstimme": this.dropdownItemsNotenstimme,
+        "dropdownItemsInstruments": this.dropdownItemsInstruments
+      }
     });
     modal.present();
     this.setOpen(false);

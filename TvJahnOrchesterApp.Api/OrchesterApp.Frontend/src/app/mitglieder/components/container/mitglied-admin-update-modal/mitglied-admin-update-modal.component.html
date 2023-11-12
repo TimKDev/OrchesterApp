@@ -10,7 +10,8 @@
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
-  <ng-container *ngIf="data$ | async; else loading">
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <!-- <pre>{{formGroup.value | json}}</pre> -->
     <form [formGroup]="formGroup">
       <ion-item>
         <ion-input formControlName="vorname" labelPlacement="stacked" label="Vorname" placeholder="Vorname"></ion-input>
@@ -34,19 +35,26 @@
         <ion-input formControlName="zusatz" labelPlacement="stacked" label="Zusatz" placeholder="Zusatz"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+        <ion-input formControlName="geburtstag" type="date" labelPlacement="stacked" label="Geburtstag" placeholder="Geburtstag"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+        <ion-input formControlName="telefonnummer" labelPlacement="stacked" label="Telefonnummer" placeholder="Telefonnummer"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+        <ion-input formControlName="handynummer" labelPlacement="stacked" label="Handynummer" placeholder="Handynummer"></ion-input>
       </ion-item>
       <ion-item>
-        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+        <ion-select label="Hauptinstrument" label-placement="stacked" formControlName="defaultInstrument">
+          <ion-select-option *ngFor="let instrument of dropdownItemsInstruments" [value]="instrument.value">{{instrument.text}}</ion-select-option>
+        </ion-select>
       </ion-item>
       <ion-item>
-        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+        <ion-select label="Hauptnotenstimme" label-placement="stacked" formControlName="defaultNotenStimme">
+          <ion-select-option *ngFor="let notenstimme of dropdownItemsNotenstimme" [value]="notenstimme.value">{{notenstimme.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="memberSince" type="date" labelPlacement="stacked" label="Mitglied seit" placeholder="Mitglied seit"></ion-input>
       </ion-item>
     </form>
   </ng-container>

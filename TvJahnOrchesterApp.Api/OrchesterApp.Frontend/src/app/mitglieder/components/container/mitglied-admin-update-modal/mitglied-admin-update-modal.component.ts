@@ -1,8 +1,10 @@
+import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Observable, tap } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
+import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { GetSpecificMitgliederResponse } from 'src/app/mitglieder/interfaces/get-specific-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 
@@ -15,7 +17,9 @@ import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.servic
 export class MitgliedAdminUpdateModalComponent implements OnInit{
 
   mitgliedsId!: string;
-  data$!: Observable<GetSpecificMitgliederResponse>
+  data$!: Observable<GetSpecificMitgliederResponse>;
+  dropdownItemsInstruments!: DropdownItem[];
+  dropdownItemsNotenstimme!: DropdownItem[];
 
   constructor(
     private modalCtrl: ModalController,
@@ -25,7 +29,8 @@ export class MitgliedAdminUpdateModalComponent implements OnInit{
   ) { }
 
   ngOnInit(){
-    this.data$ = this.us.autoUnsubscribe(this.mitgliederService.getSpecificMitglied(this.mitgliedsId)).pipe(tap(data => {
+    this.data$ = this.us.autoUnsubscribe(this.mitgliederService.getSpecificMitglied(this.mitgliedsId)).pipe(tap(dataRaw => {
+      let data = {...dataRaw, geburtstag: formatDate(dataRaw.geburtstag, 'yyyy-MM-dd', 'en')}
       this.formGroup.patchValue(data);
       this.formGroup.patchValue(data.adresse);
     }));
@@ -39,7 +44,7 @@ export class MitgliedAdminUpdateModalComponent implements OnInit{
     postleitzahl: '',
     stadt: '',
     zusatz: '',
-    geburtstag: new Date(),
+    geburtstag: '',
     telefonnummer: '',
     handynummer: '',
     defaultInstrument: 0,
