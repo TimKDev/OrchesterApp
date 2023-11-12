@@ -9,14 +9,14 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.Entities
 
         private OrchesterMitgliedPositionsMapping() { }
 
-        private OrchesterMitgliedPositionsMapping(int positionId)
+        private OrchesterMitgliedPositionsMapping(OrchesterMitgliedPositionsMappingId id, int positionId): base(id)
         {
             PositionId = positionId;
         }
 
         public static OrchesterMitgliedPositionsMapping Create(int positionId)
         {
-            return new OrchesterMitgliedPositionsMapping(positionId);
+            return new OrchesterMitgliedPositionsMapping(OrchesterMitgliedPositionsMappingId.CreateUnique(), positionId);
         }
     }
 }

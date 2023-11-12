@@ -11,6 +11,7 @@ import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.servic
 import { MitgliedAdminUpdateModalComponent } from '../mitglied-admin-update-modal/mitglied-admin-update-modal.component';
 import { UpdateSpecificMitgliederRequest } from 'src/app/mitglieder/interfaces/update-specific-mitglieder-request';
 import { UpdateAdminSpecificMitgliederRequest } from 'src/app/mitglieder/interfaces/update-admin-specific-mitglieder-request';
+import { RefreshService } from 'src/app/core/services/refresh.service';
 
 @Component({
   selector: 'app-mitglieder-details',
@@ -20,10 +21,12 @@ import { UpdateAdminSpecificMitgliederRequest } from 'src/app/mitglieder/interfa
 })
 export class MitgliederDetailsComponent implements OnInit {
 
-  data$!: Observable<{ data: GetSpecificMitgliederResponse, instrumentDropdown: DropdownItem[], notenStimmeDropdown: DropdownItem[] }> | null;
+  data$!: Observable<{ data: GetSpecificMitgliederResponse, instrumentDropdown: DropdownItem[], notenStimmeDropdown: DropdownItem[], positionDropdown: DropdownItem[], mitgliedsStatusDropdown: DropdownItem[]}> | null;
   mitgliedsId!: string;
   dropdownItemsInstruments!: DropdownItem[];
   dropdownItemsNotenstimme!: DropdownItem[];
+  dropdownItemsPosition!: DropdownItem[];
+  dropdownItemsMitgliedsStatus!: DropdownItem[];
 
   constructor(
     private mitgliederService: MitgliederService,
@@ -31,7 +34,8 @@ export class MitgliederDetailsComponent implements OnInit {
     private dropdownService: DropdownService,
     private router: Router,
     private us: Unsubscribe,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private refreshService: RefreshService
   ) { }
 
   ngOnInit() {
@@ -49,12 +53,16 @@ export class MitgliederDetailsComponent implements OnInit {
     this.data$ = this.us.autoUnsubscribe(combineLatest([
       this.mitgliederService.getSpecificMitglied(this.mitgliedsId),
       this.dropdownService.getDropdownElements('Instrument'),
-      this.dropdownService.getDropdownElements('Notenstimme')
+      this.dropdownService.getDropdownElements('Notenstimme'),
+      this.dropdownService.getDropdownElements('Position'),
+      this.dropdownService.getDropdownElements('MitgliedsStatus'),
     ])).pipe(
-      map(([data, instrumentDropdown, notenStimmeDropdown]) => ({ data, instrumentDropdown, notenStimmeDropdown })),
+      map(([data, instrumentDropdown, notenStimmeDropdown, positionDropdown, mitgliedsStatusDropdown]) => ({ data, instrumentDropdown, notenStimmeDropdown, positionDropdown, mitgliedsStatusDropdown })),
       tap(result => {
         this.dropdownItemsInstruments = result.instrumentDropdown;
         this.dropdownItemsNotenstimme = result.notenStimmeDropdown;
+        this.dropdownItemsPosition = result.positionDropdown;
+        this.dropdownItemsMitgliedsStatus = result.mitgliedsStatusDropdown;
       })
     );
   }
@@ -97,7 +105,9 @@ export class MitgliederDetailsComponent implements OnInit {
       componentProps: {
         "mitgliedsId": this.mitgliedsId,
         "dropdownItemsNotenstimme": this.dropdownItemsNotenstimme,
-        "dropdownItemsInstruments": this.dropdownItemsInstruments
+        "dropdownItemsInstruments": this.dropdownItemsInstruments,
+        "dropdownItemsPosition": this.dropdownItemsPosition,
+        "dropdownItemsMitgliedsStatus": this.dropdownItemsMitgliedsStatus,
       }
     });
     modal.present();
@@ -109,6 +119,7 @@ export class MitgliederDetailsComponent implements OnInit {
   }
 
   private updateData(data: any){
+    this.refreshService.refreshComponent("MitgliederListeComponent");
     this.us.autoUnsubscribe(this.mitgliederService.updateAdminSpecificMitglied({...data, id: this.mitgliedsId} as UpdateAdminSpecificMitgliederRequest)).subscribe(() => {
       this.loadData();
     })

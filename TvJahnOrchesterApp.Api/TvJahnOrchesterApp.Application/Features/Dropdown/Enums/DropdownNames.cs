@@ -9,6 +9,8 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Enums
     public enum DropdownNames
     {
         Instrument,
-        Notenstimme
+        Notenstimme,
+        Position,
+        MitgliedsStatus
     }
 }

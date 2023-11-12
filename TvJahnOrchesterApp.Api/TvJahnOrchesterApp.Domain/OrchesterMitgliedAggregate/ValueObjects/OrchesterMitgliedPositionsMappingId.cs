@@ -4,22 +4,27 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects
 {
     public sealed class OrchesterMitgliedPositionsMappingId : ValueObject
     {
-        public int Value { get; private set; }
+        public Guid Value { get; private set; }
 
         private OrchesterMitgliedPositionsMappingId() { }
 
-        private OrchesterMitgliedPositionsMappingId(int value) 
+        private OrchesterMitgliedPositionsMappingId(Guid value) 
         { 
             Value = value; 
         }
         public override IEnumerable<object> GetEqualityComponents()
         {
-            throw new NotImplementedException();
+            yield return Value;
         }
 
-        public static OrchesterMitgliedPositionsMappingId Create(int value)
+        public static OrchesterMitgliedPositionsMappingId Create(Guid value)
         {
             return new OrchesterMitgliedPositionsMappingId(value);
+        }
+
+        public static OrchesterMitgliedPositionsMappingId CreateUnique()
+        {
+            return new OrchesterMitgliedPositionsMappingId(Guid.NewGuid());
         }
     }
 }

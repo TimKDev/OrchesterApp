@@ -11,7 +11,7 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ng-container *ngIf="data$ | async as data; else loading">
-    <!-- <pre>{{formGroup.value | json}}</pre> -->
+    <pre>{{formGroup.value | json}}</pre>
     <form [formGroup]="formGroup">
       <ion-item>
         <ion-input formControlName="vorname" labelPlacement="stacked" label="Vorname" placeholder="Vorname"></ion-input>
@@ -55,6 +55,16 @@
       </ion-item>
       <ion-item>
         <ion-input formControlName="memberSince" type="date" labelPlacement="stacked" label="Mitglied seit" placeholder="Mitglied seit"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-select label="Positions" label-placement="stacked" [multiple]="true" formControlName="positions">
+          <ion-select-option *ngFor="let position of dropdownItemsPosition" [value]="position.value">{{position.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select label="Mitgliedsstatus" label-placement="stacked" formControlName="orchesterMitgliedsStatus">
+          <ion-select-option *ngFor="let status of dropdownItemsMitgliedsStatus" [value]="status.value">{{status.text}}</ion-select-option>
+        </ion-select>
       </ion-item>
     </form>
   </ng-container>

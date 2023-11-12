@@ -20,6 +20,8 @@ export class MitgliedAdminUpdateModalComponent implements OnInit{
   data$!: Observable<GetSpecificMitgliederResponse>;
   dropdownItemsInstruments!: DropdownItem[];
   dropdownItemsNotenstimme!: DropdownItem[];
+  dropdownItemsMitgliedsStatus!: DropdownItem[];
+  dropdownItemsPosition!: DropdownItem[];
 
   constructor(
     private modalCtrl: ModalController,
@@ -54,8 +56,8 @@ export class MitgliedAdminUpdateModalComponent implements OnInit{
     defaultInstrument: 0,
     defaultNotenStimme: 0,
     memberSince: '',
-    positionIds: [],
-    mitgliedsStatus: 1
+    positions: [[] as number[]],
+    orchesterMitgliedsStatus: 1
   });
 
   cancel() {

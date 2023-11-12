@@ -29,7 +29,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok("Orchestermitglied wurde erfolgreich geupdated.");
         }
 
-        private record UpdateAdminSpecificOrchesterMitgliederQuery(Guid Id, string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int MitgliedsStatus, DateTime? MemberSince, int[] PositionIds) : IRequest<Unit>;
+        private record UpdateAdminSpecificOrchesterMitgliederQuery(Guid Id, string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int OrchesterMitgliedsStatus, DateTime? MemberSince, int[] Positions) : IRequest<Unit>;
 
         private class UpdateAdminSpecificOrchesterMitgliederQueryHandler : IRequestHandler<UpdateAdminSpecificOrchesterMitgliederQuery, Unit>
         {
@@ -47,7 +47,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(OrchesterMitgliedsId.Create(request.Id), cancellationToken);
                 var adresse = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz);
 
-                orchesterMitglied.AdminUpdates(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.MitgliedsStatus, request.MemberSince, request.PositionIds);
+                orchesterMitglied.AdminUpdates(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.OrchesterMitgliedsStatus, request.MemberSince, request.Positions);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

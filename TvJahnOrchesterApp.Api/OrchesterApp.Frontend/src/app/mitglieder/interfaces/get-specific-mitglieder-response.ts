@@ -11,6 +11,8 @@ export interface GetSpecificMitgliederResponse{
   defaultInstrument?: number, 
   defaultNotenStimme?: number,  
   memberSince?: Date, 
-  memberSinceInYears?: number
+  memberSinceInYears?: number,
+  orchesterMitgliedsStatus?: number,
+  positions: number[]
 }
 

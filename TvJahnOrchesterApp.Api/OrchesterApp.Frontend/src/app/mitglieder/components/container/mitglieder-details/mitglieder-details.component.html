@@ -48,6 +48,10 @@
         [value]="res.data.defaultNotenStimme | dropdown : res.notenStimmeDropdown ?? 'Nicht angegeben'"></app-data-item>
       <app-data-item label="Orchestermitglied seit"
         [value]="res.data.memberSince | date : 'dd.MM.YYYY' ?? 'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Positionen"
+        [value]="res.data.positions | dropdown : res.positionDropdown ?? 'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Mitglieds Status"
+        [value]="res.data.orchesterMitgliedsStatus | dropdown : res.mitgliedsStatusDropdown ?? 'Nicht angegeben'"></app-data-item>
     </ion-list>
     <ion-button fill="clear" expand="block" (click)="setOpen(true)">
       Bearbeite Mitglied
@@ -55,6 +59,11 @@
     <ion-action-sheet [isOpen]="isActionSheetOpen" header="Bearbeite Mitglied" [buttons]="actionSheetButtons"
       (didDismiss)="setOpen(false)"></ion-action-sheet>
 
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button class="ion-fab-button">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
   </ng-container>
 
   <ng-template #loading>
