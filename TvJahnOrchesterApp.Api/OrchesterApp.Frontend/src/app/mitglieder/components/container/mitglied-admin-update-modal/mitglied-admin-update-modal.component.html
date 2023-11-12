@@ -1,11 +1,11 @@
 <ion-header>
   <ion-toolbar>
     <ion-buttons slot="start">
-      <ion-button color="medium" (click)="cancel()">Zurück</ion-button>
+      <ion-button (click)="cancel()">Zurück</ion-button>
     </ion-buttons>
     <ion-title>Bearbeite Orchestermitglied</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true">Speichern</ion-button>
+      <ion-button (click)="confirm()" [strong]="true" [disabled]="!formGroup.dirty">Speichern</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

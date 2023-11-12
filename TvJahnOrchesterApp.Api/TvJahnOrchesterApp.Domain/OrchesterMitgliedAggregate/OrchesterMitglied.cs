@@ -16,7 +16,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
         public string Vorname { get; private set; } = null!;
         public string Nachname { get; private set; } = null!;
         public Adresse Adresse { get; private set; } = null!;
-        public DateTime Geburtstag { get; private set; }
+        public DateTime? Geburtstag { get; private set; }
         public string Telefonnummer { get; private set; } = null!;  
         public string Handynummer { get; private set; } = null!;
         public IReadOnlyList<OrchesterMitgliedPositionsMapping> PositionMappings => _positionMappings.AsReadOnly();
@@ -88,12 +88,16 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             UserLastLogin = DateTime.Now;
         }
 
-        public void SetMemberSince(DateTime dateTime)
+        public void SetMemberSince(DateTime? dateTime)
         {
+            if(dateTime is null)
+            {
+                return;
+            }
             MemberSince = dateTime;
             var today = DateTime.Today;
-            var age = today.Year - dateTime.Year;
-            if (dateTime.Date > today.AddYears(-age))
+            var age = today.Year - ((DateTime)dateTime).Year;
+            if (((DateTime)dateTime).Date > today.AddYears(-age))
             {
                 age--;
             }
@@ -119,6 +123,10 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         public void UpdatePositions(int[] positionIds)
         {
+            if(positionIds is null)
+            {
+                return;
+            }
             foreach (var positionId in positionIds)
             {
                 AddPosition(positionId);
@@ -132,7 +140,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             }
         }
 
-        public void UserUpdates(Adresse adresse, DateTime geburtstag, string handynummer, string telefonnummer)
+        public void UserUpdates(Adresse adresse, DateTime? geburtstag, string handynummer, string telefonnummer)
         {
             Adresse = adresse;
             Geburtstag = geburtstag;
@@ -140,7 +148,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             Telefonnummer = telefonnummer;
         }
 
-        public void AdminUpdates(string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, int defaultInstrument, int defaultNotenStimme, int mitgliedsStatus, DateTime memberSince, int[] positionIds)
+        public void AdminUpdates(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string telefonnummer, string handynummer, int defaultInstrument, int defaultNotenStimme, int mitgliedsStatus, DateTime? memberSince, int[] positionIds)
         {
             Vorname = vorname;
             Nachname = nachname;

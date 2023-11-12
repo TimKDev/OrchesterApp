@@ -19,7 +19,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
     {
         public static void MapOrchesterMitgliedUpdateSpecificEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/orchester-mitglied/specific/{mitgliedsId}", UpdateSpecificOrchesterMitglieder)
+            app.MapPut("api/orchester-mitglied/specific", UpdateSpecificOrchesterMitglieder)
             .RequireAuthorization();
         }
 
@@ -29,7 +29,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok("Orchestermitglied wurde erfolgreich geupdated.");
         }
 
-        private record UpdateSpecificOrchesterMitgliederQuery(Guid Id, Adresse Adresse, DateTime Geburtstag, string Handynummer, string Telefonnummer) : IRequest<Unit>;
+        private record UpdateSpecificOrchesterMitgliederQuery(Guid Id, Adresse Adresse, DateTime? Geburtstag, string Handynummer, string Telefonnummer) : IRequest<Unit>;
 
         private class UpdateSpecificOrchesterMitgliederQueryHandler : IRequestHandler<UpdateSpecificOrchesterMitgliederQuery, Unit>
         {

@@ -9,6 +9,8 @@ import { DropdownService } from 'src/app/core/services/dropdown.service';
 import { GetSpecificMitgliederResponse } from 'src/app/mitglieder/interfaces/get-specific-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 import { MitgliedAdminUpdateModalComponent } from '../mitglied-admin-update-modal/mitglied-admin-update-modal.component';
+import { UpdateSpecificMitgliederRequest } from 'src/app/mitglieder/interfaces/update-specific-mitglieder-request';
+import { UpdateAdminSpecificMitgliederRequest } from 'src/app/mitglieder/interfaces/update-admin-specific-mitglieder-request';
 
 @Component({
   selector: 'app-mitglieder-details',
@@ -16,9 +18,9 @@ import { MitgliedAdminUpdateModalComponent } from '../mitglied-admin-update-moda
   styleUrls: ['./mitglieder-details.component.scss'],
   providers: [Unsubscribe]
 })
-export class MitgliederDetailsComponent  implements OnInit {
+export class MitgliederDetailsComponent implements OnInit {
 
-  data$!: Observable<{data: GetSpecificMitgliederResponse, instrumentDropdown: DropdownItem[], notenStimmeDropdown: DropdownItem[]}> | null;
+  data$!: Observable<{ data: GetSpecificMitgliederResponse, instrumentDropdown: DropdownItem[], notenStimmeDropdown: DropdownItem[] }> | null;
   mitgliedsId!: string;
   dropdownItemsInstruments!: DropdownItem[];
   dropdownItemsNotenstimme!: DropdownItem[];
@@ -34,23 +36,27 @@ export class MitgliederDetailsComponent  implements OnInit {
 
   ngOnInit() {
     this.mitgliedsId = this.route.snapshot.params["mitgliedsId"];
-    this.data$ = this.us.autoUnsubscribe(combineLatest([
-      this.mitgliederService.getSpecificMitglied(this.mitgliedsId), 
-      this.dropdownService.getDropdownElements('Instrument'),
-      this.dropdownService.getDropdownElements('Notenstimme') 
-    ])).pipe(
-      map(([data, instrumentDropdown, notenStimmeDropdown]) => ({data, instrumentDropdown, notenStimmeDropdown})),
-      tap(result => {
-        this.dropdownItemsInstruments = result.instrumentDropdown;
-        this.dropdownItemsNotenstimme = result.notenStimmeDropdown;
-      })
-    );
+    this.loadData();
   }
 
   isActionSheetOpen = false;
 
   setOpen(isOpen: boolean) {
     this.isActionSheetOpen = isOpen;
+  }
+
+  loadData() {
+    this.data$ = this.us.autoUnsubscribe(combineLatest([
+      this.mitgliederService.getSpecificMitglied(this.mitgliedsId),
+      this.dropdownService.getDropdownElements('Instrument'),
+      this.dropdownService.getDropdownElements('Notenstimme')
+    ])).pipe(
+      map(([data, instrumentDropdown, notenStimmeDropdown]) => ({ data, instrumentDropdown, notenStimmeDropdown })),
+      tap(result => {
+        this.dropdownItemsInstruments = result.instrumentDropdown;
+        this.dropdownItemsNotenstimme = result.notenStimmeDropdown;
+      })
+    );
   }
 
   public actionSheetButtons = [
@@ -77,7 +83,7 @@ export class MitgliederDetailsComponent  implements OnInit {
   ];
 
   @confirmDialog("Achtung", "Möchten sie dieses Mitglied wirklich löschen? Falls ein Account verbunden ist, wird dieser ebenfalls gelöscht! Diese Operation kann nicht rückgängig gemacht werden.")
-  private deleteOrchesterMember(){
+  private deleteOrchesterMember() {
     if (!this.mitgliedsId) return;
     this.data$ = null;
     this.mitgliederService.deleteMitglied(this.mitgliedsId).subscribe(() => {
@@ -99,6 +105,13 @@ export class MitgliederDetailsComponent  implements OnInit {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'cancel') return;
+    this.updateData(data);
+  }
+
+  private updateData(data: any){
+    this.us.autoUnsubscribe(this.mitgliederService.updateAdminSpecificMitglied({...data, id: this.mitgliedsId} as UpdateAdminSpecificMitgliederRequest)).subscribe(() => {
+      this.loadData();
+    })
   }
 
 }

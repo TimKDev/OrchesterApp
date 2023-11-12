@@ -1,3 +1,5 @@
+import { Adresse } from "./adresse";
+
 export interface GetSpecificMitgliederResponse{
   id: string, 
   vorname: string, 
@@ -12,10 +14,3 @@ export interface GetSpecificMitgliederResponse{
   memberSinceInYears?: number
 }
 
-export interface Adresse {
-  straße: string, 
-  hausnummer: string,
-  postleitzahl: string,
-  stadt: string, 
-  zusatz: string
-}

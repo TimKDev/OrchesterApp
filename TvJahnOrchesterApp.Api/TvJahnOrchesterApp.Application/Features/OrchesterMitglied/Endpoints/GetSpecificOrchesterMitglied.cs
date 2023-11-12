@@ -28,7 +28,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok(specificOrchesterMitglied);
         }
 
-        private record GetSpecificOrchesterMitgliederResponse(Guid Id, string Vorname, string Nachname, Adresse Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, DateTime? MemberSince, int? MemberSinceInYears);
+        private record GetSpecificOrchesterMitgliederResponse(Guid Id, string Vorname, string Nachname, Adresse Adresse, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, DateTime? MemberSince, int? MemberSinceInYears);
 
         private record GetSpecificOrchesterMitgliederQuery(Guid Id) : IRequest<GetSpecificOrchesterMitgliederResponse>;
 
