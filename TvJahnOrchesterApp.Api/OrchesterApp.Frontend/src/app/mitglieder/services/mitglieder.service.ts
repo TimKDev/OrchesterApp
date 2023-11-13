@@ -4,6 +4,7 @@ import { GetAllMitgliederResponse } from '../interfaces/get-all-mitglieder-respo
 import { GetSpecificMitgliederResponse } from '../interfaces/get-specific-mitglieder-response';
 import { UpdateAdminSpecificMitgliederRequest } from '../interfaces/update-admin-specific-mitglieder-request';
 import { UpdateSpecificMitgliederRequest } from '../interfaces/update-specific-mitglieder-request';
+import { CreateMitgliedRequest } from '../interfaces/create-mitglied-request';
 
 @Injectable({
   providedIn: 'root'
@@ -32,5 +33,9 @@ export class MitgliederService {
 
   public updateSpecificMitglied(updateRequest: UpdateSpecificMitgliederRequest){
     return this.http.put<void>(`api/orchester-mitglied/specific`, updateRequest);
+  }
+
+  public createNewMitglied(createRequest: CreateMitgliedRequest){
+    return this.http.post<void>('api/orchester-mitglied', createRequest);
   }
 }

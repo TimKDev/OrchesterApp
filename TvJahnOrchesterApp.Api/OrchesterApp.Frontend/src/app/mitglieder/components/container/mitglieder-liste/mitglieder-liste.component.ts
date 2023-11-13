@@ -1,21 +1,31 @@
-import { Component, OnInit } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Component, OnInit, ViewChild } from '@angular/core';
+import { ModalController } from '@ionic/angular';
+import { Observable, tap } from 'rxjs';
+import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { GetAllMitgliederResponse } from 'src/app/mitglieder/interfaces/get-all-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
+import { MitgliedCreateModalComponent } from '../mitglied-create-modal/mitglied-create-modal.component';
 
 @Component({
   selector: 'app-mitglieder-liste',
   templateUrl: './mitglieder-liste.component.html',
   styleUrls: ['./mitglieder-liste.component.scss'],
+  providers: [Unsubscribe]
 })
 export class MitgliederListeComponent implements OnInit{
 
   data$!: Observable<GetAllMitgliederResponse[]>;
+  data!: GetAllMitgliederResponse[];
+  displayedData!: GetAllMitgliederResponse[];
+
+  @ViewChild('searchBar') searchBar!: any;
 
   constructor(
     private mitgliederService: MitgliederService,
-    private refreshService: RefreshService
+    private refreshService: RefreshService,
+    private us: Unsubscribe,
+    private modalCtrl: ModalController,
   ) { }
 
   ngOnInit(): void {
@@ -28,7 +38,30 @@ export class MitgliederListeComponent implements OnInit{
   }
 
   loadData(){
-    this.data$ = this.mitgliederService.getAllMitglieder();
+    this.data$ = this.mitgliederService.getAllMitglieder().pipe(tap(res => {
+      this.data = res;
+      this.displayedData = res;
+    }));
+  }
+
+  search(event: any) {
+    let searchString = (event.detail.value as string).toLowerCase();
+    this.displayedData = this.data.filter(e => (e.vorname + " " + e.nachname).toLowerCase().includes(searchString));
+  }
+
+  public async openCreateOrchesterMitgliedModal(){
+    const modal = await this.modalCtrl.create({
+      component: MitgliedCreateModalComponent
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'cancel') return;
+    this.createMitglied(data);
+  }
+
+  private createMitglied(data: any){
+
   }
 
 }

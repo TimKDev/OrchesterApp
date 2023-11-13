@@ -26,7 +26,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok("Orchestermitglied wurde erfolgreich erstellt.");
         }
 
-        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, AdresseDto Adresse, DateTime Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int[] Position, string RegisterKey, DateTime? MemberSince) : IRequest<Unit>;
+        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int[] Position, string RegisterKey, DateTime? MemberSince) : IRequest<Unit>;
 
         private class CreateOrchesterMitgliedCommandValidation : AbstractValidator<CreateOrchesterMitgliedCommand>
         {
@@ -34,6 +34,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             {
                 RuleFor(x => x.Vorname).NotEmpty();
                 RuleFor(x => x.Nachname).NotEmpty();
+                RuleFor(x => x.RegisterKey).MinimumLength(6);
             }
         }
 
@@ -48,7 +49,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
 
             public async Task<Unit> Handle(CreateOrchesterMitgliedCommand request, CancellationToken cancellationToken)
             {
-                var adresse = Adresse.Create(request.Adresse.Straße, request.Adresse.Hausnummer, request.Adresse.Postleitzahl, request.Adresse.Stadt);
+                var adresse = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt);
 
                 if (await _orchesterMitgliedRepository.GetByNameAsync(request.Vorname, request.Nachname, cancellationToken) is not null)
                 {
@@ -57,10 +58,8 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
 
                 var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.RegisterKey, (int)MitgliedsStatusEnum.aktiv);
 
-                if(request.MemberSince is not null)
-                {
-                    orchesterMitglied.SetMemberSince((DateTime)request.MemberSince);
-                }
+                orchesterMitglied.UpdatePositions(request.Position);
+                orchesterMitglied.SetMemberSince(request.MemberSince);
 
                 await _orchesterMitgliedRepository.CreateAsync(orchesterMitglied, cancellationToken);
                 return Unit.Value;

@@ -1,3 +1,76 @@
-<p>
-  mitglied-create-modal works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Zurück</ion-button>
+    </ion-buttons>
+    <ion-title>Bearbeite Orchestermitglied</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true" [disabled]="!formGroup.dirty">Speichern</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <!-- <pre>{{formGroup.value | json}}</pre> -->
+    <form [formGroup]="formGroup">
+      <ion-item>
+        <ion-input formControlName="vorname" labelPlacement="stacked" label="Vorname" placeholder="Vorname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="nachname" labelPlacement="stacked" label="Nachname" placeholder="Nachname"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="hausnummer" labelPlacement="stacked" label="Hausnummer" placeholder="Hausnummer"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="postleitzahl" labelPlacement="stacked" label="Postleitzahl" placeholder="Postleitzahl"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="stadt" labelPlacement="stacked" label="Stadt" placeholder="Stadt"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="zusatz" labelPlacement="stacked" label="Zusatz" placeholder="Zusatz"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="geburtstag" type="date" labelPlacement="stacked" label="Geburtstag" placeholder="Geburtstag"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="telefonnummer" labelPlacement="stacked" label="Telefonnummer" placeholder="Telefonnummer"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="handynummer" labelPlacement="stacked" label="Handynummer" placeholder="Handynummer"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-select label="Hauptinstrument" label-placement="stacked" formControlName="defaultInstrument">
+          <ion-select-option *ngFor="let instrument of dropdownItemsInstruments" [value]="instrument.value">{{instrument.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select label="Hauptnotenstimme" label-placement="stacked" formControlName="defaultNotenStimme">
+          <ion-select-option *ngFor="let notenstimme of dropdownItemsNotenstimme" [value]="notenstimme.value">{{notenstimme.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="memberSince" type="date" labelPlacement="stacked" label="Mitglied seit" placeholder="Mitglied seit"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-select label="Positions" label-placement="stacked" [multiple]="true" formControlName="positions">
+          <ion-select-option *ngFor="let position of dropdownItemsPosition" [value]="position.value">{{position.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+      <ion-item>
+        <ion-select label="Mitgliedsstatus" label-placement="stacked" formControlName="orchesterMitgliedsStatus">
+          <ion-select-option *ngFor="let status of dropdownItemsMitgliedsStatus" [value]="status.value">{{status.text}}</ion-select-option>
+        </ion-select>
+      </ion-item>
+    </form>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+ 
+</ion-content>
