@@ -11,7 +11,7 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ng-container *ngIf="data$ | async as data; else loading">
-    <pre>{{formGroup.value | json}}</pre>
+    <!-- <pre>{{formGroup.value | json}}</pre> -->
     <form [formGroup]="formGroup">
       <ion-item>
         <ion-input formControlName="vorname" labelPlacement="stacked" label="Vorname" placeholder="Vorname"></ion-input>

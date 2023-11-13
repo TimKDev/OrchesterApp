@@ -12,6 +12,8 @@ import { MitgliedAdminUpdateModalComponent } from '../mitglied-admin-update-moda
 import { UpdateSpecificMitgliederRequest } from 'src/app/mitglieder/interfaces/update-specific-mitglieder-request';
 import { UpdateAdminSpecificMitgliederRequest } from 'src/app/mitglieder/interfaces/update-admin-specific-mitglieder-request';
 import { RefreshService } from 'src/app/core/services/refresh.service';
+import { MitgliedUpdateModalComponent } from '../mitglied-update-modal/mitglied-update-modal.component';
+import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 
 @Component({
   selector: 'app-mitglieder-details',
@@ -35,7 +37,8 @@ export class MitgliederDetailsComponent implements OnInit {
     private router: Router,
     private us: Unsubscribe,
     private modalCtrl: ModalController,
-    private refreshService: RefreshService
+    private refreshService: RefreshService,
+    private authenticationService: AuthenticationService
   ) { }
 
   ngOnInit() {
@@ -47,6 +50,10 @@ export class MitgliederDetailsComponent implements OnInit {
 
   setOpen(isOpen: boolean) {
     this.isActionSheetOpen = isOpen;
+  }
+
+  getLoggedInOrchesterMitgliedsName(){
+    return this.authenticationService.connectedOrchesterMitgliedsName;
   }
 
   loadData() {
@@ -115,12 +122,33 @@ export class MitgliederDetailsComponent implements OnInit {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'cancel') return;
+    this.updateAdminData(data);
+  }
+
+  private updateAdminData(data: any){
+    this.refreshService.refreshComponent("MitgliederListeComponent");
+    this.us.autoUnsubscribe(this.mitgliederService.updateAdminSpecificMitglied({...data, id: this.mitgliedsId} as UpdateAdminSpecificMitgliederRequest)).subscribe(() => {
+      this.loadData();
+    })
+  }
+
+  public async openUpdateOrchesterMitgliedModal(){
+    const modal = await this.modalCtrl.create({
+      component: MitgliedUpdateModalComponent,
+      componentProps: {
+        "mitgliedsId": this.mitgliedsId,
+      }
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'cancel') return;
     this.updateData(data);
   }
 
   private updateData(data: any){
     this.refreshService.refreshComponent("MitgliederListeComponent");
-    this.us.autoUnsubscribe(this.mitgliederService.updateAdminSpecificMitglied({...data, id: this.mitgliedsId} as UpdateAdminSpecificMitgliederRequest)).subscribe(() => {
+    this.us.autoUnsubscribe(this.mitgliederService.updateSpecificMitglied({...data, id: this.mitgliedsId} as UpdateSpecificMitgliederRequest)).subscribe(() => {
       this.loadData();
     })
   }

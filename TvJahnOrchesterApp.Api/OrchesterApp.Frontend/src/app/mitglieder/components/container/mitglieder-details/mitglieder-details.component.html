@@ -59,8 +59,8 @@
     <ion-action-sheet [isOpen]="isActionSheetOpen" header="Bearbeite Mitglied" [buttons]="actionSheetButtons"
       (didDismiss)="setOpen(false)"></ion-action-sheet>
 
-    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
-      <ion-fab-button class="ion-fab-button">
+    <ion-fab *ngIf="getLoggedInOrchesterMitgliedsName() === res.data.vorname + ' ' + res.data.nachname" slot="fixed" vertical="bottom" horizontal="end">
+      <ion-fab-button class="ion-fab-button" (click)="openUpdateOrchesterMitgliedModal()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
     </ion-fab>

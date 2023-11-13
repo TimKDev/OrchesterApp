@@ -1,3 +1,47 @@
-<p>
-  mitglied-update-modal works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Zurück</ion-button>
+    </ion-buttons>
+    <ion-title>Bearbeite Orchestermitglied</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true" [disabled]="!formGroup.dirty">Speichern</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <h3>{{data.vorname + ' ' + data.nachname}}</h3>
+    <form [formGroup]="formGroup">
+      <ion-item>
+        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="hausnummer" labelPlacement="stacked" label="Hausnummer" placeholder="Hausnummer"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="postleitzahl" labelPlacement="stacked" label="Postleitzahl" placeholder="Postleitzahl"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="stadt" labelPlacement="stacked" label="Stadt" placeholder="Stadt"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="zusatz" labelPlacement="stacked" label="Zusatz" placeholder="Zusatz"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="geburtstag" type="date" labelPlacement="stacked" label="Geburtstag" placeholder="Geburtstag"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="telefonnummer" labelPlacement="stacked" label="Telefonnummer" placeholder="Telefonnummer"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-input formControlName="handynummer" labelPlacement="stacked" label="Handynummer" placeholder="Handynummer"></ion-input>
+      </ion-item>
+    </form>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+ 
+</ion-content>

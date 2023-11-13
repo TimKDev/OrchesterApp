@@ -29,7 +29,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok("Orchestermitglied wurde erfolgreich geupdated.");
         }
 
-        private record UpdateSpecificOrchesterMitgliederQuery(Guid Id, Adresse Adresse, DateTime? Geburtstag, string Handynummer, string Telefonnummer) : IRequest<Unit>;
+        private record UpdateSpecificOrchesterMitgliederQuery(Guid Id, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Handynummer, string Telefonnummer) : IRequest<Unit>;
 
         private class UpdateSpecificOrchesterMitgliederQueryHandler : IRequestHandler<UpdateSpecificOrchesterMitgliederQuery, Unit>
         {
@@ -45,7 +45,10 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             public async Task<Unit> Handle(UpdateSpecificOrchesterMitgliederQuery request, CancellationToken cancellationToken)
             {
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(OrchesterMitgliedsId.Create(request.Id), cancellationToken);
-                orchesterMitglied.UserUpdates(request.Adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer);
+                var adresse = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz);
+
+
+                orchesterMitglied.UserUpdates(adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

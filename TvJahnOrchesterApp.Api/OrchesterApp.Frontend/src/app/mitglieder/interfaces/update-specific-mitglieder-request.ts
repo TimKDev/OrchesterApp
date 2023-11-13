@@ -1,8 +1,10 @@
-import { Adresse } from "./adresse";
-
 export interface UpdateSpecificMitgliederRequest{
   id: string, 
-  adresse: Adresse, 
+  straße: string, 
+  hausnummer: string,
+  postleitzahl: string,
+  stadt: string, 
+  zusatz: string
   geburtstag: Date, 
   telefonnummer: string, 
   handynummer: string, 
