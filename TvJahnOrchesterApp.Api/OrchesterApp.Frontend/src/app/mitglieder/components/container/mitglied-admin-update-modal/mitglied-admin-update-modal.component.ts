@@ -1,6 +1,6 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Observable, tap } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
@@ -43,8 +43,8 @@ export class MitgliedAdminUpdateModalComponent implements OnInit{
   }
 
   formGroup = this.formBuilder.group({
-    vorname: '',
-    nachname: '',
+    vorname: ['', [Validators.required]],
+    nachname: ['', [Validators.required]],
     straße: '',
     hausnummer: '',
     postleitzahl: '',

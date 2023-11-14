@@ -1,11 +1,12 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormBuilder, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Observable, tap, combineLatest, map } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { DropdownService } from 'src/app/core/services/dropdown.service';
+import { CreateMitgliedRequest } from 'src/app/mitglieder/interfaces/create-mitglied-request';
 import { GetSpecificMitgliederResponse } from 'src/app/mitglieder/interfaces/get-specific-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 
@@ -22,27 +23,26 @@ export class MitgliedCreateModalComponent  implements OnInit {
   }>;
 
   formGroup = this.formBuilder.group({
-    vorname: '',
-    nachname: '',
-    straße: '',
-    hausnummer: '',
-    postleitzahl: '',
-    stadt: '',
-    zusatz: '',
-    geburtstag: '',
-    telefonnummer: '',
-    handynummer: '',
-    defaultInstrument: 0,
-    defaultNotenStimme: 0,
-    memberSince: '',
-    registerKey: '',
-    positions: [[] as number[]],
+    vorname: ['', [Validators.required]],
+    nachname: ['', [Validators.required]],
+    registerKey: ['', [Validators.required]],
+    straße: null as string | null,
+    hausnummer: null as string | null,
+    postleitzahl: null as string | null,
+    stadt: null as string | null,
+    zusatz: null as string | null,
+    geburtstag: null as string | null,
+    telefonnummer: null as string | null,
+    handynummer: null as string | null,
+    defaultInstrument: null as number | null,
+    defaultNotenStimme: null as number | null,
+    memberSince: null as string | null,
+    position: [] as number[],
   });
 
   constructor(
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
-    private mitgliederService: MitgliederService,
     private us: Unsubscribe,
     private dropdownService: DropdownService
   ) { }
@@ -50,8 +50,6 @@ export class MitgliedCreateModalComponent  implements OnInit {
   ngOnInit(){
     this.loadData();
   }
-
-  
 
   loadData() {
     this.data$ = this.us.autoUnsubscribe(combineLatest([
@@ -66,7 +64,12 @@ export class MitgliedCreateModalComponent  implements OnInit {
   }
 
   confirm() {
-    return this.modalCtrl.dismiss(this.formGroup.getRawValue(), 'confirm');
+    let value = this.formGroup.getRawValue();
+    return this.modalCtrl.dismiss({
+      ...value, 
+      geburtstag: value.geburtstag ? new Date(value.geburtstag) : null, 
+      memberSince: value.memberSince ? new Date(value.memberSince) : null, 
+    }, 'confirm');
   }
 
 }

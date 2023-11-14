@@ -13,7 +13,6 @@ export class DashboardComponent{
   data$!: Observable<unknown>
 
   ionViewWillEnter() {
-    debugger;
     this.data$ = this.http.get('api/dashboard/nextTermins');
   }
 

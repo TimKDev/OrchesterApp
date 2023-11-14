@@ -5,7 +5,7 @@
     </ion-buttons>
     <ion-title>Bearbeite Orchestermitglied</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true" [disabled]="!formGroup.dirty">Speichern</ion-button>
+      <ion-button (click)="confirm()" [strong]="true" [disabled]="!formGroup.dirty || formGroup.invalid">Speichern</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>

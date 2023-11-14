@@ -16,7 +16,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
     {
         public static void MapCreateOrchesterMitgliedEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/orchesterMitglied", PostOrchesterMitglied)
+            app.MapPost("api/orchester-mitglied", PostOrchesterMitglied)
                 .RequireAuthorization();
         }
 
@@ -26,7 +26,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok("Orchestermitglied wurde erfolgreich erstellt.");
         }
 
-        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int[] Position, string RegisterKey, DateTime? MemberSince) : IRequest<Unit>;
+        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, int[] Position, string RegisterKey, DateTime? MemberSince) : IRequest<Unit>;
 
         private class CreateOrchesterMitgliedCommandValidation : AbstractValidator<CreateOrchesterMitgliedCommand>
         {

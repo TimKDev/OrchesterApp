@@ -6,6 +6,7 @@ import { RefreshService } from 'src/app/core/services/refresh.service';
 import { GetAllMitgliederResponse } from 'src/app/mitglieder/interfaces/get-all-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 import { MitgliedCreateModalComponent } from '../mitglied-create-modal/mitglied-create-modal.component';
+import { CreateMitgliedRequest } from 'src/app/mitglieder/interfaces/create-mitglied-request';
 
 @Component({
   selector: 'app-mitglieder-liste',
@@ -60,8 +61,10 @@ export class MitgliederListeComponent implements OnInit{
     this.createMitglied(data);
   }
 
-  private createMitglied(data: any){
-
+  private createMitglied(data: CreateMitgliedRequest){
+    this.us.autoUnsubscribe(this.mitgliederService.createNewMitglied(data)).subscribe(() => {
+      this.loadData();
+    })
   }
 
 }

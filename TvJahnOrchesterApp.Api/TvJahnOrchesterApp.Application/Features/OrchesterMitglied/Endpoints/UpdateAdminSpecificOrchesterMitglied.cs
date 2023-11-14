@@ -29,7 +29,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok("Orchestermitglied wurde erfolgreich geupdated.");
         }
 
-        private record UpdateAdminSpecificOrchesterMitgliederQuery(Guid Id, string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int DefaultInstrument, int DefaultNotenStimme, int OrchesterMitgliedsStatus, DateTime? MemberSince, int[] Positions) : IRequest<Unit>;
+        private record UpdateAdminSpecificOrchesterMitgliederQuery(Guid Id, string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, int? OrchesterMitgliedsStatus, DateTime? MemberSince, int[] Positions) : IRequest<Unit>;
 
         private class UpdateAdminSpecificOrchesterMitgliederQueryHandler : IRequestHandler<UpdateAdminSpecificOrchesterMitgliederQuery, Unit>
         {

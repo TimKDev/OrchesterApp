@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Observable, combineLatest, map, tap } from 'rxjs';
 import { confirmDialog } from 'src/app/core/helper/confirm';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
@@ -38,7 +38,8 @@ export class MitgliederDetailsComponent implements OnInit {
     private us: Unsubscribe,
     private modalCtrl: ModalController,
     private refreshService: RefreshService,
-    private authenticationService: AuthenticationService
+    private authenticationService: AuthenticationService,
+    private alertController: AlertController,
   ) { }
 
   ngOnInit() {

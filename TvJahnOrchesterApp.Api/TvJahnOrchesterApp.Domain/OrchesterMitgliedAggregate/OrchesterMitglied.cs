@@ -34,7 +34,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         private OrchesterMitglied() { }
        
-        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, int defaultInstrument, int defaultNotenStimme, int mitgliedsStatus, string registrationKey) : base(id)
+        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string telefonnummer, string handynummer, int? defaultInstrument, int? defaultNotenStimme, int mitgliedsStatus, string registrationKey) : base(id)
         {
             Vorname = vorname;
             Nachname = nachname;
@@ -49,7 +49,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             RegisterKeyExpirationDate = DateTime.Now.AddDays(RegistrationKeyExpireDays);
         }
 
-        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime geburtstag, string telefonnummer, string handynummer, int defaultInstrument, int defaultNotenStimme, string registrationKey, int mitgliedsStatus)
+        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string telefonnummer, string handynummer, int? defaultInstrument, int? defaultNotenStimme, string registrationKey, int mitgliedsStatus)
         {
             return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag, telefonnummer, handynummer, defaultInstrument, defaultNotenStimme, mitgliedsStatus, registrationKey);
         }
@@ -148,7 +148,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             Telefonnummer = telefonnummer;
         }
 
-        public void AdminUpdates(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string telefonnummer, string handynummer, int defaultInstrument, int defaultNotenStimme, int mitgliedsStatus, DateTime? memberSince, int[] positionIds)
+        public void AdminUpdates(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string telefonnummer, string handynummer, int? defaultInstrument, int? defaultNotenStimme, int? mitgliedsStatus, DateTime? memberSince, int[] positionIds)
         {
             Vorname = vorname;
             Nachname = nachname;
