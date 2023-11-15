@@ -17,11 +17,11 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
         public string Nachname { get; private set; } = null!;
         public Adresse Adresse { get; private set; } = null!;
         public DateTime? Geburtstag { get; private set; }
-        public string Telefonnummer { get; private set; } = null!;  
-        public string Handynummer { get; private set; } = null!;
+        public string? Telefonnummer { get; private set; }  
+        public string? Handynummer { get; private set; }
         public IReadOnlyList<OrchesterMitgliedPositionsMapping> PositionMappings => _positionMappings.AsReadOnly();
-        public int? DefaultInstrument { get; private set; } = null!;
-        public int? DefaultNotenStimme { get; private set; } = null!;
+        public int? DefaultInstrument { get; private set; } 
+        public int? DefaultNotenStimme { get; private set; }
         //public IReadOnlyList<OrchesterEigentumId> AusgeliehendesOrchesterEigentum => _ausgeliehendesOrchesterEigentum.AsReadOnly();
         public string RegisterKey { get; private set; } = null!;
         public DateTime RegisterKeyExpirationDate { get; private set; }
@@ -34,7 +34,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         private OrchesterMitglied() { }
        
-        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string telefonnummer, string handynummer, int? defaultInstrument, int? defaultNotenStimme, int mitgliedsStatus, string registrationKey) : base(id)
+        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string?handynummer, int? defaultInstrument, int? defaultNotenStimme, int mitgliedsStatus, string registrationKey) : base(id)
         {
             Vorname = vorname;
             Nachname = nachname;
@@ -49,7 +49,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             RegisterKeyExpirationDate = DateTime.Now.AddDays(RegistrationKeyExpireDays);
         }
 
-        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string telefonnummer, string handynummer, int? defaultInstrument, int? defaultNotenStimme, string registrationKey, int mitgliedsStatus)
+        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string? handynummer, int? defaultInstrument, int? defaultNotenStimme, string registrationKey, int mitgliedsStatus)
         {
             return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag, telefonnummer, handynummer, defaultInstrument, defaultNotenStimme, mitgliedsStatus, registrationKey);
         }

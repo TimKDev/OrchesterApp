@@ -21,7 +21,11 @@
       <ion-icon slot="start" name="arrow-back"></ion-icon>
       Zurück zur Übersicht
     </ion-button>
-    <ion-list lines="full">
+
+    <ion-list>
+      <ion-list-header color="tertiary">
+        <ion-label>Persönliche Angaben</ion-label>
+      </ion-list-header>
       <app-data-item label="Name" [value]="res.data.vorname + ' ' + res.data.nachname "></app-data-item>
       <ng-container
         *ngIf="res.data.adresse['straße'] && res.data.adresse.hausnummer && res.data.adresse.postleitzahl && res.data.adresse.stadt; else adresseNotGiven">
@@ -42,6 +46,12 @@
       <app-data-item label="Geburtstag" [value]="res.data.geburtstag | date : 'dd.MM.YYYY'"></app-data-item>
       <app-data-item label="Telefonnummer" [value]="res.data.telefonnummer ?? 'Nicht angegeben'"></app-data-item>
       <app-data-item label="Handynummer" [value]="res.data.handynummer ?? 'Nicht angegeben'"></app-data-item>
+    </ion-list>
+
+    <ion-list class="mg-top">
+      <ion-list-header color="tertiary">
+        <ion-label>Orchester Informationen</ion-label>
+      </ion-list-header>
       <app-data-item label="Instrument"
         [value]="res.data.defaultInstrument | dropdown : res.instrumentDropdown ?? 'Nicht angegeben'"></app-data-item>
       <app-data-item label="Stimme"
@@ -53,15 +63,17 @@
       <app-data-item label="Mitglieds Status"
         [value]="res.data.orchesterMitgliedsStatus | dropdown : res.mitgliedsStatusDropdown ?? 'Nicht angegeben'"></app-data-item>
     </ion-list>
+
     <ion-button fill="clear" expand="block" (click)="setOpen(true)">
       Bearbeite Mitglied
     </ion-button>
     <ion-action-sheet [isOpen]="isActionSheetOpen" header="Bearbeite Mitglied" [buttons]="actionSheetButtons"
       (didDismiss)="setOpen(false)"></ion-action-sheet>
 
-    <ion-fab *ngIf="getLoggedInOrchesterMitgliedsName() === res.data.vorname + ' ' + res.data.nachname" slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab *ngIf="getLoggedInOrchesterMitgliedsName() === res.data.vorname + ' ' + res.data.nachname" slot="fixed"
+      vertical="bottom" horizontal="end">
       <ion-fab-button class="ion-fab-button" (click)="openUpdateOrchesterMitgliedModal()">
-        <ion-icon name="add"></ion-icon>
+        <ion-icon name="pencil-outline"></ion-icon>
       </ion-fab-button>
     </ion-fab>
   </ng-container>

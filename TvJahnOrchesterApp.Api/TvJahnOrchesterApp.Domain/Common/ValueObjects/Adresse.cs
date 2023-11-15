@@ -4,10 +4,10 @@ namespace TvJahnOrchesterApp.Domain.Common.ValueObjects
 {
     public sealed class Adresse : ValueObject
     {
-        public string Straße { get; private set; } = null!;
-        public string Hausnummer { get; private set; } = null!;
-        public string Postleitzahl { get; private set; } = null!;
-        public string Stadt { get; private set; } = null!;
+        public string? Straße { get; private set; } 
+        public string? Hausnummer { get; private set; }
+        public string? Postleitzahl { get; private set; } 
+        public string? Stadt { get; private set; }
         public string? Zusatz { get; private set; } 
         public decimal? Latitude { get; private set; }
         public decimal? Longitide { get; private  set; }
@@ -30,7 +30,7 @@ namespace TvJahnOrchesterApp.Domain.Common.ValueObjects
             yield return Straße; yield return Hausnummer; yield return Postleitzahl; yield return Stadt;
         }
 
-        public static Adresse Create(string straße, string hausnummer, string zip, string stadt, string? zusatz = null, decimal? latitude = null, decimal? longitide = null)
+        public static Adresse Create(string? straße, string? hausnummer, string? zip, string? stadt, string? zusatz = null, decimal? latitude = null, decimal? longitide = null)
         {
             return new Adresse(straße, hausnummer, zip, stadt, zusatz, latitude, longitide);
         }

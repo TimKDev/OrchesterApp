@@ -3,9 +3,9 @@
     <ion-buttons slot="start">
       <ion-button (click)="cancel()">Zurück</ion-button>
     </ion-buttons>
-    <ion-title>Bearbeite Orchestermitglied</ion-title>
+    <ion-title>Mitglied</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true" [disabled]="!formGroup.dirty">Speichern</ion-button>
+      <ion-button (click)="confirm()" [strong]="true" [disabled]="!formGroup.dirty">Bearbeiten</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -13,30 +13,43 @@
   <ng-container *ngIf="data$ | async as data; else loading">
     <h3>{{data.vorname + ' ' + data.nachname}}</h3>
     <form [formGroup]="formGroup">
-      <ion-item>
-        <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input formControlName="hausnummer" labelPlacement="stacked" label="Hausnummer" placeholder="Hausnummer"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input formControlName="postleitzahl" labelPlacement="stacked" label="Postleitzahl" placeholder="Postleitzahl"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input formControlName="stadt" labelPlacement="stacked" label="Stadt" placeholder="Stadt"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input formControlName="zusatz" labelPlacement="stacked" label="Zusatz" placeholder="Zusatz"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input formControlName="geburtstag" type="date" labelPlacement="stacked" label="Geburtstag" placeholder="Geburtstag"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input formControlName="telefonnummer" labelPlacement="stacked" label="Telefonnummer" placeholder="Telefonnummer"></ion-input>
-      </ion-item>
-      <ion-item>
-        <ion-input formControlName="handynummer" labelPlacement="stacked" label="Handynummer" placeholder="Handynummer"></ion-input>
-      </ion-item>
+
+      <ion-list class="mg-top">
+        <ion-list-header color="tertiary">
+          <ion-label>Persönliche Angaben</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-input formControlName="geburtstag" type="date" labelPlacement="stacked" label="Geburtstag" placeholder="Geburtstag"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input formControlName="telefonnummer" labelPlacement="stacked" label="Telefonnummer" placeholder="Telefonnummer"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input formControlName="handynummer" labelPlacement="stacked" label="Handynummer" placeholder="Handynummer"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <ion-list class="mg-top">
+        <ion-list-header color="tertiary">
+          <ion-label>Adresse</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input formControlName="hausnummer" labelPlacement="stacked" label="Hausnummer" placeholder="Hausnummer"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input formControlName="postleitzahl" labelPlacement="stacked" label="Postleitzahl" placeholder="Postleitzahl"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input formControlName="stadt" labelPlacement="stacked" label="Stadt" placeholder="Stadt"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input formControlName="zusatz" labelPlacement="stacked" label="Zusatz" placeholder="Zusatz"></ion-input>
+        </ion-item>
+      </ion-list>
+
     </form>
   </ng-container>
 

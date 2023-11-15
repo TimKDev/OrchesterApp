@@ -608,7 +608,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Handynummer")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("MemberSince")
@@ -632,7 +631,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                         .HasColumnType("datetime2");
 
                     b.Property<string>("Telefonnummer")
-                        .IsRequired()
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<DateTime?>("UserFirstConnected")
@@ -854,7 +852,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                                 .HasColumnType("uniqueidentifier");
 
                             b1.Property<string>("Hausnummer")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<decimal?>("Latitude")
@@ -864,15 +861,12 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                                 .HasColumnType("decimal(18,2)");
 
                             b1.Property<string>("Postleitzahl")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Stadt")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Straße")
-                                .IsRequired()
                                 .HasColumnType("nvarchar(max)");
 
                             b1.Property<string>("Zusatz")
@@ -970,7 +964,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                                         .HasColumnType("uniqueidentifier");
 
                                     b2.Property<string>("Hausnummer")
-                                        .IsRequired()
                                         .HasColumnType("nvarchar(max)");
 
                                     b2.Property<decimal?>("Latitude")
@@ -980,15 +973,12 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                                         .HasColumnType("decimal(18,2)");
 
                                     b2.Property<string>("Postleitzahl")
-                                        .IsRequired()
                                         .HasColumnType("nvarchar(max)");
 
                                     b2.Property<string>("Stadt")
-                                        .IsRequired()
                                         .HasColumnType("nvarchar(max)");
 
                                     b2.Property<string>("Straße")
-                                        .IsRequired()
                                         .HasColumnType("nvarchar(max)");
 
                                     b2.Property<string>("Zusatz")
@@ -1114,7 +1104,6 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                                                 .HasColumnType("uniqueidentifier");
 
                                             b3.Property<string>("Hausnummer")
-                                                .IsRequired()
                                                 .HasColumnType("nvarchar(max)");
 
                                             b3.Property<decimal?>("Latitude")
@@ -1124,15 +1113,12 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                                                 .HasColumnType("decimal(18,2)");
 
                                             b3.Property<string>("Postleitzahl")
-                                                .IsRequired()
                                                 .HasColumnType("nvarchar(max)");
 
                                             b3.Property<string>("Stadt")
-                                                .IsRequired()
                                                 .HasColumnType("nvarchar(max)");
 
                                             b3.Property<string>("Straße")
-                                                .IsRequired()
                                                 .HasColumnType("nvarchar(max)");
 
                                             b3.Property<string>("Zusatz")

@@ -13,7 +13,7 @@
   <ng-container *ngIf="data$ | async as data; else loading">
     <!-- <pre>{{formGroup.value | json}}</pre> -->
     <form [formGroup]="formGroup">
-      <ion-list [inset]="true">
+      <ion-list>
         <ion-list-header color="tertiary">
          Notwendige Angaben 
         </ion-list-header>
@@ -28,7 +28,7 @@
         </ion-item>
       </ion-list>
       
-      <ion-list [inset]="true">
+      <ion-list class="mg-top">
         <ion-list-header color="tertiary">
           <ion-label>Adresse</ion-label>
         </ion-list-header>
@@ -49,7 +49,7 @@
         </ion-item>
       </ion-list>
 
-      <ion-list [inset]="true">
+      <ion-list class="mg-top">
         <ion-list-header color="tertiary">
           <ion-label>Persönliche Angaben</ion-label>
         </ion-list-header>
@@ -64,7 +64,7 @@
         </ion-item>
       </ion-list>
 
-      <ion-list [inset]="true">
+      <ion-list class="mg-top">
         <ion-list-header color="tertiary">
           <ion-label>Orchester Informationen</ion-label>
         </ion-list-header>
