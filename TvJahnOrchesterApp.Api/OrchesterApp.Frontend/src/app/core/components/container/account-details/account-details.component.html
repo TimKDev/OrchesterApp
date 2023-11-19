@@ -21,6 +21,12 @@
   </ion-refresher>
 
   <ng-container *ngIf="data$ | async as data; else loading">
+
+    <ion-button [routerLink]="'/tabs/account-management'" class="back-btn">
+      <ion-icon slot="start" name="arrow-back"></ion-icon>
+      Zurück zur Übersicht
+    </ion-button>
+
     <ion-card>
       <ion-card-header>
         <ion-card-title>{{data.orchesterMitgliedsName}}</ion-card-title>

@@ -42,7 +42,8 @@ export class MitgliederDetailsComponent implements OnInit {
     private modalCtrl: ModalController,
     private refreshService: RefreshService,
     private authenticationService: AuthenticationService,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    public alertController: AlertController
   ) { }
 
   ngOnInit() {
