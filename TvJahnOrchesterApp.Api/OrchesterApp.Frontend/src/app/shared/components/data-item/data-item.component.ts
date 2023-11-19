@@ -8,6 +8,7 @@ import { Component, Input, OnInit } from '@angular/core';
 export class DataItemComponent  implements OnInit {
   @Input() label!: string;
   @Input() value!: string | null;
+  @Input() unknownValue: string = "unbekannt";
 
   constructor() { }
 

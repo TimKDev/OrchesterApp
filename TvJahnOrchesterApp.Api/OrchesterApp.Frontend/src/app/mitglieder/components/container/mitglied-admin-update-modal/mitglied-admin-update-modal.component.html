@@ -86,7 +86,7 @@
         </ion-item>
         <ion-item>
           <ion-select label="Positions" label-placement="stacked" [multiple]="true" formControlName="positions">
-            <ion-select-option *ngFor="let position of dropdownItemsPosition"
+            <ion-select-option *ngFor="let position of dropdownItemsPosition | filterNullDropdown"
               [value]="position.value">{{position.text}}</ion-select-option>
           </ion-select>
         </ion-item>

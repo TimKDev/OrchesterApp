@@ -6,5 +6,5 @@ using System.Threading.Tasks;
 
 namespace TvJahnOrchesterApp.Application.Features.Dropdown.Models
 {
-    public record DropdownItem(int Value, string Text);
+    public record DropdownItem(int? Value, string Text);
 }

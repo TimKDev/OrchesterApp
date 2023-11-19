@@ -22,7 +22,7 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Endpoints
         public static void MapGetDropdownEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapGet("api/dropdown/{dropdownName}", GetDropdownValues)
-                .CacheOutput("OutputCacheWithAuthPolicy")
+                //.CacheOutput("OutputCacheWithAuthPolicy")
                 .RequireAuthorization();
         }
 
@@ -44,7 +44,10 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Endpoints
             public async Task<DropdownItem[]> Handle(GetDropdownQuery request, CancellationToken cancellationToken)
             {
                 DropdownNames dropdownName = (DropdownNames)Enum.Parse(typeof(DropdownNames), request.DropdownName);
-                return await dropdownService.GetAllDropdownValuesAsync(dropdownName, cancellationToken);
+                var result = (await dropdownService.GetAllDropdownValuesAsync(dropdownName, cancellationToken)).ToList();
+                result.Add(new DropdownItem(null, "Nichts ausgewählt"));
+
+                return result.ToArray();
             }
         }
     }

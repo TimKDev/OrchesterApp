@@ -1,4 +1,5 @@
-﻿using TvJahnOrchesterApp.Domain.Common.Entities;
+﻿using Microsoft.Extensions.Logging.Abstractions;
+using TvJahnOrchesterApp.Domain.Common.Entities;
 using TvJahnOrchesterApp.Domain.Common.Models;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.Entities;
@@ -90,11 +91,12 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         public void SetMemberSince(DateTime? dateTime)
         {
-            if(dateTime is null)
+            MemberSince = dateTime;
+            if (dateTime is null)
             {
+                MemberSinceInYears = null;
                 return;
             }
-            MemberSince = dateTime;
             var today = DateTime.Today;
             var age = today.Year - ((DateTime)dateTime).Year;
             if (((DateTime)dateTime).Date > today.AddYears(-age))

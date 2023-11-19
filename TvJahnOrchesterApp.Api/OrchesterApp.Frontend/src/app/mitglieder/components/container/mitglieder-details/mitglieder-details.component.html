@@ -49,8 +49,8 @@
         <app-data-item label="Adresse" [value]="'Nicht angegeben'"></app-data-item>
       </ng-template>
       <app-data-item label="Geburtstag" [value]="res.data.geburtstag | date : 'dd.MM.YYYY'"></app-data-item>
-      <app-data-item label="Telefonnummer" [value]="res.data.telefonnummer ?? 'Nicht angegeben'"></app-data-item>
-      <app-data-item label="Handynummer" [value]="res.data.handynummer ?? 'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Telefonnummer" [value]="res.data.telefonnummer" [unknownValue]="'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Handynummer" [value]="res.data.handynummer" [unknownValue]="'Nicht angegeben'"></app-data-item>
     </ion-list>
 
     <ion-list class="mg-top">
@@ -58,15 +58,15 @@
         <ion-label>Orchester Informationen</ion-label>
       </ion-list-header>
       <app-data-item label="Instrument"
-        [value]="res.data.defaultInstrument | dropdown : res.instrumentDropdown ?? 'Nicht angegeben'"></app-data-item>
+        [value]="res.data.defaultInstrument | dropdown : res.instrumentDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
       <app-data-item label="Stimme"
-        [value]="res.data.defaultNotenStimme | dropdown : res.notenStimmeDropdown ?? 'Nicht angegeben'"></app-data-item>
+        [value]="res.data.defaultNotenStimme | dropdown : res.notenStimmeDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
       <app-data-item label="Orchestermitglied seit"
-        [value]="res.data.memberSince | date : 'dd.MM.YYYY' ?? 'Nicht angegeben'"></app-data-item>
+        [value]="res.data.memberSince | date : 'dd.MM.YYYY'" [unknownValue]="'Nicht angegeben'"></app-data-item>
       <app-data-item label="Positionen"
-        [value]="res.data.positions | dropdown : res.positionDropdown ?? 'Nicht angegeben'"></app-data-item>
+          [value]="res.data.positions | dropdown : res.positionDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
       <app-data-item label="Mitglieds Status"
-        [value]="res.data.orchesterMitgliedsStatus | dropdown : res.mitgliedsStatusDropdown ?? 'Nicht angegeben'"></app-data-item>
+        [value]="res.data.orchesterMitgliedsStatus | dropdown : res.mitgliedsStatusDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
     </ion-list>
 
     <ion-button *ngIf="canUpdateMitglied" fill="clear" expand="block" (click)="setOpen(true)">

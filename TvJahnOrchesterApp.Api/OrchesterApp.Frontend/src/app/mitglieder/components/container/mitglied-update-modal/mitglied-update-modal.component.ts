@@ -52,7 +52,9 @@ export class MitgliedUpdateModalComponent  implements OnInit {
   }
 
   confirm() {
-    return this.modalCtrl.dismiss(this.formGroup.getRawValue(), 'confirm');
+    debugger;
+    let value = this.formGroup.getRawValue();
+    return this.modalCtrl.dismiss({...value, geburtstag: value.geburtstag === "" ? null : value.geburtstag}, 'confirm');
   }
 
 }
