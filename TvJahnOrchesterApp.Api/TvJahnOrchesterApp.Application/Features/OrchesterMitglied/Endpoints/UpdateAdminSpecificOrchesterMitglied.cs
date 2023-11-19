@@ -9,6 +9,7 @@ using System.Text;
 using System.Threading.Tasks;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
@@ -20,7 +21,10 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
         public static void MapOrchesterMitgliedUpdateAdminSpecificEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPut("api/orchester-mitglied/admin/specific", UpdateAdminSpecificOrchesterMitglieder)
-            .RequireAuthorization();
+            .RequireAuthorization(auth =>
+            {
+                auth.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand });
+            });
         }
 
         private static async Task<IResult> UpdateAdminSpecificOrchesterMitglieder(UpdateAdminSpecificOrchesterMitgliederQuery updateSpecificQuery, ISender sender, CancellationToken cancellationToken)

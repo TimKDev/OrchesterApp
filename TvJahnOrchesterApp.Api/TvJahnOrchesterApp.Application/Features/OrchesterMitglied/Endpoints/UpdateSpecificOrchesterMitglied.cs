@@ -7,6 +7,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
@@ -35,16 +36,25 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
         {
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
             private readonly IUnitOfWork unitOfWork;
+            private readonly ICurrentUserService currentUserService;
 
-            public UpdateSpecificOrchesterMitgliederQueryHandler(IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork)
+            public UpdateSpecificOrchesterMitgliederQueryHandler(IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
             {
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
                 this.unitOfWork = unitOfWork;
+                this.currentUserService = currentUserService;
             }
 
             public async Task<Unit> Handle(UpdateSpecificOrchesterMitgliederQuery request, CancellationToken cancellationToken)
             {
-                var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(OrchesterMitgliedsId.Create(request.Id), cancellationToken);
+                var currentOrchesterMitglied = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
+                var mitgliedsId = OrchesterMitgliedsId.Create(request.Id);
+                if (mitgliedsId != currentOrchesterMitglied.Id)
+                {
+                    throw new Exception("Not authorized");
+                }
+
+                var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(mitgliedsId, cancellationToken);
                 var adresse = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz);
 
 

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Models.Errors;
 using TvJahnOrchesterApp.Contracts.OrchestraMembers;
 using TvJahnOrchesterApp.Domain.Common.Enums;
@@ -17,7 +18,10 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
         public static void MapCreateOrchesterMitgliedEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("api/orchester-mitglied", PostOrchesterMitglied)
-                .RequireAuthorization();
+                .RequireAuthorization(auth =>
+                {
+                    auth.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand });
+                });
         }
 
         private static async Task<IResult> PostOrchesterMitglied([FromBody] CreateOrchesterMitgliedCommand createOrchesterMitgliedCommand, ISender sender, CancellationToken cancellationToken)

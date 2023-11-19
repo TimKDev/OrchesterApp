@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 
@@ -16,7 +17,10 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
         public static void MapDeleteOrchesterMitgliedEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapDelete("api/orchester-mitglied/{orchesterMitgliedsId}", DeleteDeleteOrchesterMitglied)
-                .RequireAuthorization();
+                .RequireAuthorization(auth =>
+                {
+                    auth.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand });
+                });
         }
 
         private static async Task<IResult> DeleteDeleteOrchesterMitglied(Guid orchesterMitgliedsId, CancellationToken cancellationToken, ISender sender)

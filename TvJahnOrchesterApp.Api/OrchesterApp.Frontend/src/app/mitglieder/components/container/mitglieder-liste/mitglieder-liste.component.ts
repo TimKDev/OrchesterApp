@@ -1,12 +1,13 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { ModalController } from '@ionic/angular';
-import { Observable, tap } from 'rxjs';
+import { Observable } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { GetAllMitgliederResponse } from 'src/app/mitglieder/interfaces/get-all-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 import { MitgliedCreateModalComponent } from '../mitglied-create-modal/mitglied-create-modal.component';
 import { CreateMitgliedRequest } from 'src/app/mitglieder/interfaces/create-mitglied-request';
+import { RolesService } from 'src/app/authentication/services/roles.service';
 
 @Component({
   selector: 'app-mitglieder-liste',
@@ -20,6 +21,8 @@ export class MitgliederListeComponent implements OnInit{
   data!: GetAllMitgliederResponse[];
   displayedData!: GetAllMitgliederResponse[];
 
+  canCreateNewMitglied = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
+
   @ViewChild('searchBar') searchBar!: any;
 
   constructor(
@@ -27,6 +30,7 @@ export class MitgliederListeComponent implements OnInit{
     private refreshService: RefreshService,
     private us: Unsubscribe,
     private modalCtrl: ModalController,
+    private rolesService: RolesService
   ) { }
 
   ngOnInit(): void {
@@ -38,11 +42,12 @@ export class MitgliederListeComponent implements OnInit{
     this.loadData();
   }
 
-  loadData(){
-    this.data$ = this.mitgliederService.getAllMitglieder().pipe(tap(res => {
+  loadData(refreshEvent: any = null){
+    this.us.autoUnsubscribe(this.mitgliederService.getAllMitglieder()).subscribe(res => {
       this.data = res;
       this.displayedData = res;
-    }));
+      if(refreshEvent) refreshEvent.target.complete();
+    });
   }
 
   search(event: any) {
@@ -59,6 +64,10 @@ export class MitgliederListeComponent implements OnInit{
     const { data, role } = await modal.onWillDismiss();
     if (role === 'cancel') return;
     this.createMitglied(data);
+  }
+
+  public handleRefresh(event: any){
+    this.loadData(event);
   }
 
   private createMitglied(data: CreateMitgliedRequest){

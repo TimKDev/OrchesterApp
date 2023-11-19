@@ -116,42 +116,4 @@ export class AuthenticationService {
     await Preferences.set({ key: USER_EMAIL_KEY, value: userEmail });
     await Preferences.set({key: USER_ROLES_KEY, value: userRoles.toString()})
   }
-
-  // public isUserAdmin = (): boolean => {
-  //   const token = localStorage.getItem("token");
-  //   if(!token) return false;
-  //   const decodedToken = this.jwtHelper.decodeToken(token);
-  //   const role = decodedToken['http://schemas.microsoft.com/ws/2008/06/identity/claims/role']
-  //   return role === 'Administrator';
-  // }
-
-  // public getToken() {
-  //   const token = localStorage.getItem("token");
-  //   if(token && !this.jwtHelper.isTokenExpired(token)) return token;
-  //   //TODO: Refresh Tokens werden für SignalR noch nicht richtig verwendet!
-  //   throw new Error("Token is expired or not valid."); 
-  // }
-
-  // public forgotPassword(body: ForgotPasswordDto){
-  //   return this.http.post('api/Accounts/ForgotPassword', body);
-  // }
-
-  // public resetPassword(body: ResetPasswordDto){
-  //   return this.http.post('api/Accounts/ResetPassword', body);
-  // }
-
-  // public confirmEmail(token: string, email: string){
-  //   let params = new HttpParams({ encoder: new CustomEncoder() })
-  //   params = params.append('token', token);
-  //   params = params.append('email', email);
-  //   return this.http.get('api/Accounts/EmailConfirmation', params);
-  // }
-
-  // resendConfirmationEmail(email: string){
-  //   let body = {
-  //     "Email": email,
-  //     "ClientURI": isAzure ? "https://notesapp1.azurewebsites.net/authentication/emailconfirmation" : 'https://localhost:44469/authentication/emailconfirmation'
-  //   }
-  //   return this.http.post('api/Accounts/SendMailVerification/', body);
-  // }
 }

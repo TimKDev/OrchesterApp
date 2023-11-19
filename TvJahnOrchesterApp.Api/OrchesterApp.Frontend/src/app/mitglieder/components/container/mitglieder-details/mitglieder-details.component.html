@@ -16,7 +16,12 @@
     </ion-toolbar>
   </ion-header>
 
-  <ng-container *ngIf="data$ | async as res; else loading">
+  <ng-container *ngIf="data as res; else loading">
+
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
     <ion-button [routerLink]="'/tabs/mitglieder'" class="back-btn">
       <ion-icon slot="start" name="arrow-back"></ion-icon>
       Zurück zur Übersicht
@@ -64,7 +69,7 @@
         [value]="res.data.orchesterMitgliedsStatus | dropdown : res.mitgliedsStatusDropdown ?? 'Nicht angegeben'"></app-data-item>
     </ion-list>
 
-    <ion-button fill="clear" expand="block" (click)="setOpen(true)">
+    <ion-button *ngIf="canUpdateMitglied" fill="clear" expand="block" (click)="setOpen(true)">
       Bearbeite Mitglied
     </ion-button>
     <ion-action-sheet [isOpen]="isActionSheetOpen" header="Bearbeite Mitglied" [buttons]="actionSheetButtons"

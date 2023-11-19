@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
-import { Observable, combineLatest, map, tap } from 'rxjs';
+import { combineLatest, map, tap } from 'rxjs';
 import { confirmDialog } from 'src/app/core/helper/confirm';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
@@ -14,6 +14,7 @@ import { UpdateAdminSpecificMitgliederRequest } from 'src/app/mitglieder/interfa
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { MitgliedUpdateModalComponent } from '../mitglied-update-modal/mitglied-update-modal.component';
 import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
+import { RolesService } from 'src/app/authentication/services/roles.service';
 
 @Component({
   selector: 'app-mitglieder-details',
@@ -23,12 +24,14 @@ import { AuthenticationService } from 'src/app/authentication/services/authentic
 })
 export class MitgliederDetailsComponent implements OnInit {
 
-  data$!: Observable<{ data: GetSpecificMitgliederResponse, instrumentDropdown: DropdownItem[], notenStimmeDropdown: DropdownItem[], positionDropdown: DropdownItem[], mitgliedsStatusDropdown: DropdownItem[]}> | null;
+  data!: { data: GetSpecificMitgliederResponse, instrumentDropdown: DropdownItem[], notenStimmeDropdown: DropdownItem[], positionDropdown: DropdownItem[], mitgliedsStatusDropdown: DropdownItem[]} | null;
   mitgliedsId!: string;
   dropdownItemsInstruments!: DropdownItem[];
   dropdownItemsNotenstimme!: DropdownItem[];
   dropdownItemsPosition!: DropdownItem[];
   dropdownItemsMitgliedsStatus!: DropdownItem[];
+
+  canUpdateMitglied = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
 
   constructor(
     private mitgliederService: MitgliederService,
@@ -39,7 +42,7 @@ export class MitgliederDetailsComponent implements OnInit {
     private modalCtrl: ModalController,
     private refreshService: RefreshService,
     private authenticationService: AuthenticationService,
-    private alertController: AlertController,
+    private rolesService: RolesService
   ) { }
 
   ngOnInit() {
@@ -57,8 +60,8 @@ export class MitgliederDetailsComponent implements OnInit {
     return this.authenticationService.connectedOrchesterMitgliedsName;
   }
 
-  loadData() {
-    this.data$ = this.us.autoUnsubscribe(combineLatest([
+  loadData(refreshEvent: any = null) {
+    this.us.autoUnsubscribe(combineLatest([
       this.mitgliederService.getSpecificMitglied(this.mitgliedsId),
       this.dropdownService.getDropdownElements('Instrument'),
       this.dropdownService.getDropdownElements('Notenstimme'),
@@ -72,7 +75,10 @@ export class MitgliederDetailsComponent implements OnInit {
         this.dropdownItemsPosition = result.positionDropdown;
         this.dropdownItemsMitgliedsStatus = result.mitgliedsStatusDropdown;
       })
-    );
+    ).subscribe(res => {
+      this.data = res;
+      if(refreshEvent) refreshEvent.target.complete();
+    });
   }
 
   public actionSheetButtons = [
@@ -101,7 +107,8 @@ export class MitgliederDetailsComponent implements OnInit {
   @confirmDialog("Achtung", "Möchten sie dieses Mitglied wirklich löschen? Falls ein Account verbunden ist, wird dieser ebenfalls gelöscht! Diese Operation kann nicht rückgängig gemacht werden.")
   private deleteOrchesterMember() {
     if (!this.mitgliedsId) return;
-    this.data$ = null;
+    this.data = null;
+    this.refreshService.refreshComponent("MitgliederListeComponent");
     this.mitgliederService.deleteMitglied(this.mitgliedsId).subscribe(() => {
       this.router.navigate(['tabs', 'mitglieder']);
     })
@@ -145,6 +152,10 @@ export class MitgliederDetailsComponent implements OnInit {
     const { data, role } = await modal.onWillDismiss();
     if (role === 'cancel') return;
     this.updateData(data);
+  }
+
+  public handleRefresh(event: any){
+    this.loadData(event);
   }
 
   private updateData(data: any){

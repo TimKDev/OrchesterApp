@@ -16,7 +16,12 @@
     </ion-toolbar>
   </ion-header>
 
-  <ng-container *ngIf="data$ | async as data; else loading">
+  <ng-container *ngIf="displayedData; else loading">
+
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
     <ion-list>
       <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
         (ionInput)="search($event)"></ion-searchbar>
@@ -29,7 +34,7 @@
         Kein Ergebnis
       </ng-container>
     </ion-list>
-    <ion-fab slot="fixed" vertical="bottom" horizontal="end">
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="canCreateNewMitglied">
       <ion-fab-button class="ion-fab-button" (click)="openCreateOrchesterMitgliedModal()">
         <ion-icon name="add"></ion-icon>
       </ion-fab-button>
