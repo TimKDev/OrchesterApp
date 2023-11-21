@@ -28,4 +28,9 @@
     <ProjectReference Include="..\TvJahnOrchesterApp.Domain\TvJahnOrchesterApp.Domain.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Fixtures\" />
+    <Folder Include="Helpers\" />
+  </ItemGroup>
+
 </Project>

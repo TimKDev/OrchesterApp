@@ -10,7 +10,6 @@ import { UserHelpComponent } from './components/container/user-help/user-help.co
 import { SharedModule } from '../shared/shared.module';
 import { AccountDetailsComponent } from './components/container/account-details/account-details.component';
 import { AccountManagementComponent } from './components/container/account-management/account-management.component';
-import { AccountCardComponent } from './components/presentational/account-card/account-card.component';
 import { GetCardColorPipe } from './pipes/get-card-color.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SideMenuComponent } from './components/container/side-menu/side-menu.component';
@@ -24,7 +23,6 @@ import { AccountItemComponent } from './components/presentational/account-item/a
     UserFeedbackComponent,
     UserHelpComponent,
     AccountManagementComponent,
-    AccountCardComponent,
     AccountDetailsComponent,
     GetCardColorPipe,
     SideMenuComponent, 

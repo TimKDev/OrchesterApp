@@ -22,7 +22,7 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Endpoints
         public static void MapGetDropdownEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapGet("api/dropdown/{dropdownName}", GetDropdownValues)
-                //.CacheOutput("OutputCacheWithAuthPolicy")
+                .CacheOutput("OutputCacheWithAuthPolicy")
                 .RequireAuthorization();
         }
 
