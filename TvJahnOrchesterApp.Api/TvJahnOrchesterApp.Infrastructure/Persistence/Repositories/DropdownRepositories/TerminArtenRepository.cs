@@ -10,7 +10,7 @@ using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
 using TvJahnOrchesterApp.Domain.Common.Entities;
 using TvJahnOrchesterApp.Domain.Common.Enums;
 
-namespace TvJahnOrchesterApp.Infrastructure.Persistence.Repositories
+namespace TvJahnOrchesterApp.Infrastructure.Persistence.Repositories.DropdownRepositories
 {
     internal class TerminArtenRepository : IDropdownRepository
     {

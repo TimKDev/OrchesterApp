@@ -9,9 +9,9 @@ using TvJahnOrchesterApp.Application.Features.Dropdown.Enums;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
 using TvJahnOrchesterApp.Domain.Common.Entities;
 
-namespace TvJahnOrchesterApp.Infrastructure.Persistence.Repositories
+namespace TvJahnOrchesterApp.Infrastructure.Persistence.Repositories.DropdownRepositories
 {
-    internal class NotenRepository: IDropdownRepository
+    internal class NotenRepository : IDropdownRepository
     {
         private readonly OrchesterDbContext _context;
 

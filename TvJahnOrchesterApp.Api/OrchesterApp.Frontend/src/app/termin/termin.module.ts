@@ -14,6 +14,7 @@ import { TerminReturnMessagesComponent } from './components/termin-return-messag
 import { UpdateTerminEinsatzplanComponent } from './components/update-termin-einsatzplan/update-termin-einsatzplan.component';
 import { UpdateTerminModalComponent } from './components/update-termin-modal/update-termin-modal.component';
 import { UpdateTerminReturnMessageDetailsComponent } from './components/update-termin-return-message-details/update-termin-return-message-details.component';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
 @NgModule({
@@ -33,7 +34,9 @@ import { UpdateTerminReturnMessageDetailsComponent } from './components/update-t
     SharedModule,
     CommonModule,
     TerminRoutingModule,
-    IonicModule
+    IonicModule,
+    ReactiveFormsModule,
+    FormsModule
   ]
 })
 export class TerminModule { }

@@ -47,6 +47,9 @@ namespace TvJahnOrchesterApp.Infrastructure
             services.AddScoped<IDropdownRepository, NotenstimmeRepository>();
             services.AddScoped<IDropdownRepository, MitgliedsStatusRepository>();
             services.AddScoped<IDropdownRepository, PositionRepository>();
+            services.AddScoped<IDropdownRepository, NotenRepository>();
+            services.AddScoped<IDropdownRepository, UniformRepository>();
+            services.AddScoped<IDropdownRepository, TerminArtenRepository>();
 
             return services;
         }

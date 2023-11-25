@@ -5,29 +5,51 @@
     </ion-buttons>
     <ion-title>Neuer Termin</ion-title>
     <ion-buttons slot="end">
-      <ion-button (click)="confirm()" [strong]="true" [disabled]="!formGroup.dirty || formGroup.invalid">Erstellen</ion-button>
+      <ion-button (click)="confirm()" [strong]="true"
+        [disabled]="!formGroup.dirty || formGroup.invalid">Erstellen</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
   <ng-container *ngIf="data$ | async as data; else loading">
     <pre>{{formGroup.value | json}}</pre>
-    <!-- <form [formGroup]="formGroup">
+
+    <form [formGroup]="formGroup">
       <ion-list>
         <ion-list-header color="tertiary">
-         Notwendige Angaben 
+          Termin Info
         </ion-list-header>
         <ion-item>
-          <ion-input formControlName="vorname" labelPlacement="stacked" label="Vorname" placeholder="Vorname"></ion-input>
+          <ion-input formControlName="name" labelPlacement="stacked" label="Termin Name"
+            placeholder="Termin Name"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input formControlName="nachname" labelPlacement="stacked" label="Nachname" placeholder="Nachname"></ion-input>
+          <ion-select label="Termin Art" label-placement="stacked" formControlName="terminArt">
+            <ion-select-option *ngFor="let terminArt of data.terminArtDropdown"
+              [value]="terminArt.value">{{terminArt.text}}</ion-select-option>
+          </ion-select>
         </ion-item>
         <ion-item>
-          <ion-input formControlName="registerKey" labelPlacement="stacked" label="Registrierungsschlüssel" placeholder="Registrierungsschlüssel"></ion-input>
+          <ion-label>Startzeit:</ion-label>
+          <ion-datetime-button datetime="datetime1"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime1" formControlName="startZeit"></ion-datetime>
+            </ng-template>
+          </ion-modal>
         </ion-item>
+        <ion-item>
+          <ion-label>Endzeit:</ion-label>
+          <ion-datetime-button datetime="datetime2"></ion-datetime-button>
+          <ion-modal [keepContentsMounted]="true">
+            <ng-template>
+              <ion-datetime id="datetime2" formControlName="endZeit"></ion-datetime>
+            </ng-template>
+          </ion-modal>
+        </ion-item>
+        
       </ion-list>
-      
+
       <ion-list class="mg-top">
         <ion-list-header color="tertiary">
           <ion-label>Adresse</ion-label>
@@ -36,10 +58,12 @@
           <ion-input formControlName="straße" labelPlacement="stacked" label="Straße" placeholder="Straße"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input formControlName="hausnummer" labelPlacement="stacked" label="Hausnummer" placeholder="Hausnummer"></ion-input>
+          <ion-input formControlName="hausnummer" labelPlacement="stacked" label="Hausnummer"
+            placeholder="Hausnummer"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input formControlName="postleitzahl" labelPlacement="stacked" label="Postleitzahl" placeholder="Postleitzahl"></ion-input>
+          <ion-input formControlName="postleitzahl" labelPlacement="stacked" label="Postleitzahl"
+            placeholder="Postleitzahl"></ion-input>
         </ion-item>
         <ion-item>
           <ion-input formControlName="stadt" labelPlacement="stacked" label="Stadt" placeholder="Stadt"></ion-input>
@@ -47,9 +71,15 @@
         <ion-item>
           <ion-input formControlName="zusatz" labelPlacement="stacked" label="Zusatz" placeholder="Zusatz"></ion-input>
         </ion-item>
+        <ion-item>
+          <ion-input type="number" formControlName="latitude" labelPlacement="stacked" label="Latitude" placeholder="Latitude"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="number" formControlName="longitude" labelPlacement="stacked" label="Longitude" placeholder="Longitude"></ion-input>
+        </ion-item>
       </ion-list>
 
-      <ion-list class="mg-top">
+      <!-- <ion-list class="mg-top">
         <ion-list-header color="tertiary">
           <ion-label>Persönliche Angaben</ion-label>
         </ion-list-header>
@@ -86,13 +116,14 @@
             <ion-select-option *ngFor="let position of data.positionDropdown" [value]="position.value">{{position.text}}</ion-select-option>
           </ion-select>
         </ion-item>
-      </ion-list>
-      
-    </form> -->
+      </ion-list> -->
+    </form>
+
+    
   </ng-container>
 
   <ng-template #loading>
     <app-loader></app-loader>
   </ng-template>
- 
+
 </ion-content>

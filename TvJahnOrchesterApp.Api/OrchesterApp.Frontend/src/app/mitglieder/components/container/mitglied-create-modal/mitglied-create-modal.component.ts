@@ -16,7 +16,7 @@ import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.servic
   styleUrls: ['./mitglied-create-modal.component.scss'],
   providers: [Unsubscribe]
 })
-export class MitgliedCreateModalComponent  implements OnInit {
+export class MitgliedCreateModalComponent implements OnInit {
 
   data$!: Observable<{
     instrumentDropdown: DropdownItem[], notenStimmeDropdown: DropdownItem[], positionDropdown: DropdownItem[]
@@ -47,7 +47,7 @@ export class MitgliedCreateModalComponent  implements OnInit {
     private dropdownService: DropdownService
   ) { }
 
-  ngOnInit(){
+  ngOnInit() {
     this.loadData();
   }
 
@@ -57,7 +57,7 @@ export class MitgliedCreateModalComponent  implements OnInit {
       this.dropdownService.getDropdownElements('Notenstimme'),
       this.dropdownService.getDropdownElements('Position')
     ])).pipe(map(([instrumentDropdown, notenStimmeDropdown, positionDropdown]) => ({ instrumentDropdown, notenStimmeDropdown, positionDropdown })));
-    }
+  }
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
@@ -66,9 +66,9 @@ export class MitgliedCreateModalComponent  implements OnInit {
   confirm() {
     let value = this.formGroup.getRawValue();
     return this.modalCtrl.dismiss({
-      ...value, 
-      geburtstag: value.geburtstag ? new Date(value.geburtstag) : null, 
-      memberSince: value.memberSince ? new Date(value.memberSince) : null, 
+      ...value,
+      geburtstag: value.geburtstag ? new Date(value.geburtstag) : null,
+      memberSince: value.memberSince ? new Date(value.memberSince) : null,
     }, 'confirm');
   }
 

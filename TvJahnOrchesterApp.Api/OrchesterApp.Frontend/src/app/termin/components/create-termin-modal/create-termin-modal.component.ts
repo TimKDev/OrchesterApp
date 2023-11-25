@@ -6,11 +6,13 @@ import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { DropdownService } from 'src/app/core/services/dropdown.service';
 import { TerminService } from '../../services/termin.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-create-termin-modal',
   templateUrl: './create-termin-modal.component.html',
   styleUrls: ['./create-termin-modal.component.scss'],
+  providers: [Unsubscribe]
 })
 export class CreateTerminModalComponent  implements OnInit {
 
@@ -21,8 +23,8 @@ export class CreateTerminModalComponent  implements OnInit {
   formGroup = this.formBuilder.group({
     name: ['', [Validators.required]],
     terminArt: [0, [Validators.required]],
-    startZeit: ['', [Validators.required]],
-    endZeit: [''],
+    startZeit: [null, [Validators.required]],
+    endZeit: [null, [Validators.required]],
     straße: [''],
     hausnummer: [''],
     postleitzahl: [''],
