@@ -15,3 +15,4 @@ C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchest
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Application\obj\Debug\net7.0\ref\TvJahnOrchesterApp.Application.dll
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Application\bin\Debug\net7.0\TvJahnOrchesterApp.Contracts.dll
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Application\bin\Debug\net7.0\TvJahnOrchesterApp.Contracts.pdb
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Application\obj\Debug\net7.0\TvJahnOrchesterApp.Application.sourcelink.json

@@ -10,3 +10,4 @@ C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchest
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\refint\TvJahnOrchesterApp.Domain.dll
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\TvJahnOrchesterApp.Domain.pdb
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\ref\TvJahnOrchesterApp.Domain.dll
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Domain\obj\Debug\net7.0\TvJahnOrchesterApp.Domain.sourcelink.json

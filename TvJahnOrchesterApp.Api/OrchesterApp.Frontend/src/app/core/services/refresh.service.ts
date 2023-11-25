@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 
-export type ComponentsToRefresh = 'MitgliederListeComponent'
+export type ComponentsToRefresh = 'MitgliederListeComponent' | 'TerminListeComponent'
 
 @Injectable({
   providedIn: 'root'
@@ -8,7 +8,8 @@ export type ComponentsToRefresh = 'MitgliederListeComponent'
 export class RefreshService {
 
   private refreshNecessary: Record<ComponentsToRefresh, boolean> = {
-    MitgliederListeComponent: false
+    MitgliederListeComponent: false,
+    TerminListeComponent: false
   }; 
 
   constructor() { }

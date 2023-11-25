@@ -16,6 +16,33 @@
     </ion-toolbar>
   </ion-header>
 
-  Dies wird die Terminliste.
+  <ng-container *ngIf="displayedData; else loading">
+    {{displayedData | json}}
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <!-- <ion-list>
+      <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
+        (ionInput)="search($event)"></ion-searchbar>
+
+      <app-contact-item *ngFor="let contact of displayedData" [name]="contact.vorname + ' ' + contact.nachname"
+        [instruments]="contact.defaultInstrument" [memberSince]="contact.memberSinceInYears?.toString()"
+        [routerLink]="'details/' + contact.id">
+      </app-contact-item>
+      <ng-container *ngIf="displayedData.length === 0">
+        Kein Ergebnis
+      </ng-container>
+    </ion-list> -->
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="canCreateNewTermin">
+      <ion-fab-button class="ion-fab-button" (click)="openCreateTerminModal()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
 
 </ion-content>

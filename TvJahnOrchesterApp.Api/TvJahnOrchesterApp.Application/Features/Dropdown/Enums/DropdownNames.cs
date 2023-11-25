@@ -11,6 +11,9 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Enums
         Instrument,
         Notenstimme,
         Position,
-        MitgliedsStatus
+        MitgliedsStatus,
+        Noten,
+        Uniform,
+        TerminArten
     }
 }

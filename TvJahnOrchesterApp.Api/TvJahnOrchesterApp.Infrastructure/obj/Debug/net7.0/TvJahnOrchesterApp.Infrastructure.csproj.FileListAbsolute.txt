@@ -19,3 +19,4 @@ C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchest
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Infrastructure\bin\Debug\net7.0\TvJahnOrchesterApp.Contracts.pdb
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Infrastructure\bin\Debug\net7.0\TvJahnOrchesterApp.Infrastructure.runtimeconfig.json
 C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Infrastructure\obj\Debug\net7.0\TvJahnOrchesterApp.Infrastructure.genruntimeconfig.cache
+C:\Users\timke\source\projects\OrchesterApp\TvJahnOrchesterApp.Api\TvJahnOrchesterApp.Infrastructure\obj\Debug\net7.0\TvJahnOrchesterApp.Infrastructure.sourcelink.json

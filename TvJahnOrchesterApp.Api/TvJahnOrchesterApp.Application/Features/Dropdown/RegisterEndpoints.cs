@@ -13,6 +13,7 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown
         public static void RegisterEndpointsDropdown(this IEndpointRouteBuilder app)
         {
             app.MapGetDropdownEndpoint();
+            app.MapGetOrchesterMitgliederDropdownEndpoint();
         }
     }
 }

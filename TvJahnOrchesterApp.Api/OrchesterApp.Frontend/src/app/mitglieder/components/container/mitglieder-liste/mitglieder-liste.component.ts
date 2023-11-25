@@ -16,8 +16,6 @@ import { RolesService } from 'src/app/authentication/services/roles.service';
   providers: [Unsubscribe]
 })
 export class MitgliederListeComponent implements OnInit{
-
-  data$!: Observable<GetAllMitgliederResponse[]>;
   data!: GetAllMitgliederResponse[];
   displayedData!: GetAllMitgliederResponse[];
 

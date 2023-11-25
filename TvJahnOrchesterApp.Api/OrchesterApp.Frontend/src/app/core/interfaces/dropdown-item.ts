@@ -1,4 +1,4 @@
 export interface DropdownItem{
-  value?: number, 
+  value?: number | string, 
   text: string
 }

@@ -1,1 +1,1 @@
-export type DropdownNames = 'Instrument' | 'Notenstimme' | 'Position' | 'MitgliedsStatus';
+export type DropdownNames = 'Instrument' | 'Notenstimme' | 'Position' | 'MitgliedsStatus' | 'Noten' | 'Uniform' | 'TerminArten';
