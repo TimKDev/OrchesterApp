@@ -1,12 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-import { TerminService } from '../../services/termin.service';
+import { TerminService } from '../../../services/termin.service';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
-import { GetAllTermineResponse } from '../../interfaces/get-all-termine-response';
+import { GetAllTermineResponse } from '../../../interfaces/get-all-termine-response';
 import { ModalController } from '@ionic/angular';
 import { RolesService } from 'src/app/authentication/services/roles.service';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { CreateTerminModalComponent } from '../create-termin-modal/create-termin-modal.component';
-import { CreateTerminRequest } from '../../interfaces/create-termin-request';
+import { CreateTerminRequest } from '../../../interfaces/create-termin-request';
 
 @Component({
   selector: 'app-termin-liste',
@@ -59,6 +59,11 @@ export class TerminListeComponent  implements OnInit {
     const { data, role } = await modal.onWillDismiss();
     if (role === 'cancel') return;
     this.createTermin(data);
+  }
+
+  search(event: any) {
+    let searchString = (event.detail.value as string).toLowerCase();
+    this.displayedData = this.data.filter(e => (e.name).toLowerCase().includes(searchString));
   }
 
   private createTermin(data: CreateTerminRequest){

@@ -5,8 +5,7 @@ import { Observable, combineLatest, map } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { DropdownService } from 'src/app/core/services/dropdown.service';
-import { TerminService } from '../../services/termin.service';
-import { formatDate } from '@angular/common';
+import { TerminService } from '../../../services/termin.service';
 
 @Component({
   selector: 'app-create-termin-modal',
@@ -23,8 +22,9 @@ export class CreateTerminModalComponent  implements OnInit {
   formGroup = this.formBuilder.group({
     name: ['', [Validators.required]],
     terminArt: [0, [Validators.required]],
-    startZeit: [null, [Validators.required]],
-    endZeit: [null, [Validators.required]],
+    terminDate: [null, [Validators.required]],
+    startZeit: [null],
+    endZeit: [null],
     straße: [''],
     hausnummer: [''],
     postleitzahl: [''],
@@ -36,6 +36,8 @@ export class CreateTerminModalComponent  implements OnInit {
     uniform: [] as number[],
     orchestermitgliedIds: null as string[] | null
   });
+
+  terminOnlyForSpecificMembers = false;
   
   constructor(
     private modalCtrl: ModalController,
@@ -51,7 +53,19 @@ export class CreateTerminModalComponent  implements OnInit {
       this.dropdownService.getDropdownElements('Noten'),
       this.dropdownService.getDropdownElements('Uniform'),
       this.terminService.getOrchesterMitgliedDropdownEntries()
-    ])).pipe(map(([terminArtDropdown, notenDropdown, uniformDropdown, orchesterMitgliederDropdown]) => ({ terminArtDropdown, notenDropdown, uniformDropdown, orchesterMitgliederDropdown })));
+    ])).pipe(map(([terminArtDropdown, notenDropdown, uniformDropdown, orchesterMitgliederDropdown]) => ({ 
+      terminArtDropdown, 
+      notenDropdown: notenDropdown.filter(d => d.value !== null), 
+      uniformDropdown: uniformDropdown.filter(d => d.value !== null), 
+      orchesterMitgliederDropdown 
+    })));
+  }
+
+  clickedCheckbox(){
+    this.terminOnlyForSpecificMembers = !this.terminOnlyForSpecificMembers;
+    if(!this.terminOnlyForSpecificMembers){
+      this.formGroup.get('orchestermitgliedIds')?.setValue(null);
+    }
   }
 
   cancel() {
@@ -59,12 +73,22 @@ export class CreateTerminModalComponent  implements OnInit {
   }
 
   confirm() {
-    // let value = this.formGroup.getRawValue();
-    // return this.modalCtrl.dismiss({
-    //   ...value, 
-    //   geburtstag: value.geburtstag ? new Date(value.geburtstag) : null, 
-    //   memberSince: value.memberSince ? new Date(value.memberSince) : null, 
-    // }, 'confirm');
+    let value = this.formGroup.getRawValue();
+    let startZeit = new Date(value.terminDate!);
+    let endZeit = new Date(value.terminDate!);
+    if(value.startZeit){
+      startZeit.setHours(value.startZeit[0] + value.startZeit[1]);
+      startZeit.setMinutes(value.startZeit[3] + value.startZeit[4]);
+    }
+    if(value.endZeit){
+      endZeit.setHours(value.endZeit[0] + value.endZeit[1]);
+      endZeit.setMinutes(value.endZeit[3] + value.endZeit[4]);
+    }
+    return this.modalCtrl.dismiss({
+      ...value, 
+      startZeit: startZeit,
+      endZeit: endZeit
+    }, 'confirm');
   }
 
 }

@@ -17,23 +17,45 @@
   </ion-header>
 
   <ng-container *ngIf="displayedData; else loading">
-    {{displayedData | json}}
+    <pre>{{displayedData | json}}</pre>
     <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
-    <!-- <ion-list>
+    <ion-list>
       <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
         (ionInput)="search($event)"></ion-searchbar>
 
-      <app-contact-item *ngFor="let contact of displayedData" [name]="contact.vorname + ' ' + contact.nachname"
+        <ng-container *ngFor="let termin of displayedData">
+          <!-- Andere Schriftfarbe wenn Auftritt noch nicht angenommen wurde oder abgesagt, oder in Vergangenheit -->
+          <ion-item [button]="true" detail="false">
+            <ion-label>
+              <h2>
+                <!-- Kleines Lesezeichen dessen Farbe den Termin Typen symbolisiert -->
+                <strong>{{termin.name}}</strong>
+              </h2>
+              <ion-text style="font-size: 14px;">Datum: {{termin.startZeit | date : 'dd.MM.YYYY'}}</ion-text><br />
+              <!-- Punkt mit Farbe der Zugesagt Status symbolisiert: Rot: Abgesagt, Gelb: keine rückmeldung, Grün : Angenommmen -->
+              <ion-note color="medium" class="ion-text-wrap">
+                Mitglied seit: XXX Jahren <br>
+                shshshsh
+              </ion-note>
+            </ion-label>
+            <div class="metadata-end-wrapper" slot="end">
+              <ion-icon color="medium" name="chevron-forward"></ion-icon>
+            </div>
+          </ion-item>
+        </ng-container>
+       
+
+      <!-- <app-contact-item *ngFor="let contact of displayedData" [name]="contact.vorname + ' ' + contact.nachname"
         [instruments]="contact.defaultInstrument" [memberSince]="contact.memberSinceInYears?.toString()"
         [routerLink]="'details/' + contact.id">
-      </app-contact-item>
+      </app-contact-item> -->
       <ng-container *ngIf="displayedData.length === 0">
         Kein Ergebnis
       </ng-container>
-    </ion-list> -->
+    </ion-list>
     <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="canCreateNewTermin">
       <ion-fab-button class="ion-fab-button" (click)="openCreateTerminModal()">
         <ion-icon name="add"></ion-icon>
