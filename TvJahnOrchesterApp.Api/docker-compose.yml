@@ -1,0 +1,22 @@
+version: '3.4'
+
+services:
+  tvjahnorchesterapp.api:
+    image: ${DOCKER_REGISTRY-}tvjahnorchesterappapi
+    build:
+      context: .
+      dockerfile: OrchesterApp.Api/Dockerfile
+    ports: 
+        - "44331:443"
+        - "80"  
+  sqlserver:
+    image: mcr.microsoft.com/mssql/server
+    container_name: MsSqlServer
+    environment:
+     - ACCEPT_EULA=Y
+     - SA_PASSWORD=amiko123!
+     - User Id=sa
+    ports:
+     - "1433:1433"
+    volumes:
+     - C:\Users\timke\docker-volumns
