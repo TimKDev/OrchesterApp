@@ -37,7 +37,7 @@ namespace TvJahnOrchesterApp.Infrastructure
 
         public static IServiceCollection AddPersistence(this IServiceCollection services)
         {
-            services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer("Server=localhost;Database=OrchesterAppDB;User Id=sa;Password=amiko123!;Encrypt=false"));
+            services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer("Server=OrchesterAppDB2;Database=OrchesterAppDB;User Id=sa;Password=amiko123!;Encrypt=false"));
 
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

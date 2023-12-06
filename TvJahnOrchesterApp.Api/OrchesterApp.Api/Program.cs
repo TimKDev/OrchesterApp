@@ -1,4 +1,5 @@
 using Microsoft.AspNetCore.Identity;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 using TvJahnOrchesterApp.Api;
 using TvJahnOrchesterApp.Api.Middlewares;
@@ -7,6 +8,7 @@ using TvJahnOrchesterApp.Application.Features;
 using TvJahnOrchesterApp.Application.Features.Dropdown;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
 using TvJahnOrchesterApp.Infrastructure;
+using TvJahnOrchesterApp.Infrastructure.Persistence;
 
 namespace OrchesterApp.Api
 {
@@ -24,6 +26,12 @@ namespace OrchesterApp.Api
 
             var app = builder.Build();
             {
+                using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
+                {
+                    var context = serviceScope.ServiceProvider.GetRequiredService<OrchesterDbContext>();
+                    context.Database.Migrate();
+                }
+
                 if (!app.Environment.IsDevelopment())
                 app.UseHsts();
                 //app.UseMiddleware<ErrorHandelingMiddleware>();

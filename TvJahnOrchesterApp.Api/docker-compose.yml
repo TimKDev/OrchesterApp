@@ -7,16 +7,18 @@ services:
       context: .
       dockerfile: OrchesterApp.Api/Dockerfile
     ports: 
-        - "44331:443"
-        - "80"  
+        - 44331:443
+        - 80:80 
   sqlserver:
-    image: mcr.microsoft.com/mssql/server
-    container_name: MsSqlServer
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: OrchesterAppDB2
     environment:
-     - ACCEPT_EULA=Y
-     - SA_PASSWORD=amiko123!
-     - User Id=sa
+        ACCEPT_EULA: Y
+        SA_PASSWORD: amiko123!
+        User Id: sa
     ports:
-     - "1433:1433"
+     - 1433:1433
     volumes:
-     - C:\Users\timke\docker-volumns
+     - orchesterAppDbVolumn:/var/opt/mssql
+volumes:
+  orchesterAppDbVolumn:
