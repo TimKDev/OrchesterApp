@@ -20,6 +20,7 @@ export class TerminListeComponent  implements OnInit {
   displayedData!: GetAllTermineResponse[];
 
   canCreateNewTermin = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
+  dateNow = new Date();
 
   constructor(
     private terminService: TerminService,

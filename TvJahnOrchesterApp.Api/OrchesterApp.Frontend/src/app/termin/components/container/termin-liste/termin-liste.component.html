@@ -27,18 +27,20 @@
         (ionInput)="search($event)"></ion-searchbar>
 
         <ng-container *ngFor="let termin of displayedData">
-          <!-- Andere Schriftfarbe wenn Auftritt noch nicht angenommen wurde oder abgesagt, oder in Vergangenheit -->
-          <ion-item [button]="true" detail="false">
+          <ion-item [button]="true" detail="false" 
+            [class.abgesagt]="termin.terminStatus === 3 && !(termin.endZeit < dateNow)"
+            [class.nicht-angenommen]="termin.terminStatus === 1 && !(termin.endZeit < dateNow)" 
+            [class.past]="termin.endZeit < dateNow">
             <ion-label>
               <h2>
                 <!-- Kleines Lesezeichen dessen Farbe den Termin Typen symbolisiert -->
                 <strong>{{termin.name}}</strong>
               </h2>
-              <ion-text style="font-size: 14px;">Datum: {{termin.startZeit | date : 'dd.MM.YYYY'}}</ion-text><br />
+              <ion-text style="font-size: 14px;">Datum: {{termin.startZeit | date : 'dd.MM.YYYY'}}: {{termin.startZeit | date : 'hh:mm'}}-{{termin.endZeit | date : 'hh:mm'}}</ion-text><br />
               <!-- Punkt mit Farbe der Zugesagt Status symbolisiert: Rot: Abgesagt, Gelb: keine rückmeldung, Grün : Angenommmen -->
               <ion-note color="medium" class="ion-text-wrap">
-                Mitglied seit: XXX Jahren <br>
-                shshshsh
+                Meine Rückmeldung: XXX Jahren <br>
+                Teilgenommen: Ja
               </ion-note>
             </ion-label>
             <div class="metadata-end-wrapper" slot="end">

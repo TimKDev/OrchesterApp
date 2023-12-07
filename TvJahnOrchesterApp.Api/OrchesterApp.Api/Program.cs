@@ -34,7 +34,7 @@ namespace OrchesterApp.Api
 
                 if (!app.Environment.IsDevelopment())
                 app.UseHsts();
-                //app.UseMiddleware<ErrorHandelingMiddleware>();
+                app.UseMiddleware<ErrorHandelingMiddleware>();
                 app.UseHttpsRedirection();
                 app.UseStaticFiles();
                 app.UseRouting();
