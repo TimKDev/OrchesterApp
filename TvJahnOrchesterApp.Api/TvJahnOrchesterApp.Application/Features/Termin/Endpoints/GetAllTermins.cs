@@ -72,7 +72,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                     result.Add(terminEntry);
                 }
 
-                return result.ToArray();
+                return result.OrderByDescending(r => r.StartZeit).ToArray();
             }
         }
     }

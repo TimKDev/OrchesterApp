@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TvJahnOrchesterApp.Domain")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+af664826fad036d79a47d92dea9e251ef9351e59")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+42ee16354e5bf1ce1873c17f378cb6abbfd8f8d5")]
 [assembly: System.Reflection.AssemblyProductAttribute("TvJahnOrchesterApp.Domain")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TvJahnOrchesterApp.Domain")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

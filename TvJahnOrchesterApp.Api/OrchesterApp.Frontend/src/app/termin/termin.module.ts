@@ -15,6 +15,7 @@ import { UpdateTerminEinsatzplanComponent } from './components/container/update-
 import { UpdateTerminModalComponent } from './components/container/update-termin-modal/update-termin-modal.component';
 import { UpdateTerminReturnMessageDetailsComponent } from './components/container/update-termin-return-message-details/update-termin-return-message-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
+import { TerminItemComponent } from './components/presentational/termin-item/termin-item.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     TerminReturnMessagesComponent,
     UpdateTerminEinsatzplanComponent,
     UpdateTerminModalComponent,
-    UpdateTerminReturnMessageDetailsComponent
+    UpdateTerminReturnMessageDetailsComponent,
+    TerminItemComponent
   ],
   imports: [
     SharedModule,

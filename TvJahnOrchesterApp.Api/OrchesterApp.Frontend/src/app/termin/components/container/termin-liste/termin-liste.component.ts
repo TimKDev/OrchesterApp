@@ -7,6 +7,10 @@ import { RolesService } from 'src/app/authentication/services/roles.service';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { CreateTerminModalComponent } from '../create-termin-modal/create-termin-modal.component';
 import { CreateTerminRequest } from '../../../interfaces/create-termin-request';
+import { combineLatest, map, of } from 'rxjs';
+import { DropdownService } from 'src/app/core/services/dropdown.service';
+import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-termin-liste',
@@ -20,14 +24,19 @@ export class TerminListeComponent  implements OnInit {
   displayedData!: GetAllTermineResponse[];
 
   canCreateNewTermin = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
-  dateNow = new Date();
+  
+  terminArtenDropdownValues!: DropdownItem[]; 
+  terminStatusDropdownValues!: DropdownItem[]; 
+  responseDropdownValues!: DropdownItem[]; 
 
   constructor(
     private terminService: TerminService,
     private refreshService: RefreshService,
     private us: Unsubscribe,
     private modalCtrl: ModalController,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    private dropdownService: DropdownService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -40,9 +49,21 @@ export class TerminListeComponent  implements OnInit {
   }
 
   loadData(refreshEvent: any = null){
-    this.us.autoUnsubscribe(this.terminService.getAllTermins()).subscribe(res => {
-      this.data = res;
-      this.displayedData = res;
+    this.us.autoUnsubscribe(
+      combineLatest([
+        this.terminService.getAllTermins(),
+        this.dropdownService.getDropdownElements('TerminArten'),
+        this.dropdownService.getDropdownElements('TerminStatus'),
+        this.dropdownService.getDropdownElements('Rückmeldungsart'),
+      ]).pipe(
+        map(([data, terminArtenDropdown, terminStatusDropdown, RückmeldungsArtenDropdown]) => ({data, terminArtenDropdown, terminStatusDropdown, RückmeldungsArtenDropdown}))
+      )
+      ).subscribe(res => {
+      this.data = res.data;
+      this.displayedData = res.data;
+      this.terminArtenDropdownValues = res.terminArtenDropdown;
+      this.terminStatusDropdownValues = res.terminStatusDropdown;
+      this.responseDropdownValues = res.RückmeldungsArtenDropdown;
       if(refreshEvent) refreshEvent.target.complete();
     });
   }
@@ -62,9 +83,13 @@ export class TerminListeComponent  implements OnInit {
     this.createTermin(data);
   }
 
-  search(event: any) {
+  public search(event: any) {
     let searchString = (event.detail.value as string).toLowerCase();
     this.displayedData = this.data.filter(e => (e.name).toLowerCase().includes(searchString));
+  }
+
+  public openTermin(terminId: string) {
+    this.router.navigate(['tabs', 'termin', 'details', terminId]);
   }
 
   private createTermin(data: CreateTerminRequest){

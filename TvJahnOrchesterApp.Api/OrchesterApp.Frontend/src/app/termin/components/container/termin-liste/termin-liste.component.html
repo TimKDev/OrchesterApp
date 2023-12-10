@@ -17,7 +17,7 @@
   </ion-header>
 
   <ng-container *ngIf="displayedData; else loading">
-    <pre>{{displayedData | json}}</pre>
+    <!-- <pre>{{displayedData | json}}</pre> -->
     <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
@@ -26,34 +26,15 @@
       <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
         (ionInput)="search($event)"></ion-searchbar>
 
-        <ng-container *ngFor="let termin of displayedData">
-          <ion-item [button]="true" detail="false" 
-            [class.abgesagt]="termin.terminStatus === 3 && !(termin.endZeit < dateNow)"
-            [class.nicht-angenommen]="termin.terminStatus === 1 && !(termin.endZeit < dateNow)" 
-            [class.past]="termin.endZeit < dateNow">
-            <ion-label>
-              <h2>
-                <!-- Kleines Lesezeichen dessen Farbe den Termin Typen symbolisiert -->
-                <strong>{{termin.name}}</strong>
-              </h2>
-              <ion-text style="font-size: 14px;">Datum: {{termin.startZeit | date : 'dd.MM.YYYY'}}: {{termin.startZeit | date : 'hh:mm'}}-{{termin.endZeit | date : 'hh:mm'}}</ion-text><br />
-              <!-- Punkt mit Farbe der Zugesagt Status symbolisiert: Rot: Abgesagt, Gelb: keine rückmeldung, Grün : Angenommmen -->
-              <ion-note color="medium" class="ion-text-wrap">
-                Meine Rückmeldung: XXX Jahren <br>
-                Teilgenommen: Ja
-              </ion-note>
-            </ion-label>
-            <div class="metadata-end-wrapper" slot="end">
-              <ion-icon color="medium" name="chevron-forward"></ion-icon>
-            </div>
-          </ion-item>
-        </ng-container>
-       
+      <app-termin-item *ngFor="let termin of displayedData" [terminId]="termin.terminId"
+        [terminStatus]="termin.terminStatus | dropdown : terminStatusDropdownValues" [terminName]="termin.name"
+        [terminResponse]="termin.zugesagt | dropdown : responseDropdownValues"
+        [terminArt]="termin.terminArt | dropdown : terminArtenDropdownValues" [terminStartTime]="termin.startZeit"
+        [terminEndTime]="termin.endZeit" [noResponse]="termin.noResponse" [positiveResponse]="termin.positiveResponse"
+        [negativeResponse]="termin.negativeResponse" [istAnwesend]="termin.istAnwesend" [highAuth]="canCreateNewTermin"
+        (openTermin)="openTermin(termin.terminId)">
+      </app-termin-item>
 
-      <!-- <app-contact-item *ngFor="let contact of displayedData" [name]="contact.vorname + ' ' + contact.nachname"
-        [instruments]="contact.defaultInstrument" [memberSince]="contact.memberSinceInYears?.toString()"
-        [routerLink]="'details/' + contact.id">
-      </app-contact-item> -->
       <ng-container *ngIf="displayedData.length === 0">
         Kein Ergebnis
       </ng-container>

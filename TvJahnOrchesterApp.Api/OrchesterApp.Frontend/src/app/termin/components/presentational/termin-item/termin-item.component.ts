@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 
 @Component({
   selector: 'app-termin-item',
@@ -7,8 +7,27 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TerminItemComponent  implements OnInit {
 
+  @Input() terminId!: string;
+  @Input() terminStatus!: string;
+  @Input() terminName!: string;
+  @Input() terminArt!: string;
+  @Input() terminResponse!: string;
+  @Input() istAnwesend!: boolean;
+  @Input() terminStartTime!: Date;
+  @Input() terminEndTime!: Date;
+  @Input() noResponse!: number;
+  @Input() positiveResponse!: number;
+  @Input() negativeResponse!: number;
+  @Input() highAuth!: boolean;
+  @Output() openTermin = new EventEmitter<void>();
+
+  dateNow = new Date();
+
   constructor() { }
 
   ngOnInit() {}
 
+  emitOpenTermin(){
+    this.openTermin.emit();
+  }
 }

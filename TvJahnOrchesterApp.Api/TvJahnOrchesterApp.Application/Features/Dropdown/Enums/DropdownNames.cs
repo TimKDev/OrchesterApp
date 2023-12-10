@@ -14,6 +14,8 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Enums
         MitgliedsStatus,
         Noten,
         Uniform,
-        TerminArten
+        TerminArten,
+        Rückmeldungsart,
+        TerminStatus
     }
 }

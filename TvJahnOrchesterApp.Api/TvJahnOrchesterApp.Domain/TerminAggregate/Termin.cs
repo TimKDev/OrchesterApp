@@ -31,7 +31,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
             TerminStatus = terminStatus;
         }
 
-        public static Termin Create(TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int terminArt, DateTime startZeit, DateTime endZeit, Adresse treffPunkt, List<int> noten, List<int> uniform, AbstimmungsId? abstimmungsId = null,TerminStatusEnum terminStatus = TerminStatusEnum.Angefragt, string? zusätzlicheInfo = null)
+        public static Termin Create(TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int terminArt, DateTime startZeit, DateTime endZeit, Adresse treffPunkt, List<int> noten, List<int> uniform, AbstimmungsId? abstimmungsId = null,TerminStatusEnum terminStatus = TerminStatusEnum.Zugesagt, string? zusätzlicheInfo = null)
         {
             //TTODO: Noten und Uniform über Methoden hinzufügen
             var einsatzplan = EinsatzPlan.Create(startZeit, endZeit, treffPunkt, zusätzlicheInfo);

@@ -1,3 +1,37 @@
-<p>
-  termin-item works!
-</p>
+<ion-item [button]="true" detail="false"
+  [class.abgesagt]="terminStatus === 'Abgesagt' && !(terminEndTime < dateNow)"
+  [class.nicht-angenommen]="terminStatus === 'Angefragt' && !(terminEndTime < dateNow)"
+  [class.past]="terminEndTime < dateNow" (click)="emitOpenTermin()">
+  <ion-label>
+    <h2>
+      <ng-container [ngSwitch]="terminArt">
+        <ion-icon *ngSwitchCase="'Auftritt'" name="beer"></ion-icon>
+        <ion-icon *ngSwitchCase="'Probe'" name="musical-notes"></ion-icon>
+        <ion-icon *ngSwitchCase="'Freizeit'" name="pizza"></ion-icon>
+        <ion-icon *ngSwitchCase="'Reise'" name="airplane"></ion-icon>
+        <ion-icon *ngSwitchDefault name="musical-notes"></ion-icon>
+      </ng-container>
+      <strong> {{terminName}}</strong>
+      <ion-icon class="alert-icon"
+        *ngIf="(terminResponse === 'Nicht Zurückgemeldet') && !(terminEndTime < dateNow)"
+        name="alert-outline" color="danger">
+      </ion-icon>
+    </h2>
+    <ion-text style="font-size: 14px;">Datum: {{terminStartTime | date : 'dd.MM.YYYY'}}: {{terminStartTime | date :
+      'hh:mm'}}-{{terminEndTime | date : 'hh:mm'}}</ion-text><br />
+    <ion-note color="medium" class="ion-text-wrap">
+      Mein Status: {{terminResponse}} <br>
+      <ng-container *ngIf="terminEndTime < dateNow">
+        Teilgenommen: {{istAnwesend ? 'Ja' : 'Nein'}}
+      </ng-container>
+      <ng-container *ngIf="highAuth">
+        Rückmeldungen: <span>{{positiveResponse}}</span><br>
+        Abgesagt: {{negativeResponse}} <br>
+        Nicht Zurückgemeldet: {{noResponse}}
+      </ng-container>
+    </ion-note>
+  </ion-label>
+  <div class="metadata-end-wrapper" slot="end">
+    <ion-icon color="medium" name="chevron-forward"></ion-icon>
+  </div>
+</ion-item>
