@@ -1,7 +1,7 @@
 <ion-item [button]="true" detail="false"
   [class.abgesagt]="terminStatus === 'Abgesagt' && !(terminEndTime < dateNow)"
-  [class.nicht-angenommen]="terminStatus === 'Angefragt' && !(terminEndTime < dateNow)"
-  [class.past]="terminEndTime < dateNow" (click)="emitOpenTermin()">
+  [class.nicht-angenommen]="terminStatus === 'Angefragt' && !(terminEndTime < dateNow)" (click)="emitOpenTermin()"
+  class="default-color">
   <ion-label>
     <h2>
       <ng-container [ngSwitch]="terminArt">
@@ -17,7 +17,7 @@
         name="alert-outline" color="danger">
       </ion-icon>
     </h2>
-    <ion-text style="font-size: 14px;">Datum: {{terminStartTime | date : 'dd.MM.YYYY'}}: {{terminStartTime | date :
+    <ion-text style="font-size: 14px; color: white;">Datum: {{terminStartTime | date : 'dd.MM.YYYY'}}: {{terminStartTime | date :
       'hh:mm'}}-{{terminEndTime | date : 'hh:mm'}}</ion-text><br />
     <ion-note color="medium" class="ion-text-wrap">
       Mein Status: {{terminResponse}} <br>

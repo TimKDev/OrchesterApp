@@ -9,45 +9,35 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content [fullscreen]="true" class="padding-lr">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Termine</ion-title>
     </ion-toolbar>
   </ion-header>
 
-  <ng-container *ngIf="displayedData; else loading">
-    <!-- <pre>{{displayedData | json}}</pre> -->
-    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
+  <ion-segment value="default" #segment>
+    <ion-segment-button value="overview">
+      <ion-label>Übersicht</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="default">
+      <ion-label>Aktuell</ion-label>
+    </ion-segment-button>
+    <ion-segment-button value="history">
+      <ion-label>Historie</ion-label>
+    </ion-segment-button>
+  </ion-segment>
 
-    <ion-list>
-      <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
-        (ionInput)="search($event)"></ion-searchbar>
-
-      <app-termin-item *ngFor="let termin of displayedData" [terminId]="termin.terminId"
-        [terminStatus]="termin.terminStatus | dropdown : terminStatusDropdownValues" [terminName]="termin.name"
-        [terminResponse]="termin.zugesagt | dropdown : responseDropdownValues"
-        [terminArt]="termin.terminArt | dropdown : terminArtenDropdownValues" [terminStartTime]="termin.startZeit"
-        [terminEndTime]="termin.endZeit" [noResponse]="termin.noResponse" [positiveResponse]="termin.positiveResponse"
-        [negativeResponse]="termin.negativeResponse" [istAnwesend]="termin.istAnwesend" [highAuth]="canCreateNewTermin"
-        (openTermin)="openTermin(termin.terminId)">
-      </app-termin-item>
-
-      <ng-container *ngIf="displayedData.length === 0">
-        Kein Ergebnis
-      </ng-container>
-    </ion-list>
-    <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="canCreateNewTermin">
-      <ion-fab-button class="ion-fab-button" (click)="openCreateTerminModal()">
-        <ion-icon name="add"></ion-icon>
-      </ion-fab-button>
-    </ion-fab>
+  <ng-container *ngIf="segment.value === 'overview'">
+    <app-termin-overview></app-termin-overview>
+  </ng-container>
+  <ng-container *ngIf="segment.value === 'default'">
+    <app-current-termin-liste></app-current-termin-liste>
+  </ng-container>
+  <ng-container *ngIf="segment.value === 'history'">
+    <app-history-termin-liste></app-history-termin-liste>
   </ng-container>
 
-  <ng-template #loading>
-    <app-loader></app-loader>
-  </ng-template>
+  
 
 </ion-content>

@@ -16,6 +16,10 @@ export class TerminService {
     return this.http.get<GetAllTermineResponse[]>('api/termin/all');
   }
 
+  public getAllTerminsHistory(){
+    return this.http.get<GetAllTermineResponse[]>('api/termin/all/history');
+  }
+
   public createNewTermin(data: CreateTerminRequest){
     return this.http.post<void>('api/termin/create', data);
   }

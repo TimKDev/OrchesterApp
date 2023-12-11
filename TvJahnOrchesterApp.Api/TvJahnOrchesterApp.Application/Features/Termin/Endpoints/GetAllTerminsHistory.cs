@@ -10,39 +10,39 @@ using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
 
 namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 {
-    public static class GetAllTermins
+    public static class GetAllTerminsHistory
     {
-        public static void MapGetAllTerminsEndpoint(this IEndpointRouteBuilder app)
+        public static void MapGetAllTerminsHistoryEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/termin/all", GetGetAllTermins)
+            app.MapGet("api/termin/all/history", GetGetAllTerminsHistory)
                 .RequireAuthorization();
         }
 
-        private static async Task<IResult> GetGetAllTermins(ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> GetGetAllTerminsHistory(ISender sender, CancellationToken cancellationToken)
         {
-            var response = await sender.Send(new GetAllTermineQuery(), cancellationToken);
+            var response = await sender.Send(new GetAllTerminsHistoryQuery(), cancellationToken);
             return Results.Ok(response);
         }
 
-        private record GetAllTermineQuery() : IRequest<GetAllTermineResponse[]>;
+        private record GetAllTerminsHistoryQuery() : IRequest<GetAllTerminsHistoryResponse[]>;
 
-        private record GetAllTermineResponse(Guid TerminId, string Name, int? TerminArt, int? TerminStatus, DateTime StartZeit, DateTime EndZeit, int Zugesagt, bool IstAnwesend, int NoResponse, int PositiveResponse, int NegativeResponse);
+        private record GetAllTerminsHistoryResponse(Guid TerminId, string Name, int? TerminArt, int? TerminStatus, DateTime StartZeit, DateTime EndZeit, int Zugesagt, bool IstAnwesend, int NoResponse, int PositiveResponse, int NegativeResponse);
 
-        private class GetAllTermineQueryHandler : IRequestHandler<GetAllTermineQuery, GetAllTermineResponse[]>
+        private class GetAllTerminsHistoryQueryHandler : IRequestHandler<GetAllTerminsHistoryQuery, GetAllTerminsHistoryResponse[]>
         {
             private readonly ITerminRepository terminRepository;
             private readonly ICurrentUserService currentUserService;
 
-            public GetAllTermineQueryHandler(ITerminRepository terminRepository, ICurrentUserService currentUserService)
+            public GetAllTerminsHistoryQueryHandler(ITerminRepository terminRepository, ICurrentUserService currentUserService)
             {
                 this.terminRepository = terminRepository;
                 this.currentUserService = currentUserService;
             }
 
-            public async Task<GetAllTermineResponse[]> Handle(GetAllTermineQuery request, CancellationToken cancellationToken)
+            public async Task<GetAllTerminsHistoryResponse[]> Handle(GetAllTerminsHistoryQuery request, CancellationToken cancellationToken)
             {
-                var result = new List<GetAllTermineResponse>();
-                var termins = (await terminRepository.GetAll(cancellationToken)).Where(t => t.EinsatzPlan.EndZeit.AddDays(1) >= DateTime.Now);
+                var result = new List<GetAllTerminsHistoryResponse>();
+                var termins = (await terminRepository.GetAll(cancellationToken)).Where(t => t.EinsatzPlan.EndZeit < DateTime.Now);
                 foreach (var termin in termins)
                 {
                     var currentOrchesterMitglied = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
@@ -67,12 +67,12 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                         }
                     }
 
-                    var terminEntry = new GetAllTermineResponse(termin.Id.Value, termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, currrentUserRückmeldung?.Zugesagt ?? (int)RückmeldungsartEnum.NichtZurückgemeldet, currrentUserRückmeldung?.IstAnwesend ?? false, countNoResponse, countPositiveResponse, countNegativeResponse);
+                    var terminEntry = new GetAllTerminsHistoryResponse(termin.Id.Value, termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, currrentUserRückmeldung?.Zugesagt ?? (int)RückmeldungsartEnum.NichtZurückgemeldet, currrentUserRückmeldung?.IstAnwesend ?? false, countNoResponse, countPositiveResponse, countNegativeResponse);
 
                     result.Add(terminEntry);
                 }
 
-                return result.OrderBy(r => r.StartZeit).ToArray();
+                return result.OrderByDescending(r => r.StartZeit).ToArray();
             }
         }
     }

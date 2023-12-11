@@ -16,6 +16,9 @@ import { UpdateTerminModalComponent } from './components/container/update-termin
 import { UpdateTerminReturnMessageDetailsComponent } from './components/container/update-termin-return-message-details/update-termin-return-message-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TerminItemComponent } from './components/presentational/termin-item/termin-item.component';
+import { CurrentTerminListeComponent } from './components/container/current-termin-liste/current-termin-liste.component';
+import { HistoryTerminListeComponent } from './components/container/history-termin-liste/history-termin-liste.component';
+import { TerminOverviewComponent } from './components/container/termin-overview/termin-overview.component';
 
 
 @NgModule({
@@ -30,7 +33,10 @@ import { TerminItemComponent } from './components/presentational/termin-item/ter
     UpdateTerminEinsatzplanComponent,
     UpdateTerminModalComponent,
     UpdateTerminReturnMessageDetailsComponent,
-    TerminItemComponent
+    TerminItemComponent,
+    CurrentTerminListeComponent,
+    HistoryTerminListeComponent,
+    TerminOverviewComponent
   ],
   imports: [
     SharedModule,
