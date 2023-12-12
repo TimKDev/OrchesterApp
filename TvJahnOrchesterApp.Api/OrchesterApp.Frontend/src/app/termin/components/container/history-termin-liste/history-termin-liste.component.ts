@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { combineLatest, map } from 'rxjs';
+import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { RolesService } from 'src/app/authentication/services/roles.service';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
@@ -13,6 +13,7 @@ import { TerminService } from 'src/app/termin/services/termin.service';
   selector: 'app-history-termin-liste',
   templateUrl: './history-termin-liste.component.html',
   styleUrls: ['./history-termin-liste.component.scss'],
+  providers: [Unsubscribe]
 })
 export class HistoryTerminListeComponent  implements OnInit {
 
@@ -40,13 +41,13 @@ export class HistoryTerminListeComponent  implements OnInit {
 
   ionViewWillEnter(){
     if(!this.refreshService.needsRefreshing('TerminListeComponent')) return;
-    this.loadData();
+    this.loadData(null, false);
   }
 
-  loadData(refreshEvent: any = null){
+  loadData(refreshEvent: any = null, useCache = true){
     this.us.autoUnsubscribe(
       combineLatest([
-        this.terminService.getAllTerminsHistory(),
+        this.terminService.getAllTerminsHistory(useCache),
         this.dropdownService.getDropdownElements('TerminArten'),
         this.dropdownService.getDropdownElements('TerminStatus'),
         this.dropdownService.getDropdownElements('Rückmeldungsart'),
@@ -64,7 +65,7 @@ export class HistoryTerminListeComponent  implements OnInit {
   }
 
   public handleRefresh(event: any){
-    this.loadData(event);
+    this.loadData(event, false);
   }
 
   public search(event: any) {

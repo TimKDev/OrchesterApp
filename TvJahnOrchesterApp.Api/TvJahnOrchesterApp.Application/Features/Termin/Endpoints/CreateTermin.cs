@@ -56,7 +56,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
                 var treffpunkt = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz, request.Latitude, request.Longitude);
 
-                var termin = Domain.TerminAggregate.Termin.Create(terminRückmeldungOrchesterMitglieder, request.Name, request.TerminArt, request.StartZeit, request.EndZeit, treffpunkt, request.Noten.ToList(), request.Uniform.ToList());
+                var termin = Domain.TerminAggregate.Termin.Create(terminRückmeldungOrchesterMitglieder, request.Name, request.TerminArt, request.StartZeit, request.EndZeit, treffpunkt, request.Noten?.ToList(), request.Uniform?.ToList());
 
                 return await terminRepository.Save(termin, cancellationToken);
             }

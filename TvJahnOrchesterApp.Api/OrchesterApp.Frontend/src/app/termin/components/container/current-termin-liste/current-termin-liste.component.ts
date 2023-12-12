@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { combineLatest, map } from 'rxjs';
+import { BehaviorSubject, combineLatest, map } from 'rxjs';
 import { RolesService } from 'src/app/authentication/services/roles.service';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
@@ -16,9 +16,9 @@ import { CreateTerminModalComponent } from '../create-termin-modal/create-termin
   selector: 'app-current-termin-liste',
   templateUrl: './current-termin-liste.component.html',
   styleUrls: ['./current-termin-liste.component.scss'],
+  providers: [Unsubscribe]
 })
 export class CurrentTerminListeComponent  implements OnInit {
-
   data!: GetAllTermineResponse[];
   displayedData!: GetAllTermineResponse[];
 
@@ -44,13 +44,13 @@ export class CurrentTerminListeComponent  implements OnInit {
 
   ionViewWillEnter(){
     if(!this.refreshService.needsRefreshing('TerminListeComponent')) return;
-    this.loadData();
+    this.loadData(null, false);
   }
 
-  loadData(refreshEvent: any = null){
+  loadData(refreshEvent: any = null, useCache = true){
     this.us.autoUnsubscribe(
       combineLatest([
-        this.terminService.getAllTermins(),
+        this.terminService.getAllTermins(useCache),
         this.dropdownService.getDropdownElements('TerminArten'),
         this.dropdownService.getDropdownElements('TerminStatus'),
         this.dropdownService.getDropdownElements('Rückmeldungsart'),
@@ -68,7 +68,7 @@ export class CurrentTerminListeComponent  implements OnInit {
   }
 
   public handleRefresh(event: any){
-    this.loadData(event);
+    this.loadData(event, false);
   }
 
   public async openCreateTerminModal(){
@@ -93,7 +93,7 @@ export class CurrentTerminListeComponent  implements OnInit {
 
   private createTermin(data: CreateTerminRequest){
     this.us.autoUnsubscribe(this.terminService.createNewTermin(data)).subscribe(() => {
-      this.loadData();
+      this.loadData(null, false);
     })
   }
 
