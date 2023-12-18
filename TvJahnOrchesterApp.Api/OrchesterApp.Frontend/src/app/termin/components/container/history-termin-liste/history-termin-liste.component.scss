@@ -5,6 +5,7 @@
   --padding-bottom: var(--ion-padding, 0px);
   padding-inline-start: var(--ion-padding, 0px);
   padding-inline-end: var(--ion-padding, 0px);
+  height: calc(100% - 48px);
 }
 
 ion-searchbar{
