@@ -1,13 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Router } from '@angular/router';
-import { BehaviorSubject, combineLatest, map } from 'rxjs';
-import { RolesService } from 'src/app/authentication/services/roles.service';
+import { BehaviorSubject, Observable, map, switchMap } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
-import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
-import { DropdownService } from 'src/app/core/services/dropdown.service';
-import { RefreshService } from 'src/app/core/services/refresh.service';
-import { GetAllTermineResponse } from 'src/app/termin/interfaces/get-all-termine-response';
-import { TerminService } from 'src/app/termin/services/termin.service';
+import { TerminListDataResponse } from 'src/app/termin/interfaces/termin-list-data-response';
 
 @Component({
   selector: 'app-history-termin-liste',
@@ -15,62 +10,34 @@ import { TerminService } from 'src/app/termin/services/termin.service';
   styleUrls: ['./history-termin-liste.component.scss'],
   providers: [Unsubscribe]
 })
-export class HistoryTerminListeComponent  implements OnInit {
+export class HistoryTerminListeComponent implements OnInit {
 
-  data!: GetAllTermineResponse[];
-  displayedData!: GetAllTermineResponse[];
+  @Input() data!: TerminListDataResponse;
+  @Input() canCreateNewTermin!: boolean;
 
-  canCreateNewTermin = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
-  
-  terminArtenDropdownValues!: DropdownItem[]; 
-  terminStatusDropdownValues!: DropdownItem[]; 
-  responseDropdownValues!: DropdownItem[]; 
+  dataFiltered$!: Observable<TerminListDataResponse>;
+  search$ = new BehaviorSubject<string>('');
+  currentDate = new Date();
 
   constructor(
-    private terminService: TerminService,
-    private refreshService: RefreshService,
-    private us: Unsubscribe,
-    private rolesService: RolesService,
-    private dropdownService: DropdownService,
     private router: Router
   ) { }
 
   ngOnInit(): void {
-    this.loadData();
-  }
-
-  ionViewWillEnter(){
-    if(!this.refreshService.needsRefreshing('TerminListeComponent')) return;
-    this.loadData(null, false);
-  }
-
-  loadData(refreshEvent: any = null, useCache = true){
-    this.us.autoUnsubscribe(
-      combineLatest([
-        this.terminService.getAllTerminsHistory(useCache),
-        this.dropdownService.getDropdownElements('TerminArten'),
-        this.dropdownService.getDropdownElements('TerminStatus'),
-        this.dropdownService.getDropdownElements('Rückmeldungsart'),
-      ]).pipe(
-        map(([data, terminArtenDropdown, terminStatusDropdown, RückmeldungsArtenDropdown]) => ({data, terminArtenDropdown, terminStatusDropdown, RückmeldungsArtenDropdown}))
-      )
-      ).subscribe(res => {
-      this.data = res.data;
-      this.displayedData = res.data;
-      this.terminArtenDropdownValues = res.terminArtenDropdown;
-      this.terminStatusDropdownValues = res.terminStatusDropdown;
-      this.responseDropdownValues = res.RückmeldungsArtenDropdown;
-      if(refreshEvent) refreshEvent.target.complete();
-    });
-  }
-
-  public handleRefresh(event: any){
-    this.loadData(event, false);
+    this.dataFiltered$ = this.search$.pipe(
+      map(searchString => {
+        let filteredData = this.data.terminData
+          .filter(e => new Date(e.endZeit) < this.currentDate)
+          .filter(e => (e.name).toLowerCase().includes(searchString))
+          .reverse();
+        return {...this.data, terminData: filteredData}
+      })
+    );
   }
 
   public search(event: any) {
     let searchString = (event.detail.value as string).toLowerCase();
-    this.displayedData = this.data.filter(e => (e.name).toLowerCase().includes(searchString));
+    this.search$.next(searchString);
   }
 
   public openTermin(terminId: string) {

@@ -12,7 +12,6 @@ namespace TvJahnOrchesterApp.Application.Features.Termin
             app.MapGetAllTerminsEndpoint();
             app.MapGetSpecificTerminEndpoint();
             app.MapUpdateTerminEndpoint();
-            app.MapGetAllTerminsHistoryEndpoint();
         }
     }
 }

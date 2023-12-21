@@ -16,6 +16,10 @@
     </ion-toolbar>
   </ion-header>
 
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
   <ion-segment value="default" #segment>
     <ion-segment-button value="overview">
       <ion-label>Übersicht</ion-label>
@@ -28,14 +32,22 @@
     </ion-segment-button>
   </ion-segment>
 
-  <ng-container *ngIf="segment.value === 'overview'">
-    <app-termin-overview></app-termin-overview>
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <ng-container *ngIf="segment.value === 'overview'">
+      <app-termin-overview [data]="data"></app-termin-overview>
+    </ng-container>
+    <ng-container *ngIf="segment.value === 'default'">
+      <app-current-termin-liste [data]="data" [canCreateNewTermin]="canCreateNewTermin" (createTermin)="openCreateTerminModal()"></app-current-termin-liste>
+    </ng-container>
+    <ng-container *ngIf="segment.value === 'history'">
+      <app-history-termin-liste [data]="data" [canCreateNewTermin]="canCreateNewTermin"></app-history-termin-liste>
+    </ng-container>
   </ng-container>
-  <ng-container *ngIf="segment.value === 'default'">
-    <app-current-termin-liste></app-current-termin-liste>
-  </ng-container>
-  <ng-container *ngIf="segment.value === 'history'">
-    <app-history-termin-liste></app-history-termin-liste>
-  </ng-container>
+  
+  <ng-template #loading>
+    <ng-container *ngIf="!isRefreshing">
+      <app-loader></app-loader>
+    </ng-container>
+  </ng-template>
 
 </ion-content>

@@ -1,10 +1,73 @@
 import { Component } from '@angular/core';
+import { Observable, tap } from 'rxjs';
+import { RolesService } from 'src/app/authentication/services/roles.service';
+import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
+import { RefreshService } from 'src/app/core/services/refresh.service';
+import { TerminListDataResponse } from 'src/app/termin/interfaces/termin-list-data-response';
+import { TerminService } from 'src/app/termin/services/termin.service';
+import { ModalController } from '@ionic/angular';
+import { CreateTerminModalComponent } from '../create-termin-modal/create-termin-modal.component';
+import { CreateTerminRequest } from 'src/app/termin/interfaces/create-termin-request';
 
 @Component({
   selector: 'app-termin-liste',
   templateUrl: './termin-liste.component.html',
   styleUrls: ['./termin-liste.component.scss'],
+  providers: [Unsubscribe]
 })
 export class TerminListeComponent {
 
+  data$!: Observable<TerminListDataResponse>;
+  canCreateNewTermin = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
+  isRefreshing = false;
+
+  constructor(
+    private terminService: TerminService,
+    private refreshService: RefreshService,
+    private us: Unsubscribe,
+    private rolesService: RolesService,
+    private modalCtrl: ModalController
+  ) {}
+
+  ngOnInit(): void {
+    this.loadData();
+  }
+
+  loadData(refreshEvent: any = null, useCache = true) {
+    this.data$ = this.us.autoUnsubscribe(this.terminService.getAllTermins(useCache)).pipe(
+      tap(() => {
+        if (refreshEvent){
+          refreshEvent.target.complete();
+          this.isRefreshing = false;
+        } 
+      })
+    );
+  }
+
+  ionViewWillEnter() {
+    if (!this.refreshService.needsRefreshing('TerminListeComponent')) return;
+    this.loadData(null, false);
+  }
+
+  public handleRefresh(event: any) {
+    this.isRefreshing = true;
+    this.loadData(event, false);
+  }
+
+  public async openCreateTerminModal(){
+    const modal = await this.modalCtrl.create({
+      component: CreateTerminModalComponent
+    });
+    modal.present();
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'cancel') return;
+    this.createTermin(data);
+  }
+
+  private createTermin(data: CreateTerminRequest){
+    this.us.autoUnsubscribe(this.terminService.createNewTermin(data)).subscribe(() => {
+      this.loadData(null, false);
+    })
+  }
 }

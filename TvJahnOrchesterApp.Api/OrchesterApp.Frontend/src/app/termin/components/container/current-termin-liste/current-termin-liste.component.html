@@ -1,24 +1,20 @@
-<ion-content class="padding-lr">
-  <ng-container *ngIf="displayedData; else loading">
-    <!-- <pre>{{displayedData | json}}</pre> -->
-    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
-      <ion-refresher-content></ion-refresher-content>
-    </ion-refresher>
-  
+<div>
+  <ng-container *ngIf="dataFiltered$ | async as data">
+    <!-- <pre>{{data | json}}</pre> -->
     <ion-list>
       <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
         (ionInput)="search($event)"></ion-searchbar>
   
-      <app-termin-item *ngFor="let termin of displayedData" [terminId]="termin.terminId"
-        [terminStatus]="termin.terminStatus | dropdown : terminStatusDropdownValues" [terminName]="termin.name"
-        [terminResponse]="termin.zugesagt | dropdown : responseDropdownValues"
-        [terminArt]="termin.terminArt | dropdown : terminArtenDropdownValues" [terminStartTime]="termin.startZeit"
+      <app-termin-item *ngFor="let termin of data.terminData" [terminId]="termin.terminId"
+        [terminStatus]="termin.terminStatus | dropdown : data.terminStatusDropdownValues" [terminName]="termin.name"
+        [terminResponse]="termin.zugesagt | dropdown : data.responseDropdownValues"
+        [terminArt]="termin.terminArt | dropdown : data.terminArtenDropdownValues" [terminStartTime]="termin.startZeit"
         [terminEndTime]="termin.endZeit" [noResponse]="termin.noResponse" [positiveResponse]="termin.positiveResponse"
         [negativeResponse]="termin.negativeResponse" [istAnwesend]="termin.istAnwesend" [highAuth]="canCreateNewTermin"
         (openTermin)="openTermin(termin.terminId)">
       </app-termin-item>
   
-      <ng-container *ngIf="displayedData.length === 0">
+      <ng-container *ngIf="data.terminData.length === 0">
         Kein Ergebnis
       </ng-container>
     </ion-list>
@@ -28,8 +24,4 @@
       </ion-fab-button>
     </ion-fab>
   </ng-container>
-  
-  <ng-template #loading>
-    <app-loader></app-loader>
-  </ng-template>
-</ion-content>
+</div>

@@ -1,9 +1,13 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Builder;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Dropdown.Enums;
+using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
+using TvJahnOrchesterApp.Application.Features.Dropdown.Services;
 using TvJahnOrchesterApp.Domain.Common.Enums;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
@@ -24,25 +28,39 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             return Results.Ok(response);
         }
 
-        private record GetAllTermineQuery() : IRequest<GetAllTermineResponse[]>;
+        private record GetAllTermineQuery() : IRequest<GetAllTermineResponse>;
 
-        private record GetAllTermineResponse(Guid TerminId, string Name, int? TerminArt, int? TerminStatus, DateTime StartZeit, DateTime EndZeit, int Zugesagt, bool IstAnwesend, int NoResponse, int PositiveResponse, int NegativeResponse);
+        private record GetAllTermineResponse(TerminData[] TerminData, DropdownItem[] TerminArtenDropdownValues, DropdownItem[] TerminStatusDropdownValues, DropdownItem[] ResponseDropdownValues);
 
-        private class GetAllTermineQueryHandler : IRequestHandler<GetAllTermineQuery, GetAllTermineResponse[]>
+        private record TerminData(Guid TerminId, string Name, int? TerminArt, int? TerminStatus, DateTime StartZeit, DateTime EndZeit, int Zugesagt, bool IstAnwesend, int NoResponse, int PositiveResponse, int NegativeResponse);
+
+        private class GetAllTermineQueryHandler : IRequestHandler<GetAllTermineQuery, GetAllTermineResponse>
         {
             private readonly ITerminRepository terminRepository;
             private readonly ICurrentUserService currentUserService;
+            private readonly IDropdownService dropdownService;
 
-            public GetAllTermineQueryHandler(ITerminRepository terminRepository, ICurrentUserService currentUserService)
+            public GetAllTermineQueryHandler(ITerminRepository terminRepository, ICurrentUserService currentUserService, IDropdownService dropdownService)
             {
                 this.terminRepository = terminRepository;
                 this.currentUserService = currentUserService;
+                this.dropdownService = dropdownService;
             }
 
-            public async Task<GetAllTermineResponse[]> Handle(GetAllTermineQuery request, CancellationToken cancellationToken)
+            public async Task<GetAllTermineResponse> Handle(GetAllTermineQuery request, CancellationToken cancellationToken)
             {
-                var result = new List<GetAllTermineResponse>();
-                var termins = (await terminRepository.GetAll(cancellationToken)).Where(t => t.EinsatzPlan.EndZeit.AddDays(1) >= DateTime.Now);
+                var terminResult = await GetTerminDataList(cancellationToken);
+                var terminArtenDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.TerminArten, cancellationToken);
+                var terminStatusDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.TerminStatus, cancellationToken);
+                var responseDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.Rückmeldungsart, cancellationToken);
+
+                return new GetAllTermineResponse(terminResult, terminArtenDropdownValues, terminStatusDropdownValues, responseDropdownValues);
+            }
+
+            private async Task<TerminData[]> GetTerminDataList(CancellationToken cancellationToken)
+            {
+                var terminResult = new List<TerminData>();
+                var termins = (await terminRepository.GetAll(cancellationToken));
                 foreach (var termin in termins)
                 {
                     var currentOrchesterMitglied = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
@@ -51,13 +69,13 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                     var countNoResponse = 0;
                     var countPositiveResponse = 0;
                     var countNegativeResponse = 0;
-                    foreach(var rückmeldung in termin.TerminRückmeldungOrchesterMitglieder)
+                    foreach (var rückmeldung in termin.TerminRückmeldungOrchesterMitglieder)
                     {
-                        if(rückmeldung.Zugesagt == (int)RückmeldungsartEnum.NichtZurückgemeldet)
+                        if (rückmeldung.Zugesagt == (int)RückmeldungsartEnum.NichtZurückgemeldet)
                         {
                             countNoResponse++;
                         }
-                        if(rückmeldung.Zugesagt == (int)RückmeldungsartEnum.Zugesagt)
+                        if (rückmeldung.Zugesagt == (int)RückmeldungsartEnum.Zugesagt)
                         {
                             countPositiveResponse++;
                         }
@@ -67,12 +85,12 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                         }
                     }
 
-                    var terminEntry = new GetAllTermineResponse(termin.Id.Value, termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, currrentUserRückmeldung?.Zugesagt ?? (int)RückmeldungsartEnum.NichtZurückgemeldet, currrentUserRückmeldung?.IstAnwesend ?? false, countNoResponse, countPositiveResponse, countNegativeResponse);
+                    var terminEntry = new TerminData(termin.Id.Value, termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, currrentUserRückmeldung?.Zugesagt ?? (int)RückmeldungsartEnum.NichtZurückgemeldet, currrentUserRückmeldung?.IstAnwesend ?? false, countNoResponse, countPositiveResponse, countNegativeResponse);
 
-                    result.Add(terminEntry);
+                    terminResult.Add(terminEntry);
                 }
 
-                return result.OrderBy(r => r.StartZeit).ToArray();
+                return terminResult.OrderBy(r => r.StartZeit).ToArray();
             }
         }
     }
