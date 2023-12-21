@@ -41,7 +41,7 @@ export class HistoryTerminListeComponent implements OnInit {
   }
 
   public openTermin(terminId: string) {
-    this.router.navigate(['tabs', 'termin', 'details', terminId]);
+    this.router.navigate(['tabs', 'termin', 'details', terminId, 'history']);
   }
 
 }

@@ -16,6 +16,13 @@
     </ion-toolbar>
   </ion-header>
 
-  Dies wird die Terminliste.
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ion-button [routerLink]="'/tabs/termin/' + activeTab" class="back-btn">
+    <ion-icon slot="start" name="arrow-back"></ion-icon>
+    Zurück zur Termin Übersicht
+  </ion-button>
 
 </ion-content>

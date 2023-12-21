@@ -1,22 +1,27 @@
-<div>
+<div class="main">
   <!-- <pre>{{data | json}}</pre> -->
-  <ion-datetime presentation="date" [value]="currentDate | date : 'YYYY-MM-dd'" [highlightedDates]="highlightedDates"></ion-datetime>
+  <ion-datetime presentation="date" [value]="currentDate | date : 'YYYY-MM-dd'" [highlightedDates]="highlightedDates" #date></ion-datetime>
     
-    <ion-list>
-      <app-termin-item *ngFor="let termin of data.terminData" [terminId]="termin.terminId"
+    <ion-list class="termin-list">
+      <ion-item>
+        <ion-label class="ion-label">
+          Termine am {{transformDate(date.value)}}:
+        </ion-label>
+      </ion-item>
+      <app-termin-item *ngFor="let termin of data.terminData | selectTerminsFromDate : date.value" [terminId]="termin.terminId"
         [terminStatus]="termin.terminStatus | dropdown : data.terminStatusDropdownValues" [terminName]="termin.name"
         [terminResponse]="termin.zugesagt | dropdown : data.responseDropdownValues"
         [terminArt]="termin.terminArt | dropdown : data.terminArtenDropdownValues" [terminStartTime]="termin.startZeit"
         [terminEndTime]="termin.endZeit" [istAnwesend]="termin.istAnwesend" [highAuth]="false"
         (openTermin)="openTermin(termin.terminId)">
       </app-termin-item>
-      <app-termin-item *ngFor="let termin of data.terminData" [terminId]="termin.terminId"
-        [terminStatus]="termin.terminStatus | dropdown : data.terminStatusDropdownValues" [terminName]="termin.name"
-        [terminResponse]="termin.zugesagt | dropdown : data.responseDropdownValues"
-        [terminArt]="termin.terminArt | dropdown : data.terminArtenDropdownValues" [terminStartTime]="termin.startZeit"
-        [terminEndTime]="termin.endZeit" [istAnwesend]="termin.istAnwesend" [highAuth]="false"
-        (openTermin)="openTermin(termin.terminId)">
-      </app-termin-item>
+      <ion-item *ngIf="(data.terminData | selectTerminsFromDate : date.value).length === 0">
+        <ion-label>
+          <h3>
+            Keine eingetragenen Termine
+          </h3>
+        </ion-label>
+      </ion-item>
     </ion-list>
 
 </div>

@@ -8,6 +8,7 @@ import { TerminService } from 'src/app/termin/services/termin.service';
 import { ModalController } from '@ionic/angular';
 import { CreateTerminModalComponent } from '../create-termin-modal/create-termin-modal.component';
 import { CreateTerminRequest } from 'src/app/termin/interfaces/create-termin-request';
+import { ActivatedRoute, Route } from '@angular/router';
 
 @Component({
   selector: 'app-termin-liste',
@@ -20,16 +21,20 @@ export class TerminListeComponent {
   data$!: Observable<TerminListDataResponse>;
   canCreateNewTermin = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
   isRefreshing = false;
+  defaultSegment = "default";
 
   constructor(
     private terminService: TerminService,
     private refreshService: RefreshService,
     private us: Unsubscribe,
     private rolesService: RolesService,
-    private modalCtrl: ModalController
+    private modalCtrl: ModalController,
+    private route: ActivatedRoute
   ) {}
 
   ngOnInit(): void {
+    let selectedTab = this.route.snapshot.params['activeTab'];
+    if(selectedTab !== undefined) this.defaultSegment = selectedTab;
     this.loadData();
   }
 

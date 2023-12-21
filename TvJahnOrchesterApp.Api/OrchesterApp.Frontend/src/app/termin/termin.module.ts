@@ -19,6 +19,7 @@ import { TerminItemComponent } from './components/presentational/termin-item/ter
 import { CurrentTerminListeComponent } from './components/container/current-termin-liste/current-termin-liste.component';
 import { HistoryTerminListeComponent } from './components/container/history-termin-liste/history-termin-liste.component';
 import { TerminOverviewComponent } from './components/container/termin-overview/termin-overview.component';
+import { SelectTerminsFromDatePipe } from './pipes/select-termins-from-date.pipe';
 
 
 @NgModule({
@@ -36,7 +37,8 @@ import { TerminOverviewComponent } from './components/container/termin-overview/
     TerminItemComponent,
     CurrentTerminListeComponent,
     HistoryTerminListeComponent,
-    TerminOverviewComponent
+    TerminOverviewComponent,
+    SelectTerminsFromDatePipe
   ],
   imports: [
     SharedModule,

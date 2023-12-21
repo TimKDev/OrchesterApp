@@ -9,7 +9,8 @@ import { TerminBesetzungComponent } from './components/container/termin-besetzun
 
 const routes: Routes = [
   {path: '', component: TerminListeComponent},
-  {path: 'details/:terminId', component: TerminDetailsComponent},
+  {path: ':activeTab', component: TerminListeComponent},
+  {path: 'details/:terminId/:activeTab', component: TerminDetailsComponent},
   {path: 'einsatzplan/:terminId', component: TerminEinsatzplanComponent},
   {path: 'return-messages/:terminId', component: TerminReturnMessagesComponent},
   {path: 'return-messages/:terminId/details/:returnMessageId', component: TerminReturnMessageDetailsComponent},

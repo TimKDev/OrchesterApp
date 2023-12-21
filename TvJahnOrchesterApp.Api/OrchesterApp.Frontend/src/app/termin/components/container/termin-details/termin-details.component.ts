@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-termin-details',
@@ -7,8 +8,14 @@ import { Component, OnInit } from '@angular/core';
 })
 export class TerminDetailsComponent  implements OnInit {
 
-  constructor() { }
+  activeTab!: string;
 
-  ngOnInit() {}
+  constructor(
+    private route: ActivatedRoute
+  ) { }
+
+  ngOnInit() {
+    this.activeTab = this.route.snapshot.params['activeTab']
+  }
 
 }

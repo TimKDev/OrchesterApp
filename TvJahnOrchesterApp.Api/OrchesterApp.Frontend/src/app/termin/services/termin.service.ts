@@ -34,4 +34,8 @@ export class TerminService {
   public getOrchesterMitgliedDropdownEntries(){
     return this.http.get<DropdownItem[]>('api/dropdown/orchester-mitglieder');
   }
+
+  public getTerminDetails(terminId: string){
+
+  }
 }

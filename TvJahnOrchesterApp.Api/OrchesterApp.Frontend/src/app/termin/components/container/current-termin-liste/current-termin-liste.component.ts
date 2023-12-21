@@ -38,7 +38,7 @@ export class CurrentTerminListeComponent  implements OnInit {
   }
 
   public openTermin(terminId: string) {
-    this.router.navigate(['tabs', 'termin', 'details', terminId]);
+    this.router.navigate(['tabs', 'termin', 'details', terminId, 'default']);
   }
 
   public openCreateTerminModal(){
