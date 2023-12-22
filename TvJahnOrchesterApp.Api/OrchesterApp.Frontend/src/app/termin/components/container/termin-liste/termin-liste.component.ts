@@ -39,7 +39,7 @@ export class TerminListeComponent {
   }
 
   loadData(refreshEvent: any = null, useCache = true) {
-    this.data$ = this.us.autoUnsubscribe(this.terminService.getAllTermins(useCache)).pipe(
+    this.data$ = this.terminService.getAllTermins(useCache).pipe(
       tap(() => {
         if (refreshEvent){
           refreshEvent.target.complete();

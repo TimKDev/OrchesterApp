@@ -4,6 +4,7 @@ import { TerminListDataResponse } from '../interfaces/termin-list-data-response'
 import { CreateTerminRequest } from '../interfaces/create-termin-request';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { of, tap } from 'rxjs';
+import { TerminDetailsResponse } from '../interfaces/termin-details-response';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +37,6 @@ export class TerminService {
   }
 
   public getTerminDetails(terminId: string){
-
+    return this.http.get<TerminDetailsResponse>(`api/termin/getById/${terminId}`);
   }
 }

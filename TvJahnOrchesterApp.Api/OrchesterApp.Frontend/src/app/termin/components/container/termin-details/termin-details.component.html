@@ -20,9 +20,32 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-button [routerLink]="'/tabs/termin/' + activeTab" class="back-btn">
-    <ion-icon slot="start" name="arrow-back"></ion-icon>
-    Zurück zur Termin Übersicht
-  </ion-button>
+  <ng-container *ngIf="data$ | async as data; else loading">
+
+    <ion-button [routerLink]="'/tabs/termin/' + activeTab" class="back-btn">
+      <ion-icon slot="start" name="arrow-back"></ion-icon>
+      Zurück zur Termin Übersicht
+    </ion-button>
+
+    <ion-list>
+      <ion-card-header color="tertiary">
+        <ion-card-title>{{data.termin.terminName}}</ion-card-title>
+      </ion-card-header>
+      <app-data-item label="Termin Art" [value]="data.termin.terminArt | dropdown : data.terminArtenDropdownValues" [unknownValue]="'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Termin Status" [value]="data.termin.terminStatus | dropdown : data.terminStatusDropdownValues" [unknownValue]="'Nicht angegeben'"></app-data-item>
+      <!-- <app-data-item label="Geburtstag" [value]="res.data.geburtstag | date : 'dd.MM.YYYY'"></app-data-item>
+      <app-data-item label="Telefonnummer" [value]="res.data.telefonnummer" [unknownValue]="'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Handynummer" [value]="res.data.handynummer" [unknownValue]="'Nicht angegeben'"></app-data-item> -->
+    </ion-list>
+
+    <pre>{{data | json}}</pre>
+
+  </ng-container>
+
+  <ng-template #loading>
+    <ng-container *ngIf="!isRefreshing">
+      <app-loader></app-loader>
+    </ng-container>
+  </ng-template>
 
 </ion-content>
