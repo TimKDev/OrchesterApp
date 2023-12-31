@@ -1,6 +1,7 @@
 ﻿using Mapster;
 using MapsterMapper;
 using Microsoft.Extensions.Options;
+using Org.BouncyCastle.Crypto;
 using System.Reflection;
 
 namespace TvJahnOrchesterApp.Api
@@ -19,11 +20,9 @@ namespace TvJahnOrchesterApp.Api
                 opts.AddBasePolicy(builder => builder.Cache());
                 opts.AddPolicy("OutputCacheWithAuthPolicy", OutputCacheWithAuthPolicy.Instance);
             });
-            
+
             services.AddMappings();
             services.AddEndpointsApiExplorer();
-            services.AddEndpointsApiExplorer();
-            services.AddSwaggerGen();
             return services;
         }
 

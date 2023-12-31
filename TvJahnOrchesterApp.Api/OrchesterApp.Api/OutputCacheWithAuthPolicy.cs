@@ -2,7 +2,6 @@
 
 namespace TvJahnOrchesterApp.Api
 {
-
     public class OutputCacheWithAuthPolicy : IOutputCachePolicy
     {
         public static readonly OutputCacheWithAuthPolicy Instance = new();

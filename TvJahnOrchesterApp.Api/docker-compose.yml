@@ -1,14 +1,23 @@
 version: '3.4'
 
 services:
-  tvjahnorchesterapp.api:
+  # orchesterapp.frontend:
+  #   image: ${DOCKER_REGISTRY-}orchesterapp.frontend
+  #   build: 
+  #     context: .
+  #     dockerfile: OrchesterApp.Frontend/Dockerfile
+  #   ports:
+  #     - 40085:80
+  #   depends_on:
+  #     - tvjahnorchesterapp.api
+  orchesterapp.api:
     image: ${DOCKER_REGISTRY-}tvjahnorchesterappapi
     build:
       context: .
       dockerfile: OrchesterApp.Api/Dockerfile
     ports: 
-        - 44331:443
-        - 80:80 
+        - "8081:8081"
+        - "40081:8080"
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
     container_name: OrchesterAppDB2
