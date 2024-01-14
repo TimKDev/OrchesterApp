@@ -3,13 +3,14 @@ import { Preferences } from '@capacitor/preferences';
 import { BehaviorSubject, tap } from 'rxjs';
 import { LoginRequest } from '../interfaces/login-request';
 import { LoginResponse } from '../interfaces/login-response';
-import { BASE_PATH_FRONTEND, UnauthorizedHttpClientService } from 'src/app/core/services/unauthorized-http-client.service';
+import { UnauthorizedHttpClientService } from 'src/app/core/services/unauthorized-http-client.service';
 import { RegisterRequest } from '../interfaces/register-request';
 import { ChangeEmailRequest } from '../interfaces/change-email-request';
 import { ResendVerificationMailRequest } from '../interfaces/resend-verification-mail-request';
 import { ConfirmEmailRequest } from '../interfaces/confirm-email-request';
 import { ForgotPasswordRequest } from '../interfaces/forgot-password-request';
 import { ResetPasswordRequest } from '../interfaces/reset-password-request';
+import { environment } from 'src/environments/environment';
 
 export const TOKEN_KEY = 'token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';
@@ -17,8 +18,8 @@ export const CONNECTED_ORCHESTER_MITGLIED_KEY = 'connected-orchester-mitglieds-n
 export const USER_EMAIL_KEY = 'user-email';
 export const USER_ROLES_KEY = 'user-roles';
 
-export const CLIENT_URI_EMAIL_CONFIRMATION = `${BASE_PATH_FRONTEND}auth/email-confirmation`;
-export const CLIENT_URI_PASSWORD_RESET = `${BASE_PATH_FRONTEND}auth/reset-password`;
+export const CLIENT_URI_EMAIL_CONFIRMATION = `${environment.basePathFrontend}auth/email-confirmation`;
+export const CLIENT_URI_PASSWORD_RESET = `${environment.basePathFrontend}auth/reset-password`;
 
 @Injectable({
   providedIn: 'root'

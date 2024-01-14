@@ -2,9 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { Router } from '@angular/router';
 import { AlertController, LoadingController } from '@ionic/angular';
-import { catchError, throwError } from 'rxjs';
+import { catchError } from 'rxjs';
 import { AuthenticationService, CLIENT_URI_EMAIL_CONFIRMATION } from '../../../services/authentication.service';
-import { BASE_PATH, BASE_PATH_FRONTEND } from 'src/app/core/services/unauthorized-http-client.service';
 
 @Component({
   selector: 'app-verify-email-info',

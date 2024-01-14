@@ -2,9 +2,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { HttpParams } from '@capacitor/core';
 import { Observable } from 'rxjs';
-
-export const BASE_PATH = 'https://localhost:44331/';
-export const BASE_PATH_FRONTEND = 'http://localhost:8100/'
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -13,14 +11,15 @@ export class UnauthorizedHttpClientService {
   constructor(private http: HttpClient) { }
 
   get<T>(url: string, params?: HttpParams): Observable<T> {
-    return this.http.get<T>(BASE_PATH + url, { params });
+    return this.http.get<T>(environment.basePathBackend + url, { params });
   }
 
   post<T>(url: string, body: any): Observable<T> {
-    return this.http.post<T>(BASE_PATH + url, body);
+    debugger;
+    return this.http.post<T>(environment.basePathBackend + url, body);
   }
 
   put<T>(url: string, body: any): Observable<T> {
-    return this.http.put<T>(BASE_PATH + url, body);
+    return this.http.put<T>(environment.basePathBackend + url, body);
   }
 }
