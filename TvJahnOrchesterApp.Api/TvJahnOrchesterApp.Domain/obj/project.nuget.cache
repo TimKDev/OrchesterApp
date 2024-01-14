@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "4cegpsMDFWnrdYDUXWNiBC+5lCXHiWaBMhxz20sCrU8naEs5frg0ACIRnElNa3xtk3mtL1QzoSxLSQsG0pXBAg==",
+  "dgSpecHash": "tZWEN4a8E18hlOpYCNCJ0Br7A7SAduckJoV/vf7RVI4WdLrnCBBXjdRkrh1bNY1h57aMUPJBd7R2ZeBRc6en0A==",
   "success": true,
   "projectFilePath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj",
   "expectedPackageFiles": [
@@ -21,7 +21,12 @@
     "C:\\Users\\timke\\.nuget\\packages\\microsoft.extensions.logging\\7.0.0\\microsoft.extensions.logging.7.0.0.nupkg.sha512",
     "C:\\Users\\timke\\.nuget\\packages\\microsoft.extensions.logging.abstractions\\7.0.0\\microsoft.extensions.logging.abstractions.7.0.0.nupkg.sha512",
     "C:\\Users\\timke\\.nuget\\packages\\microsoft.extensions.options\\7.0.1\\microsoft.extensions.options.7.0.1.nupkg.sha512",
-    "C:\\Users\\timke\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512"
+    "C:\\Users\\timke\\.nuget\\packages\\microsoft.extensions.primitives\\7.0.0\\microsoft.extensions.primitives.7.0.0.nupkg.sha512",
+    "C:\\Users\\timke\\.nuget\\packages\\microsoft.identitymodel.abstractions\\7.2.0\\microsoft.identitymodel.abstractions.7.2.0.nupkg.sha512",
+    "C:\\Users\\timke\\.nuget\\packages\\microsoft.identitymodel.jsonwebtokens\\7.2.0\\microsoft.identitymodel.jsonwebtokens.7.2.0.nupkg.sha512",
+    "C:\\Users\\timke\\.nuget\\packages\\microsoft.identitymodel.logging\\7.2.0\\microsoft.identitymodel.logging.7.2.0.nupkg.sha512",
+    "C:\\Users\\timke\\.nuget\\packages\\microsoft.identitymodel.tokens\\7.2.0\\microsoft.identitymodel.tokens.7.2.0.nupkg.sha512",
+    "C:\\Users\\timke\\.nuget\\packages\\system.identitymodel.tokens.jwt\\7.2.0\\system.identitymodel.tokens.jwt.7.2.0.nupkg.sha512"
   ],
   "logs": []
 }

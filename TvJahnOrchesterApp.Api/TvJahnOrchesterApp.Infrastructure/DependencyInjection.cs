@@ -28,16 +28,18 @@ namespace TvJahnOrchesterApp.Infrastructure
         public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
         {
             services
-                .AddPersistence()
+                .AddPersistence(configuration)
                 .AddEmail(configuration)
                 .AddAuthentication(configuration);
 
             return services;
         }
 
-        public static IServiceCollection AddPersistence(this IServiceCollection services)
+        public static IServiceCollection AddPersistence(this IServiceCollection services, ConfigurationManager configuration)
         {
-            services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer("Server=OrchesterAppDB2;Database=OrchesterAppDB;User Id=sa;Password=amiko123!;Encrypt=false"));
+
+            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

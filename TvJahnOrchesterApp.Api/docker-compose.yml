@@ -1,33 +1,51 @@
 version: '3.4'
 
+networks:
+  orchester-app-network:
+    driver: bridge
+
 services:
-  # orchesterapp.frontend:
-  #   image: ${DOCKER_REGISTRY-}orchesterapp.frontend
-  #   build: 
-  #     context: .
-  #     dockerfile: OrchesterApp.Frontend/Dockerfile
-  #   ports:
-  #     - 40085:80
-  #   depends_on:
-  #     - tvjahnorchesterapp.api
+  orchesterapp.frontend:
+    image: ${DOCKER_REGISTRY-}orchesterapp.frontend
+    build: 
+      context: .
+      dockerfile: OrchesterApp.Frontend/Dockerfile
+    ports:
+      - 40085:80
+    depends_on:
+      - orchesterapp.api
+    networks:
+      - orchester-app-network
+
   orchesterapp.api:
     image: ${DOCKER_REGISTRY-}tvjahnorchesterappapi
     build:
       context: .
       dockerfile: OrchesterApp.Api/Dockerfile
+    container_name: orchester-app-api
+    depends_on:
+        - sqlserver
     ports: 
-        - "8081:8081"
-        - "40081:8080"
+        - "40081:80"
+    networks:
+        - orchester-app-network
+    environment:
+        - ConnectionStrings__DefaultConnection=Server=orchester-app-db;Database=OrchesterAppDB;User Id=sa;Password=amiko123!;Encrypt=false
+        - ASPNETCORE_URLS=http://+:80 
+         
   sqlserver:
     image: mcr.microsoft.com/mssql/server:2022-latest
-    container_name: OrchesterAppDB2
+    container_name: orchester-app-db
     environment:
         ACCEPT_EULA: Y
         SA_PASSWORD: amiko123!
         User Id: sa
     ports:
      - 1433:1433
+    restart: always
     volumes:
      - orchesterAppDbVolumn:/var/opt/mssql
+    networks:
+     - orchester-app-network
 volumes:
   orchesterAppDbVolumn:

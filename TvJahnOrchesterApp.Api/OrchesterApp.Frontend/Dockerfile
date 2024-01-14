@@ -7,4 +7,4 @@ RUN npm run build --prod
 
 # Stage 2: Serve app with nginx server
 FROM nginx:latest
-COPY --from=build /usr/local/app/www /usr/share/nginx/html/portfolio
+COPY --from=build /usr/local/app/www /usr/share/nginx/html/orchesterApp
