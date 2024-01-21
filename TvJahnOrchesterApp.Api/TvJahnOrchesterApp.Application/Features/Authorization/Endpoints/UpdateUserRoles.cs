@@ -14,6 +14,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using System.Xml.Linq;
 using System.Security.Claims;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
@@ -22,8 +23,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapUpdateUserRolesEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/authentication/update-roles", PutUpdateUserRoles);
-                //.RequireAuthorization(a => a.RequireRole(RoleNames.Admin.ToString()));
+            app.MapPut("api/authentication/update-roles", PutUpdateUserRoles)
+                .RequireAuthorization(a => a.RequireRole(RoleNames.Admin.ToString()));
         }
 
         private static async Task<IResult> PutUpdateUserRoles([FromBody] UpdateUserRolesCommand updateUserRolesCommand, CancellationToken cancellationToken, ISender sender)
@@ -55,20 +56,11 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 //Remove existing Roles:
                 var rolesOfUser = await userManager.GetRolesAsync(user);
-                var test = rolesOfUser.Where(r => !request.RoleNames.Contains(r));
                 await userManager.RemoveFromRolesAsync(user, rolesOfUser.Where(r => !request.RoleNames.Contains(r)));
 
                 var rolesOfUser2 = await userManager.GetRolesAsync(user);
 
                 // Add new Roles:
-                foreach (var roleName in request.RoleNames)
-                {
-                    //Create Role if not already present:
-                    if (!(await roleManager.RoleExistsAsync(roleName)))
-                    {
-                        await roleManager.CreateAsync(new IdentityRole(roleName));
-                    }
-                }
                 await userManager.AddToRolesAsync(user, request.RoleNames.Where(r => !rolesOfUser.Contains(r)));
                 var rolesOfUser3 = await userManager.GetRolesAsync(user);
 

@@ -5,6 +5,8 @@ using TvJahnOrchesterApp.Api.Middlewares;
 using Microsoft.EntityFrameworkCore;
 using TvJahnOrchesterApp.Application;
 using TvJahnOrchesterApp.Infrastructure;
+using Microsoft.Extensions.Configuration;
+using TvJahnOrchesterApp.Infrastructure.Services;
 
 namespace OrchesterApp.Api
 {
@@ -14,6 +16,7 @@ namespace OrchesterApp.Api
         {
             var builder = WebApplication.CreateBuilder(args);
             {
+                builder.Configuration.AddKeyPerFile("/run/secrets", optional: true);
                 builder.Services
                     .AddPresentation()
                     .AddInfrastructure(builder.Configuration)
@@ -24,8 +27,8 @@ namespace OrchesterApp.Api
             {
                 using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
                 {
-                    var context = serviceScope.ServiceProvider.GetRequiredService<OrchesterDbContext>();
-                    context.Database.Migrate();
+                    var initDataBaseService = serviceScope.ServiceProvider.GetRequiredService<InitDatabaseService>();
+                    initDataBaseService.OnStartUp().Wait();
                 }
 
                 if (!app.Environment.IsDevelopment())

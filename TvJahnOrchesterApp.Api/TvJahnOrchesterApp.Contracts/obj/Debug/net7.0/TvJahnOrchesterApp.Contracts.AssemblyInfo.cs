@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TvJahnOrchesterApp.Contracts")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+53635699a5e3ec0cb4daf3885568f6e6e5b2699a")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+a6212c65ebe1ee5ae154bb2d9fbe6196a501c3e4")]
 [assembly: System.Reflection.AssemblyProductAttribute("TvJahnOrchesterApp.Contracts")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TvJahnOrchesterApp.Contracts")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

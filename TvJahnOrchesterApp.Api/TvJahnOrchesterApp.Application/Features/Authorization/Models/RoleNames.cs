@@ -11,5 +11,11 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Models
         public const string Admin = "Admin";
         public const string MusikalischerLeiter = "Musikalischer Leiter";
         public const string Vorstand = "Vorstand";
+
+        public static readonly string[] AllRoles = new[] {
+            Admin,
+            MusikalischerLeiter, 
+            Vorstand,
+        };
     }
 }

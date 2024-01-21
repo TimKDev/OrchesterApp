@@ -17,9 +17,11 @@ using TvJahnOrchesterApp.Domain.UserAggregate;
 using TvJahnOrchesterApp.Infrastructure.Authentication;
 using TvJahnOrchesterApp.Infrastructure.Common.Interfaces;
 using TvJahnOrchesterApp.Infrastructure.Email;
+using TvJahnOrchesterApp.Infrastructure.Extensions;
 using TvJahnOrchesterApp.Infrastructure.Persistence;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories.DropdownRepositories;
+using TvJahnOrchesterApp.Infrastructure.Services;
 
 namespace TvJahnOrchesterApp.Infrastructure
 {
@@ -37,8 +39,7 @@ namespace TvJahnOrchesterApp.Infrastructure
 
         public static IServiceCollection AddPersistence(this IServiceCollection services, ConfigurationManager configuration)
         {
-
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = configuration.GetValueFromSecretOrConfig("ConnectionStrings:DefaultConnection");
             services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer(connectionString));
 
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
@@ -61,10 +62,13 @@ namespace TvJahnOrchesterApp.Infrastructure
         public static IServiceCollection AddEmail(this IServiceCollection services, ConfigurationManager configuration)
         {
             var emailConfig = new EmailConfiguration();
+
             configuration.Bind(EmailConfiguration.SectionName, emailConfig);
+            emailConfig.Password = configuration.GetValueFromSecretOrConfig("Google_Mail_Api")!;
 
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailService, EmailService>();
+            services.AddScoped<InitDatabaseService>();
 
             return services;
         }
@@ -87,6 +91,10 @@ namespace TvJahnOrchesterApp.Infrastructure
 
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings.SectionName, jwtSettings);
+
+            var secretValue = configuration.GetValueFromSecretOrConfig("JWT_Secret_Key");
+            jwtSettings.Secret = secretValue!;
+
             services.AddSingleton(Options.Create(jwtSettings));
 
             services.AddAuthentication(opt =>
@@ -104,7 +112,7 @@ namespace TvJahnOrchesterApp.Infrastructure
                     ValidIssuer = jwtSettings.Issuer,
                     ValidAudience = jwtSettings.Audience,
                     IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8
-                        .GetBytes(jwtSettings.Secret)),
+                        .GetBytes(secretValue!)),
                     ClockSkew = TimeSpan.Zero
                 };
             });

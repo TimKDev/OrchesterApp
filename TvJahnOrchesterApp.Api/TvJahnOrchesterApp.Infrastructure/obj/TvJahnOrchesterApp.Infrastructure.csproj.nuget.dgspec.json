@@ -293,6 +293,10 @@
               "target": "Package",
               "version": "[7.0.10, )"
             },
+            "Microsoft.Extensions.Configuration.KeyPerFile": {
+              "target": "Package",
+              "version": "[7.0.15, )"
+            },
             "NETCore.MailKit": {
               "target": "Package",
               "version": "[2.1.0, )"
