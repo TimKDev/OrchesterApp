@@ -27,18 +27,77 @@
       Zurück zur Termin Übersicht
     </ion-button>
 
-    <ion-list>
-      <ion-card-header color="tertiary">
-        <ion-card-title>{{data.termin.terminName}}</ion-card-title>
+    <ion-card>
+      <img alt="Silhouette of mountains" src="/assets/card-media.png" />
+      <ion-card-header>
+        <ion-card-title>
+          <span *ngIf="data.termin.terminStatus !== 3; else abgesagt;">{{data.termin.terminName}}
+            ({{data.termin.terminArt | dropdown : data.terminArtenDropdownValues}})</span>
+          <ng-template #abgesagt>
+            <s>
+              <span>{{data.termin.terminName}} ({{data.termin.terminArt | dropdown :
+                data.terminArtenDropdownValues}})</span>
+            </s>
+          </ng-template>
+        </ion-card-title>
+        <ion-card-subtitle class="ion-card-subtitle">
+          {{data.termin.startZeit | date : 'dd.MM.YYYY'}}: {{data.termin.startZeit | date :
+          'hh:mm'}}-{{data.termin.endZeit | date : 'hh:mm'}}
+        </ion-card-subtitle>
+        <ion-card-subtitle *ngIf="data.termin.terminStatus === 3">
+          <i class="termin-abgesagt">Termin wurde abgesagt!</i>
+        </ion-card-subtitle>
+        <ion-card-subtitle *ngIf="data.termin.terminStatus === 1">
+          <i class="termin-anfrage">Angefragter Termin</i>
+        </ion-card-subtitle>
       </ion-card-header>
-      <app-data-item label="Termin Art" [value]="data.termin.terminArt | dropdown : data.terminArtenDropdownValues" [unknownValue]="'Nicht angegeben'"></app-data-item>
-      <app-data-item label="Termin Status" [value]="data.termin.terminStatus | dropdown : data.terminStatusDropdownValues" [unknownValue]="'Nicht angegeben'"></app-data-item>
-      <!-- <app-data-item label="Geburtstag" [value]="res.data.geburtstag | date : 'dd.MM.YYYY'"></app-data-item>
-      <app-data-item label="Telefonnummer" [value]="res.data.telefonnummer" [unknownValue]="'Nicht angegeben'"></app-data-item>
-      <app-data-item label="Handynummer" [value]="res.data.handynummer" [unknownValue]="'Nicht angegeben'"></app-data-item> -->
-    </ion-list>
 
-    <pre>{{data | json}}</pre>
+      <ion-card-content>
+        <div>
+          <p>
+            Großer Rosenmontagszug in Krefeld. Wir laufen an der Spitze des Zuges.
+          </p>
+        </div>
+        <div class="border-bottom">
+          <b>Treffpunkt:</b> <br>
+          {{data.termin["straße"]}} {{data.termin.hausnummer}}, <br>
+          {{data.termin.postleitzahl}}, {{data.termin.stadt}} <br>
+          {{data.termin.zusatz}}
+        </div>
+        <div class="border-bottom" *ngIf="data.termin.endZeit < dateNow">
+          <b>Am Termin teilgenommen?:</b> 
+          <span *ngIf="data['terminRückmeldung'].istAnwesend; else nichtAnwesend">Ja</span>
+          <ng-template #nichtAnwesend>
+            Nein
+          </ng-template>
+        </div>
+        <div class="response-div">
+          <div class="user-connected" [class.color-green]="data['terminRückmeldung'].zugesagt === 3"
+            [class.color-red]="data['terminRückmeldung'].zugesagt === 2"></div>
+          <div>
+            <b>Meine Rückmeldung:</b> <br>
+            <span>
+              {{data["terminRückmeldung"].zugesagt | dropdown : data.responseDropdownValues }}
+              <ion-icon *ngIf="(data['terminRückmeldung'].zugesagt === 1) && !(data.termin.endZeit < dateNow)"
+                name="alert-outline" color="danger">
+              </ion-icon>
+            </span>
+          </div>
+          <div class="comment-div" *ngIf="data['terminRückmeldung'].kommentarZusage">
+            <b>Kommentar:</b> <br>
+            {{data['terminRückmeldung'].kommentarZusage}}
+          </div>
+          <div class="comment-div" *ngIf="data['terminRückmeldung']['rückmeldungDurchAnderesOrchestermitglied']">
+            <b>Rückmeldung durch:</b> <br>
+            {{data['terminRückmeldung']['rückmeldungDurchAnderesOrchestermitglied']}}
+          </div>
+
+        </div>
+      </ion-card-content>
+
+      <ion-button fill="clear" (click)="openUpdateModal()">Bearbeiten</ion-button>
+      <ion-button fill="clear" (click)="openResponseAlert()">Rückmeldung geben</ion-button>
+    </ion-card>
 
   </ng-container>
 

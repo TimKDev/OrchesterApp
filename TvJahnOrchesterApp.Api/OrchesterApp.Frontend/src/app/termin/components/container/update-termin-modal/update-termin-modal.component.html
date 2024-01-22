@@ -1,3 +1,25 @@
-<p>
-  update-termin-modal works!
-</p>
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Zurück</ion-button>
+    </ion-buttons>
+    <ion-title>Bearbeite Termin</ion-title>
+    <ion-buttons slot="end">
+      <!-- <ion-button (click)="confirm()" [strong]="true"
+        [disabled]="!formGroup.dirty || formGroup.invalid">Erstellen</ion-button> -->
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <!-- <ng-container *ngIf="data$ | async as data; else loading">
+    <pre>{{formGroup.value | json}}</pre>
+
+    <form [formGroup]="formGroup"></form>
+
+  </ng-container> -->
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+
+</ion-content>

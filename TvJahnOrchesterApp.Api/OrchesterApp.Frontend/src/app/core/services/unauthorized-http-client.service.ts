@@ -15,7 +15,6 @@ export class UnauthorizedHttpClientService {
   }
 
   post<T>(url: string, body: any): Observable<T> {
-    debugger;
     return this.http.post<T>(environment.basePathBackend + url, body);
   }
 
