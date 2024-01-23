@@ -20,6 +20,7 @@ import { CurrentTerminListeComponent } from './components/container/current-term
 import { HistoryTerminListeComponent } from './components/container/history-termin-liste/history-termin-liste.component';
 import { TerminOverviewComponent } from './components/container/termin-overview/termin-overview.component';
 import { SelectTerminsFromDatePipe } from './pipes/select-termins-from-date.pipe';
+import { TerminResponseModalComponent } from './components/container/termin-response-modal/termin-response-modal.component';
 
 
 @NgModule({
@@ -38,7 +39,8 @@ import { SelectTerminsFromDatePipe } from './pipes/select-termins-from-date.pipe
     CurrentTerminListeComponent,
     HistoryTerminListeComponent,
     TerminOverviewComponent,
-    SelectTerminsFromDatePipe
+    SelectTerminsFromDatePipe,
+    TerminResponseModalComponent
   ],
   imports: [
     SharedModule,

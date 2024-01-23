@@ -7,6 +7,7 @@ import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-
 import { TerminService } from 'src/app/termin/services/termin.service';
 import { UpdateTerminModalComponent } from '../update-termin-modal/update-termin-modal.component';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
+import { TerminResponseModalComponent } from '../termin-response-modal/termin-response-modal.component';
 
 @Component({
   selector: 'app-termin-details',
@@ -57,13 +58,23 @@ export class TerminDetailsComponent  implements OnInit {
     this.loadData(event);
   }
 
-  public openResponseAlert(){
+  public async openResponseModal(){
+    const modal = await this.modalCtrl.create({
+      component: TerminResponseModalComponent
+    });
+    modal.present();
 
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'cancel') return;
+    this.updateResponse(data);
   }
 
-  public async openUpdateModal(){
+  public async openUpdateModal(dataTermin: TerminDetailsResponse){
     const modal = await this.modalCtrl.create({
-      component: UpdateTerminModalComponent
+      component: UpdateTerminModalComponent,
+      componentProps: {
+        "dataTermin": dataTermin
+      }
     });
     modal.present();
 
@@ -76,6 +87,10 @@ export class TerminDetailsComponent  implements OnInit {
     // this.us.autoUnsubscribe(this.terminService.createNewTermin(data)).subscribe(() => {
     //   this.loadData(null, false);
     // })
+  }
+
+  private updateResponse(data: any){
+
   }
 
 }
