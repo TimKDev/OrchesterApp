@@ -40,9 +40,9 @@ export class UpdateTerminModalComponent  implements OnInit {
   ngOnInit() {
     this.formGroup.patchValue({
       ...this.dataTermin.termin, 
-      terminDate: formatDate(this.dataTermin.termin.startZeit, 'yyyy-MM-dd', 'en_US'),
-      startZeit: formatDate(this.dataTermin.termin.startZeit, 'hh:mm', 'en_US'),
-      endZeit: formatDate(this.dataTermin.termin.endZeit, 'hh:mm', 'en_US'),
+      terminDate: formatDate(this.dataTermin.termin.startZeit, 'yyyy-MM-dd', 'en_EN'),
+      startZeit: formatDate(this.dataTermin.termin.startZeit, 'HH:mm', 'en_EN'),
+      endZeit: formatDate(this.dataTermin.termin.endZeit, 'HH:mm', 'en_EN'),
     } as any);
   }
 
