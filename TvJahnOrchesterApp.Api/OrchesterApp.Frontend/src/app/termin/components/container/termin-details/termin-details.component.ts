@@ -8,6 +8,8 @@ import { TerminService } from 'src/app/termin/services/termin.service';
 import { UpdateTerminModalComponent } from '../update-termin-modal/update-termin-modal.component';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { TerminResponseModalComponent } from '../termin-response-modal/termin-response-modal.component';
+import { UpdateTerminResponseRequest } from 'src/app/termin/interfaces/update-termin-response-request';
+import { UpdateTerminRequest } from 'src/app/termin/interfaces/update-termin-request';
 
 @Component({
   selector: 'app-termin-details',
@@ -66,6 +68,7 @@ export class TerminDetailsComponent  implements OnInit {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'cancel') return;
+    debugger;
     this.updateResponse(data);
   }
 
@@ -80,17 +83,21 @@ export class TerminDetailsComponent  implements OnInit {
 
     const { data, role } = await modal.onWillDismiss();
     if (role === 'cancel') return;
+    debugger;
+    data.terminId = this.terminId;
     this.updateTermin(data);
   }
 
-  private updateTermin(data: any){
-    // this.us.autoUnsubscribe(this.terminService.createNewTermin(data)).subscribe(() => {
-    //   this.loadData(null, false);
-    // })
+  private updateTermin(data: UpdateTerminRequest){
+    this.us.autoUnsubscribe(this.terminService.updateTerminDetails(data)).subscribe(() => {
+      this.loadData(null);
+    });
   }
 
-  private updateResponse(data: any){
-
+  private updateResponse(data: UpdateTerminResponseRequest){
+    this.us.autoUnsubscribe(this.terminService.updateTerminResponse(data)).subscribe(() => {
+      this.loadData(null);
+    });
   }
 
 }

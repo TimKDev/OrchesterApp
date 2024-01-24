@@ -65,6 +65,11 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
             TerminArt = terminArt;
         }
 
+        public void UpdateTerminStatus(int? terminStatus)
+        {
+            TerminStatus = terminStatus;
+        }
+
         public void UpdateTerminRückmeldungOrchestermitglied(TerminRückmeldungOrchestermitglied[] newTerminRückmeldungOrchestermitglieds)
         {
             var elementsToRemove = new List<TerminRückmeldungOrchestermitglied>();

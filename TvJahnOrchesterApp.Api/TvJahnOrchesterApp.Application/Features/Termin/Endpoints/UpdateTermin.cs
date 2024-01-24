@@ -6,6 +6,7 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
+using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 
 namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 {
@@ -13,7 +14,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
     {
         public static void MapUpdateTerminEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/termin/getById/{id}", GetTerminById)
+            app.MapPut("api/termin/update", GetTerminById)
                 .RequireAuthorization();
         }
 
@@ -23,7 +24,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             return Results.Ok(response);
         }
 
-        private record UpdateTerminCommand(Guid TerminId, string Name, int TerminArt, Guid[]? OrchestermitgliedIds) : IRequest<Domain.TerminAggregate.Termin>;
+        private record UpdateTerminCommand(Guid TerminId, string TerminName, int TerminArt, int TerminStatus, DateTime StartZeit, DateTime EndZeit, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string? Zusatz, decimal? Latitude, decimal? Longitude, int[] Noten, int[] Uniform, Guid[]? OrchestermitgliedIds) : IRequest<Domain.TerminAggregate.Termin>;
 
         private class UpdateTerminCommandHandler : IRequestHandler<UpdateTerminCommand, Domain.TerminAggregate.Termin>
         {
@@ -42,10 +43,18 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             {
                 var termin = await terminRepository.GetById(request.TerminId, cancellationToken);
                 //TTODO Throw Exception when Termin is not found!
-                termin.UpdateName(request.Name);
+                termin.UpdateName(request.TerminName);
                 termin.UpdateTerminArt(request.TerminArt);
+                termin.UpdateTerminStatus(request.TerminStatus);
 
-                if (request.OrchestermitgliedIds is null) return termin;
+                var adress = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz, request.Latitude, request.Longitude);
+                termin.EinsatzPlan.UpdateEinsatzPlan(request.StartZeit, request.EndZeit, adress);
+
+                if (request.OrchestermitgliedIds is null)
+                {
+                    await unitOfWork.SaveChangesAsync(cancellationToken);
+                    return termin;
+                }
 
                 var orchesterMitglieder = await orchesterMitgliedRepository.QueryByIdAsync(request.OrchestermitgliedIds.Select(OrchesterMitgliedsId.Create).ToArray(), cancellationToken);
 

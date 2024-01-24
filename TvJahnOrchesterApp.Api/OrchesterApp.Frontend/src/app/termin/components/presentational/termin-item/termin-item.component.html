@@ -1,37 +1,28 @@
-<ion-item [button]="true" detail="false"
-  [class.abgesagt]="terminStatus === 'Abgesagt' && !(terminEndTime < dateNow)"
+<ion-item [button]="true" detail="false" [class.abgesagt]="terminStatus === 'Abgesagt' && !(terminEndTime < dateNow)"
   [class.nicht-angenommen]="terminStatus === 'Angefragt' && !(terminEndTime < dateNow)" (click)="emitOpenTermin()"
   class="default-color">
   <ion-label>
     <h2>
-      <ng-container [ngSwitch]="terminArt">
-        <ion-icon *ngSwitchCase="'Auftritt'" name="beer"></ion-icon>
-        <ion-icon *ngSwitchCase="'Probe'" name="musical-notes"></ion-icon>
-        <ion-icon *ngSwitchCase="'Freizeit'" name="pizza"></ion-icon>
-        <ion-icon *ngSwitchCase="'Reise'" name="airplane"></ion-icon>
-        <ion-icon *ngSwitchDefault name="musical-notes"></ion-icon>
-      </ng-container>
       <strong> {{terminName}}</strong>
-      <ion-icon class="alert-icon"
-        *ngIf="(terminResponse === 'Nicht Zurückgemeldet') && !(terminEndTime < dateNow)"
-        name="alert-outline" color="danger">
-      </ion-icon>
     </h2>
-    <ion-text class="default-color" style="font-size: 14px; color: white;">Datum: {{terminStartTime | date : 'dd.MM.YYYY'}}: {{terminStartTime | date :
+    <ion-text class="default-color ion-text-wrap" style="font-size: 14px; color: white;">Datum: {{terminStartTime | date :
+      'dd.MM.YYYY'}}: {{terminStartTime | date :
       'hh:mm'}}-{{terminEndTime | date : 'hh:mm'}}</ion-text><br />
     <ion-note color="medium" class="ion-text-wrap">
-      Mein Status: {{terminResponse}} <br>
+      Mein Status: {{terminResponse}}
+      <ion-icon class="alert-icon" *ngIf="(terminResponse === 'Nicht Zurückgemeldet') && !(terminEndTime < dateNow)"
+        name="alert-outline" color="danger">
+      </ion-icon><br>
       <ng-container *ngIf="terminEndTime < dateNow">
         Teilgenommen: {{istAnwesend ? 'Ja' : 'Nein'}}
       </ng-container>
       <ng-container *ngIf="highAuth">
-        Zugesagt: <span>{{positiveResponse}}</span><br>
-        Abgesagt: {{negativeResponse}} <br>
-        Nicht Zurückgemeldet: {{noResponse}}
+        Rückmeldungen: <span style="color: red;">{{negativeResponse}}</span> | <span>{{noResponse}}</span> | <span
+          style="color: greenyellow;">{{positiveResponse}}</span>
       </ng-container>
     </ion-note>
   </ion-label>
-  <div class="metadata-end-wrapper" slot="end">
+  <div class="metadata-end-wrapper" style="margin: 0;" slot="end">
     <ion-icon color="medium" name="chevron-forward"></ion-icon>
   </div>
 </ion-item>

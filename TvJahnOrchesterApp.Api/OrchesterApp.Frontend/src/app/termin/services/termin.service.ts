@@ -5,6 +5,8 @@ import { CreateTerminRequest } from '../interfaces/create-termin-request';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { of, tap } from 'rxjs';
 import { TerminDetailsResponse } from '../interfaces/termin-details-response';
+import { UpdateTerminRequest } from '../interfaces/update-termin-request';
+import { UpdateTerminResponseRequest } from '../interfaces/update-termin-response-request';
 
 @Injectable({
   providedIn: 'root'
@@ -38,5 +40,13 @@ export class TerminService {
 
   public getTerminDetails(terminId: string){
     return this.http.get<TerminDetailsResponse>(`api/termin/getById/${terminId}`);
+  }
+
+  public updateTerminDetails(data: UpdateTerminRequest){
+    return this.http.put(`api/termin/update`, data);
+  }
+
+  public updateTerminResponse(data: UpdateTerminResponseRequest){
+    return this.http.put('api/termin/rückmeldung', data);
   }
 }

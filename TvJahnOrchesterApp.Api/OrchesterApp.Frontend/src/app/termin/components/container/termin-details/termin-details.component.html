@@ -21,7 +21,7 @@
   </ion-refresher>
 
   <ng-container *ngIf="data$ | async as data; else loading">
-
+    <!-- <pre>{{data | json}}</pre> -->
     <ion-button [routerLink]="'/tabs/termin/' + activeTab" class="back-btn">
       <ion-icon slot="start" name="arrow-back"></ion-icon>
       Zurück zur Termin Übersicht
@@ -42,7 +42,7 @@
         </ion-card-title>
         <ion-card-subtitle class="ion-card-subtitle">
           {{data.termin.startZeit | date : 'dd.MM.YYYY'}}: {{data.termin.startZeit | date :
-          'hh:mm'}}-{{data.termin.endZeit | date : 'hh:mm'}}
+          'HH:mm'}}-{{data.termin.endZeit | date : 'HH:mm'}}
         </ion-card-subtitle>
         <ion-card-subtitle *ngIf="data.termin.terminStatus === 3">
           <i class="termin-abgesagt">Termin wurde abgesagt!</i>
