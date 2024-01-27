@@ -14,23 +14,27 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
         public DateTime EndZeit { get; private set; }
         public Adresse Treffpunkt { get; private set; } = null!;
         public IReadOnlyList<ZeitBlock> ZeitBlocks => _zeitBlocks.AsReadOnly();
-        public IReadOnlyList<EinsatzplanNotenMapping> EinsatzplanNotenMappings=> _einsatzplanNotenMappings.AsReadOnly();
+        public IReadOnlyList<EinsatzplanNotenMapping> EinsatzplanNotenMappings => _einsatzplanNotenMappings.AsReadOnly();
         public IReadOnlyList<EinsatzplanUniformMapping> EinsatzplanUniformMappings => _einsatzplanUniformMappings.AsReadOnly();
         public string? WeitereInformationen { get; private set; }
 
         private EinsatzPlan() { }
-        private EinsatzPlan(EinsatzplanId id, DateTime startZeit, DateTime endZeit, Adresse treffpunkt, string? weitereInformationen = null): base(id)
+        private EinsatzPlan(EinsatzplanId id, DateTime startZeit, DateTime endZeit, Adresse treffpunkt, IEnumerable<EinsatzplanNotenMapping>? notenMappings,
+    IEnumerable<EinsatzplanUniformMapping>? uniformMappings, string? weitereInformationen = null) : base(id)
         {
             StartZeit = startZeit;
             EndZeit = endZeit;
             Treffpunkt = treffpunkt;
             WeitereInformationen = weitereInformationen;
+            _einsatzplanNotenMappings = notenMappings?.ToList() ?? new();
+            _einsatzplanUniformMappings = uniformMappings?.ToList() ?? new();
         }
 
-        public static EinsatzPlan Create(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, string? weitereInformationen = null)
+        public static EinsatzPlan Create(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, IEnumerable<EinsatzplanNotenMapping>? notenMappings,
+    IEnumerable<EinsatzplanUniformMapping>? uniformMappings, string? weitereInformationen = null)
         {
             //Validiere dass startZeit vor Endzeit ist
-            return new EinsatzPlan(EinsatzplanId.CreateUnique(), startZeit, endZeit, treffpunkt, weitereInformationen);
+            return new EinsatzPlan(EinsatzplanId.CreateUnique(), startZeit, endZeit, treffpunkt, notenMappings, uniformMappings, weitereInformationen);
         }
 
         public void UpdateEinsatzPlan(DateTime startZeit, DateTime endZeit, Adresse treffpunkt, string? weitereInformationen = null)
@@ -38,7 +42,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
             //Validiere dass startZeit vor Endzeit ist
             StartZeit = startZeit;
             EndZeit = endZeit;
-            Treffpunkt = treffpunkt;   
+            Treffpunkt = treffpunkt;
             WeitereInformationen = weitereInformationen;
         }
 
@@ -51,7 +55,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
         public void UpdateZeitBlock(ZeitblockId id, DateTime startZeit, DateTime endZeit, string beschreibung, Adresse? adresse = null)
         {
             var zeitBlock = _zeitBlocks.FirstOrDefault(x => x.Id == id);
-            if(zeitBlock is null)
+            if (zeitBlock is null)
             {
                 throw new Exception("ZeitBlock könnte nicht gefunden werden");
             }
@@ -68,5 +72,18 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
             }
             _zeitBlocks.Remove(zeitBlock);
         }
+
+        public void UpdateEinsatzplanNotenMappings(IEnumerable<EinsatzplanNotenMapping> notenMappings)
+        {
+            // Validate and update the collection
+            _einsatzplanNotenMappings = notenMappings.ToList();
+        }
+
+        public void UpdateEinsatzplanUniformMappings(IEnumerable<EinsatzplanUniformMapping> uniformMappings)
+        {
+            // Validate and update the collection
+            _einsatzplanUniformMappings = uniformMappings.ToList();
+        }
+
     }
 }

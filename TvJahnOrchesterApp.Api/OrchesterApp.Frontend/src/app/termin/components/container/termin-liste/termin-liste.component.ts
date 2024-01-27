@@ -40,7 +40,9 @@ export class TerminListeComponent {
 
   loadData(refreshEvent: any = null, useCache = true) {
     this.data$ = this.terminService.getAllTermins(useCache).pipe(
-      tap(() => {
+      tap((data) => {
+        data.terminData.forEach(t => t.startZeit = new Date(t.startZeit + 'Z'));
+        data.terminData.forEach(t => t.endZeit = new Date(t.endZeit + 'Z'));
         if (refreshEvent){
           refreshEvent.target.complete();
           this.isRefreshing = false;

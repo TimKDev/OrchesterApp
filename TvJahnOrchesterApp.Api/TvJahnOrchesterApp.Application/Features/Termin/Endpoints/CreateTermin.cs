@@ -27,7 +27,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             return Results.Ok(result);
         }
 
-        private record CreateTerminCommand(string Name, int TerminArt, DateTime StartZeit, DateTime EndZeit, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string? Zusatz, decimal? Latitude, decimal? Longitude, int[] Noten, int[] Uniform, Guid[]? OrchestermitgliedIds) : IRequest<Domain.TerminAggregate.Termin>;
+        private record CreateTerminCommand(string Name, int? TerminArt, DateTime StartZeit, DateTime EndZeit, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string? Zusatz, decimal? Latitude, decimal? Longitude, int[] Noten, int[] Uniform, Guid[]? OrchestermitgliedIds, string? WeitereInformationen, string? Image) : IRequest<Domain.TerminAggregate.Termin>;
 
         private class CreateTerminCommandHandler : IRequestHandler<CreateTerminCommand, Domain.TerminAggregate.Termin>
         {
@@ -56,7 +56,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
                 var treffpunkt = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz, request.Latitude, request.Longitude);
 
-                var termin = Domain.TerminAggregate.Termin.Create(terminRückmeldungOrchesterMitglieder, request.Name, request.TerminArt, request.StartZeit, request.EndZeit, treffpunkt, request.Noten?.ToList(), request.Uniform?.ToList());
+                var termin = Domain.TerminAggregate.Termin.Create(terminRückmeldungOrchesterMitglieder, request.Name, request.TerminArt, request.StartZeit, request.EndZeit, treffpunkt, request.Noten?.ToList(), request.Uniform?.ToList(), zusätzlicheInfo: request.WeitereInformationen, image: request.Image);
 
                 return await terminRepository.Save(termin, cancellationToken);
             }

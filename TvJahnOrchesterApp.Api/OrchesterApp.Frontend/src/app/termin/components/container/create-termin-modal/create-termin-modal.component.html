@@ -24,6 +24,10 @@
             placeholder="Termin Name"></ion-input>
         </ion-item>
         <ion-item>
+          <ion-input formControlName="weitereInformationen" labelPlacement="stacked" label="Beschreibung"
+            placeholder="Termin Beschreibung"></ion-input>
+        </ion-item>
+        <ion-item>
           <ion-select label="Termin Art" label-placement="stacked" formControlName="terminArt">
             <ion-select-option *ngFor="let terminArt of data.terminArtDropdown"
               [value]="terminArt.value">{{terminArt.text}}</ion-select-option>

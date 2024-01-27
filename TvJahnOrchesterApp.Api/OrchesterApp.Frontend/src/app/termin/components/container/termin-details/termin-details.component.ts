@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { ModalController } from '@ionic/angular';
-import { Observable, tap } from 'rxjs';
+import { Observable, map, tap } from 'rxjs';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-response';
 import { TerminService } from 'src/app/termin/services/termin.service';
@@ -10,6 +10,7 @@ import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { TerminResponseModalComponent } from '../termin-response-modal/termin-response-modal.component';
 import { UpdateTerminResponseRequest } from 'src/app/termin/interfaces/update-termin-response-request';
 import { UpdateTerminRequest } from 'src/app/termin/interfaces/update-termin-request';
+import { RolesService } from 'src/app/authentication/services/roles.service';
 
 @Component({
   selector: 'app-termin-details',
@@ -17,13 +18,16 @@ import { UpdateTerminRequest } from 'src/app/termin/interfaces/update-termin-req
   styleUrls: ['./termin-details.component.scss'],
   providers: [Unsubscribe]
 })
-export class TerminDetailsComponent  implements OnInit {
+export class TerminDetailsComponent implements OnInit {
 
   activeTab!: string;
+  canEditTermin = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
   terminId!: string;
   data$!: Observable<TerminDetailsResponse>;
   isRefreshing = false;
   dateNow = new Date();
+  noten = '';
+  uniform = '';
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +35,7 @@ export class TerminDetailsComponent  implements OnInit {
     private refreshService: RefreshService,
     private modalCtrl: ModalController,
     private us: Unsubscribe,
+    private rolesService: RolesService
   ) { }
 
   ngOnInit() {
@@ -41,17 +46,19 @@ export class TerminDetailsComponent  implements OnInit {
 
   loadData(refreshEvent: any = null) {
     this.data$ = this.terminService.getTerminDetails(this.terminId).pipe(
-      tap(() => {
-        if(refreshEvent){
+      tap((data) => {
+        data.termin.startZeit = new Date(data.termin.startZeit + 'Z');
+        data.termin.endZeit = new Date(data.termin.endZeit + 'Z');
+        if (refreshEvent) {
           refreshEvent.target.complete();
           this.isRefreshing = false;
-        } 
+        }
       })
     );
   }
 
   ionViewWillEnter() {
-    if (!this.refreshService.needsRefreshing('TerminListeComponent')) return;
+    if (!this.refreshService.needsRefreshing('TerminDetails')) return;
     this.loadData();
   }
 
@@ -60,19 +67,17 @@ export class TerminDetailsComponent  implements OnInit {
     this.loadData(event);
   }
 
-  public async openResponseModal(){
+  public async openResponseModal() {
     const modal = await this.modalCtrl.create({
       component: TerminResponseModalComponent
     });
     modal.present();
-
     const { data, role } = await modal.onWillDismiss();
     if (role === 'cancel') return;
-    debugger;
     this.updateResponse(data);
   }
 
-  public async openUpdateModal(dataTermin: TerminDetailsResponse){
+  public async openUpdateModal(dataTermin: TerminDetailsResponse) {
     const modal = await this.modalCtrl.create({
       component: UpdateTerminModalComponent,
       componentProps: {
@@ -80,23 +85,23 @@ export class TerminDetailsComponent  implements OnInit {
       }
     });
     modal.present();
-
     const { data, role } = await modal.onWillDismiss();
     if (role === 'cancel') return;
-    debugger;
     data.terminId = this.terminId;
     this.updateTermin(data);
   }
 
-  private updateTermin(data: UpdateTerminRequest){
+  private updateTermin(data: UpdateTerminRequest) {
     this.us.autoUnsubscribe(this.terminService.updateTerminDetails(data)).subscribe(() => {
       this.loadData(null);
+      this.refreshService.refreshComponent('TerminListeComponent');
     });
   }
 
-  private updateResponse(data: UpdateTerminResponseRequest){
+  private updateResponse(data: UpdateTerminResponseRequest) {
     this.us.autoUnsubscribe(this.terminService.updateTerminResponse(data)).subscribe(() => {
       this.loadData(null);
+      this.refreshService.refreshComponent('TerminListeComponent');
     });
   }
 

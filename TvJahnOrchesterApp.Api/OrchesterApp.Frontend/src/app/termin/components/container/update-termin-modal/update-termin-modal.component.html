@@ -3,10 +3,10 @@
     <ion-buttons slot="start">
       <ion-button (click)="cancel()">Zurück</ion-button>
     </ion-buttons>
-    <ion-title>Neuer Termin</ion-title>
+    <ion-title>Bearbeite Termin</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="confirm()" [strong]="true"
-        [disabled]="!formGroup.dirty || formGroup.invalid">Erstellen</ion-button>
+        [disabled]="!formGroup.dirty || formGroup.invalid">Bearbeite</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
@@ -22,6 +22,14 @@
         <ion-item>
           <ion-input formControlName="terminName" labelPlacement="stacked" label="Termin Name"
             placeholder="Termin Name"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input formControlName="weitereInformationen" labelPlacement="stacked" label="Beschreibung"
+            placeholder="Termin Beschreibung"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input type="file" formControlName="image" labelPlacement="stacked" label="Bild"
+            placeholder="Bild hochladen"></ion-input>
         </ion-item>
         <ion-item>
           <ion-select label="Termin Art" label-placement="stacked" formControlName="terminArt">
@@ -44,27 +52,18 @@
         <ion-item>
           <ion-input formControlName="endZeit" type="time" labelPlacement="stacked" label="Endzeit" placeholder="Endzeit"></ion-input>
         </ion-item>
-        <!-- <ion-item>
+        <ion-item>
           <ion-select label="Noten" label-placement="stacked" formControlName="noten" [multiple]="true">
-            <ion-select-option *ngFor="let noten of data.notenDropdown"
+            <ion-select-option *ngFor="let noten of dataTermin.notenDropdownValues"
               [value]="noten.value">{{noten.text}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
           <ion-select label="Uniform" label-placement="stacked" formControlName="uniform" [multiple]="true">
-            <ion-select-option *ngFor="let uniform of data.uniformDropdown"
+            <ion-select-option *ngFor="let uniform of dataTermin.uniformDropdownValues"
               [value]="uniform.value">{{uniform.text}}</ion-select-option>
           </ion-select>
         </ion-item>
-        <ion-item>
-          <ion-checkbox labelPlacement="end" (click)="clickedCheckbox()">Termin nur für bestimmte Mitglieder?</ion-checkbox>
-        </ion-item>
-        <ion-item *ngIf="terminOnlyForSpecificMembers">
-          <ion-select label="Orchestermitglieder für Termin" label-placement="stacked" formControlName="orchestermitgliedIds" [multiple]="true">
-            <ion-select-option *ngFor="let orchesterMitglied of data.orchesterMitgliederDropdown"
-              [value]="orchesterMitglied.value">{{orchesterMitglied.text}}</ion-select-option>
-          </ion-select>
-        </ion-item> -->
       </ion-list>
 
       <ion-list class="mg-top">

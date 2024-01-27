@@ -21,7 +21,7 @@ export class CreateTerminModalComponent  implements OnInit {
 
   formGroup = this.formBuilder.group({
     name: ['', [Validators.required]],
-    terminArt: [0, [Validators.required]],
+    terminArt: [null, [Validators.required]],
     terminDate: [null, [Validators.required]],
     startZeit: [null],
     endZeit: [null],
@@ -34,7 +34,9 @@ export class CreateTerminModalComponent  implements OnInit {
     longitude: [null as number | null],
     noten: [] as number[],
     uniform: [] as number[],
-    orchestermitgliedIds: null as string[] | null
+    orchestermitgliedIds: null as string[] | null,
+    weitereInformationen: [''],
+    image: ['']
   });
 
   terminOnlyForSpecificMembers = false;

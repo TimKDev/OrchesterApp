@@ -8,11 +8,12 @@ using TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects;
 
 namespace TvJahnOrchesterApp.Domain.TerminAggregate
 {
-    public sealed class Termin: AggregateRoot<TerminId, Guid>
+    public sealed class Termin : AggregateRoot<TerminId, Guid>
     {
         private readonly List<TerminRückmeldungOrchestermitglied> _terminRückmeldungOrchesterMitglieder = new();
 
         public string Name { get; private set; } = null!;
+        public string? Image { get; private set; } = null!;
         public int? TerminArt { get; private set; }
         public int? TerminStatus { get; private set; }
         public EinsatzPlan EinsatzPlan { get; private set; } = null!;
@@ -21,7 +22,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
 
         private Termin() { }
 
-        private Termin(TerminId id, TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int terminArt, EinsatzPlan einsatzPlan, int terminStatus, AbstimmungsId? abstimmungsId = null): base(id)
+        private Termin(TerminId id, TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int? terminArt, EinsatzPlan einsatzPlan, int terminStatus, string? image = null, AbstimmungsId? abstimmungsId = null) : base(id)
         {
             Name = name;
             TerminArt = terminArt;
@@ -29,14 +30,16 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
             AbstimmungsId = abstimmungsId;
             _terminRückmeldungOrchesterMitglieder = terminRückmeldungOrchesterMitglieder.ToList();
             TerminStatus = terminStatus;
+            Image = image;
         }
 
-        public static Termin Create(TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int terminArt, DateTime startZeit, DateTime endZeit, Adresse treffPunkt, List<int>? noten, List<int>? uniform, AbstimmungsId? abstimmungsId = null,TerminStatusEnum terminStatus = TerminStatusEnum.Zugesagt, string? zusätzlicheInfo = null)
+        public static Termin Create(TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int? terminArt, DateTime startZeit, DateTime endZeit, Adresse treffPunkt, List<int>? noten, List<int>? uniform, AbstimmungsId? abstimmungsId = null, TerminStatusEnum terminStatus = TerminStatusEnum.Zugesagt, string? zusätzlicheInfo = null, string? image = null)
         {
-            //TTODO: Noten und Uniform über Methoden hinzufügen
-            var einsatzplan = EinsatzPlan.Create(startZeit, endZeit, treffPunkt, zusätzlicheInfo);
+            var notenMappings = noten?.Select(EinsatzplanNotenMapping.Create);
+            var uniformMappings = uniform?.Select(EinsatzplanUniformMapping.Create);
+            var einsatzplan = EinsatzPlan.Create(startZeit, endZeit, treffPunkt, notenMappings, uniformMappings, zusätzlicheInfo);
 
-            return new Termin(TerminId.CreateUnique(), terminRückmeldungOrchesterMitglieder, name, terminArt, einsatzplan,(int)terminStatus, abstimmungsId);
+            return new Termin(TerminId.CreateUnique(), terminRückmeldungOrchesterMitglieder, name, terminArt, einsatzplan, (int)terminStatus, image, abstimmungsId);
         }
 
         public void RückmeldenZuTermin(OrchesterMitgliedsId orchesterMitgliedsId, bool istAnwesend, string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)
@@ -60,6 +63,11 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
             Name = name is not null ? name : Name;
         }
 
+        public void UpdateImage(string? image)
+        {
+            Image = image;
+        }
+
         public void UpdateTerminArt(int? terminArt)
         {
             TerminArt = terminArt;
@@ -74,18 +82,19 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
         {
             var elementsToRemove = new List<TerminRückmeldungOrchestermitglied>();
 
-            foreach(var terminRückmeldungOrchesterMitglied in _terminRückmeldungOrchesterMitglieder)
+            foreach (var terminRückmeldungOrchesterMitglied in _terminRückmeldungOrchesterMitglieder)
             {
-                if (!newTerminRückmeldungOrchestermitglieds.Select(n => n.OrchesterMitgliedsId).Contains(terminRückmeldungOrchesterMitglied.OrchesterMitgliedsId)){
+                if (!newTerminRückmeldungOrchestermitglieds.Select(n => n.OrchesterMitgliedsId).Contains(terminRückmeldungOrchesterMitglied.OrchesterMitgliedsId))
+                {
                     elementsToRemove.Add(terminRückmeldungOrchesterMitglied);
                 }
             }
 
             elementsToRemove.ForEach(e => _terminRückmeldungOrchesterMitglieder.Remove(e));
 
-            foreach(var newTerminRückmeldungOrchestermitglied in newTerminRückmeldungOrchestermitglieds)
+            foreach (var newTerminRückmeldungOrchestermitglied in newTerminRückmeldungOrchestermitglieds)
             {
-                if(!_terminRückmeldungOrchesterMitglieder.Select(o => o.OrchesterMitgliedsId).Contains(newTerminRückmeldungOrchestermitglied.OrchesterMitgliedsId))
+                if (!_terminRückmeldungOrchesterMitglieder.Select(o => o.OrchesterMitgliedsId).Contains(newTerminRückmeldungOrchestermitglied.OrchesterMitgliedsId))
                 {
                     _terminRückmeldungOrchesterMitglieder.Add(newTerminRückmeldungOrchestermitglied);
                 }

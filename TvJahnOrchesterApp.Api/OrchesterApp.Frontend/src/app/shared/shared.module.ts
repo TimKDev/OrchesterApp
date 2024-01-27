@@ -6,6 +6,7 @@ import { LoaderComponent } from './components/loader/loader.component';
 import { DataItemComponent } from './components/data-item/data-item.component';
 import { DropdownPipe } from './pipes/dropdown.pipe';
 import { FilterNullDropdownPipe } from './pipes/filter-null-dropdown.pipe';
+import { DropdownToStringPipe } from './pipes/dropdown-to-string.pipe';
 
 
 
@@ -15,6 +16,7 @@ import { FilterNullDropdownPipe } from './pipes/filter-null-dropdown.pipe';
     DataItemComponent,
     DropdownPipe,
     FilterNullDropdownPipe,
+    DropdownToStringPipe,
   ],
   imports: [
     CommonModule, 
@@ -25,7 +27,8 @@ import { FilterNullDropdownPipe } from './pipes/filter-null-dropdown.pipe';
     LoaderComponent,
     DataItemComponent,
     DropdownPipe,
-    FilterNullDropdownPipe
+    FilterNullDropdownPipe,
+    DropdownToStringPipe
   ]
 })
 export class SharedModule { }

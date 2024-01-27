@@ -6,6 +6,8 @@ export interface TerminDetailsResponse {
   terminArtenDropdownValues: DropdownItem[],
   terminStatusDropdownValues: DropdownItem[],
   responseDropdownValues: DropdownItem[],
+  notenDropdownValues: DropdownItem[],
+  uniformDropdownValues: DropdownItem[],
 }
 
 export interface TerminDetails {
@@ -20,7 +22,11 @@ export interface TerminDetails {
   stadt?: string,
   zusatz?: string,
   latitude?: number,
-  longitude?: number
+  longitude?: number,
+  noten: number[],
+  uniform: number[],
+  weitereInformationen?: string,
+  image?: string
 }
 
 export interface TerminRückmeldung {

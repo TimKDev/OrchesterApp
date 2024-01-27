@@ -29,7 +29,9 @@ export class UpdateTerminModalComponent  implements OnInit {
     longitude: [null as number | null],
     noten: [] as number[],
     uniform: [] as number[],
-    orchestermitgliedIds: null as string[] | null
+    orchestermitgliedIds: null as string[] | null,
+    weitereInformationen: [''],
+    image: ['']
   });
 
   constructor(

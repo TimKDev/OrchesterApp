@@ -29,9 +29,9 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
         private record GetTerminByIdQuery(Guid Id) : IRequest<GetTerminByIdResponse>;
 
-        private record GetTerminByIdResponse(TerminDetails Termin, TerminRückmeldung TerminRückmeldung, DropdownItem[] TerminArtenDropdownValues, DropdownItem[] TerminStatusDropdownValues, DropdownItem[] ResponseDropdownValues);
+        private record GetTerminByIdResponse(TerminDetails Termin, TerminRückmeldung TerminRückmeldung, DropdownItem[] TerminArtenDropdownValues, DropdownItem[] TerminStatusDropdownValues, DropdownItem[] ResponseDropdownValues, DropdownItem[] NotenDropdownValues, DropdownItem[] UniformDropdownValues);
 
-        private record TerminDetails(string TerminName, int? TerminArt, int? TerminStatus, DateTime StartZeit, DateTime EndZeit, string? Straße, string? Hausnummer, string? Postleitzahl, string? Stadt, string? Zusatz, decimal? Latitude, decimal? Longitude);
+        private record TerminDetails(string TerminName, int? TerminArt, int? TerminStatus, DateTime StartZeit, DateTime EndZeit, string? Straße, string? Hausnummer, string? Postleitzahl, string? Stadt, string? Zusatz, decimal? Latitude, decimal? Longitude, int[] Noten, int[] Uniform, string? WeitereInformationen, string? Image);
 
         private record TerminRückmeldung(int Zugesagt, string? KommentarZusage, Guid? RückmeldungDurchAnderesOrchestermitglied, bool IstAnwesend, string? KommentarAnwesenheit);
 
@@ -53,6 +53,8 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 var terminArtenDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.TerminArten, cancellationToken);
                 var terminStatusDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.TerminStatus, cancellationToken);
                 var responseDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.Rückmeldungsart, cancellationToken);
+                var notenDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.Noten, cancellationToken);
+                var uniformDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.Uniform, cancellationToken);
 
                 var termin = await terminRepository.GetById(request.Id, cancellationToken);
                 var currentOrchesterMitglied = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
@@ -63,11 +65,13 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 }
 
                 return new GetTerminByIdResponse(
-                    new TerminDetails(termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, termin.EinsatzPlan.Treffpunkt.Straße, termin.EinsatzPlan.Treffpunkt.Hausnummer, termin.EinsatzPlan.Treffpunkt.Postleitzahl, termin.EinsatzPlan.Treffpunkt.Stadt, termin.EinsatzPlan.Treffpunkt.Zusatz, termin.EinsatzPlan.Treffpunkt.Latitude, termin.EinsatzPlan.Treffpunkt.Longitide),
+                    new TerminDetails(termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, termin.EinsatzPlan.Treffpunkt.Straße, termin.EinsatzPlan.Treffpunkt.Hausnummer, termin.EinsatzPlan.Treffpunkt.Postleitzahl, termin.EinsatzPlan.Treffpunkt.Stadt, termin.EinsatzPlan.Treffpunkt.Zusatz, termin.EinsatzPlan.Treffpunkt.Latitude, termin.EinsatzPlan.Treffpunkt.Longitide, termin.EinsatzPlan.EinsatzplanNotenMappings.Select(n => n.NotenId).ToArray(), termin.EinsatzPlan.EinsatzplanUniformMappings.Select(t => t.UniformId).ToArray(), termin.EinsatzPlan.WeitereInformationen, termin.Image),
                     new TerminRückmeldung(currrentUserRückmeldung.Zugesagt, currrentUserRückmeldung.KommentarZusage, currrentUserRückmeldung.RückmeldungDurchAnderesOrchestermitglied?.Value, currrentUserRückmeldung.IstAnwesend, currrentUserRückmeldung.KommentarAnwesenheit),
                     terminArtenDropdownValues,
                     terminStatusDropdownValues,
-                    responseDropdownValues
+                    responseDropdownValues,
+                    notenDropdownValues, 
+                    uniformDropdownValues
                 );
             }
         }

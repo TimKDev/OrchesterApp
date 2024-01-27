@@ -21,7 +21,7 @@
   </ion-refresher>
 
   <ng-container *ngIf="data$ | async as data; else loading">
-    <!-- <pre>{{data | json}}</pre> -->
+    <pre>{{data | json}}</pre>
     <ion-button [routerLink]="'/tabs/termin/' + activeTab" class="back-btn">
       <ion-icon slot="start" name="arrow-back"></ion-icon>
       Zurück zur Termin Übersicht
@@ -53,25 +53,25 @@
       </ion-card-header>
 
       <ion-card-content>
-        <div>
+        <div *ngIf="data.termin['weitereInformationen']" style="margin-bottom: 8px;">
           <p>
-            Großer Rosenmontagszug in Krefeld. Wir laufen an der Spitze des Zuges.
+            {{data.termin['weitereInformationen']}}
           </p>
         </div>
-        <div class="border-bottom">
+        <div *ngIf="data.termin['straße']">
           <b>Treffpunkt:</b> <br>
           {{data.termin["straße"]}} {{data.termin.hausnummer}}, <br>
           {{data.termin.postleitzahl}}, {{data.termin.stadt}} <br>
           {{data.termin.zusatz}}
         </div>
-        <div class="border-bottom" *ngIf="data.termin.endZeit < dateNow">
+        <div class="border-top" *ngIf="data.termin.endZeit < dateNow">
           <b>Am Termin teilgenommen?:</b> 
           <span *ngIf="data['terminRückmeldung'].istAnwesend; else nichtAnwesend">Ja</span>
           <ng-template #nichtAnwesend>
             Nein
           </ng-template>
         </div>
-        <div class="response-div">
+        <div class="response-div border-top">
           <div class="user-connected" [class.color-green]="data['terminRückmeldung'].zugesagt === 3"
             [class.color-red]="data['terminRückmeldung'].zugesagt === 2"></div>
           <div>
@@ -91,11 +91,18 @@
             <b>Rückmeldung durch:</b> <br>
             {{data['terminRückmeldung']['rückmeldungDurchAnderesOrchestermitglied']}}
           </div>
-
+        </div>
+        <div class="border-top" *ngIf="data['termin']['noten'] && data['termin']['noten'].length > 0">
+          <b>Noten:</b>
+          {{data['termin']['noten'] | dropdownToString : data['notenDropdownValues']}}
+        </div>
+        <div *ngIf="data['termin']['uniform'] && data['termin']['uniform'].length > 0">
+          <b>Uniform:</b>
+          {{data['termin']['uniform'] | dropdownToString : data['uniformDropdownValues']}}
         </div>
       </ion-card-content>
 
-      <ion-button fill="clear" (click)="openUpdateModal(data)">Bearbeiten</ion-button>
+      <ion-button *ngIf="canEditTermin" fill="clear" (click)="openUpdateModal(data)">Bearbeiten</ion-button>
       <ion-button fill="clear" (click)="openResponseModal()">Rückmeldung geben</ion-button>
     </ion-card>
 
