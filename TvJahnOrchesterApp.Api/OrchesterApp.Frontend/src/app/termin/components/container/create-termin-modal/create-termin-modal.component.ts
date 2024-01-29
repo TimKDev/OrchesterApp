@@ -6,6 +6,7 @@ import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { DropdownService } from 'src/app/core/services/dropdown.service';
 import { TerminService } from '../../../services/termin.service';
+import { PhotoService } from 'src/app/core/services/photo.service';
 
 @Component({
   selector: 'app-create-termin-modal',
@@ -46,7 +47,8 @@ export class CreateTerminModalComponent  implements OnInit {
     private formBuilder: FormBuilder,
     private us: Unsubscribe,
     private dropdownService: DropdownService,
-    private terminService: TerminService
+    private terminService: TerminService,
+    private photoService: PhotoService
   ) { }
 
   ngOnInit() {
@@ -68,6 +70,12 @@ export class CreateTerminModalComponent  implements OnInit {
     if(!this.terminOnlyForSpecificMembers){
       this.formGroup.get('orchestermitgliedIds')?.setValue(null);
     }
+  }
+
+  async uploadImage(){
+    const imageAs64 = await this.photoService.getPhotoAsBase64();
+    this.formGroup.patchValue({image: imageAs64});
+    this.formGroup.markAsDirty();
   }
 
   cancel() {

@@ -21,14 +21,14 @@
   </ion-refresher>
 
   <ng-container *ngIf="data$ | async as data; else loading">
-    <pre>{{data | json}}</pre>
+    <!-- <pre>{{data | json}}</pre> -->
     <ion-button [routerLink]="'/tabs/termin/' + activeTab" class="back-btn">
       <ion-icon slot="start" name="arrow-back"></ion-icon>
       Zurück zur Termin Übersicht
     </ion-button>
 
     <ion-card>
-      <img alt="Silhouette of mountains" src="/assets/card-media.png" />
+      <img class="image" [src]="data.termin.image ? 'data:image/png;base64,' + data.termin.image : '/assets/card-media.png'" />
       <ion-card-header>
         <ion-card-title>
           <span *ngIf="data.termin.terminStatus !== 3; else abgesagt;">{{data.termin.terminName}}

@@ -28,8 +28,7 @@
             placeholder="Termin Beschreibung"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input type="file" formControlName="image" labelPlacement="stacked" label="Bild"
-            placeholder="Bild hochladen"></ion-input>
+          <ion-button (click)="uploadImage()">Bild hochladen</ion-button>
         </ion-item>
         <ion-item>
           <ion-select label="Termin Art" label-placement="stacked" formControlName="terminArt">

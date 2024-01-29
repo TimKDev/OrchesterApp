@@ -18,6 +18,14 @@ export class PhotoService {
     private platform: Platform
   ) { }
 
+  public async getPhotoAsBase64(){
+    return (await Camera.getPhoto({
+      resultType: CameraResultType.Base64,
+      source: CameraSource.Photos,
+      quality: 100
+    })).base64String;
+  }
+
   public async addNewToGallery() {
     // Take a photo
     const capturedPhoto = await Camera.getPhoto({

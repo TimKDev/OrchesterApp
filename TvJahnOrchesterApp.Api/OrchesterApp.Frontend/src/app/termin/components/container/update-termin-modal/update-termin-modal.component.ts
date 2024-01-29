@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { PhotoService } from 'src/app/core/services/photo.service';
 import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-response';
 
 @Component({
@@ -36,7 +37,8 @@ export class UpdateTerminModalComponent  implements OnInit {
 
   constructor(
     private modalCtrl: ModalController,
-    private formBuilder: FormBuilder
+    private formBuilder: FormBuilder,
+    private photoService: PhotoService
   ) { }
 
   ngOnInit() {
@@ -50,6 +52,12 @@ export class UpdateTerminModalComponent  implements OnInit {
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  async uploadImage(){
+    const imageAs64 = await this.photoService.getPhotoAsBase64();
+    this.formGroup.patchValue({image: imageAs64});
+    this.formGroup.markAsDirty();
   }
 
   confirm() {
