@@ -26,7 +26,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
             return Results.Ok("Rückmeldung für anderen User wurde erfolgreich gespeichert.");
         }
 
-        private record RückmeldungForOtherUserCommand(Guid TerminId, Guid OrchesterMitgliedsId, bool Zugesagt, string? Kommentar) : IRequest<Unit>;
+        private record RückmeldungForOtherUserCommand(Guid TerminId, Guid OrchesterMitgliedsId, int Zugesagt, string? Kommentar) : IRequest<Unit>;
 
         private class RückmeldungForOtherUserCommandHandler : IRequestHandler<RückmeldungForOtherUserCommand, Unit>
         {

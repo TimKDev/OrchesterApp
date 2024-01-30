@@ -28,7 +28,8 @@
     </ion-button>
 
     <ion-card>
-      <img class="image" [src]="data.termin.image ? 'data:image/png;base64,' + data.termin.image : '/assets/card-media.png'" />
+      <img class="image"
+        [src]="data.termin.image ? 'data:image/png;base64,' + data.termin.image : '/assets/card-media.png'" />
       <ion-card-header>
         <ion-card-title>
           <span *ngIf="data.termin.terminStatus !== 3; else abgesagt;">{{data.termin.terminName}}
@@ -65,7 +66,7 @@
           {{data.termin.zusatz}}
         </div>
         <div class="border-top" *ngIf="data.termin.endZeit < dateNow">
-          <b>Am Termin teilgenommen?:</b> 
+          <b>Am Termin teilgenommen?:</b>
           <span *ngIf="data['terminRückmeldung'].istAnwesend; else nichtAnwesend">Ja</span>
           <ng-template #nichtAnwesend>
             Nein
@@ -102,10 +103,18 @@
         </div>
       </ion-card-content>
 
-      <ion-button *ngIf="canEditTermin" fill="clear" (click)="openUpdateModal(data)">Bearbeiten</ion-button>
-      <ion-button fill="clear" (click)="openResponseModal()">Rückmeldung geben</ion-button>
+      <div class="button-div">
+        <ion-button *ngIf="canEditTermin" fill="clear" (click)="openUpdateModal(data)">Bearbeiten</ion-button>
+        <ion-button *ngIf="data.termin.endZeit > dateNow" fill="clear" (click)="openResponseModal(data)">Rückmeldung
+          geben</ion-button>
+      </div>
     </ion-card>
 
+    <ion-button *ngIf="canEditTermin" fill="clear" expand="block" (click)="setOpen(true)">
+      Termin Aktionen
+    </ion-button>
+    <ion-action-sheet [isOpen]="isActionSheetOpen" header="Termin Aktionen" [buttons]="actionSheetButtons"
+      (didDismiss)="setOpen(false)"></ion-action-sheet>
   </ng-container>
 
   <ng-template #loading>

@@ -26,7 +26,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
             return Results.Ok("Rückmeldung erfolgreich gespeichert.");
         }
 
-        private record RückmeldungCommand(Guid TerminId, bool Zugesagt, string? Kommentar) : IRequest<Unit>;
+        private record RückmeldungCommand(Guid TerminId, int Zugesagt, string? Kommentar) : IRequest<Unit>;
 
         private class RückmeldungCommandHandler : IRequestHandler<RückmeldungCommand, Unit>
         {

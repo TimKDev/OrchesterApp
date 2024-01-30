@@ -32,9 +32,9 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
             return new TerminRückmeldungOrchestermitglied(RückgemeldetePersonId.CreateUnique(), orchesterMitgliedsId);
         }
 
-        public void ChangeZusage(bool zugesagt, string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)
+        public void ChangeZusage(int zugesagt, string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)
         {
-            Zugesagt = zugesagt ? (int)RückmeldungsartEnum.Zugesagt : (int)RückmeldungsartEnum.Abgesagt;
+            Zugesagt = zugesagt;
             LetzteRückmeldung = DateTime.Now;
             KommentarZusage = kommentar;
             if(otherOrchesterId is not null)

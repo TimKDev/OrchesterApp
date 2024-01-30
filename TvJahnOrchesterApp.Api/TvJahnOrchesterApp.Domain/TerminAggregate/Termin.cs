@@ -42,10 +42,16 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
             return new Termin(TerminId.CreateUnique(), terminRückmeldungOrchesterMitglieder, name, terminArt, einsatzplan, (int)terminStatus, image, abstimmungsId);
         }
 
-        public void RückmeldenZuTermin(OrchesterMitgliedsId orchesterMitgliedsId, bool istAnwesend, string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)
+        public void RückmeldenZuTermin(OrchesterMitgliedsId orchesterMitgliedsId, int zugesagt, string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)
         {
             var terminRückmeldungOrchesterMitglied = _terminRückmeldungOrchesterMitglieder.Find(t => t.OrchesterMitgliedsId == orchesterMitgliedsId) ?? throw new ArgumentException("Orchestermitglied wurde nicht gefunden.");
-            terminRückmeldungOrchesterMitglied.ChangeZusage(istAnwesend, kommentar, otherOrchesterId);
+            terminRückmeldungOrchesterMitglied.ChangeZusage(zugesagt, kommentar, otherOrchesterId);
+        }
+
+        public void AnwesenheitZuTermin(OrchesterMitgliedsId orchesterMitgliedsId, bool anwesend, string? kommentar = null)
+        {
+            var terminRückmeldungOrchesterMitglied = _terminRückmeldungOrchesterMitglieder.Find(t => t.OrchesterMitgliedsId == orchesterMitgliedsId) ?? throw new ArgumentException("Orchestermitglied wurde nicht gefunden.");
+            terminRückmeldungOrchesterMitglied.ChangeAnwesenheit(anwesend, kommentar);
         }
 
         public bool IstZugeordnet(OrchesterMitgliedsId orchesterMitgliedsId)

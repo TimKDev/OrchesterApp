@@ -6,14 +6,12 @@
     <ion-title>Bearbeite Termin</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="confirm()" [strong]="true"
-        [disabled]="!formGroup.dirty || formGroup.invalid">Bearbeite</ion-button>
+        [disabled]="!formGroup.dirty || formGroup.invalid">Speichern</ion-button>
     </ion-buttons>
   </ion-toolbar>
 </ion-header>
 <ion-content class="ion-padding">
   <ng-container *ngIf="dataTermin; else loading">
-    <pre>{{formGroup.value | json}}</pre>
-
     <form [formGroup]="formGroup">
       <ion-list>
         <ion-list-header color="tertiary">

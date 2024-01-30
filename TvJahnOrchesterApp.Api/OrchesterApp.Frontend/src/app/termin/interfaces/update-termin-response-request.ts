@@ -1,5 +1,5 @@
 export interface UpdateTerminResponseRequest {
   terminId: string,
-  zugesagt: boolean, 
+  zugesagt: number, 
   kommentar?: string
 }

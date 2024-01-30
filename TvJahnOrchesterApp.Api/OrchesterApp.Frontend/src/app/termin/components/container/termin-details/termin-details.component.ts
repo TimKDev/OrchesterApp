@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModalController } from '@ionic/angular';
 import { Observable, map, tap } from 'rxjs';
 import { RefreshService } from 'src/app/core/services/refresh.service';
@@ -31,6 +31,7 @@ export class TerminDetailsComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private terminService: TerminService,
     private refreshService: RefreshService,
     private modalCtrl: ModalController,
@@ -67,9 +68,49 @@ export class TerminDetailsComponent implements OnInit {
     this.loadData(event);
   }
 
-  public async openResponseModal() {
+  isActionSheetOpen = false;
+
+  setOpen(isOpen: boolean) {
+    this.isActionSheetOpen = isOpen;
+  }
+
+  public actionSheetButtons = [
+    {
+      text: 'Lösche Termin',
+      role: 'destructive',
+      handler: () => this.deleteTermin()
+
+    },
+    {
+      text: 'Bearbeite Anwesenheit',
+      data: {
+        action: 'share',
+      },
+      handler: () => this.navigateToTerminReturnMessages()
+    },
+    {
+      text: 'Zurück',
+      role: 'cancel',
+      data: {
+        action: 'cancel',
+      },
+    },
+  ];
+
+  public deleteTermin(){
+
+  }
+
+  public navigateToTerminReturnMessages(){
+    this.router.navigate(['tabs', 'termin', 'return-messages', this.terminId]);
+  }
+
+  public async openResponseModal(dataTermin: TerminDetailsResponse) {
     const modal = await this.modalCtrl.create({
-      component: TerminResponseModalComponent
+      component: TerminResponseModalComponent,
+      componentProps: {
+        "dataTermin": dataTermin
+      }
     });
     modal.present();
     const { data, role } = await modal.onWillDismiss();
@@ -99,7 +140,8 @@ export class TerminDetailsComponent implements OnInit {
   }
 
   private updateResponse(data: UpdateTerminResponseRequest) {
-    this.us.autoUnsubscribe(this.terminService.updateTerminResponse(data)).subscribe(() => {
+    let dataWithTermin = {...data, terminId: this.terminId};
+    this.us.autoUnsubscribe(this.terminService.updateTerminResponse(dataWithTermin)).subscribe(() => {
       this.loadData(null);
       this.refreshService.refreshComponent('TerminListeComponent');
     });
