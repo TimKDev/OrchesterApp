@@ -7,6 +7,7 @@ import { of, tap } from 'rxjs';
 import { TerminDetailsResponse } from '../interfaces/termin-details-response';
 import { UpdateTerminRequest } from '../interfaces/update-termin-request';
 import { UpdateTerminResponseRequest } from '../interfaces/update-termin-response-request';
+import { TerminResponseResponse } from '../interfaces/termin-response-response';
 
 @Injectable({
   providedIn: 'root'
@@ -48,5 +49,13 @@ export class TerminService {
 
   public updateTerminResponse(data: UpdateTerminResponseRequest){
     return this.http.put('api/termin/rückmeldung', data);
+  }
+
+  public deleteTermin(terminId: string){
+    return this.http.delete(`api/termin/delete/${terminId}`);
+  }
+
+  public getTerminResponses(terminId: string){
+    return this.http.get<TerminResponseResponse>(`api/termin/rückmeldung/${terminId}`);
   }
 }

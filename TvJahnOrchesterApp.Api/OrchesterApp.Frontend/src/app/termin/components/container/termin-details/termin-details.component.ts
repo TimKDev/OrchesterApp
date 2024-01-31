@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { Observable, map, tap } from 'rxjs';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-response';
@@ -11,6 +11,7 @@ import { TerminResponseModalComponent } from '../termin-response-modal/termin-re
 import { UpdateTerminResponseRequest } from 'src/app/termin/interfaces/update-termin-response-request';
 import { UpdateTerminRequest } from 'src/app/termin/interfaces/update-termin-request';
 import { RolesService } from 'src/app/authentication/services/roles.service';
+import { confirmDialog } from 'src/app/core/helper/confirm';
 
 @Component({
   selector: 'app-termin-details',
@@ -36,7 +37,8 @@ export class TerminDetailsComponent implements OnInit {
     private refreshService: RefreshService,
     private modalCtrl: ModalController,
     private us: Unsubscribe,
-    private rolesService: RolesService
+    private rolesService: RolesService,
+    public alertController: AlertController
   ) { }
 
   ngOnInit() {
@@ -76,17 +78,17 @@ export class TerminDetailsComponent implements OnInit {
 
   public actionSheetButtons = [
     {
-      text: 'Lösche Termin',
-      role: 'destructive',
-      handler: () => this.deleteTermin()
-
-    },
-    {
-      text: 'Bearbeite Anwesenheit',
+      text: 'Rückmeldungen und Anwesenheit',
       data: {
         action: 'share',
       },
       handler: () => this.navigateToTerminReturnMessages()
+    },
+    {
+      text: 'Lösche Termin',
+      role: 'destructive',
+      handler: () => this.deleteTermin()
+
     },
     {
       text: 'Zurück',
@@ -96,14 +98,6 @@ export class TerminDetailsComponent implements OnInit {
       },
     },
   ];
-
-  public deleteTermin(){
-
-  }
-
-  public navigateToTerminReturnMessages(){
-    this.router.navigate(['tabs', 'termin', 'return-messages', this.terminId]);
-  }
 
   public async openResponseModal(dataTermin: TerminDetailsResponse) {
     const modal = await this.modalCtrl.create({
@@ -145,6 +139,18 @@ export class TerminDetailsComponent implements OnInit {
       this.loadData(null);
       this.refreshService.refreshComponent('TerminListeComponent');
     });
+  }
+
+  @confirmDialog("Achtung", "Möchten sie dieses Termin wirklich löschen? Falls der Termin abgesagt wurde und die Orchestermitglieder darüber informiert werden sollen, setzen sie lieber den Status auf 'Abgesagt'!")
+  private deleteTermin(){
+    this.refreshService.refreshComponent("TerminListeComponent");
+    this.terminService.deleteTermin(this.terminId).subscribe(() => {
+      this.router.navigate(['tabs', 'termin']);
+    });
+  }
+
+  private navigateToTerminReturnMessages(){
+    this.router.navigate(['tabs', 'termin', 'return-messages', this.terminId]);
   }
 
 }

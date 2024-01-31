@@ -16,6 +16,22 @@
     </ion-toolbar>
   </ion-header>
 
-  Dies wird die Terminliste.
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <ion-button [routerLink]="'/tabs/termin/details/' + terminId + '/default'" class="back-btn">
+      <ion-icon slot="start" name="arrow-back"></ion-icon>
+      Zurück zu Termin Details 
+    </ion-button>
+    <pre>{{data | json}}</pre>
+  </ng-container>
+
+  <ng-template #loading>
+    <ng-container *ngIf="!isRefreshing">
+      <app-loader></app-loader>
+    </ng-container>
+  </ng-template>
 
 </ion-content>

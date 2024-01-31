@@ -54,6 +54,13 @@
   object-fit: cover;
 }
 
+.main-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}
+
 // .button-div{
 //   ion-button{
 //     display: block;

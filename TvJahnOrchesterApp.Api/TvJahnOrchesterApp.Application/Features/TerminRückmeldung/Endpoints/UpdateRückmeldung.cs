@@ -6,7 +6,6 @@ using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
-using TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Models;
 using static TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints.CreateOrchesterMitglied;
 
 namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints

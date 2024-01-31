@@ -2,7 +2,7 @@
   <ng-container *ngIf="dataFiltered$ | async as data">
     <!-- <pre>{{data | json}}</pre> -->
     <ion-list>
-      <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
+      <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Termin"
         (ionInput)="search($event)"></ion-searchbar>
   
       <app-termin-item *ngFor="let termin of data.terminData" [terminId]="termin.terminId"
@@ -15,7 +15,9 @@
       </app-termin-item>
   
       <ng-container *ngIf="data.terminData.length === 0">
-        Kein Ergebnis
+        <div style="padding: 8px;">
+          Kein Termine
+        </div>
       </ng-container>
     </ion-list>
     <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="canCreateNewTermin">

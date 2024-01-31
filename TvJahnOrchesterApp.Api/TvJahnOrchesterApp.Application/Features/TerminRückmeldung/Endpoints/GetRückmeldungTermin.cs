@@ -3,7 +3,9 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
-using TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Models;
+using TvJahnOrchesterApp.Application.Features.Dropdown.Enums;
+using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
+using TvJahnOrchesterApp.Application.Features.Dropdown.Services;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
 
 namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
@@ -23,39 +25,43 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
             return Results.Ok(result);
         }
 
+        public record TerminRückmeldungsTableEntry(Guid RückmeldungsId, string Vorname, string Nachname, string? VornameOther, string? NachnameOther, int Zugesagt, string? KommentarZusage, DateTime? LetzteRückmeldung, bool IstAnwesend, string? KommentarAnwesenheit);
+
+        public record TerminRückmeldungsResponse(Guid TerminId, string TerminName, TerminRückmeldungsTableEntry[] TerminRückmeldungsTableEntries, DropdownItem[] ResponseDropdownValues);
+
         private record GetRückmeldungenTerminQuery(Guid TerminId) : IRequest<TerminRückmeldungsResponse>;
 
         private class GetRückmeldungenTerminQueryHandler : IRequestHandler<GetRückmeldungenTerminQuery, TerminRückmeldungsResponse>
         {
             private readonly ITerminRepository terminRepository;
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
+            private readonly IDropdownService dropdownService;
 
-            public GetRückmeldungenTerminQueryHandler(ITerminRepository terminRepository, IOrchesterMitgliedRepository orchesterMitgliedRepository)
+            public GetRückmeldungenTerminQueryHandler(ITerminRepository terminRepository, IOrchesterMitgliedRepository orchesterMitgliedRepository, IDropdownService dropdownService)
             {
                 this.terminRepository = terminRepository;
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
+                this.dropdownService = dropdownService;
             }
 
             public async Task<TerminRückmeldungsResponse> Handle(GetRückmeldungenTerminQuery request, CancellationToken cancellationToken)
             {
                 var termin = await terminRepository.GetById(request.TerminId, cancellationToken);
-                var terminRückmeldungOrchestermitglieder = new List<(string Vorname, string Nachname, string? VornameOther, string? NachnameOther, TerminRückmeldungOrchestermitglied TerminRückmeldungOrchestermitglied)>();
+                var terminRückmeldungOrchestermitglieder = new List<TerminRückmeldungsTableEntry>();
+                var responseDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.Rückmeldungsart, cancellationToken);
+
                 foreach (var terminRückmeldung in termin.TerminRückmeldungOrchesterMitglieder)
                 {
                     var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(terminRückmeldung.OrchesterMitgliedsId, cancellationToken);
+                    Domain.OrchesterMitgliedAggregate.OrchesterMitglied? otherOrchesterMitglied = null;
                     if (terminRückmeldung.RückmeldungDurchAnderesOrchestermitglied is not null)
                     {
-                        var otherOrchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(terminRückmeldung.RückmeldungDurchAnderesOrchestermitglied, cancellationToken);
-                        terminRückmeldungOrchestermitglieder.Add(new(orchesterMitglied.Vorname, orchesterMitglied.Nachname, otherOrchesterMitglied.Vorname, otherOrchesterMitglied.Nachname, terminRückmeldung));
-
+                        otherOrchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(terminRückmeldung.RückmeldungDurchAnderesOrchestermitglied, cancellationToken);
                     }
-                    else
-                    {
-                        terminRückmeldungOrchestermitglieder.Add(new(orchesterMitglied.Vorname, orchesterMitglied.Nachname, null, null, terminRückmeldung));
-                    }
+                    terminRückmeldungOrchestermitglieder.Add(new TerminRückmeldungsTableEntry(terminRückmeldung.Id.Value, orchesterMitglied.Vorname, orchesterMitglied.Nachname, otherOrchesterMitglied?.Vorname, otherOrchesterMitglied?.Nachname, terminRückmeldung.Zugesagt, terminRückmeldung.KommentarZusage, terminRückmeldung.LetzteRückmeldung, terminRückmeldung.IstAnwesend, terminRückmeldung.KommentarAnwesenheit));
                 }
 
-                return new TerminRückmeldungsResponse(termin.Id.Value, termin.Name, terminRückmeldungOrchestermitglieder.ToArray());
+                return new TerminRückmeldungsResponse(termin.Id.Value, termin.Name, terminRückmeldungOrchestermitglieder.ToArray(), responseDropdownValues);
             }
         }
 
