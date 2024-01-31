@@ -7,7 +7,8 @@ import { TermineListData } from '../interfaces/termin-list-data-response';
 export class SelectTerminsFromDatePipe implements PipeTransform {
 
   transform(termins: TermineListData[], selectedDate: any): TermineListData[] {
-    return termins.filter(t => t.startZeit.toString().includes(selectedDate));
+    let targetDate = new Date(selectedDate);
+    return termins.filter(t => targetDate.getDate() === t.startZeit.getDate() && targetDate.getMonth() === t.startZeit.getMonth() && targetDate.getFullYear() === t.startZeit.getFullYear());
   }
 
 }
