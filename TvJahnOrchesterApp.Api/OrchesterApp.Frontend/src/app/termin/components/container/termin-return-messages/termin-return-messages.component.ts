@@ -30,6 +30,10 @@ export class TerminReturnMessagesComponent implements OnInit {
     this.loadData(event);
   }
 
+  public openResponseDetails(responseId: string){
+    
+  }
+
   private loadData(refreshEvent: any = null) {
     this.data$ = this.terminService.getTerminResponses(this.terminId).pipe(
       tap((data) => {

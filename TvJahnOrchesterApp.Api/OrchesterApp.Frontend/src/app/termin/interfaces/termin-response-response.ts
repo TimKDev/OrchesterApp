@@ -1,7 +1,10 @@
+import { DropdownItem } from "src/app/core/interfaces/dropdown-item"
+
 export interface TerminResponseResponse{
   terminId: string, 
   terminName: string, 
-  terminRückmeldungsTableEntries: TerminRückmeldungsTableEntry[]
+  terminRückmeldungsTableEntries: TerminRückmeldungsTableEntry[],
+  responseDropdownValues: DropdownItem[]
 }
 
 export interface TerminRückmeldungsTableEntry {
