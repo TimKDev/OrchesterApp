@@ -26,7 +26,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
             return Results.Ok("Rückmeldung für anderen User wurde erfolgreich gespeichert.");
         }
 
-        private record RückmeldungForOtherUserCommand(Guid TerminId, Guid OrchesterMitgliedsId, int Zugesagt, string? Kommentar) : IRequest<Unit>;
+        private record RückmeldungForOtherUserCommand(Guid TerminId, Guid OrchesterMitgliedsId, int Zugesagt, string? KommentarZusage, bool IstAnwesend, string? KommentarAnwesenheit) : IRequest<Unit>;
 
         private class RückmeldungForOtherUserCommandHandler : IRequestHandler<RückmeldungForOtherUserCommand, Unit>
         {
@@ -49,7 +49,8 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(OrchesterMitgliedsId.Create(request.OrchesterMitgliedsId), cancellationToken);
                 var currentOrchestermitglied = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
 
-                termin.RückmeldenZuTermin(orchesterMitglied.Id, request.Zugesagt, request.Kommentar, currentOrchestermitglied.Id);
+                termin.RückmeldenZuTermin(orchesterMitglied.Id, request.Zugesagt, request.KommentarZusage, currentOrchestermitglied.Id);
+                termin.AnwesenheitZuTermin(orchesterMitglied.Id, request.IstAnwesend, request.KommentarAnwesenheit);
 
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 

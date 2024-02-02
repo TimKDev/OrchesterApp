@@ -58,4 +58,8 @@ export class TerminService {
   public getTerminResponses(terminId: string){
     return this.http.get<TerminResponseResponse>(`api/termin/rückmeldung/${terminId}`);
   }
+
+  public updateTerminResponseDetails(data: UpdateTerminResponseRequest){
+    return this.http.put('api/termin/rückmeldung/forUser', data);
+  }
 }

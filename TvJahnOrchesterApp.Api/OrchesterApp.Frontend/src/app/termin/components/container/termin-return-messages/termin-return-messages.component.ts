@@ -1,8 +1,13 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
+import { ModalController } from '@ionic/angular';
 import { Observable, tap } from 'rxjs';
-import { TerminResponseResponse } from 'src/app/termin/interfaces/termin-response-response';
+import { TerminResponseResponse, TerminRückmeldungsTableEntry } from 'src/app/termin/interfaces/termin-response-response';
 import { TerminService } from 'src/app/termin/services/termin.service';
+import { TerminReturnMessageDetailsComponent } from '../termin-return-message-details/termin-return-message-details.component';
+import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
+import { UpdateTerminResponseRequest } from 'src/app/termin/interfaces/update-termin-response-request';
+import { RefreshService } from 'src/app/core/services/refresh.service';
 
 @Component({
   selector: 'app-termin-return-messages',
@@ -17,7 +22,9 @@ export class TerminReturnMessagesComponent implements OnInit {
 
   constructor(
     private terminService: TerminService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private modalCtrl: ModalController,
+    private refreshService: RefreshService,
   ) { }
 
   ngOnInit() {
@@ -30,8 +37,27 @@ export class TerminReturnMessagesComponent implements OnInit {
     this.loadData(event);
   }
 
-  public openResponseDetails(responseId: string){
-    
+  public async openResponseDetails(response: TerminRückmeldungsTableEntry, responseDropdownValues: DropdownItem[]){
+    const modal = await this.modalCtrl.create({
+      component: TerminReturnMessageDetailsComponent,
+      componentProps: {
+        "response": response,
+        "responseDropdownValues": responseDropdownValues
+      }
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'cancel') return;
+    this.updateResponseDetails(data);
+  }
+
+  private updateResponseDetails(data: UpdateTerminResponseRequest){
+    data = {...data, terminId: this.terminId};
+    this.terminService.updateTerminResponseDetails(data).subscribe(() => {
+      this.loadData(null);
+      this.refreshService.refreshComponent('TerminListeComponent');
+      this.refreshService.refreshComponent('TerminDetails');
+    });
   }
 
   private loadData(refreshEvent: any = null) {

@@ -32,7 +32,8 @@ export interface TerminDetails {
 export interface TerminRückmeldung {
   zugesagt: number, 
   kommentarZusage?: string, 
-  rückmeldungDurchAnderesOrchestermitglied?: string, 
+  vornameOther?: string, 
+  nachnameOther?: string, 
   istAnwesend: boolean, 
   kommentarAnwesenheit?: string
 }

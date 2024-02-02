@@ -33,19 +33,21 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
         private record TerminDetails(string TerminName, int? TerminArt, int? TerminStatus, DateTime StartZeit, DateTime EndZeit, string? Straße, string? Hausnummer, string? Postleitzahl, string? Stadt, string? Zusatz, decimal? Latitude, decimal? Longitude, int[] Noten, int[] Uniform, string? WeitereInformationen, string? Image);
 
-        private record TerminRückmeldung(int Zugesagt, string? KommentarZusage, Guid? RückmeldungDurchAnderesOrchestermitglied, bool IstAnwesend, string? KommentarAnwesenheit);
+        private record TerminRückmeldung(int Zugesagt, string? KommentarZusage, string? VornameOther, string? NachnameOther, bool IstAnwesend, string? KommentarAnwesenheit);
 
         private class GetTerminByIdQueryHandler : IRequestHandler<GetTerminByIdQuery, GetTerminByIdResponse>
         {
             private readonly ITerminRepository terminRepository;
             private readonly ICurrentUserService currentUserService;
             private readonly IDropdownService dropdownService;
+            private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
 
-            public GetTerminByIdQueryHandler(ITerminRepository terminRepository, ICurrentUserService currentUserService, IDropdownService dropdownService)
+            public GetTerminByIdQueryHandler(ITerminRepository terminRepository, ICurrentUserService currentUserService, IDropdownService dropdownService, IOrchesterMitgliedRepository orchesterMitgliedRepository)
             {
                 this.terminRepository = terminRepository;
                 this.currentUserService = currentUserService;
                 this.dropdownService = dropdownService;
+                this.orchesterMitgliedRepository = orchesterMitgliedRepository;
             }
 
             public async Task<GetTerminByIdResponse> Handle(GetTerminByIdQuery request, CancellationToken cancellationToken)
@@ -63,10 +65,15 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 {
                     throw new Exception("Throw custom exception");
                 }
+                Domain.OrchesterMitgliedAggregate.OrchesterMitglied? otherOrchesterMitglied = null;
+                if (currrentUserRückmeldung.RückmeldungDurchAnderesOrchestermitglied is not null)
+                {
+                    otherOrchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(currrentUserRückmeldung.RückmeldungDurchAnderesOrchestermitglied, cancellationToken);
+                }
 
                 return new GetTerminByIdResponse(
                     new TerminDetails(termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, termin.EinsatzPlan.Treffpunkt.Straße, termin.EinsatzPlan.Treffpunkt.Hausnummer, termin.EinsatzPlan.Treffpunkt.Postleitzahl, termin.EinsatzPlan.Treffpunkt.Stadt, termin.EinsatzPlan.Treffpunkt.Zusatz, termin.EinsatzPlan.Treffpunkt.Latitude, termin.EinsatzPlan.Treffpunkt.Longitide, termin.EinsatzPlan.EinsatzplanNotenMappings.Select(n => n.NotenId).ToArray(), termin.EinsatzPlan.EinsatzplanUniformMappings.Select(t => t.UniformId).ToArray(), termin.EinsatzPlan.WeitereInformationen, termin.Image),
-                    new TerminRückmeldung(currrentUserRückmeldung.Zugesagt, currrentUserRückmeldung.KommentarZusage, currrentUserRückmeldung.RückmeldungDurchAnderesOrchestermitglied?.Value, currrentUserRückmeldung.IstAnwesend, currrentUserRückmeldung.KommentarAnwesenheit),
+                    new TerminRückmeldung(currrentUserRückmeldung.Zugesagt, currrentUserRückmeldung.KommentarZusage, otherOrchesterMitglied?.Vorname, otherOrchesterMitglied?.Nachname, currrentUserRückmeldung.IstAnwesend, currrentUserRückmeldung.KommentarAnwesenheit),
                     terminArtenDropdownValues,
                     terminStatusDropdownValues,
                     responseDropdownValues,

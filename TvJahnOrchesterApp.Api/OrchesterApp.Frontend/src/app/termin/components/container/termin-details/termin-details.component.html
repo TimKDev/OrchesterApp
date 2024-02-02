@@ -22,7 +22,7 @@
 
   <ng-container *ngIf="data$ | async as data; else loading">
     <!-- <pre>{{data | json}}</pre> -->
-    
+
 
     <div class="main-details">
       <div>
@@ -55,7 +55,7 @@
               <i class="termin-anfrage">Angefragter Termin</i>
             </ion-card-subtitle>
           </ion-card-header>
-  
+
           <ion-card-content>
             <div *ngIf="data.termin['weitereInformationen']" style="margin-bottom: 8px;">
               <p>
@@ -91,9 +91,9 @@
                 <b>Kommentar:</b> <br>
                 {{data['terminRückmeldung'].kommentarZusage}}
               </div>
-              <div class="comment-div" *ngIf="data['terminRückmeldung']['rückmeldungDurchAnderesOrchestermitglied']">
+              <div class="comment-div" *ngIf="data['terminRückmeldung']['vornameOther'] || data['terminRückmeldung']['nachnameOther']">
                 <b>Rückmeldung durch:</b> <br>
-                {{data['terminRückmeldung']['rückmeldungDurchAnderesOrchestermitglied']}}
+                {{data['terminRückmeldung']['vornameOther']}} {{data['terminRückmeldung']['nachnameOther']}}
               </div>
             </div>
             <div class="border-top" *ngIf="data['termin']['noten'] && data['termin']['noten'].length > 0">
@@ -105,7 +105,7 @@
               {{data['termin']['uniform'] | dropdownToString : data['uniformDropdownValues']}}
             </div>
           </ion-card-content>
-  
+
           <div class="button-div">
             <ion-button *ngIf="canEditTermin" fill="clear" (click)="openUpdateModal(data)">Bearbeiten</ion-button>
             <ion-button *ngIf="data.termin.endZeit > dateNow" fill="clear" (click)="openResponseModal(data)">Rückmeldung
@@ -113,7 +113,7 @@
           </div>
         </ion-card>
       </div>
-    
+
       <div>
         <ion-button *ngIf="canEditTermin" fill="clear" expand="block" (click)="setOpen(true)">
           Termin Aktionen

@@ -29,7 +29,7 @@
     <h2>{{data.terminName}}</h2>
     <ion-list>
       <ng-container *ngFor="let responseMessage of data['terminRückmeldungsTableEntries']">
-        <ion-item [button]="true" detail="false" (click)="openResponseDetails(responseMessage['rückmeldungsId'])">
+        <ion-item [button]="true" detail="false" (click)="openResponseDetails(responseMessage, data.responseDropdownValues)">
           <div class="triangle-base" [class.triangle-green]="responseMessage.zugesagt === 3"
             [class.triangle-yellow]="responseMessage.zugesagt === 1"
             [class.triangle-red]="responseMessage.zugesagt === 2"></div>
@@ -42,11 +42,7 @@
             </ion-text><br />
             <ion-note color="medium" class="ion-text-wrap">
               <b>Rückmeldung:</b> {{responseMessage.zugesagt | dropdown : data.responseDropdownValues}}
-              <span
-                *ngIf="responseMessage.vornameOther && responseMessage.nachnameOther">({{responseMessage.vornameOther}}
-                {{responseMessage.nachnameOther}})</span> <br>
-              <div *ngIf="responseMessage.kommentarZusage">Kommentar: {{responseMessage.kommentarZusage}} <br></div>
-              Letzte Rückmeldung: {{responseMessage['letzteRückmeldung'] | date : 'dd.MM.YYYY HH:mm'}}
+              <div *ngIf="responseMessage.kommentarZusage">{{responseMessage.kommentarZusage}}</div>
             </ion-note>
           </ion-label>
           <div class="metadata-end-wrapper" style="margin: 0;" slot="end">

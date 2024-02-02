@@ -16,13 +16,13 @@
       <ion-list>
         <ion-item>
           <ion-select label="Rückmeldung" label-placement="stacked" formControlName="zugesagt">
-            <ion-select-option *ngFor="let response of dataTermin.responseDropdownValues"
-              [value]="response.value" [disabled]="response.text === 'Nicht Zurückgemeldet'">{{response.text}}</ion-select-option>
+            <ion-select-option *ngFor="let response of dataTermin.responseDropdownValues" [value]="response.value"
+              [disabled]="response.text === 'Nicht Zurückgemeldet'">{{response.text}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-input formControlName="kommentarZusage" labelPlacement="stacked" label="Kommentar Zusage"
-            placeholder="Kommentar Zusage"></ion-input>
+          <ion-textarea [autoGrow]="true" formControlName="kommentarZusage" labelPlacement="stacked" label="Kommentar Zusage"
+            placeholder="Kommentar Zusage"></ion-textarea>
         </ion-item>
       </ion-list>
     </form>
