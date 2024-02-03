@@ -21,6 +21,7 @@ import { HistoryTerminListeComponent } from './components/container/history-term
 import { TerminOverviewComponent } from './components/container/termin-overview/termin-overview.component';
 import { SelectTerminsFromDatePipe } from './pipes/select-termins-from-date.pipe';
 import { TerminResponseModalComponent } from './components/container/termin-response-modal/termin-response-modal.component';
+import { TerminAnwesenheitControlModalComponent } from './components/container/termin-anwesenheit-control-modal/termin-anwesenheit-control-modal.component';
 
 
 @NgModule({
@@ -40,7 +41,8 @@ import { TerminResponseModalComponent } from './components/container/termin-resp
     HistoryTerminListeComponent,
     TerminOverviewComponent,
     SelectTerminsFromDatePipe,
-    TerminResponseModalComponent
+    TerminResponseModalComponent,
+    TerminAnwesenheitControlModalComponent
   ],
   imports: [
     SharedModule,

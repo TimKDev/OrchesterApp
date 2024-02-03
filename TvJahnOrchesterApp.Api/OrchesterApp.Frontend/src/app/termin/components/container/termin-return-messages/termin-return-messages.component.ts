@@ -8,6 +8,7 @@ import { TerminReturnMessageDetailsComponent } from '../termin-return-message-de
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { UpdateTerminResponseRequest } from 'src/app/termin/interfaces/update-termin-response-request';
 import { RefreshService } from 'src/app/core/services/refresh.service';
+import { TerminAnwesenheitControlModalComponent } from '../termin-anwesenheit-control-modal/termin-anwesenheit-control-modal.component';
 
 @Component({
   selector: 'app-termin-return-messages',
@@ -37,7 +38,7 @@ export class TerminReturnMessagesComponent implements OnInit {
     this.loadData(event);
   }
 
-  public async openResponseDetails(response: TerminRückmeldungsTableEntry, responseDropdownValues: DropdownItem[]){
+  public async openResponseDetails(response: TerminRückmeldungsTableEntry, responseDropdownValues: DropdownItem[]) {
     const modal = await this.modalCtrl.create({
       component: TerminReturnMessageDetailsComponent,
       componentProps: {
@@ -51,8 +52,25 @@ export class TerminReturnMessagesComponent implements OnInit {
     this.updateResponseDetails(data);
   }
 
-  private updateResponseDetails(data: UpdateTerminResponseRequest){
-    data = {...data, terminId: this.terminId};
+  public async openAnwesenheitsControlling(responses: TerminRückmeldungsTableEntry[]) {
+    const modal = await this.modalCtrl.create({
+      component: TerminAnwesenheitControlModalComponent,
+      componentProps: {
+        "dataResponses": responses
+      }
+    });
+    modal.present();
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'cancel') return;
+    this.updateAnwesenheitsResponses(data);
+  }
+
+  private updateAnwesenheitsResponses(data: any){
+
+  }
+
+  private updateResponseDetails(data: UpdateTerminResponseRequest) {
+    data = { ...data, terminId: this.terminId };
     this.terminService.updateTerminResponseDetails(data).subscribe(() => {
       this.loadData(null);
       this.refreshService.refreshComponent('TerminListeComponent');

@@ -18,3 +18,10 @@
 .triangle-red{
   border-left-color: red;
 }
+
+.main-details{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  height: 100%;
+}

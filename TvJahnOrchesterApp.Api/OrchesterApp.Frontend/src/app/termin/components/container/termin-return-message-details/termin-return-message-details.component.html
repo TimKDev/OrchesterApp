@@ -20,36 +20,40 @@
 
   <ng-container *ngIf="response; else loading">
     <div style="margin-bottom: 8px;">
-      <ion-text *ngIf="response.vornameOther || response.nachnameOther" class="default-color ion-text-wrap" style="font-size: 15px; color: white;">
+      <ion-text *ngIf="response.vornameOther || response.nachnameOther" class="default-color ion-text-wrap"
+        style="font-size: 15px; color: white;">
         <b>Rückmeldung durch:</b> {{response.vornameOther}} {{response.nachnameOther}} <br>
       </ion-text>
-      <ion-note color="medium" class="ion-text-wrap">
+      <ion-note *ngIf="response['letzteRückmeldung']" color="medium" class="ion-text-wrap">
         Letzte Rückmeldung: {{response['letzteRückmeldung'] | date : 'dd.MM.YYYY HH:mm'}}
-      </ion-note> 
+      </ion-note>
     </div>
 
     <form [formGroup]="formGroup">
       <ion-list>
         <ion-item>
           <ion-select label="Rückmeldung" label-placement="stacked" formControlName="zugesagt">
-            <ion-select-option *ngFor="let responseDropdown of responseDropdownValues"
-              [value]="responseDropdown.value" [disabled]="responseDropdown.text === 'Nicht Zurückgemeldet'">{{responseDropdown.text}}</ion-select-option>
+            <ion-select-option *ngFor="let responseDropdown of responseDropdownValues" [value]="responseDropdown.value"
+              [disabled]="responseDropdown.text === 'Nicht Zurückgemeldet'">{{responseDropdown.text}}</ion-select-option>
           </ion-select>
         </ion-item>
         <ion-item>
-          <ion-textarea [autoGrow]="true" formControlName="kommentarZusage" labelPlacement="stacked" label="Kommentar Zusage"
-            placeholder="Kommentar Zusage"></ion-textarea>
+          <ion-textarea [autoGrow]="true" formControlName="kommentarZusage" labelPlacement="stacked"
+            label="Kommentar Zusage" placeholder="Kommentar Zusage"></ion-textarea>
         </ion-item>
         <ion-item>
           <ion-checkbox formControlName="istAnwesend">Anwesend?</ion-checkbox>
         </ion-item>
         <ion-item>
-          <ion-textarea [autoGrow]="true" formControlName="kommentarAnwesenheit" labelPlacement="stacked" label="Kommentar Anwesenheit"
-            placeholder="Kommentar Anwesenheit"></ion-textarea>
+          <ion-textarea [autoGrow]="true" formControlName="kommentarAnwesenheit" labelPlacement="stacked"
+            label="Kommentar Anwesenheit" placeholder="Kommentar Anwesenheit"></ion-textarea>
         </ion-item>
       </ion-list>
     </form>
+
   </ng-container>
+
+
 
   <ng-template #loading>
     <app-loader></app-loader>

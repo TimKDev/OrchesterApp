@@ -22,35 +22,46 @@
 
   <ng-container *ngIf="data$ | async as data; else loading">
     <!-- <pre>{{data | json}}</pre> -->
-    <ion-button [routerLink]="'/tabs/termin/details/' + terminId + '/default'" class="back-btn">
-      <ion-icon slot="start" name="arrow-back"></ion-icon>
-      Zurück zu Termin Details
-    </ion-button>
-    <h2>{{data.terminName}}</h2>
-    <ion-list>
-      <ng-container *ngFor="let responseMessage of data['terminRückmeldungsTableEntries']">
-        <ion-item [button]="true" detail="false" (click)="openResponseDetails(responseMessage, data.responseDropdownValues)">
-          <div class="triangle-base" [class.triangle-green]="responseMessage.zugesagt === 3"
-            [class.triangle-yellow]="responseMessage.zugesagt === 1"
-            [class.triangle-red]="responseMessage.zugesagt === 2"></div>
-          <ion-label>
-            <h2>
-              <strong> {{responseMessage.vorname}} {{responseMessage.nachname}}</strong>
-            </h2>
-            <ion-text class="default-color ion-text-wrap" style="font-size: 14px; color: white;">
-              <b>Anwesenheit:</b> {{responseMessage.istAnwesend ? 'Ja' : 'Nein'}}
-            </ion-text><br />
-            <ion-note color="medium" class="ion-text-wrap">
-              <b>Rückmeldung:</b> {{responseMessage.zugesagt | dropdown : data.responseDropdownValues}}
-              <div *ngIf="responseMessage.kommentarZusage">{{responseMessage.kommentarZusage}}</div>
-            </ion-note>
-          </ion-label>
-          <div class="metadata-end-wrapper" style="margin: 0;" slot="end">
-            <ion-icon color="medium" name="chevron-forward"></ion-icon>
-          </div>
-        </ion-item>
-      </ng-container>
-    </ion-list>
+    <div class="main-details">
+      <div>
+        <ion-button [routerLink]="'/tabs/termin/details/' + terminId + '/default'" class="back-btn">
+          <ion-icon slot="start" name="arrow-back"></ion-icon>
+          Zurück zu Termin Details
+        </ion-button>
+        <h2>{{data.terminName}}</h2>
+        <ion-list>
+          <ng-container *ngFor="let responseMessage of data['terminRückmeldungsTableEntries']">
+            <ion-item [button]="true" detail="false"
+              (click)="openResponseDetails(responseMessage, data.responseDropdownValues)">
+              <div class="triangle-base" [class.triangle-green]="responseMessage.zugesagt === 3"
+                [class.triangle-yellow]="responseMessage.zugesagt === 1"
+                [class.triangle-red]="responseMessage.zugesagt === 2"></div>
+              <ion-label>
+                <h2>
+                  <strong> {{responseMessage.vorname}} {{responseMessage.nachname}}</strong>
+                </h2>
+                <ion-text class="default-color ion-text-wrap" style="font-size: 14px; color: white;">
+                  <b>Anwesenheit:</b> {{responseMessage.istAnwesend ? 'Ja' : 'Nein'}}
+                </ion-text><br />
+                <ion-note color="medium" class="ion-text-wrap">
+                  <b>Rückmeldung:</b> {{responseMessage.zugesagt | dropdown : data.responseDropdownValues}}
+                  <div *ngIf="responseMessage.kommentarZusage">{{responseMessage.kommentarZusage}}</div>
+                </ion-note>
+              </ion-label>
+              <div class="metadata-end-wrapper" style="margin: 0;" slot="end">
+                <ion-icon color="medium" name="chevron-forward"></ion-icon>
+              </div>
+            </ion-item>
+          </ng-container>
+        </ion-list>
+      </div>
+
+      <div>
+        <ion-button fill="clear" expand="block" (click)="openAnwesenheitsControlling(data['terminRückmeldungsTableEntries'])">
+          Öffne Anwesenheitskontrolle
+        </ion-button>
+      </div>
+    </div>
   </ng-container>
 
   <ng-template #loading>
