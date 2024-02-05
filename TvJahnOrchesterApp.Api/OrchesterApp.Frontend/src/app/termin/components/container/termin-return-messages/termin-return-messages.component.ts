@@ -66,7 +66,7 @@ export class TerminReturnMessagesComponent implements OnInit {
   }
 
   private updateAnwesenheitsResponses(data: any){
-
+    debugger
   }
 
   private updateResponseDetails(data: UpdateTerminResponseRequest) {

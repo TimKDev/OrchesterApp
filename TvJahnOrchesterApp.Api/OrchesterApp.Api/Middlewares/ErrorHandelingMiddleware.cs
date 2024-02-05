@@ -27,7 +27,7 @@ namespace TvJahnOrchesterApp.Api.Middlewares
                 {
                     case IServiceException:
                         await HandleServiceException(context, (IServiceException)ex);
-                        break;
+                        break; 
                     default:
                         await HandleUnknownExceptionAsync(context, ex);
                         break;

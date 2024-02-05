@@ -11,6 +11,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung
             app.MapUpdateInstrumentAndNotesRückmeldungEndpoint();
             app.MapUpdateRückmeldungEndpoint();
             app.MapUpdateRückmeldungForOtherUserEndpoint();
+            app.MapUpdateAnwesenheitsListeEndpoint();
         }
     }
 }

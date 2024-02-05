@@ -8,7 +8,7 @@ export interface TerminResponseResponse{
 }
 
 export interface TerminRückmeldungsTableEntry {
-  rückmeldungsId: string, 
+  orchesterMitgliedsId: string, 
   vorname: string, 
   nachname: string, 
   vornameOther?: string, 

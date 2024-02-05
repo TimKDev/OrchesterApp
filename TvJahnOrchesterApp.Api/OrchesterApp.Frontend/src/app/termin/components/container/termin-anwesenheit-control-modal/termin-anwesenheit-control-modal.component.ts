@@ -8,11 +8,21 @@ import { TerminRückmeldungsTableEntry } from 'src/app/termin/interfaces/termin-
   templateUrl: './termin-anwesenheit-control-modal.component.html',
   styleUrls: ['./termin-anwesenheit-control-modal.component.scss'],
 })
-export class TerminAnwesenheitControlModalComponent  implements OnInit {
+export class TerminAnwesenheitControlModalComponent implements OnInit {
 
   dataResponses!: TerminRückmeldungsTableEntry[];
 
-  formGroup = this.formBuilder.array;
+  formGroup = this.formBuilder.group({
+    items: this.formBuilder.array([
+      this.formBuilder.group({
+        orchesterMitgliedsId: [''],
+        vorname: [''],
+        nachname: [''],
+        istAnwesend: [false],
+        kommentarAnwesenheit: [null]
+      })
+    ])
+  });
 
   constructor(
     private modalCtrl: ModalController,
@@ -20,7 +30,7 @@ export class TerminAnwesenheitControlModalComponent  implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.formGroup.patchValue(this.dataResponses as any);
+    this.formGroup.patchValue({items: this.dataResponses as any});
   }
 
   cancel() {
