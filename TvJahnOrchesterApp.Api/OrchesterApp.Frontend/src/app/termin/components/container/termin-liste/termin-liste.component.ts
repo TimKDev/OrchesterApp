@@ -35,6 +35,7 @@ export class TerminListeComponent {
   ngOnInit(): void {
     let selectedTab = this.route.snapshot.params['activeTab'];
     if(selectedTab !== undefined) this.defaultSegment = selectedTab;
+    if (this.refreshService.needsRefreshing('TerminListeComponent')) return;
     this.loadData();
   }
 

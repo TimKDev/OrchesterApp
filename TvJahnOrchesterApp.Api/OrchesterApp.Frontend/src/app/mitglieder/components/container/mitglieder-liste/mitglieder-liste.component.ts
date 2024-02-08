@@ -32,6 +32,7 @@ export class MitgliederListeComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
+    if(this.refreshService.needsRefreshing('MitgliederListeComponent')) return;
     this.loadData();
   }
 

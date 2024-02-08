@@ -13,6 +13,7 @@ export class TerminReturnMessageDetailsComponent  implements OnInit {
 
   public response!: TerminRückmeldungsTableEntry;
   public responseDropdownValues!: DropdownItem[];
+  public lastResponse?: Date;
 
   formGroup = this.formBuilder.group({
     orchesterMitgliedsId: [''],

@@ -8,6 +8,7 @@ import { TerminDetailsResponse } from '../interfaces/termin-details-response';
 import { UpdateTerminRequest } from '../interfaces/update-termin-request';
 import { UpdateTerminResponseRequest } from '../interfaces/update-termin-response-request';
 import { TerminResponseResponse } from '../interfaces/termin-response-response';
+import { UpdateTerminAnwesenheitsRequest } from '../interfaces/update-termin-anwesenheits-request';
 
 @Injectable({
   providedIn: 'root'
@@ -61,5 +62,9 @@ export class TerminService {
 
   public updateTerminResponseDetails(data: UpdateTerminResponseRequest){
     return this.http.put('api/termin/rückmeldung/forUser', data);
+  }
+
+  public updateTerminAnwesenheitControl(data: UpdateTerminAnwesenheitsRequest){
+    return this.http.put('api/termin/anwesenheit', data);
   }
 }

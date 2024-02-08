@@ -12,7 +12,6 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ng-container *ngIf="dataResponses; else loading">
-    <pre>{{formGroup.value | json}}</pre>
     <form [formGroup]="formGroup">
       <ng-container formArrayName="items">
         <div *ngFor="let item of dataResponses; let i = index" [formGroupName]="i">

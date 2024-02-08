@@ -9,6 +9,7 @@ import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { UpdateTerminResponseRequest } from 'src/app/termin/interfaces/update-termin-response-request';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { TerminAnwesenheitControlModalComponent } from '../termin-anwesenheit-control-modal/termin-anwesenheit-control-modal.component';
+import { UpdateTerminAnwesenheitsRequest } from 'src/app/termin/interfaces/update-termin-anwesenheits-request';
 
 @Component({
   selector: 'app-termin-return-messages',
@@ -66,7 +67,13 @@ export class TerminReturnMessagesComponent implements OnInit {
   }
 
   private updateAnwesenheitsResponses(data: any){
-    debugger
+    let dataPut: UpdateTerminAnwesenheitsRequest = { anwesenheitResponseEntries: data.items, terminId: this.terminId };
+    debugger;
+    this.terminService.updateTerminAnwesenheitControl(dataPut).subscribe(() => {
+      this.loadData(null);
+      this.refreshService.refreshComponent('TerminListeComponent');
+      this.refreshService.refreshComponent('TerminDetails');
+    });
   }
 
   private updateResponseDetails(data: UpdateTerminResponseRequest) {
@@ -82,7 +89,7 @@ export class TerminReturnMessagesComponent implements OnInit {
     this.data$ = this.terminService.getTerminResponses(this.terminId).pipe(
       tap((data) => {
         data.terminRückmeldungsTableEntries.forEach(entry => {
-          entry.letzteRückmeldung = new Date(entry.letzteRückmeldung + 'Z')
+          entry.letzteRückmeldung = entry.letzteRückmeldung ? new Date(entry.letzteRückmeldung + 'Z') : undefined
         });
         if (refreshEvent) {
           refreshEvent.target.complete();

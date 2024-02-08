@@ -44,6 +44,7 @@ export class TerminDetailsComponent implements OnInit {
   ngOnInit() {
     this.activeTab = this.route.snapshot.params['activeTab'];
     this.terminId = this.route.snapshot.params['terminId'];
+    if (this.refreshService.needsRefreshing('TerminDetails')) return;
     this.loadData();
   }
 

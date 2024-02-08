@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 
 namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
 {
@@ -10,17 +11,21 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
     {
         public static void MapGetAllAnwesenheitsListeEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/termin/anwesenheit/all", GetAnwesenheitsListe)
+            app.MapGet("api/termin/anwesenheit/all/{year}", GetAnwesenheitsListe)
                 .RequireAuthorization();
         }
 
-        private static async Task<IResult> GetAnwesenheitsListe(ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> GetAnwesenheitsListe(int year, ISender sender, CancellationToken cancellationToken)
         {
-            var response = await sender.Send(new GetAllAnwesenheitsListeQuery(), cancellationToken);
+            var response = await sender.Send(new GetAllAnwesenheitsListeQuery(year), cancellationToken);
             return Results.Ok(response);
         }
 
-        private record GetAllAnwesenheitsListeQuery() : IRequest<GlobalAnwesenheitsListenEintrag[]>;
+        private record GlobalAnwesenheitsListenEintrag(Guid OrchesterMitgliedsId, int Ranking, string Name, int anwesendeTermin, int totalTermine, int AnwesendProzent);
+
+        private record GlobalAnwesenheitsEintragWithoutRanking(Guid OrchesterMitgliedsId, string Name, int anwesendeTermin, int totalTermine, int AnwesendProzent);
+
+        private record GetAllAnwesenheitsListeQuery(int Year) : IRequest<GlobalAnwesenheitsListenEintrag[]>;
 
         private class GetAllAnwesenheitsListeQueryHandler : IRequestHandler<GetAllAnwesenheitsListeQuery, GlobalAnwesenheitsListenEintrag[]>
         {
@@ -37,22 +42,23 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
             {
                 var result = new List<GlobalAnwesenheitsListenEintrag>();
                 var allTermins = await _terminRepository.GetAll(cancellationToken);
-                foreach (var termin in allTermins)
+                var terminsOfYear = allTermins.Where(t => t.EinsatzPlan.EndZeit.Year == request.Year);
+                Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)> orchesterMitgliedsInfo = new Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)>();
+                foreach(var termin in terminsOfYear)
                 {
-                    foreach (var rückmeldung in termin.TerminRückmeldungOrchesterMitglieder)
-                    {
-                        // Sehr ineffizient: Dieselben Daten werden mehrfach aus der DB geholt, Orchestermitglieder könnten hier gecached werden oder zumindest über Navigation Properties eingebunden werden:
-                        var orchesterMitglied = await _orchesterMitgliedRepository.GetByIdAsync(rückmeldung.OrchesterMitgliedsId, cancellationToken);
-                        result.Add(new GlobalAnwesenheitsListenEintrag(
-                            orchesterMitglied.Vorname,
-                            orchesterMitglied.Nachname,
-                            orchesterMitglied.Id.Value,
-                            termin.Name,
-                            rückmeldung.IstAnwesend,
-                            termin.EinsatzPlan.StartZeit
-                        ));
-                    }
+                    //Fill info
                 }
+
+                var resultWithoutRanking = new List<GlobalAnwesenheitsEintragWithoutRanking>();
+                var orchesterMitglieder = await _orchesterMitgliedRepository.GetAllAsync(cancellationToken);
+                foreach(var orchesterMitglied in orchesterMitglieder)
+                {
+                    var info = orchesterMitgliedsInfo![orchesterMitglied.Id];
+                    var percentValue = ;
+                    resultWithoutRanking.Add(new GlobalAnwesenheitsEintragWithoutRanking(orchesterMitglied.Id.Value, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", info.numberAnwesendeTermine, info.totalNumberTermine, percentValue));
+                }
+
+
                 return result.ToArray();
             }
         }
