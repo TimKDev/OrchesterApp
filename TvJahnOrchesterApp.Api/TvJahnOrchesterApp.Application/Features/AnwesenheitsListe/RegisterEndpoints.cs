@@ -9,7 +9,6 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe
         {
             app.MapGetAllAnwesenheitsListeEndpoint();
             app.MapGetTerminAnwesenheitsListeEndpoint();
-            app.MapUpdateAnwesenheitsListeEndpoint();
         }
     }
 }

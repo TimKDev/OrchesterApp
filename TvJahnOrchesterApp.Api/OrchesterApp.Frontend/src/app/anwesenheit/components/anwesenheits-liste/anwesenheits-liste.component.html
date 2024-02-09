@@ -16,6 +16,37 @@
     </ion-toolbar>
   </ion-header>
 
-  Dies wird die Anwesenheitsliste.
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <!-- <pre>{{data | json}}</pre> -->
+    <div class="table-container">
+      <table class="styled-table">
+        <thead>
+            <tr>
+                <th>Ranking</th>
+                <th>Name</th>
+                <th>Anwesenheit</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr *ngFor="let row of data" [class.active-row]="nameOfCurrentUser === row.name">
+                <td>{{row.ranking}}</td>
+                <td>{{row.name}}</td>
+                <td>{{row.anwesendeTermin}} ({{row.anwesendProzent}}%)</td>
+            </tr>
+        </tbody>
+      </table>  
+    </div>
+      
+  </ng-container>
+
+  <ng-template #loading>
+    <ng-container *ngIf="!isRefreshing">
+      <app-loader></app-loader>
+    </ng-container>
+  </ng-template>
 
 </ion-content>

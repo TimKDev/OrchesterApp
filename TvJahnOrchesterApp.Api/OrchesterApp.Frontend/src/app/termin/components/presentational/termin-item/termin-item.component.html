@@ -13,13 +13,15 @@
       'dd.MM.YYYY'}}: {{terminStartTime | date :
       'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</ion-text><br />
     <ion-note color="medium" class="ion-text-wrap">
-      Mein Status: {{terminResponse}}
-      <ion-icon class="alert-icon" *ngIf="(terminResponse === 'Nicht Zurückgemeldet') && !(terminEndTime < dateNow)"
-        name="alert-outline" color="danger">
-      </ion-icon><br>
-      <ng-container *ngIf="terminEndTime < dateNow">
-        Teilgenommen: {{istAnwesend ? 'Ja' : 'Nein'}}
+      <ng-container *ngIf="!(terminEndTime < dateNow)">
+        Mein Status: {{terminResponse}}
+        <ion-icon class="alert-icon" *ngIf="(terminResponse === 'Nicht Zurückgemeldet')"
+          name="alert-outline" color="danger">
+        </ion-icon><br>
       </ng-container>
+      <ng-container *ngIf="terminEndTime < dateNow">
+        Teilgenommen: {{istAnwesend ? 'Ja' : 'Nein'}}<br>
+      </ng-container> 
       <ng-container *ngIf="highAuth">
         Rückmeldungen: <span style="color: red;">{{negativeResponse}}</span> | <span>{{noResponse}}</span> | <span
           style="color: greenyellow;">{{positiveResponse}}</span>
