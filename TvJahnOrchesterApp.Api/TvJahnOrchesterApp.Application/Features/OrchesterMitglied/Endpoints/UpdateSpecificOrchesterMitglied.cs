@@ -30,7 +30,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok("Orchestermitglied wurde erfolgreich geupdated.");
         }
 
-        private record UpdateSpecificOrchesterMitgliederQuery(Guid Id, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Handynummer, string Telefonnummer) : IRequest<Unit>;
+        private record UpdateSpecificOrchesterMitgliederQuery(Guid Id, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Handynummer, string Telefonnummer, string? Image) : IRequest<Unit>;
 
         private class UpdateSpecificOrchesterMitgliederQueryHandler : IRequestHandler<UpdateSpecificOrchesterMitgliederQuery, Unit>
         {
@@ -58,7 +58,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 var adresse = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz);
 
 
-                orchesterMitglied.UserUpdates(adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer);
+                orchesterMitglied.UserUpdates(adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.Image);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

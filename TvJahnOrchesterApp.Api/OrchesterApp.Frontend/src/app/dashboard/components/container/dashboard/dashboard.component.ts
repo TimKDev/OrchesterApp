@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable, tap } from 'rxjs';
 import { RefreshService } from 'src/app/core/services/refresh.service';
-import { DashboardService } from '../../services/dashboard.service';
-import { DashboardGetResponse } from '../../interfaces/dashboard-get-response';
+import { DashboardService } from '../../../services/dashboard.service';
+import { DashboardGetResponse } from '../../../interfaces/dashboard-get-response';
 
 @Component({
   selector: 'app-dashboard',

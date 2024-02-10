@@ -28,6 +28,12 @@
             placeholder="Nachname"></ion-input>
         </ion-item>
         <ion-item>
+          <ion-avatar *ngIf="formGroup.get('image')!.value" slot="start">
+            <img [src]="'data:image/png;base64,' + formGroup.get('image')!.value" />
+          </ion-avatar>
+          <ion-button (click)="uploadImage()">Bild hochladen</ion-button>
+        </ion-item>
+        <ion-item>
           <ion-input formControlName="geburtstag" type="date" labelPlacement="stacked" label="Geburtstag"
             placeholder="Geburtstag"></ion-input>
         </ion-item>

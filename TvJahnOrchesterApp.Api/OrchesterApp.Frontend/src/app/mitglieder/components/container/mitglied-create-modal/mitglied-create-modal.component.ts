@@ -6,6 +6,7 @@ import { Observable, tap, combineLatest, map } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { DropdownService } from 'src/app/core/services/dropdown.service';
+import { PhotoService } from 'src/app/core/services/photo.service';
 import { CreateMitgliedRequest } from 'src/app/mitglieder/interfaces/create-mitglied-request';
 import { GetSpecificMitgliederResponse } from 'src/app/mitglieder/interfaces/get-specific-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
@@ -38,13 +39,15 @@ export class MitgliedCreateModalComponent implements OnInit {
     defaultNotenStimme: null as number | null,
     memberSince: null as string | null,
     position: [] as number[],
+    image: ''
   });
 
   constructor(
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
     private us: Unsubscribe,
-    private dropdownService: DropdownService
+    private dropdownService: DropdownService,
+    private photoService: PhotoService
   ) { }
 
   ngOnInit() {
@@ -70,6 +73,12 @@ export class MitgliedCreateModalComponent implements OnInit {
       geburtstag: value.geburtstag ? new Date(value.geburtstag) : null,
       memberSince: value.memberSince ? new Date(value.memberSince) : null,
     }, 'confirm');
+  }
+
+  async uploadImage(){
+    const imageAs64 = await this.photoService.getPhotoAsBase64();
+    this.formGroup.patchValue({image: imageAs64});
+    this.formGroup.markAsDirty();
   }
 
 }

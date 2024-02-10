@@ -26,7 +26,7 @@
       <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
         (ionInput)="search($event)"></ion-searchbar>
 
-      <app-contact-item *ngFor="let contact of displayedData" [name]="contact.vorname + ' ' + contact.nachname"
+      <app-contact-item *ngFor="let contact of displayedData" [name]="contact.vorname + ' ' + contact.nachname" [image]="contact.image"
         [instruments]="contact.defaultInstrument" [memberSince]="contact.memberSinceInYears?.toString()"
         [routerLink]="'details/' + contact.id">
       </app-contact-item>

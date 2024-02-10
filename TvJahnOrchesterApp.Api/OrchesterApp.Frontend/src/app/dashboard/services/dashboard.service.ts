@@ -12,6 +12,6 @@ export class DashboardService {
   ) { }
 
   public getDashboardData(){
-    return this.http.get<DashboardGetResponse>('api/dashboard/nextTermins');
+    return this.http.get<DashboardGetResponse>('api/dashboard');
   }
 }

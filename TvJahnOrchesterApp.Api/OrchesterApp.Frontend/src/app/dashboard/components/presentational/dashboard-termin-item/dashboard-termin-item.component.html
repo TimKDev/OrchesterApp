@@ -1,0 +1,25 @@
+<ion-item [button]="true" detail="false" (click)="emitOpenTermin()" class="default-color">
+  <ion-label>
+    <h2>
+      <strong *ngIf="terminStatus !== 'Abgesagt'; else abgesagt"> {{terminName}}</strong>
+      <ng-template #abgesagt>
+        <s><strong>{{terminName}}</strong></s>
+      </ng-template>
+    </h2>
+    <ion-text class="default-color ion-text-wrap" style="font-size: 14px; color: white;">Datum: {{terminStartTime | date
+      :
+      'dd.MM.YYYY'}}: {{terminStartTime | date :
+      'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</ion-text><br />
+    <ion-note color="medium" class="ion-text-wrap">
+      <ng-container *ngIf="!(terminEndTime < dateNow)">
+        Mein Status: {{terminResponse}}
+        <ion-icon class="alert-icon" *ngIf="(terminResponse === 'Nicht Zurückgemeldet')" name="alert-outline"
+          color="danger">
+        </ion-icon><br>
+      </ng-container>
+    </ion-note>
+  </ion-label>
+  <div class="metadata-end-wrapper" style="margin: 0;" slot="end">
+    <ion-icon color="medium" name="chevron-forward"></ion-icon>
+  </div>
+</ion-item>

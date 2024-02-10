@@ -9,6 +9,7 @@ export class ContactItemComponent  implements OnInit {
 
   @Input() name!: string;
   @Input() instruments?: string;
+  @Input() image?: string;
   @Input() memberSince?: string;
 
   constructor() { }

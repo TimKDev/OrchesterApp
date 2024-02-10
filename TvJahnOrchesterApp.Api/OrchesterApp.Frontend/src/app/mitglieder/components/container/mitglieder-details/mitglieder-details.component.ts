@@ -15,6 +15,7 @@ import { RefreshService } from 'src/app/core/services/refresh.service';
 import { MitgliedUpdateModalComponent } from '../mitglied-update-modal/mitglied-update-modal.component';
 import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 import { RolesService } from 'src/app/authentication/services/roles.service';
+import { PhotoService } from 'src/app/core/services/photo.service';
 
 @Component({
   selector: 'app-mitglieder-details',

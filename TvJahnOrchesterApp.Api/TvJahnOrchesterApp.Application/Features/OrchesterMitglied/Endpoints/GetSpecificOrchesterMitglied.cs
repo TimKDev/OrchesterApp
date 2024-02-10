@@ -28,7 +28,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok(specificOrchesterMitglied);
         }
 
-        private record GetSpecificOrchesterMitgliederResponse(Guid Id, string Vorname, string Nachname, Adresse Adresse, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, DateTime? MemberSince, int? MemberSinceInYears, int? OrchesterMitgliedsStatus, int[] Positions);
+        private record GetSpecificOrchesterMitgliederResponse(Guid Id, string Vorname, string Nachname, Adresse Adresse, DateTime? Geburtstag, string? Telefonnummer, string? Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, DateTime? MemberSince, int? MemberSinceInYears, int? OrchesterMitgliedsStatus, int[] Positions, string? Image);
 
         private record GetSpecificOrchesterMitgliederQuery(Guid Id) : IRequest<GetSpecificOrchesterMitgliederResponse>;
 
@@ -44,7 +44,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             public async Task<GetSpecificOrchesterMitgliederResponse> Handle(GetSpecificOrchesterMitgliederQuery request, CancellationToken cancellationToken)
             {
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(OrchesterMitgliedsId.Create(request.Id), cancellationToken);
-                return new GetSpecificOrchesterMitgliederResponse(orchesterMitglied.Id.Value, orchesterMitglied.Vorname, orchesterMitglied.Nachname, orchesterMitglied.Adresse, orchesterMitglied.Geburtstag, orchesterMitglied.Telefonnummer, orchesterMitglied.Handynummer, orchesterMitglied.DefaultInstrument, orchesterMitglied.DefaultNotenStimme, orchesterMitglied.MemberSince, orchesterMitglied.MemberSinceInYears, orchesterMitglied.OrchesterMitgliedsStatus, orchesterMitglied.PositionMappings.Select(m => m.PositionId).ToArray());
+                return new GetSpecificOrchesterMitgliederResponse(orchesterMitglied.Id.Value, orchesterMitglied.Vorname, orchesterMitglied.Nachname, orchesterMitglied.Adresse, orchesterMitglied.Geburtstag, orchesterMitglied.Telefonnummer, orchesterMitglied.Handynummer, orchesterMitglied.DefaultInstrument, orchesterMitglied.DefaultNotenStimme, orchesterMitglied.MemberSince, orchesterMitglied.MemberSinceInYears, orchesterMitglied.OrchesterMitgliedsStatus, orchesterMitglied.PositionMappings.Select(m => m.PositionId).ToArray(), orchesterMitglied.Image);
             }
         }
     }

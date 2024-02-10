@@ -4,6 +4,7 @@ import { FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { Observable, tap } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
+import { PhotoService } from 'src/app/core/services/photo.service';
 import { GetSpecificMitgliederResponse } from 'src/app/mitglieder/interfaces/get-specific-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 
@@ -22,7 +23,8 @@ export class MitgliedUpdateModalComponent  implements OnInit {
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
     private mitgliederService: MitgliederService,
-    private us: Unsubscribe
+    private us: Unsubscribe,
+    private photoService: PhotoService
   ) { }
 
   ngOnInit(){
@@ -45,6 +47,7 @@ export class MitgliedUpdateModalComponent  implements OnInit {
     geburtstag: '',
     telefonnummer: '',
     handynummer: '',
+    image: ''
   });
 
   cancel() {
@@ -52,9 +55,14 @@ export class MitgliedUpdateModalComponent  implements OnInit {
   }
 
   confirm() {
-    debugger;
     let value = this.formGroup.getRawValue();
     return this.modalCtrl.dismiss({...value, geburtstag: value.geburtstag === "" ? null : value.geburtstag}, 'confirm');
+  }
+
+  async uploadImage(){
+    const imageAs64 = await this.photoService.getPhotoAsBase64();
+    this.formGroup.patchValue({image: imageAs64});
+    this.formGroup.markAsDirty();
   }
 
 }

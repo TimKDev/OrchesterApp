@@ -11,12 +11,21 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ng-container *ngIf="data$ | async as data; else loading">
-    <h3>{{data.vorname + ' ' + data.nachname}}</h3>
+    <ion-item>
+      <ion-avatar *ngIf="formGroup.get('image')!.value" slot="start">
+        <img [src]="'data:image/png;base64,' + formGroup.get('image')!.value" />
+      </ion-avatar>
+      <h3>{{data.vorname + ' ' + data.nachname}}</h3>
+    </ion-item>
+    
     <form [formGroup]="formGroup">
       <ion-list class="mg-top">
         <ion-list-header color="tertiary">
           <ion-label>Persönliche Angaben</ion-label>
         </ion-list-header>
+        <ion-item>
+          <ion-button (click)="uploadImage()">Bild hochladen</ion-button>
+        </ion-item>
         <ion-item>
           <ion-input formControlName="geburtstag" type="date" labelPlacement="stacked" label="Geburtstag" placeholder="Geburtstag"></ion-input>
         </ion-item>

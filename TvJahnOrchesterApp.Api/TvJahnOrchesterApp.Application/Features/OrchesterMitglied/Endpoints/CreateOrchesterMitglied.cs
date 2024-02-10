@@ -30,7 +30,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok("Orchestermitglied wurde erfolgreich erstellt.");
         }
 
-        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, int[] Position, string RegisterKey, DateTime? MemberSince) : IRequest<Unit>;
+        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, int[] Position, string RegisterKey, DateTime? MemberSince, string? Image) : IRequest<Unit>;
 
         private class CreateOrchesterMitgliedCommandValidation : AbstractValidator<CreateOrchesterMitgliedCommand>
         {
@@ -60,7 +60,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                     throw new DuplicatedOrchesterMitgliedsNameException($"Name: {request.Vorname} {request.Nachname} existiert bereits.");
                 }
 
-                var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.RegisterKey, (int)MitgliedsStatusEnum.aktiv);
+                var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.RegisterKey, (int)MitgliedsStatusEnum.aktiv, request.Image);
 
                 orchesterMitglied.UpdatePositions(request.Position);
                 orchesterMitglied.SetMemberSince(request.MemberSince);

@@ -13,8 +13,8 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
     {
         public static void MapOrchesterMitgliedGetAllEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapGet("api/orchester-mitglied/get-all", GetAllOrchesterMitglieder);
-                //.RequireAuthorization();
+            app.MapGet("api/orchester-mitglied/get-all", GetAllOrchesterMitglieder)
+                .RequireAuthorization();
         }
 
         private static async Task<IResult> GetAllOrchesterMitglieder(ISender sender, CancellationToken cancellationToken)
@@ -23,7 +23,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
             return Results.Ok(allOrchesterMitglieder);
         }
 
-        private record GetAllOrchesterMitgliederResponse(Guid Id, string Vorname, string Nachname, string? DefaultInstrument, int? MemberSinceInYears);
+        private record GetAllOrchesterMitgliederResponse(Guid Id, string Vorname, string Nachname, string? Image, string? DefaultInstrument, int? MemberSinceInYears);
 
         private record GetAllOrchesterMitgliederQuery : IRequest<GetAllOrchesterMitgliederResponse[]> { };
 
@@ -45,11 +45,11 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
                 foreach (var mitglied in orchesterMitglieder)
                 {
                     Instrument? instrument = null;
-                    if(mitglied.DefaultInstrument is not null)
+                    if (mitglied.DefaultInstrument is not null)
                     {
                         instrument = await instrumentRepository.GetByIdAsync((int)mitglied.DefaultInstrument, cancellationToken);
                     }
-                    result.Add(new GetAllOrchesterMitgliederResponse(mitglied.Id.Value, mitglied.Vorname, mitglied.Nachname, instrument?.Value, mitglied.MemberSinceInYears));
+                    result.Add(new GetAllOrchesterMitgliederResponse(mitglied.Id.Value, mitglied.Vorname, mitglied.Nachname, mitglied.Image, instrument?.Value, mitglied.MemberSinceInYears));
                    
                 }
                 return result.ToArray();

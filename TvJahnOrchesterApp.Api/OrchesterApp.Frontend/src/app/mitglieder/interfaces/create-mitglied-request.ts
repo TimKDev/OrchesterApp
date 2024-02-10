@@ -13,5 +13,6 @@ export interface CreateMitgliedRequest{
   defaultInstrument?: number, 
   defaultNotenStimme?: number, 
   memberSince?: string,
-  position: number[]
+  position: number[],
+  image?: string,
 }

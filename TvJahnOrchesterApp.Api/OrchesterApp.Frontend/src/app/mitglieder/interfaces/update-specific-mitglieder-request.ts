@@ -8,4 +8,5 @@ export interface UpdateSpecificMitgliederRequest{
   geburtstag: Date, 
   telefonnummer: string, 
   handynummer: string, 
+  image?: string,
 }

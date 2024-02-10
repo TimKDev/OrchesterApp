@@ -1,6 +1,6 @@
 <ion-item [button]="true" detail="false">
   <ion-avatar aria-hidden="true" slot="start">
-    <img alt="" src="https://ionicframework.com/docs/img/demos/avatar.svg" />
+    <img alt="" [src]="image ? 'data:image/png;base64,' + image : '/assets/avatar.svg'"/>
   </ion-avatar>
   <ion-label>
     <h2>

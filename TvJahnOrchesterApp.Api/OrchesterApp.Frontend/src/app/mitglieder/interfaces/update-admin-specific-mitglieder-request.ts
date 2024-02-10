@@ -16,5 +16,6 @@ export interface UpdateAdminSpecificMitgliederRequest{
   defaultNotenStimme: number, 
   mitgliedsStatus: number, 
   memberSince: string, 
-  positionIds: number[]
+  positionIds: number[],
+  image?: string
 }

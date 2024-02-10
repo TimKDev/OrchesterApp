@@ -22,7 +22,8 @@ export class PhotoService {
     return (await Camera.getPhoto({
       resultType: CameraResultType.Base64,
       source: CameraSource.Photos,
-      quality: 100
+      quality: 100,
+      allowEditing: true,
     })).base64String;
   }
 

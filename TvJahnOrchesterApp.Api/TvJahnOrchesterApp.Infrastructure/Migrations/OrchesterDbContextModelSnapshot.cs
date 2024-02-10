@@ -610,6 +610,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                     b.Property<string>("Handynummer")
                         .HasColumnType("nvarchar(max)");
 
+                    b.Property<string>("Image")
+                        .HasColumnType("nvarchar(max)");
+
                     b.Property<DateTime?>("MemberSince")
                         .HasColumnType("datetime2");
 

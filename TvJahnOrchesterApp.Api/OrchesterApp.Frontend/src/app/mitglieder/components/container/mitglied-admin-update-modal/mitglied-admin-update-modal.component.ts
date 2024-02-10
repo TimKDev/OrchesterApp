@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { Observable, tap } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
+import { PhotoService } from 'src/app/core/services/photo.service';
 import { GetSpecificMitgliederResponse } from 'src/app/mitglieder/interfaces/get-specific-mitglieder-response';
 import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 
@@ -27,7 +28,8 @@ export class MitgliedAdminUpdateModalComponent implements OnInit{
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
     private mitgliederService: MitgliederService,
-    private us: Unsubscribe
+    private us: Unsubscribe,
+    private photoService: PhotoService
   ) { }
 
   ngOnInit(){
@@ -57,7 +59,8 @@ export class MitgliedAdminUpdateModalComponent implements OnInit{
     defaultNotenStimme: 0,
     memberSince: '',
     positions: [[] as number[]],
-    orchesterMitgliedsStatus: 1
+    orchesterMitgliedsStatus: 1,
+    image: ''
   });
 
   cancel() {
@@ -71,6 +74,12 @@ export class MitgliedAdminUpdateModalComponent implements OnInit{
       geburtstag: value.geburtstag === "" ? null : value.geburtstag,
       memberSince: value.memberSince === "" ? null : value.memberSince
     }, 'confirm');
+  }
+
+  async uploadImage(){
+    const imageAs64 = await this.photoService.getPhotoAsBase64();
+    this.formGroup.patchValue({image: imageAs64});
+    this.formGroup.markAsDirty();
   }
 
 }

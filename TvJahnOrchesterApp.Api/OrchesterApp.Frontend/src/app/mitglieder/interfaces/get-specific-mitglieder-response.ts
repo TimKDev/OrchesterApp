@@ -13,6 +13,7 @@ export interface GetSpecificMitgliederResponse{
   memberSince?: Date, 
   memberSinceInYears?: number,
   orchesterMitgliedsStatus?: number,
-  positions: number[]
+  positions: number[],
+  image?: string,
 }
 

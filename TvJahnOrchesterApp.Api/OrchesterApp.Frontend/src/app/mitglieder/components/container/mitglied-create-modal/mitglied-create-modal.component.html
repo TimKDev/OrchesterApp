@@ -26,6 +26,12 @@
         <ion-item>
           <ion-input formControlName="registerKey" labelPlacement="stacked" label="Registrierungsschlüssel" placeholder="Registrierungsschlüssel"></ion-input>
         </ion-item>
+        <ion-item>
+          <ion-avatar *ngIf="formGroup.get('image')!.value" slot="start">
+            <img [src]="'data:image/png;base64,' + formGroup.get('image')!.value" />
+          </ion-avatar>
+          <ion-button (click)="uploadImage()">Bild hochladen</ion-button>
+        </ion-item>
       </ion-list>
       
       <ion-list class="mg-top">
@@ -82,7 +88,7 @@
           <ion-input formControlName="memberSince" type="date" labelPlacement="stacked" label="Mitglied seit" placeholder="Mitglied seit"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-select label="Positions" label-placement="stacked" [multiple]="true" formControlName="positions">
+          <ion-select label="Positions" label-placement="stacked" [multiple]="true" formControlName="position">
             <ion-select-option *ngFor="let position of data.positionDropdown" [value]="position.value">{{position.text}}</ion-select-option>
           </ion-select>
         </ion-item>
