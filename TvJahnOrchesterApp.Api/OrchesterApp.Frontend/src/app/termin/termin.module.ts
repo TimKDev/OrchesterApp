@@ -11,9 +11,7 @@ import { TerminDetailsComponent } from './components/container/termin-details/te
 import { TerminEinsatzplanComponent } from './components/container/termin-einsatzplan/termin-einsatzplan.component';
 import { TerminReturnMessageDetailsComponent } from './components/container/termin-return-message-details/termin-return-message-details.component';
 import { TerminReturnMessagesComponent } from './components/container/termin-return-messages/termin-return-messages.component';
-import { UpdateTerminEinsatzplanComponent } from './components/container/update-termin-einsatzplan/update-termin-einsatzplan.component';
 import { UpdateTerminModalComponent } from './components/container/update-termin-modal/update-termin-modal.component';
-import { UpdateTerminReturnMessageDetailsComponent } from './components/container/update-termin-return-message-details/update-termin-return-message-details.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { TerminItemComponent } from './components/presentational/termin-item/termin-item.component';
 import { CurrentTerminListeComponent } from './components/container/current-termin-liste/current-termin-liste.component';
@@ -33,9 +31,7 @@ import { TerminAnwesenheitControlModalComponent } from './components/container/t
     TerminEinsatzplanComponent,
     TerminReturnMessageDetailsComponent,
     TerminReturnMessagesComponent,
-    UpdateTerminEinsatzplanComponent,
     UpdateTerminModalComponent,
-    UpdateTerminReturnMessageDetailsComponent,
     TerminItemComponent,
     CurrentTerminListeComponent,
     HistoryTerminListeComponent,

@@ -14,18 +14,18 @@ export class SideMenuComponent implements OnInit {
     {
       title: 'Einstellungen',
       url: '/tabs/settings',
-      icon: 'calendar'
+      icon: 'settings'
     },
     {
       title: 'Hilfe',
       url: '/tabs/help',
-      icon: 'people'
+      icon: 'help-circle'
     },
-    {
-      title: 'Feedback',
-      url: '/tabs/feedback',
-      icon: 'map'
-    },
+    // {
+    //   title: 'Feedback',
+    //   url: '/tabs/feedback',
+    //   icon: 'chatbox'
+    // },
   ];
 
   managementPages = [

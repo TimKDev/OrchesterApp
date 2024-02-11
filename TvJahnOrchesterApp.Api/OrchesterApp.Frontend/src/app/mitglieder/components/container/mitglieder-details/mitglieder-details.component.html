@@ -27,7 +27,41 @@
       Zurück zur Übersicht
     </ion-button>
 
-    <ion-list>
+    <ion-card>
+      <ion-item>
+        <ion-avatar *ngIf="res.data.image" slot="start" class="profil-img">
+          <img [src]="'data:image/png;base64,' + res.data.image" />
+        </ion-avatar>
+        <h3>{{res.data.vorname + ' ' + res.data.nachname}}</h3>
+      </ion-item>
+      
+      <ion-card-content>
+        <div *ngIf="res.data.memberSince">
+          Mitgliedsstatus: <span style="color: white;">{{res.data.orchesterMitgliedsStatus | dropdown : res.mitgliedsStatusDropdown}}</span><br>
+          Mitglied seit: <span style="color: white;">{{res.data.memberSince | date : 'dd.MM.YYYY'}}</span>
+        </div>
+        <div *ngIf="res.data.adresse['straße']"  class="border-top">
+          <b>Adresse:</b> <br>
+          {{res.data.adresse['straße']}} {{res.data.adresse.hausnummer}}, <br>
+          {{res.data.adresse.postleitzahl}}, {{res.data.adresse.stadt}} <br>
+          {{res.data.adresse.zusatz}}
+        </div>
+        <div *ngIf="res.data.geburtstag" class="border-top">
+          Geburtstag: {{res.data.geburtstag | date : 'dd.MM.YYYY'}}
+        </div>
+        <div class="border-top">
+          <div *ngIf="res.data.handynummer">
+            Handy: <a [href]="'tel:' + res.data.handynummer">{{res.data.handynummer}}</a>
+          </div>
+          <div *ngIf="res.data.telefonnummer">
+            Telefon: <a [href]="'tel:' + res.data.telefonnummer">{{res.data.telefonnummer}}</a>
+          </div>
+        </div>
+      </ion-card-content>
+     
+    </ion-card>
+
+    <!-- <ion-list>
       <ion-list-header color="tertiary">
         <ion-label>Persönliche Angaben</ion-label>
       </ion-list-header>
@@ -67,7 +101,7 @@
           [value]="res.data.positions | dropdown : res.positionDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
       <app-data-item label="Mitglieds Status"
         [value]="res.data.orchesterMitgliedsStatus | dropdown : res.mitgliedsStatusDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
-    </ion-list>
+    </ion-list> -->
 
     <ion-button *ngIf="canUpdateMitglied" fill="clear" expand="block" (click)="setOpen(true)">
       Bearbeite Mitglied

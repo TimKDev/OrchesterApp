@@ -22,8 +22,6 @@
 
   <ng-container *ngIf="data$ | async as data; else loading">
     <!-- <pre>{{data | json}}</pre> -->
-
-
     <div class="main-details">
       <div>
         <ion-button [routerLink]="'/tabs/termin/' + activeTab" class="back-btn">

@@ -3,7 +3,7 @@
     <ion-buttons slot="start">
       <ion-button (click)="cancel()">Zurück</ion-button>
     </ion-buttons>
-    <ion-title>Termin Rückmeldung</ion-title>
+      <ion-title>Rückmeldung</ion-title>
     <ion-buttons slot="end">
       <ion-button (click)="confirm()" [strong]="true"
         [disabled]="!formGroup.dirty || formGroup.invalid">Speichern</ion-button>
@@ -12,6 +12,7 @@
 </ion-header>
 <ion-content class="ion-padding">
   <ng-container *ngIf="dataTermin; else loading">
+    <h2>{{dataTermin.termin.terminName}}</h2>
     <form [formGroup]="formGroup">
       <ion-list>
         <ion-item>
