@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'app-dashboard-birthday-item',
@@ -6,6 +6,10 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./dashboard-birthday-item.component.scss'],
 })
 export class DashboardBirthdayItemComponent  implements OnInit {
+
+  @Input() name!: string;
+  @Input() image?: string;
+  @Input() birthday!: Date;
 
   constructor() { }
 

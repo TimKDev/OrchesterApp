@@ -6,11 +6,15 @@ import { IonicModule } from '@ionic/angular';
 import { FormsModule } from '@angular/forms';
 import { DashboardComponent } from './components/container/dashboard/dashboard.component';
 import { SharedModule } from '../shared/shared.module';
+import { DashboardTerminItemComponent } from './components/presentational/dashboard-termin-item/dashboard-termin-item.component';
+import { DashboardBirthdayItemComponent } from './components/presentational/dashboard-birthday-item/dashboard-birthday-item.component';
 
 
 @NgModule({
   declarations: [
-    DashboardComponent
+    DashboardComponent,
+    DashboardTerminItemComponent,
+    DashboardBirthdayItemComponent
   ],
   imports: [
     CommonModule,

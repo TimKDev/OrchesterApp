@@ -3,6 +3,7 @@ import { Observable, tap } from 'rxjs';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { DashboardService } from '../../../services/dashboard.service';
 import { DashboardGetResponse } from '../../../interfaces/dashboard-get-response';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -16,7 +17,8 @@ export class DashboardComponent implements OnInit{
 
   constructor(
     private dashboardService: DashboardService,
-    private refreshService: RefreshService
+    private refreshService: RefreshService,
+    private router: Router
   ) { }
 
   ngOnInit(): void {
@@ -43,5 +45,9 @@ export class DashboardComponent implements OnInit{
   public handleRefresh(event: any) {
     this.isRefreshing = true;
     this.loadData(event);
+  }
+
+  openTermin(terminId: string){
+    this.router.navigate(['tabs', 'termin', 'details', terminId, 'default']);
   }
 }

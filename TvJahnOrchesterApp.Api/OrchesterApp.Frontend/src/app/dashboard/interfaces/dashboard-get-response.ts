@@ -18,5 +18,6 @@ export interface TerminOverview {
    name: string, 
    terminArt?: number, 
    startZeit: Date, 
+   endZeit: Date, 
    zugesagt: number
 }
