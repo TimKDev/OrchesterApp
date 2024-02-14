@@ -3,9 +3,9 @@ using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
 using TvJahnOrchesterApp.Application.Common.Behaviors;
+using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization;
 using TvJahnOrchesterApp.Application.Features.Dropdown;
-using TvJahnOrchesterApp.Application.Features.Dropdown.Services;
 
 namespace TvJahnOrchesterApp.Application
 {

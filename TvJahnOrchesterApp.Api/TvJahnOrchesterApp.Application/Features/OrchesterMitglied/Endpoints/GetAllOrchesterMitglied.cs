@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Domain.Common.Entities;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
@@ -49,7 +50,10 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
                     {
                         instrument = await instrumentRepository.GetByIdAsync((int)mitglied.DefaultInstrument, cancellationToken);
                     }
-                    result.Add(new GetAllOrchesterMitgliederResponse(mitglied.Id.Value, mitglied.Vorname, mitglied.Nachname, mitglied.Image, instrument?.Value, mitglied.MemberSinceInYears));
+
+                    var imageAsBase64 = TransformImageService.ConvertByteArrayToBase64(mitglied.Image);
+
+                    result.Add(new GetAllOrchesterMitgliederResponse(mitglied.Id.Value, mitglied.Vorname, mitglied.Nachname, imageAsBase64, instrument?.Value, mitglied.MemberSinceInYears));
                    
                 }
                 return result.ToArray();

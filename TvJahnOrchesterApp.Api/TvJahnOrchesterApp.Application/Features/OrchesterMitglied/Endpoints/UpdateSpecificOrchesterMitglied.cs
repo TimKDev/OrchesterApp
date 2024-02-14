@@ -10,6 +10,7 @@ using System.Threading.Tasks;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
@@ -57,8 +58,9 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(mitgliedsId, cancellationToken);
                 var adresse = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz);
 
+                var imageAsByteArray = TransformImageService.ConvertToCompressedByteArray(request.Image);
 
-                orchesterMitglied.UserUpdates(adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.Image);
+                orchesterMitglied.UserUpdates(adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, imageAsByteArray);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

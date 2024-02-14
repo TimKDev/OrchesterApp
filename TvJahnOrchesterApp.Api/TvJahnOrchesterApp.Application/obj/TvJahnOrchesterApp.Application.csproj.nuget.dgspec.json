@@ -59,6 +59,10 @@
               "target": "Package",
               "version": "[11.3.0, )"
             },
+            "Magick.NET-Q16-AnyCPU": {
+              "target": "Package",
+              "version": "[13.5.0, )"
+            },
             "MediatR": {
               "target": "Package",
               "version": "[12.1.1, )"

@@ -8,6 +8,7 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Infrastructure.Persistence.Repositories;
@@ -44,7 +45,9 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             public async Task<GetSpecificOrchesterMitgliederResponse> Handle(GetSpecificOrchesterMitgliederQuery request, CancellationToken cancellationToken)
             {
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(OrchesterMitgliedsId.Create(request.Id), cancellationToken);
-                return new GetSpecificOrchesterMitgliederResponse(orchesterMitglied.Id.Value, orchesterMitglied.Vorname, orchesterMitglied.Nachname, orchesterMitglied.Adresse, orchesterMitglied.Geburtstag, orchesterMitglied.Telefonnummer, orchesterMitglied.Handynummer, orchesterMitglied.DefaultInstrument, orchesterMitglied.DefaultNotenStimme, orchesterMitglied.MemberSince, orchesterMitglied.MemberSinceInYears, orchesterMitglied.OrchesterMitgliedsStatus, orchesterMitglied.PositionMappings.Select(m => m.PositionId).ToArray(), orchesterMitglied.Image);
+                var imageAsBase64 = TransformImageService.ConvertByteArrayToBase64(orchesterMitglied.Image);
+
+                return new GetSpecificOrchesterMitgliederResponse(orchesterMitglied.Id.Value, orchesterMitglied.Vorname, orchesterMitglied.Nachname, orchesterMitglied.Adresse, orchesterMitglied.Geburtstag, orchesterMitglied.Telefonnummer, orchesterMitglied.Handynummer, orchesterMitglied.DefaultInstrument, orchesterMitglied.DefaultNotenStimme, orchesterMitglied.MemberSince, orchesterMitglied.MemberSinceInYears, orchesterMitglied.OrchesterMitgliedsStatus, orchesterMitglied.PositionMappings.Select(m => m.PositionId).ToArray(), imageAsBase64);
             }
         }
     }

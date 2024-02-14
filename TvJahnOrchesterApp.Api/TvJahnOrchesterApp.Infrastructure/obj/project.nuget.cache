@@ -1,6 +1,6 @@
 {
   "version": 2,
-  "dgSpecHash": "wU/o2ziRtaVKyrY2mYV65yoh+kPF8DFGgdd5d/uPZ8oHyDQ3fb8zirPS5cfcxLDEO247TrRiwqJjuA8H8AGZPw==",
+  "dgSpecHash": "DTlTtjeZO2drqyj4iSf+H3K3KTcE15qY1dJjxI7nF75zUs7nLodP2Pc+th5g41IXxE9Owu2fX2+AQjSJHE6vTA==",
   "success": true,
   "projectFilePath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Infrastructure\\TvJahnOrchesterApp.Infrastructure.csproj",
   "expectedPackageFiles": [
@@ -11,6 +11,8 @@
     "C:\\Users\\timke\\.nuget\\packages\\fluentvalidation.aspnetcore\\11.3.0\\fluentvalidation.aspnetcore.11.3.0.nupkg.sha512",
     "C:\\Users\\timke\\.nuget\\packages\\fluentvalidation.dependencyinjectionextensions\\11.5.1\\fluentvalidation.dependencyinjectionextensions.11.5.1.nupkg.sha512",
     "C:\\Users\\timke\\.nuget\\packages\\humanizer.core\\2.14.1\\humanizer.core.2.14.1.nupkg.sha512",
+    "C:\\Users\\timke\\.nuget\\packages\\magick.net-q16-anycpu\\13.5.0\\magick.net-q16-anycpu.13.5.0.nupkg.sha512",
+    "C:\\Users\\timke\\.nuget\\packages\\magick.net.core\\13.5.0\\magick.net.core.13.5.0.nupkg.sha512",
     "C:\\Users\\timke\\.nuget\\packages\\mailkit\\3.2.0\\mailkit.3.2.0.nupkg.sha512",
     "C:\\Users\\timke\\.nuget\\packages\\mediatr\\12.1.1\\mediatr.12.1.1.nupkg.sha512",
     "C:\\Users\\timke\\.nuget\\packages\\mediatr.contracts\\2.0.1\\mediatr.contracts.2.0.1.nupkg.sha512",

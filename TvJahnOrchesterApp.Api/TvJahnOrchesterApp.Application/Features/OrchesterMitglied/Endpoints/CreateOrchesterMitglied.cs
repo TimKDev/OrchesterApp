@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Models.Errors;
 using TvJahnOrchesterApp.Contracts.OrchestraMembers;
@@ -60,7 +61,9 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                     throw new DuplicatedOrchesterMitgliedsNameException($"Name: {request.Vorname} {request.Nachname} existiert bereits.");
                 }
 
-                var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.RegisterKey, (int)MitgliedsStatusEnum.aktiv, request.Image);
+                var imageAsCompressedByteArray = TransformImageService.ConvertToCompressedByteArray(request.Image);
+
+                var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.RegisterKey, (int)MitgliedsStatusEnum.aktiv, imageAsCompressedByteArray);
 
                 orchesterMitglied.UpdatePositions(request.Position);
                 orchesterMitglied.SetMemberSince(request.MemberSince);

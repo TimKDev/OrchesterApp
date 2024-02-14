@@ -16,7 +16,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         public string Vorname { get; private set; } = null!;
         public string Nachname { get; private set; } = null!;
-        public string? Image {  get; private set; }
+        public byte[]? Image {  get; private set; }
         public Adresse Adresse { get; private set; } = null!;
         public DateTime? Geburtstag { get; private set; }
         public string? Telefonnummer { get; private set; }  
@@ -36,7 +36,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         private OrchesterMitglied() { }
        
-        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string? handynummer, int? defaultInstrument, int? defaultNotenStimme, int mitgliedsStatus, string registrationKey, string? image) : base(id)
+        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string? handynummer, int? defaultInstrument, int? defaultNotenStimme, int mitgliedsStatus, string registrationKey, byte[]? image) : base(id)
         {
             Vorname = vorname;
             Nachname = nachname;
@@ -52,7 +52,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             Image = image;
         }
 
-        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string? handynummer, int? defaultInstrument, int? defaultNotenStimme, string registrationKey, int mitgliedsStatus, string? image)
+        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string? handynummer, int? defaultInstrument, int? defaultNotenStimme, string registrationKey, int mitgliedsStatus, byte[]? image)
         {
             return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag, telefonnummer, handynummer, defaultInstrument, defaultNotenStimme, mitgliedsStatus, registrationKey, image);
         }
@@ -144,7 +144,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             }
         }
 
-        public void UserUpdates(Adresse adresse, DateTime? geburtstag, string handynummer, string telefonnummer, string? image)
+        public void UserUpdates(Adresse adresse, DateTime? geburtstag, string handynummer, string telefonnummer, byte[]? image)
         {
             Adresse = adresse;
             Geburtstag = geburtstag;
@@ -153,7 +153,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             Image = image;
         }
 
-        public void AdminUpdates(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string telefonnummer, string handynummer, int? defaultInstrument, int? defaultNotenStimme, int? mitgliedsStatus, DateTime? memberSince, int[] positionIds, string? image)
+        public void AdminUpdates(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string telefonnummer, string handynummer, int? defaultInstrument, int? defaultNotenStimme, int? mitgliedsStatus, DateTime? memberSince, int[] positionIds, byte[]? image)
         {
             Vorname = vorname;
             Nachname = nachname;
