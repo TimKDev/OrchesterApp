@@ -14,14 +14,14 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMitgliedsId",
                 table: "OrchestermitgliedPositions");
 
-            migrationBuilder.AlterColumn<byte[]>(
-                name: "Image",
-                table: "Orchestermitglieder",
-                type: "varbinary(max)",
-                nullable: true,
-                oldClrType: typeof(string),
-                oldType: "nvarchar(max)",
-                oldNullable: true);
+            migrationBuilder.DropColumn(name: "Image",
+                table: "Orchestermitglieder");
+
+            migrationBuilder.AddColumn<byte[]>(
+                            name: "Image",
+                            table: "Orchestermitglieder",
+                            type: "varbinary(max)",
+                            nullable: true);
 
             migrationBuilder.AddForeignKey(
                 name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMitgliedsId",

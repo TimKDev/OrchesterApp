@@ -4,6 +4,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
+using TvJahnOrchesterApp.Application.Common.Errors;
 
 namespace TvJahnOrchesterApp.Application.Common.Services
 {
@@ -16,7 +17,7 @@ namespace TvJahnOrchesterApp.Application.Common.Services
                 return null;
             }
             var imageAsByteArray = ConvertBase64ToByteArray(base64String);
-            var targetSizeInBytes = 256000;
+            var targetSizeInBytes = 70000;
             return CompressImage(imageAsByteArray!, targetSizeInBytes);
         }
 
@@ -51,16 +52,22 @@ namespace TvJahnOrchesterApp.Application.Common.Services
                     image.Settings.Compression = CompressionMethod.JPEG;
                     using (MemoryStream compressedStream = new MemoryStream())
                     {
+                        image.Resize(256, 256);
                         image.Write(compressedStream);
                         compressedStream.Position = 0;
+                        int loopCounter = 0;
 
-                        // Check the size and iteratively adjust quality to meet the target size
                         while (compressedStream.Length > targetSizeInBytes)
                         {
-                            image.Quality -= 5; // Adjust the quality by increments
+                            if(loopCounter > 20)
+                            {
+                                throw new ImageToBigException();
+                            }
+                            image.Quality -= 20 + loopCounter; // Adjust the quality by increments
                             compressedStream.SetLength(0);
                             image.Write(compressedStream);
                             compressedStream.Position = 0;
+                            loopCounter++;
                         }
 
                         return compressedStream.ToArray();
