@@ -20,6 +20,7 @@ export const USER_ROLES_KEY = 'user-roles';
 
 export const CLIENT_URI_EMAIL_CONFIRMATION = `${environment.basePathFrontend}auth/email-confirmation`;
 export const CLIENT_URI_PASSWORD_RESET = `${environment.basePathFrontend}auth/reset-password`;
+export const CLIENT_URI_REGISTRATION = `${environment.basePathFrontend}auth/registration`;
 
 @Injectable({
   providedIn: 'root'

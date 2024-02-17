@@ -16,7 +16,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization
             app.MapLoginUserEndpoint();
             app.MapDeleteUserEndpoint();
             app.MapGetUserAdminInfosEndpoint();
-            app.MapAddRegistrationKeyEndpoint();
+            app.MapSendRegistrationKeyEndpoint();
             app.MapRevokeUserLockedOutEndpoint();
             app.MapChangeEmailUserEndpoint();
             app.MapConfirmEmailEndpoint();

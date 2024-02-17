@@ -45,15 +45,13 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
             private readonly IUnitOfWork unitOfWork;
             private readonly ITokenService tokenService;
-            private readonly IVerificationEmailService verificationEmailService;
 
-            public RegisterUserCommandHandler(UserManager<User> userManager, IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork, ITokenService tokenService, IVerificationEmailService verificationEmailService)
+            public RegisterUserCommandHandler(UserManager<User> userManager, IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork, ITokenService tokenService)
             {
                 this.userManager = userManager;
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
                 this.unitOfWork = unitOfWork;
                 this.tokenService = tokenService;
-                this.verificationEmailService = verificationEmailService;
             }
 
             //TTODO: Methode in kleinere Methoden unterteilen (Clean Code). Versuchen möglichst viel Logik in die Domäne zu verlegen.
@@ -81,10 +79,9 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 }
 
                 var createdUser = await userManager.FindByEmailAsync(request.Email);
+                createdUser!.EmailConfirmed = true;
                 orchesterMitglied.ConnectWithUser(createdUser!.Id);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
-
-                await verificationEmailService.SendTo(user, request.ClientUri);
 
                 //var token = await tokenService.GenerateAccessTokenAsync(createdUser);
                 //var refreshToken = tokenService.GenerateRefreshToken();

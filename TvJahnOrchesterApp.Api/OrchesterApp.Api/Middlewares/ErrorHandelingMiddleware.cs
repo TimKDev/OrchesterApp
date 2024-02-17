@@ -13,12 +13,10 @@ namespace TvJahnOrchesterApp.Api.Middlewares
             _next = next;
         }
 
-        // Diese Methode wird automatisch vor jedem Http Request ausgeführt, wenn diese Klasse der Pipeline als Middleware hinzugefügt wird.
         public async Task Invoke(HttpContext context)
         {
             try
             {
-                // Hier wird der Request des Users ausgeführt, d.h. wenn hier irgendwo ein Fehler bei der Bearbeitung des Http Requests auftritt, wird der Catch Block ausgeführt => Globales Error Handeling für ein Request.
                 await _next(context);
             }
             catch (Exception ex)

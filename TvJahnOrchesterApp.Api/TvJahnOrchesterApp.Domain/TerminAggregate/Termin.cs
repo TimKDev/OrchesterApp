@@ -13,7 +13,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
         private readonly List<TerminRückmeldungOrchestermitglied> _terminRückmeldungOrchesterMitglieder = new();
 
         public string Name { get; private set; } = null!;
-        public string? Image { get; private set; } = null!;
+        public byte[]? Image { get; private set; } = null!;
         public int? TerminArt { get; private set; }
         public int? TerminStatus { get; private set; }
         public EinsatzPlan EinsatzPlan { get; private set; } = null!;
@@ -22,7 +22,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
 
         private Termin() { }
 
-        private Termin(TerminId id, TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int? terminArt, EinsatzPlan einsatzPlan, int terminStatus, string? image = null, AbstimmungsId? abstimmungsId = null) : base(id)
+        private Termin(TerminId id, TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int? terminArt, EinsatzPlan einsatzPlan, int terminStatus, byte[]? image = null, AbstimmungsId? abstimmungsId = null) : base(id)
         {
             Name = name;
             TerminArt = terminArt;
@@ -33,7 +33,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
             Image = image;
         }
 
-        public static Termin Create(TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int? terminArt, DateTime startZeit, DateTime endZeit, Adresse treffPunkt, List<int>? noten, List<int>? uniform, AbstimmungsId? abstimmungsId = null, TerminStatusEnum terminStatus = TerminStatusEnum.Zugesagt, string? zusätzlicheInfo = null, string? image = null)
+        public static Termin Create(TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder, string name, int? terminArt, DateTime startZeit, DateTime endZeit, Adresse treffPunkt, List<int>? noten, List<int>? uniform, AbstimmungsId? abstimmungsId = null, TerminStatusEnum terminStatus = TerminStatusEnum.Zugesagt, string? zusätzlicheInfo = null, byte[]? image = null)
         {
             var notenMappings = noten?.Select(EinsatzplanNotenMapping.Create);
             var uniformMappings = uniform?.Select(EinsatzplanUniformMapping.Create);
@@ -69,7 +69,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate
             Name = name is not null ? name : Name;
         }
 
-        public void UpdateImage(string? image)
+        public void UpdateImage(byte[]? image)
         {
             Image = image;
         }

@@ -7,6 +7,7 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
+using TvJahnOrchesterApp.Application.Common.Services;
 
 namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 {
@@ -46,7 +47,8 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 termin.UpdateName(request.TerminName);
                 termin.UpdateTerminArt(request.TerminArt);
                 termin.UpdateTerminStatus(request.TerminStatus);
-                termin.UpdateImage(request.Image);
+                var imageCompressed = TransformImageService.ConvertToCompressedByteArray(request.Image);
+                termin.UpdateImage(imageCompressed);
 
                 var adress = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz, request.Latitude, request.Longitude);
                 termin.EinsatzPlan.UpdateEinsatzPlan(request.StartZeit, request.EndZeit, adress, request.WeitereInformationen);

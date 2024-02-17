@@ -32,7 +32,6 @@
         <ion-card-title>{{data.orchesterMitgliedsName}}</ion-card-title>
       </ion-card-header>
       <ion-list lines="full">
-        <app-data-item label="Registrierungsschlüssel" [value]="data.registrationKey"></app-data-item>
         <app-data-item label="Registrierungsschlüssel Ablaufdatum"
           [value]="data.registerKeyExpirationDate | date : 'dd.MM.yyyy hh:mm'"></app-data-item>
         <app-data-item label="E-Mail" [value]="data.email ?? 'nicht verbunden'"></app-data-item>

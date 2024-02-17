@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Contracts.OrchestraMembers;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
@@ -56,7 +57,9 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
                 var treffpunkt = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz, request.Latitude, request.Longitude);
 
-                var termin = Domain.TerminAggregate.Termin.Create(terminRückmeldungOrchesterMitglieder, request.Name, request.TerminArt, request.StartZeit, request.EndZeit, treffpunkt, request.Noten?.ToList(), request.Uniform?.ToList(), zusätzlicheInfo: request.WeitereInformationen, image: request.Image);
+                var compressedImage = TransformImageService.ConvertToCompressedByteArray(request.Image);
+
+                var termin = Domain.TerminAggregate.Termin.Create(terminRückmeldungOrchesterMitglieder, request.Name, request.TerminArt, request.StartZeit, request.EndZeit, treffpunkt, request.Noten?.ToList(), request.Uniform?.ToList(), zusätzlicheInfo: request.WeitereInformationen, image: compressedImage);
 
                 return await terminRepository.Save(termin, cancellationToken);
             }

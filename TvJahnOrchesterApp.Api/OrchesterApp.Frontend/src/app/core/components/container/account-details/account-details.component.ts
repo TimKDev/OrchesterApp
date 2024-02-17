@@ -7,6 +7,7 @@ import { GetAdminInfoDetailsResponse } from 'src/app/core/interfaces/get-admin-i
 import { ActivatedRoute, Router } from '@angular/router';
 import { confirmDialog } from 'src/app/core/helper/confirm';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
+import { CLIENT_URI_REGISTRATION } from 'src/app/authentication/services/authentication.service';
 
 @Component({
   selector: 'app-account-details',
@@ -87,13 +88,6 @@ export class AccountDetailsComponent {
 
     },
     {
-      text: 'Erneuere Registrierungsschlüssel',
-      data: {
-        action: 'share',
-      },
-      handler: () => this.updateRegistrationKey()
-    },
-    {
       text: 'Entferne Lockout',
       handler: () => this.removeLockOut()
     },
@@ -108,11 +102,11 @@ export class AccountDetailsComponent {
 
   public actionSheetButtonsWithoutUser = [
     {
-      text: 'Erneuere Registrierungsschlüssel',
+      text: 'Sende Registrierungsmail',
       data: {
         action: 'share',
       },
-      handler: () => this.updateRegistrationKey()
+      handler: () => this.sendRegistrationMail()
     },
     {
       text: 'Zurück',
@@ -132,11 +126,11 @@ export class AccountDetailsComponent {
     })
   }
 
-  private async updateRegistrationKey() {
+  private async sendRegistrationMail() {
     const alert = await this.alertController.create({
-      header: 'Erstelle Registrierungsschlüssel',
+      header: 'Versende Registrierungmail',
       inputs: [{
-        placeholder: 'Registrierungsschlüssel',
+        placeholder: 'E-Mail',
         type: 'text',
       }],
       buttons: [{
@@ -144,7 +138,7 @@ export class AccountDetailsComponent {
         role: 'cancel',
       },
       {
-        text: 'Erstellen',
+        text: 'Senden',
         role: 'confirm',
       }],
     });
@@ -153,7 +147,12 @@ export class AccountDetailsComponent {
     let alertResult = await alert.onDidDismiss();
     if (alertResult.role === 'confirm') {
       this.data$ = null;
-      this.accountManagementService.updateRegistrationKey({ newRegistrationKey: alertResult.data.values["0"], orchesterMitgliedsId: this.orchesterMitgliedsId }).subscribe(() => {
+      this.accountManagementService.sendRegistrationMail(
+        { 
+          email: alertResult.data.values["0"], 
+          orchesterMitgliedsId: this.orchesterMitgliedsId,
+          clientUri: CLIENT_URI_REGISTRATION
+        }).subscribe(() => {
         this.data$ = this.getData();
       })
     }

@@ -8,22 +8,6 @@
   <form (ngSubmit)="register()" [formGroup]="registerForm">
     <div class="input-group">
       <ion-item>
-        <ion-input aria-label="Registrierungskey" type="string" placeholder="Registrierungskey"
-          formControlName="registerationKey"></ion-input>
-      </ion-item>
-      <div *ngIf="(registerationKey?.dirty || registerationKey?.touched) && registerationKey?.errors" class="errors">
-        <span *ngIf="registerationKey?.errors?.['required']">Registrierungskey wird benötigt. </span>
-      </div>
-
-      <ion-item>
-        <ion-input aria-label="Email" type="email" placeholder="Email" formControlName="email"></ion-input>
-      </ion-item>
-      <div *ngIf="(email?.dirty || email?.touched) && email?.errors" class="errors">
-        <span *ngIf="email?.errors?.['required']">Email wird benötigt. </span>
-        <span *ngIf="email?.errors?.['email']">Emailform ist nicht valide. </span>
-      </div>
-
-      <ion-item>
         <app-show-hide-password>
           <ion-input aria-label="Passwort" type="password" placeholder="Passwort"
             formControlName="password"></ion-input>

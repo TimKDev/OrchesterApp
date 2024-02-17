@@ -68,7 +68,6 @@ export class TerminReturnMessagesComponent implements OnInit {
 
   private updateAnwesenheitsResponses(data: any){
     let dataPut: UpdateTerminAnwesenheitsRequest = { anwesenheitResponseEntries: data.items, terminId: this.terminId };
-    debugger;
     this.terminService.updateTerminAnwesenheitControl(dataPut).subscribe(() => {
       this.loadData(null);
       this.refreshService.refreshComponent('TerminListeComponent');

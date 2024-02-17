@@ -3,7 +3,7 @@ import { AuthHttpClientService } from './auth-http-client.service';
 import { GetAdminInfoDetailsResponse } from '../interfaces/get-admin-info-details-response';
 import { GetAdminInfoResponse } from '../interfaces/get-admin-info-response';
 import { UpdateRolesRequest } from '../interfaces/update-roles-request';
-import { UpdateRegistrationKeyRequest } from '../interfaces/update-registration-key-request';
+import { SendRegistrationMailRequest } from '../interfaces/update-registration-key-request';
 import { RemoveLockOutRequest } from '../interfaces/remove-lock-out-request';
 
 @Injectable({
@@ -35,7 +35,7 @@ export class AccountManagementService {
     return this.http.post<void>('api/authentication/remove-user-locked-out', request);
   }
 
-  updateRegistrationKey(request: UpdateRegistrationKeyRequest){
-    return this.http.post<void>('api/authentication/add-registration-key', request);
+  sendRegistrationMail(request: SendRegistrationMailRequest){
+    return this.http.post<void>('api/authentication/send-registration-key', request);
   }
 }

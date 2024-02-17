@@ -1,4 +1,5 @@
-export interface UpdateRegistrationKeyRequest {
+export interface SendRegistrationMailRequest {
   orchesterMitgliedsId: string,
-  newRegistrationKey: string 
+  clientUri: string,
+  email: string 
 }

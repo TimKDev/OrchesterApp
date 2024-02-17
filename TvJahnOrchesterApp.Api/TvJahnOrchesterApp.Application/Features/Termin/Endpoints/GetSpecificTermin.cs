@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Enums;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Services;
@@ -72,7 +73,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 }
 
                 return new GetTerminByIdResponse(
-                    new TerminDetails(termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, termin.EinsatzPlan.Treffpunkt.Straße, termin.EinsatzPlan.Treffpunkt.Hausnummer, termin.EinsatzPlan.Treffpunkt.Postleitzahl, termin.EinsatzPlan.Treffpunkt.Stadt, termin.EinsatzPlan.Treffpunkt.Zusatz, termin.EinsatzPlan.Treffpunkt.Latitude, termin.EinsatzPlan.Treffpunkt.Longitide, termin.EinsatzPlan.EinsatzplanNotenMappings.Select(n => n.NotenId).ToArray(), termin.EinsatzPlan.EinsatzplanUniformMappings.Select(t => t.UniformId).ToArray(), termin.EinsatzPlan.WeitereInformationen, termin.Image),
+                    new TerminDetails(termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, termin.EinsatzPlan.Treffpunkt.Straße, termin.EinsatzPlan.Treffpunkt.Hausnummer, termin.EinsatzPlan.Treffpunkt.Postleitzahl, termin.EinsatzPlan.Treffpunkt.Stadt, termin.EinsatzPlan.Treffpunkt.Zusatz, termin.EinsatzPlan.Treffpunkt.Latitude, termin.EinsatzPlan.Treffpunkt.Longitide, termin.EinsatzPlan.EinsatzplanNotenMappings.Select(n => n.NotenId).ToArray(), termin.EinsatzPlan.EinsatzplanUniformMappings.Select(t => t.UniformId).ToArray(), termin.EinsatzPlan.WeitereInformationen, TransformImageService.ConvertByteArrayToBase64(termin.Image)),
                     new TerminRückmeldung(currrentUserRückmeldung.Zugesagt, currrentUserRückmeldung.KommentarZusage, otherOrchesterMitglied?.Vorname, otherOrchesterMitglied?.Nachname, currrentUserRückmeldung.IstAnwesend, currrentUserRückmeldung.KommentarAnwesenheit),
                     terminArtenDropdownValues,
                     terminStatusDropdownValues,

@@ -25,7 +25,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             return Results.Ok(queryResult);
         }
 
-        private record GetUserAdminInfosResponseDetails(Guid OrchesterMitgliedsId, string? UserId, string RegistrationKey, DateTime RegisterKeyExpirationDate, string? Email, bool AccountLocked, DateTime? LastLogin, DateTime? FirstLogin, string[] RoleNames, string OrchesterMitgliedsName);
+        private record GetUserAdminInfosResponseDetails(Guid OrchesterMitgliedsId, string? UserId, DateTime RegisterKeyExpirationDate, string? Email, bool AccountLocked, DateTime? LastLogin, DateTime? FirstLogin, string[] RoleNames, string OrchesterMitgliedsName);
 
         private record GetUserAdminInfosDetailsQuery(Guid OrchesterMitgliedsId) : IRequest<GetUserAdminInfosResponseDetails>;
 
@@ -50,7 +50,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                     userLocked = await userManager.IsLockedOutAsync(user);
                     userRoles = (await userManager.GetRolesAsync(user)).ToArray();
                 }
-                return new GetUserAdminInfosResponseDetails(orchesterMitglied.Id.Value, user?.Id, orchesterMitglied.RegisterKey, orchesterMitglied.RegisterKeyExpirationDate, user?.Email, userLocked, orchesterMitglied.UserLastLogin, orchesterMitglied.UserFirstConnected, userRoles, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}");
+                return new GetUserAdminInfosResponseDetails(orchesterMitglied.Id.Value, user?.Id, orchesterMitglied.RegisterKeyExpirationDate, user?.Email, userLocked, orchesterMitglied.UserLastLogin, orchesterMitglied.UserFirstConnected, userRoles, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}");
             }
         }
     }

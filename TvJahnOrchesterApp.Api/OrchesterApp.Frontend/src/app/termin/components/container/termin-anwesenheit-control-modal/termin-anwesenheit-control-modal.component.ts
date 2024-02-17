@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { FormBuilder } from '@angular/forms';
+import { FormArray, FormBuilder } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
 import { TerminRückmeldungsTableEntry } from 'src/app/termin/interfaces/termin-response-response';
 
@@ -13,15 +13,7 @@ export class TerminAnwesenheitControlModalComponent implements OnInit {
   dataResponses!: TerminRückmeldungsTableEntry[];
 
   formGroup = this.formBuilder.group({
-    items: this.formBuilder.array([
-      this.formBuilder.group({
-        orchesterMitgliedsId: [''],
-        vorname: [''],
-        nachname: [''],
-        istAnwesend: [false],
-        kommentarAnwesenheit: [null]
-      })
-    ])
+    items: this.formBuilder.array([])
   });
 
   constructor(
@@ -30,6 +22,16 @@ export class TerminAnwesenheitControlModalComponent implements OnInit {
   ) { }
 
   ngOnInit() {
+    let formArray = this.formGroup.get('items') as FormArray;
+    for(let response of this.dataResponses){
+      formArray.push(this.formBuilder.group({
+        orchesterMitgliedsId: [''],
+        vorname: [''],
+        nachname: [''],
+        istAnwesend: [false],
+        kommentarAnwesenheit: [null]
+      }));
+    }
     this.formGroup.patchValue({items: this.dataResponses as any});
   }
 

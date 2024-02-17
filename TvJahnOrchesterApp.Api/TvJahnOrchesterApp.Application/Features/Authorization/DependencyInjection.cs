@@ -9,6 +9,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization
         public static IServiceCollection AddAuthorizationFeature(this IServiceCollection services)
         {
             services.AddScoped<IVerificationEmailService, VerificationEmailService>();
+            services.AddScoped<ISendRegistrationEmailService, SendRegistrationEmailService>();
 
             return services;
         }
