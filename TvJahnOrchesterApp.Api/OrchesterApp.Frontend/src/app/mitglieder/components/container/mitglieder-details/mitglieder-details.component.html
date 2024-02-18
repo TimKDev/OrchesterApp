@@ -34,21 +34,42 @@
         </ion-avatar>
         <h3>{{res.data.vorname + ' ' + res.data.nachname}}</h3>
       </ion-item>
-      
+
       <ion-card-content>
-        <div *ngIf="res.data.memberSince">
-          Mitgliedsstatus: <span style="color: white;">{{res.data.orchesterMitgliedsStatus | dropdown : res.mitgliedsStatusDropdown}}</span><br>
-          Mitglied seit: <span style="color: white;">{{res.data.memberSince | date : 'dd.MM.YYYY'}}</span>
+        <div *ngIf="res.data.orchesterMitgliedsStatus || res.data.memberSince || res.data.positions">
+          <ng-container *ngIf="res.data.orchesterMitgliedsStatus">
+            Mitgliedsstatus: <span style="color: white;">{{res.data.orchesterMitgliedsStatus | dropdown :
+              res.mitgliedsStatusDropdown}}</span>
+          </ng-container>
+          <ng-container *ngIf="res.data.memberSince">
+            <br>Mitglied seit: <span style="color: white;">{{res.data.memberSince | date : 'dd.MM.YYYY'}}</span>
+          </ng-container>
+          <ng-container *ngIf="res.data.positions">
+            <br>Positionen: <span style="color: white;">{{res.data.positions | dropdown : res.positionDropdown}}</span>
+          </ng-container>
         </div>
-        <div *ngIf="res.data.adresse['straße']"  class="border-top">
-          <b>Adresse:</b> <br>
-          {{res.data.adresse['straße']}} {{res.data.adresse.hausnummer}}, <br>
-          {{res.data.adresse.postleitzahl}}, {{res.data.adresse.stadt}} <br>
-          {{res.data.adresse.zusatz}}
+        <div *ngIf="res.data.defaultInstrument || res.data.defaultNotenStimme" class="border-top">
+          <ng-container *ngIf="res.data.defaultInstrument">
+            Instrument: <span style="color: white;">{{res.data.defaultInstrument | dropdown :
+              res.instrumentDropdown}}</span>
+          </ng-container>
+          <ng-container *ngIf="res.data.defaultNotenStimme">
+            <br>Notenstimme: <span style="color: white;">{{res.data.defaultNotenStimme | dropdown :
+              res.notenStimmeDropdown}}</span>
+          </ng-container>
         </div>
         <div *ngIf="res.data.geburtstag" class="border-top">
-          Geburtstag: {{res.data.geburtstag | date : 'dd.MM.YYYY'}}
+          Geburtstag: <span style="color: white;">{{res.data.geburtstag | date : 'dd.MM.YYYY'}}</span>
         </div>
+        <div *ngIf="res.data.adresse['straße']" class="border-top">
+          Adresse: <br>
+          <span style="color: white;">
+            {{res.data.adresse['straße']}} {{res.data.adresse.hausnummer}}, <br>
+            {{res.data.adresse.postleitzahl}}, {{res.data.adresse.stadt}} <br>
+            {{res.data.adresse.zusatz}}
+          </span>
+        </div>
+
         <div class="border-top">
           <div *ngIf="res.data.handynummer">
             Handy: <a [href]="'tel:' + res.data.handynummer">{{res.data.handynummer}}</a>
@@ -58,7 +79,7 @@
           </div>
         </div>
       </ion-card-content>
-     
+
     </ion-card>
 
     <!-- <ion-list>

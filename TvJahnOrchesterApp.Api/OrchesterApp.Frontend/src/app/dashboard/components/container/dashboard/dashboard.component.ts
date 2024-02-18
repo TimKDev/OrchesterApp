@@ -28,7 +28,14 @@ export class DashboardComponent implements OnInit{
 
   loadData(refreshEvent: any = null) {
     this.data$ = this.dashboardService.getDashboardData().pipe(
-      tap(() => {
+      tap((data) => {
+        data.birthdayList.sort((a, b) => {
+          let birthA = new Date(a.birthday);
+          let birthB = new Date(b.birthday);
+          birthA.setFullYear((new Date()).getFullYear());
+          birthB.setFullYear((new Date()).getFullYear());
+          return birthA.getTime() - birthB.getTime()
+        })
         if (refreshEvent) {
           refreshEvent.target.complete();
           this.isRefreshing = false;

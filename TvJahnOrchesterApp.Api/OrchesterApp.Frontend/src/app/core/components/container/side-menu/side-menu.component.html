@@ -1,6 +1,14 @@
-<ion-list>
+<ion-list style="padding-top: 16px">
+  <div class="app-info">
+    <div class="logo-container">
+      <img class="logo" src="/assets/tvjahnlogo.png" alt="">
+    </div>
+    <div class="user-name">Tv Jahn Bockum App</div>
+    <!-- <div class="user-mail">Tv Jahn Bockum</div> -->
+  </div>
+ 
 
-  <ion-item [button]="true" detail="false">
+  <ion-item [button]="true" detail="false" class="user-info">
     <ion-avatar aria-hidden="true" slot="start">
       <img alt="" [src]="authService.userImage ? 'data:image/png;base64,' + authService.userImage : '/assets/avatar.svg'"/>
     </ion-avatar>
@@ -8,29 +16,21 @@
       <h2>
         <strong>{{authService.connectedOrchesterMitgliedsName}}</strong>
       </h2>
-      <ion-text style="font-size: 14px;">{{authService.userEmail}}</ion-text><br />
-      <ion-note color="medium" class="ion-text-wrap">
+      <ion-text style="font-size: 13px;">{{authService.userEmail}}</ion-text><br />
+      <ion-note *ngIf="authService.userRoles" color="medium" class="ion-text-wrap" style="font-size: 13px;">
+        {{authService.userRoles.join(', ')}}
       </ion-note>
-      <ng-template #memberSinceUnknown>
-        <ion-note color="medium" class="ion-text-wrap">
-          Mitglied seit: unbekannt
-        </ion-note>
-      </ng-template>
     </ion-label>
   </ion-item>
 
-  <div class="user-info">
-    <div class="user-name">{{authService.connectedOrchesterMitgliedsName}}</div>
-    <div class="user-mail">{{authService.userEmail}}</div>
-    <div class="button-wrapper">
-      <ion-menu-toggle>
-        <ion-button (click)="logout()" fill="outline" size="small">
-          Logout
-          <ion-icon slot="start" name="log-out-outline"></ion-icon>
-        </ion-button>
-      </ion-menu-toggle>
-    </div>
-  </div>
+  <ion-menu-toggle>
+    <ion-item (click)="logout()" detail="false">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      <ion-label>
+        Logout
+      </ion-label>
+    </ion-item>
+  </ion-menu-toggle>
 
   <ion-menu-toggle autoHide="false" *ngFor="let p of mainPages; let i = index">
     <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">

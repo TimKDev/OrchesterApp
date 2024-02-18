@@ -1,6 +1,12 @@
 <ion-item [button]="true" detail="false" [class.abgesagt]="terminStatus === 'Abgesagt' && !(terminEndTime < dateNow)"
-  [class.nicht-angenommen]="terminStatus === 'Angefragt' && !(terminEndTime < dateNow)" (click)="emitOpenTermin()"
-  class="default-color">
+  [class.nicht-angenommen]="terminStatus === 'Angefragt' && !(terminEndTime < dateNow)" (click)="emitOpenTermin()">
+  <div class="triangle-base" 
+    [class.auftritt]="terminArt === terminArtEnum.Auftritt"
+    [class.probe]="terminArt === terminArtEnum.Probe" 
+    [class.konzert]="terminArt === terminArtEnum.Konzert" 
+    [class.freizeit]="terminArt === terminArtEnum.Freizeit" 
+    [class.reise]="terminArt === terminArtEnum.Reise">
+  </div>
   <ion-label>
     <h2>
       <strong *ngIf="terminStatus !== 'Abgesagt'; else abgesagt"> {{terminName}}</strong>
@@ -8,20 +14,20 @@
         <s><strong>{{terminName}}</strong></s>
       </ng-template>
     </h2>
-    <ion-text class="default-color ion-text-wrap" style="font-size: 14px; color: white;">Datum: {{terminStartTime | date
+    <ion-text class="ion-text-wrap" style="font-size: 14px;" color="medium">Datum: {{terminStartTime | date
       :
       'dd.MM.YYYY'}}: {{terminStartTime | date :
       'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</ion-text><br />
     <ion-note color="medium" class="ion-text-wrap">
       <ng-container *ngIf="!(terminEndTime < dateNow)">
         Mein Status: {{terminResponse}}
-        <ion-icon class="alert-icon" *ngIf="(terminResponse === 'Nicht Zurückgemeldet')"
-          name="alert-outline" color="danger">
+        <ion-icon class="alert-icon" *ngIf="(terminResponse === 'Nicht Zurückgemeldet')" name="alert-outline"
+          color="danger">
         </ion-icon><br>
       </ng-container>
       <ng-container *ngIf="terminEndTime < dateNow">
         Teilgenommen: {{istAnwesend ? 'Ja' : 'Nein'}}<br>
-      </ng-container> 
+      </ng-container>
       <ng-container *ngIf="highAuth">
         Rückmeldungen: <span style="color: red;">{{negativeResponse}}</span> | <span>{{noResponse}}</span> | <span
           style="color: greenyellow;">{{positiveResponse}}</span>

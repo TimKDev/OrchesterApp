@@ -16,6 +16,31 @@
     </ion-toolbar>
   </ion-header>
 
-  Dies werden die Einstellungen.
+  <ion-list [inset]="true">
+    <ion-item button detail="true">
+      <ion-icon name="key-outline" style="margin-right: 16px;"></ion-icon>
+      <ion-label>
+        <h2>Passwort ändern</h2>
+        <p class="ion-text-wrap" style="font-size: 13px;">Passwort des eingeloggten Accounts ändern</p>
+      </ion-label>
+    </ion-item>
+    
+    <ion-item button detail="true">
+      <ion-icon name="mail-outline" style="margin-right: 16px;"></ion-icon>
+      <ion-label>
+        <h2>E-Mail ändern</h2>
+        <p class="ion-text-wrap" style="font-size: 13px;">E-Mail des eingeloggten Accounts ändern</p>
+      </ion-label>
+    </ion-item>
+
+    <ion-item button detail="true">
+      <ion-icon name="trash-outline" style="margin-right: 16px; color: #e35252;"></ion-icon>
+      <ion-label style="color: #e35252;">
+        <h2>Account löschen</h2>
+        <p class="ion-text-wrap" style="font-size: 13px; color: #e35252;">Eingeloggten Account endgültig löschen</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
 
 </ion-content>

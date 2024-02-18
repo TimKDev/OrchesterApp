@@ -6,3 +6,12 @@
 ion-searchbar{
   position: sticky;
 }
+
+.padding-lr{
+  --padding-start: var(--ion-padding, 12px);
+  --padding-end: var(--ion-padding, 12px);
+  --padding-top: var(--ion-padding, 0px);
+  --padding-bottom: var(--ion-padding, 0px);
+  padding-inline-start: var(--ion-padding, 12px);
+  padding-inline-end: var(--ion-padding, 12px);
+}

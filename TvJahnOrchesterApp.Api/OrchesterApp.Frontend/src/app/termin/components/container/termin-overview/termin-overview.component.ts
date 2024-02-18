@@ -27,28 +27,28 @@ export class TerminOverviewComponent implements OnInit {
   private colors = [
     {
       terminArt: TerminArt.Auftritt,
-      textColor: 'rgb(68, 10, 184)',
-      backgroundColor: 'rgb(211, 200, 229)',
+      textColor: 'white',
+      backgroundColor: '#bb4b99',
     },
     {
       terminArt: TerminArt.Probe,
-      textColor: '#09721b',
-      backgroundColor: '#c8e5d0',
+      textColor: 'white',
+      backgroundColor: '#2a9183',
     },
     {
       terminArt: TerminArt.Konzert,
-      textColor: 'rgb(68, 10, 184)',
-      backgroundColor: 'rgb(211, 200, 229)',
+      textColor: 'white',
+      backgroundColor: '#bb4b99',
     },
     {
       terminArt: TerminArt.Freizeit,
       textColor: 'white',
-      backgroundColor: '#8d8d15c2',
+      backgroundColor: '#388742',
     },
     {
       terminArt: TerminArt.Reise,
-      textColor: 'rgb(68, 10, 184)',
-      backgroundColor: '#8d8d15c2',
+      textColor: 'white',
+      backgroundColor: '#388742',
     },
   ];
 

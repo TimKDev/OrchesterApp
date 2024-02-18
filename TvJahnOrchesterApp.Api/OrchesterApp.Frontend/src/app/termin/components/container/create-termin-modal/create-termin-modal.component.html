@@ -24,10 +24,13 @@
             placeholder="Termin Name"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input formControlName="weitereInformationen" labelPlacement="stacked" label="Beschreibung"
-            placeholder="Termin Beschreibung"></ion-input>
+          <ion-textarea [autoGrow]="true"  formControlName="weitereInformationen" labelPlacement="stacked" label="Beschreibung"
+            placeholder="Termin Beschreibung"></ion-textarea>
         </ion-item>
         <ion-item>
+          <ion-avatar *ngIf="formGroup.get('image')!.value" slot="start">
+            <img [src]="'data:image/png;base64,' + formGroup.get('image')!.value" />
+          </ion-avatar>
           <ion-button (click)="uploadImage()">Bild hochladen</ion-button>
         </ion-item>
         <ion-item>

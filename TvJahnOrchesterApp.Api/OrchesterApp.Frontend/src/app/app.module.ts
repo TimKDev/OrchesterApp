@@ -21,7 +21,9 @@ export async function tokenGetter() {
 
 @NgModule({
   declarations: [AppComponent],
-  imports: [BrowserModule, IonicModule.forRoot(), AppRoutingModule, HttpClientModule, SharedModule, CoreModule, JwtModule.forRoot({
+  imports: [BrowserModule, IonicModule.forRoot({
+    mode: 'md'
+  }), AppRoutingModule, HttpClientModule, SharedModule, CoreModule, JwtModule.forRoot({
     config: {
       tokenGetter: tokenGetter,
       allowedDomains: ["localhost:8100", "notesapp1.azurewebsites.net"]

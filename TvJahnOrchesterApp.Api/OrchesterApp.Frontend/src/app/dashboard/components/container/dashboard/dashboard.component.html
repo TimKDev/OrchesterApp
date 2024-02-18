@@ -9,7 +9,7 @@
   </ion-toolbar>
 </ion-header>
 
-<ion-content [fullscreen]="true" class="ion-padding">
+<ion-content  [fullscreen]="true" class="padding-lr">
   <ion-header collapse="condense">
     <ion-toolbar>
       <ion-title size="large">Dashboard</ion-title>
@@ -22,7 +22,7 @@
 
   <ng-container *ngIf="data$ | async as data; else loading">
     <!-- <pre>{{data | json}}</pre> -->
-    <ion-card>
+    <ion-card *ngIf="data.nextTermins.length !== 0">
       <ion-card-header>
         <ion-card-title>Nächste Termine</ion-card-title>
         <ion-card-subtitle>Termine der nächsten 14 Tage</ion-card-subtitle>
@@ -31,13 +31,13 @@
       <ion-card-content>
         <ion-list>
           <app-dashboard-termin-item *ngFor="let termin of data.nextTermins" [terminId]="termin.terminId" [terminName]="termin.name" [terminStartTime]="termin.startZeit"
-            [terminEndTime]=" termin.endZeit" [terminArt]="termin.terminArt | dropdown : data.terminArtDropdownItems" 
+            [terminEndTime]=" termin.endZeit" [terminArt]="termin.terminArt" 
             [terminResponse]="termin.zugesagt | dropdown : data['rückmeldungsDropdownItems']" (openTermin)="openTermin(termin.terminId)"></app-dashboard-termin-item>
         </ion-list>
       </ion-card-content>
     </ion-card>
 
-    <ion-card>
+    <ion-card *ngIf="data.birthdayList.length !== 0">
       <ion-card-header>
         <ion-card-title>Geburtstage</ion-card-title>
         <ion-card-subtitle>Liste aller Geburtstage der letzten 14 Tage und der nächsten 7 Tage.</ion-card-subtitle>

@@ -1,9 +1,29 @@
-.default-color{
-  color: #6aa0ff;
-}
-
 .red{
   color: red;
 }
 
+.triangle-base{
+  width: 5px;
+  height: calc(100% - 20px);
+  margin: 10px 10px 10px 0;
+}
 
+.auftritt{
+  background-color: #bb4b99;
+}
+
+.probe{
+  background-color: #2a9183;
+}
+
+.konzert{
+  background-color: #bb4b99;
+}
+
+.freizeit{
+  background-color: #388742;
+}
+
+.reise{
+  background-color: #388742;
+}

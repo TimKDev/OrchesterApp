@@ -67,7 +67,7 @@
               {{data.termin.zusatz}}
             </div>
             <div class="border-top" *ngIf="data.termin.endZeit < dateNow">
-              <b>Am Termin teilgenommen?:</b>
+              <b>Am Termin teilgenommen?: </b>
               <span *ngIf="data['terminRückmeldung'].istAnwesend; else nichtAnwesend">Ja</span>
               <ng-template #nichtAnwesend>
                 Nein

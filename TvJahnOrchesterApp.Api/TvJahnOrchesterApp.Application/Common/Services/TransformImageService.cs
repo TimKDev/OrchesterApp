@@ -12,13 +12,13 @@ namespace TvJahnOrchesterApp.Application.Common.Services
     {
         public static byte[]? ConvertToCompressedByteArray(string? base64String)
         {
-            if(base64String == null)
+            if(base64String == null || base64String.Length == 0)
             {
                 return null;
             }
             var imageAsByteArray = ConvertBase64ToByteArray(base64String);
             var targetSizeInBytes = 70000;
-            return CompressImage(imageAsByteArray!, targetSizeInBytes);
+            return CompressImage(imageAsByteArray, targetSizeInBytes);
         }
 
         public static byte[]? ConvertBase64ToByteArray(string? base64String)
