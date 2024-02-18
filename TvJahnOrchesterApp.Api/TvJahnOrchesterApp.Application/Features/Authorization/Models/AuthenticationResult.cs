@@ -12,6 +12,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Models
         string Email,
         string Token,
         string RefreshToken,
-        string[] UserRoles
+        string[] UserRoles,
+        string? Image
         );
 }

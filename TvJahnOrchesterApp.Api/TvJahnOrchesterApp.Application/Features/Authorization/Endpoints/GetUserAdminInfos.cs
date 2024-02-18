@@ -41,7 +41,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             public async Task<GetUserAdminInfosResponse[]> Handle(GetUserAdminInfosQuery request, CancellationToken cancellationToken)
             {
                 var result = new List<GetUserAdminInfosResponse>();
-                var orchesterMitglieder = await orchesterMitgliedRepository.GetAllAsync(cancellationToken);
+                var orchesterMitglieder = await orchesterMitgliedRepository.GetAllAdminInfo(cancellationToken);
                 foreach (var orchesterMitglied in orchesterMitglieder)
                 {
                     var user = orchesterMitglied.ConnectedUserId is null ? null : await userManager.FindByIdAsync(orchesterMitglied.ConnectedUserId);

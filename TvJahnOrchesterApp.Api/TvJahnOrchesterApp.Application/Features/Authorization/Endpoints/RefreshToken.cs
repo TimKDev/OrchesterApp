@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors;
 using TvJahnOrchesterApp.Domain.UserAggregate;
@@ -72,7 +73,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                     throw new Exception("Orchestermitglied wurde nicht gefunden");
                 }
 
-                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, newToken, newRefreshToken, roles.ToArray());
+                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, newToken, newRefreshToken, roles.ToArray(), TransformImageService.ConvertByteArrayToBase64(orchesterMitglied.Image));
             }
         }
 

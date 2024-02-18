@@ -10,6 +10,7 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Common.Models;
+using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors;
 using TvJahnOrchesterApp.Domain.UserAggregate;
@@ -97,7 +98,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 orchesterMitglied!.UserLogin();
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, token, refreshToken, roles.ToArray());
+                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, token, refreshToken, roles.ToArray(), TransformImageService.ConvertByteArrayToBase64(orchesterMitglied.Image));
             }
         }
 

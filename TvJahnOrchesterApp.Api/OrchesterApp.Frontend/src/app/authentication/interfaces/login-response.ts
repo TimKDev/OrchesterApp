@@ -4,5 +4,6 @@ export interface LoginResponse{
 	email: string,
 	token: string,
 	refreshToken: string,
-  userRoles: string[]
+  userRoles: string[],
+  image?: string
 }

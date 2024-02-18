@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using System.Threading;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Dto;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 
@@ -43,7 +44,7 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
             {
                 var result = new List<GlobalAnwesenheitsListenEintrag>();
 
-                var orchesterMitglieder = await _orchesterMitgliedRepository.GetAllAsync(cancellationToken);
+                var orchesterMitglieder = await _orchesterMitgliedRepository.GetAllNames(cancellationToken);
                 Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)> orchesterMitgliedsInfo = await CalculateOrchesterTerminNumbersAsync(request.Year, orchesterMitglieder, cancellationToken);
 
                 var resultWithoutRanking = new List<GlobalAnwesenheitsEintragWithoutRanking>();
@@ -70,12 +71,11 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
                 return result.ToArray();
             }
 
-            private async Task<Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)>> CalculateOrchesterTerminNumbersAsync(int year, Domain.OrchesterMitgliedAggregate.OrchesterMitglied[] orchesterMitglieder, CancellationToken cancellationToken)
+            private async Task<Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)>> CalculateOrchesterTerminNumbersAsync(int year, OrchesterMitgliedWithName[] orchesterMitglieder, CancellationToken cancellationToken)
             {
                 Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)> result = new Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)>();
 
-                var allTermins = await _terminRepository.GetAll(cancellationToken);
-                var terminsOfYear = allTermins.Where(t => t.EinsatzPlan.EndZeit.Year == year);
+                var terminsOfYear = await _terminRepository.GetTerminResponsesInYear(year, cancellationToken);
                 foreach (var orchesterMitglied in orchesterMitglieder)
                 {
                     result.Add(orchesterMitglied.Id, (0, 0));
@@ -83,7 +83,7 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
 
                 foreach (var termin in terminsOfYear)
                 {
-                    foreach (var terminResponse in termin.TerminRückmeldungOrchesterMitglieder)
+                    foreach (var terminResponse in termin.RückmeldungOrchestermitglieder)
                     {
                         if (result.TryGetValue(terminResponse.OrchesterMitgliedsId, out (int numberAnwesendeTermine, int totalNumberTermine) numbers))
                         {

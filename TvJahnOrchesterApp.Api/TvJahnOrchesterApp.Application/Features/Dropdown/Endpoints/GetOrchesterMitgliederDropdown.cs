@@ -46,7 +46,7 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Endpoints
 
             public async Task<OrchesterMitgliederDropdownResponse[]> Handle(GetOrchesterMitgliederDropdownQuery request, CancellationToken cancellationToken)
             {
-                return (await orchesterMitgliedRepository.GetAllAsync(cancellationToken)).Select(m => new OrchesterMitgliederDropdownResponse(m.Id.Value, $"{m.Vorname} {m.Nachname}")).ToArray();
+                return (await orchesterMitgliedRepository.GetAllNames(cancellationToken)).Select(m => new OrchesterMitgliederDropdownResponse(m.Id.Value, $"{m.Vorname} {m.Nachname}")).ToArray();
             }
         }
     }

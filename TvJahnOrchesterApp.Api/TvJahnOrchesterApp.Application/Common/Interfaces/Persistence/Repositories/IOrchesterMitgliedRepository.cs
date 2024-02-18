@@ -1,4 +1,5 @@
-﻿using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
+﻿using TvJahnOrchesterApp.Application.Common.Interfaces.Dto;
+using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 
 namespace TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories
 {
@@ -13,5 +14,7 @@ namespace TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositor
         Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied?> GetByUserIdAsync(string userId, CancellationToken cancellationToken);
         Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied[]> QueryByIdAsync(OrchesterMitgliedsId[] ids, CancellationToken cancellationToken);
         Task DeleteByIdAsync(OrchesterMitgliedsId orchesterMitgliedsId, CancellationToken cancellationToken);
+        Task<OrchesterMitgliedWithName[]> GetAllNames(CancellationToken cancellationToken);
+        Task<OrchesterMitgliedAdminInfo[]> GetAllAdminInfo(CancellationToken cancellationToken);
     }
 }

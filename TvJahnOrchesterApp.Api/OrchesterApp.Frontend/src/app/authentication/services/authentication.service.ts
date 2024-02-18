@@ -15,6 +15,7 @@ import { environment } from 'src/environments/environment';
 export const TOKEN_KEY = 'token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';
 export const CONNECTED_ORCHESTER_MITGLIED_KEY = 'connected-orchester-mitglieds-name';
+export const CONNECTED_ORCHESTER_MITGLIED_IMAGE_KEY = 'connected-orchester-mitglieds-image';
 export const USER_EMAIL_KEY = 'user-email';
 export const USER_ROLES_KEY = 'user-roles';
 
@@ -31,6 +32,7 @@ export class AuthenticationService {
   public connectedOrchesterMitgliedsName: string | null = null; 
   public userEmail: string | null = null; 
   public userRoles: string[] | null = null;
+  public userImage: string | null = null;
   public userRoleSubject = new BehaviorSubject<string[]>([]); 
 
   constructor(
@@ -42,11 +44,13 @@ export class AuthenticationService {
     const token = await Preferences.get({ key: TOKEN_KEY });
     const refreshToken = await Preferences.get({ key: REFRESH_TOKEN_KEY });
     const connectedOrchesterMitgliedsName = await Preferences.get({ key: CONNECTED_ORCHESTER_MITGLIED_KEY });
+    const connectedOrchesterMitgliedsImage = await Preferences.get({ key: CONNECTED_ORCHESTER_MITGLIED_IMAGE_KEY });
     const userEmail = await Preferences.get({ key: USER_EMAIL_KEY });
     const userRoles = await Preferences.get({key: USER_ROLES_KEY });
     this.token = token.value;
     this.refreshToken = refreshToken.value;
     this.connectedOrchesterMitgliedsName = connectedOrchesterMitgliedsName.value;
+    this.userImage = connectedOrchesterMitgliedsImage.value;
     this.userEmail = userEmail.value;
     this.userRoles = userRoles.value?.split(',') ?? [];
     this.userRoleSubject.next(this.userRoles);
@@ -56,7 +60,7 @@ export class AuthenticationService {
     this.userEmail = credentials.email;
     return this.http.post<LoginResponse>('api/authentication/login', credentials).pipe(
       tap(async (res: LoginResponse) => {
-        await this.setTokens(res.token, res.refreshToken, res.name, res.email, res.userRoles);
+        await this.setTokens(res.token, res.refreshToken, res.name, res.email, res.userRoles, res.image);
       })
     );
   }
@@ -69,6 +73,7 @@ export class AuthenticationService {
     await Preferences.remove({ key: TOKEN_KEY });
     await Preferences.remove({ key: REFRESH_TOKEN_KEY });
     await Preferences.remove({ key: CONNECTED_ORCHESTER_MITGLIED_KEY });
+    await Preferences.remove({ key: CONNECTED_ORCHESTER_MITGLIED_IMAGE_KEY });
     await Preferences.remove({ key: USER_EMAIL_KEY });
     await Preferences.remove({ key: USER_ROLES_KEY });
   }
@@ -80,7 +85,7 @@ export class AuthenticationService {
     return this.http.post<LoginResponse>("api/authentication/refresh", { token: this.token, refreshToken: this.refreshToken })
     .pipe(
       tap( async res => {
-        await this.setTokens(res.token, res.refreshToken, res.name, res.email, res.userRoles);
+        await this.setTokens(res.token, res.refreshToken, res.name, res.email, res.userRoles, res.image);
       })
     );
   }
@@ -105,16 +110,20 @@ export class AuthenticationService {
     return this.http.post<string>('api/authentication/resetPassword', request);
   }
 
-  private async setTokens(token: string, refreshToken: string, name: string, userEmail: string, userRoles: string[]) {
+  private async setTokens(token: string, refreshToken: string, name: string, userEmail: string, userRoles: string[], image?: string) {
     this.token = token;
     this.refreshToken = refreshToken;
-    this.connectedOrchesterMitgliedsName = name;
+    this.connectedOrchesterMitgliedsName = name;;
     this.userEmail = userEmail;
     this.userRoles = userRoles;
     this.userRoleSubject.next(userRoles);
     await Preferences.set({ key: TOKEN_KEY, value: token });
     await Preferences.set({ key: REFRESH_TOKEN_KEY, value: refreshToken });
     await Preferences.set({ key: CONNECTED_ORCHESTER_MITGLIED_KEY, value: name });
+    if(image){
+      this.userImage = image;
+      await Preferences.set({ key: CONNECTED_ORCHESTER_MITGLIED_IMAGE_KEY, value: image });
+    }
     await Preferences.set({ key: USER_EMAIL_KEY, value: userEmail });
     await Preferences.set({key: USER_ROLES_KEY, value: userRoles.toString()})
   }

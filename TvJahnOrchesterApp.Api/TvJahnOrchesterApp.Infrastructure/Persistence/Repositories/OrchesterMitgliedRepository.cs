@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Dto;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
@@ -21,9 +22,19 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Repositories
             return orchesterMitglied;
         }
 
-        public async Task<OrchesterMitglied[]> GetAllAsync(CancellationToken cancellationToken)
+        public Task<OrchesterMitglied[]> GetAllAsync(CancellationToken cancellationToken)
         {
-            return await _context.Set<OrchesterMitglied>().ToArrayAsync(cancellationToken);
+            return _context.Set<OrchesterMitglied>().ToArrayAsync(cancellationToken);
+        }
+
+        public Task<OrchesterMitgliedWithName[]> GetAllNames(CancellationToken cancellationToken)
+        {
+            return _context.Set<OrchesterMitglied>().Select(o => new OrchesterMitgliedWithName(o.Id, o.Vorname, o.Nachname)).ToArrayAsync(cancellationToken);
+        }
+
+        public Task<OrchesterMitgliedAdminInfo[]> GetAllAdminInfo(CancellationToken cancellationToken)
+        {
+            return _context.Set<OrchesterMitglied>().Select(o => new OrchesterMitgliedAdminInfo(o.Id, o.Vorname, o.Nachname, o.ConnectedUserId, o.UserLastLogin)).ToArrayAsync(cancellationToken);
         }
 
         public async Task<OrchesterMitglied> GetByIdAsync(OrchesterMitgliedsId id, CancellationToken cancellationToken)
