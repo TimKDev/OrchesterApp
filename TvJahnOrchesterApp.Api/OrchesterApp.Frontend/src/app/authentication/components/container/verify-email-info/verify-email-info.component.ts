@@ -37,10 +37,9 @@ export class VerifyEmailInfoComponent  implements OnInit {
     this.authService.changeEmail({...this.changeEmailFormGroup.value, oldEmail: this.authService.userEmail!, clientUri: CLIENT_URI_EMAIL_CONFIRMATION})
       .pipe(catchError(async () => {
         await loading.dismiss()
-        return {error: true}
       }))
       .subscribe(async (res) => {
-        if(res?.error) return;
+        if(!res) return;
         this.showChangeEmailForm = false;
         await loading.dismiss();
         let alert = await this.alertController.create({

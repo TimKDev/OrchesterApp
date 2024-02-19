@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Routing;
+using TvJahnOrchesterApp.Application.Features.Authorization.Endpoints;
 using TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints;
 
 namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung
@@ -12,6 +13,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung
             app.MapUpdateRückmeldungEndpoint();
             app.MapUpdateRückmeldungForOtherUserEndpoint();
             app.MapUpdateAnwesenheitsListeEndpoint();
+            app.MapDeleteOwnUserEndpoint();
         }
     }
 }

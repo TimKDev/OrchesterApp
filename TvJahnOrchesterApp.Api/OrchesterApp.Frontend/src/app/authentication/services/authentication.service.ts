@@ -11,6 +11,7 @@ import { ConfirmEmailRequest } from '../interfaces/confirm-email-request';
 import { ForgotPasswordRequest } from '../interfaces/forgot-password-request';
 import { ResetPasswordRequest } from '../interfaces/reset-password-request';
 import { environment } from 'src/environments/environment';
+import { AuthHttpClientService } from 'src/app/core/services/auth-http-client.service';
 
 export const TOKEN_KEY = 'token';
 export const REFRESH_TOKEN_KEY = 'refresh-token';
@@ -91,7 +92,8 @@ export class AuthenticationService {
   }
 
   public changeEmail(changeEmailRequest: ChangeEmailRequest){
-    return this.http.put<void>('api/authentication/change-user-email', changeEmailRequest);
+    debugger;
+    return this.http.put<string>('api/authentication/change-user-email', changeEmailRequest);
   }
 
   public resendVerificationMail(resendVerificationMailRequest: ResendVerificationMailRequest){
