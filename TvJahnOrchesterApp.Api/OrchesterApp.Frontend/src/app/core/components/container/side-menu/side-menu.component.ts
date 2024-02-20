@@ -21,11 +21,11 @@ export class SideMenuComponent implements OnInit {
       url: '/tabs/help',
       icon: 'help-circle'
     },
-    // {
-    //   title: 'Feedback',
-    //   url: '/tabs/feedback',
-    //   icon: 'chatbox'
-    // },
+    {
+      title: 'Impressum und Datenschutz',
+      url: '/tabs/impressum',
+      icon: 'document-text'
+    },
   ];
 
   managementPages = [

@@ -14,6 +14,7 @@ import { GetCardColorPipe } from './pipes/get-card-color.pipe';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SideMenuComponent } from './components/container/side-menu/side-menu.component';
 import { AccountItemComponent } from './components/presentational/account-item/account-item.component';
+import { ImpressumComponent } from './components/container/impressum/impressum.component';
 
 
 @NgModule({
@@ -26,7 +27,8 @@ import { AccountItemComponent } from './components/presentational/account-item/a
     AccountDetailsComponent,
     GetCardColorPipe,
     SideMenuComponent, 
-    AccountItemComponent
+    AccountItemComponent,
+    ImpressumComponent
   ],
   imports: [
     SharedModule,

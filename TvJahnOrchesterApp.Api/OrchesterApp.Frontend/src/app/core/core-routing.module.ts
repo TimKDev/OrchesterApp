@@ -7,6 +7,7 @@ import { UserFeedbackComponent } from './components/container/user-feedback/user
 import { AccountManagementComponent } from './components/container/account-management/account-management.component';
 import { AuthGuard } from './guards/auth.guard';
 import { AccountDetailsComponent } from './components/container/account-details/account-details.component';
+import { ImpressumComponent } from './components/container/impressum/impressum.component';
 
 const routes: Routes = [
   {
@@ -42,6 +43,10 @@ const routes: Routes = [
       {
         path: 'feedback',
         component: UserFeedbackComponent
+      },
+      {
+        path: 'impressum',
+        component: ImpressumComponent
       },
       {
         path: '',

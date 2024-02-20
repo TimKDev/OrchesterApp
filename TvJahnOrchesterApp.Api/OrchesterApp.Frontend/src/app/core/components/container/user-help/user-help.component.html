@@ -16,24 +16,38 @@
     </ion-toolbar>
   </ion-header>
 
-  Hier kommen Anleitungen hin, wie die App zu bedienen ist.
+  <h3>Häufige Fragen</h3>
 
   <ion-accordion-group>
     <ion-accordion value="first">
       <ion-item slot="header" color="light">
-        <ion-label>First Accordion</ion-label>
+        <ion-label class="ion-text-wrap">Was bedeuten die Farbebalken an den Terminen?</ion-label>
       </ion-item>
-      <div class="ion-padding" slot="content">First Content</div>
+      <div class="ion-padding" slot="content">
+        Die Farbe repräsentiert die Terminkategorie. Es gibt folgende Kategorien die durch die folgende Farbe repräsentiert werden: <br> <br>
+        <div class="item-color">
+          <div class="square auftritt"></div><div>: Auftritt/Konzert</div>
+        </div>
+        <div class="item-color">
+          <div class="square probe"></div><div>: Probe</div>
+        </div>
+        <div class="item-color">
+          <div class="square freizeit"></div><div>: Freizeit</div>
+        </div>
+        <div class="item-color">
+          <div class="square reise"></div><div>: Reise</div>
+        </div>
+      </div>
     </ion-accordion>
     <ion-accordion value="second">
       <ion-item slot="header" color="light">
-        <ion-label>Second Accordion</ion-label>
+        <ion-label>Frage 2</ion-label>
       </ion-item>
       <div class="ion-padding" slot="content">Second Content</div>
     </ion-accordion>
     <ion-accordion value="third">
       <ion-item slot="header" color="light">
-        <ion-label>Third Accordion</ion-label>
+        <ion-label>Frage 3</ion-label>
       </ion-item>
       <div class="ion-padding" slot="content">Third Content</div>
     </ion-accordion>
