@@ -35,7 +35,7 @@ services:
       dockerfile: OrchesterApp.Api/Dockerfile
     container_name: orchester-app-api
     depends_on:
-        - sqlserver
+        - postgresql
     ports: 
         - "40081:8080"
     networks:
@@ -50,18 +50,18 @@ services:
         - jwt_secret
         - google_mail_api_key
          
-  sqlserver:
-    image: mcr.microsoft.com/mssql/server:2022-latest
+  postgresql:
+    image: postgres:latest
     container_name: orchester-app-db
     environment:
-        ACCEPT_EULA: Y
-        MSSQL_SA_PASSWORD_FILE: /run/secrets/db_admin_password
-        User Id: sa
+        POSTGRES_USER: admin
+        POSTGRES_PASSWORD_FILE: /run/secrets/db_admin_password
+        POSTGRES_DB: OrchesterAppDB
     ports:
-     - 1433:1433
+     - 5432:5432
     restart: always
     volumes:
-     - orchesterAppDbVolumn:/var/opt/mssql
+     - orchesterAppDbVolumn:/var/opt/postgresql/data
     networks:
      - orchester-app-network
     secrets:

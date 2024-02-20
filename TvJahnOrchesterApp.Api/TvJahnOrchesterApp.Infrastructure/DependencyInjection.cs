@@ -40,7 +40,7 @@ namespace TvJahnOrchesterApp.Infrastructure
         public static IServiceCollection AddPersistence(this IServiceCollection services, ConfigurationManager configuration)
         {
             var connectionString = configuration.GetValueFromSecretOrConfig("ConnectionStrings:DefaultConnection");
-            services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<OrchesterDbContext>(options => options.UseNpgsql(connectionString));
 
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
