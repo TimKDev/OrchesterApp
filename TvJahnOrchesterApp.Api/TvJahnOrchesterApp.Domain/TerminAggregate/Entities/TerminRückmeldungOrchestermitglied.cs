@@ -35,7 +35,7 @@ namespace TvJahnOrchesterApp.Domain.TerminAggregate.Entities
         public void ChangeZusage(int zugesagt, string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)
         {
             Zugesagt = zugesagt;
-            LetzteRückmeldung = DateTime.Now;
+            LetzteRückmeldung = DateTime.UtcNow;
             KommentarZusage = kommentar;
             if(otherOrchesterId is not null)
             {

@@ -6,6 +6,7 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using System;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -40,7 +41,10 @@ namespace TvJahnOrchesterApp.Infrastructure
         public static IServiceCollection AddPersistence(this IServiceCollection services, ConfigurationManager configuration)
         {
             var connectionString = configuration.GetValueFromSecretOrConfig("ConnectionStrings:DefaultConnection");
-            services.AddDbContext<OrchesterDbContext>(options => options.UseNpgsql(connectionString));
+            services.AddDbContext<OrchesterDbContext>(options =>
+            {
+                options.UseNpgsql(connectionString);
+            });
 
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

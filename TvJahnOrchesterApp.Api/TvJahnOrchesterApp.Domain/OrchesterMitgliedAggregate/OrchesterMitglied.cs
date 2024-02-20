@@ -48,7 +48,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             DefaultNotenStimme = defaultNotenStimme;
             RegisterKey = registrationKey;
             OrchesterMitgliedsStatus = mitgliedsStatus;
-            RegisterKeyExpirationDate = DateTime.Now.AddDays(RegistrationKeyExpireDays);
+            RegisterKeyExpirationDate = DateTime.UtcNow.AddDays(RegistrationKeyExpireDays);
             Image = image;
         }
 
@@ -60,18 +60,18 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
         public void SetRegisterKey(string key)
         {
             RegisterKey = key;
-            RegisterKeyExpirationDate = DateTime.Now.AddDays(RegistrationKeyExpireDays);
+            RegisterKeyExpirationDate = DateTime.UtcNow.AddDays(RegistrationKeyExpireDays);
         }
 
         public void ConnectWithUser(string userId)
         {
             ConnectedUserId = userId;
-            UserFirstConnected = DateTime.Now;
+            UserFirstConnected = DateTime.UtcNow;
         }
 
         public bool ValidateRegistrationKey(string key)
         {
-            return ConnectedUserId is null && RegisterKey == key && DateTime.Now <= RegisterKeyExpirationDate;
+            return ConnectedUserId is null && RegisterKey == key && DateTime.UtcNow <= RegisterKeyExpirationDate;
         }
 
         public void ChangeMitgliedsStatus(int mitgliedsStatus)
@@ -88,7 +88,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         public void UserLogin()
         {
-            UserLastLogin = DateTime.Now;
+            UserLastLogin = DateTime.UtcNow;
         }
 
         public void SetMemberSince(DateTime? dateTime)

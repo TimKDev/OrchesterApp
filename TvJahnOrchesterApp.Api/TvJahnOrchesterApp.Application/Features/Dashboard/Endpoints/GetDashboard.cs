@@ -71,7 +71,7 @@ namespace TvJahnOrchesterApp.Application.Features.Dashboard.Endpoints
 
             private bool IsInDayRanch(Domain.TerminAggregate.Termin termin)
             {
-                var timespan = termin.EinsatzPlan.StartZeit - DateTime.Now;
+                var timespan = termin.EinsatzPlan.StartZeit - DateTime.UtcNow;
                 return 0 <= timespan.Days && timespan.Days <= DAYS_TO_INCLUDE_TERMIN;
             }
 
@@ -81,12 +81,12 @@ namespace TvJahnOrchesterApp.Application.Features.Dashboard.Endpoints
                 {
                     return false;
                 }
-                var projectedBirthdaySameYear = new DateTime(DateTime.Now.Year, orchesterMitglied.Geburtstag.Value.Month, orchesterMitglied.Geburtstag.Value.Day);
+                var projectedBirthdaySameYear = new DateTime(DateTime.UtcNow.Year, orchesterMitglied.Geburtstag.Value.Month, orchesterMitglied.Geburtstag.Value.Day);
 
-                var projectedBirthdayPreviousYear = new DateTime(DateTime.Now.Year - 1, orchesterMitglied.Geburtstag.Value.Month, orchesterMitglied.Geburtstag.Value.Day);
+                var projectedBirthdayPreviousYear = new DateTime(DateTime.UtcNow.Year - 1, orchesterMitglied.Geburtstag.Value.Month, orchesterMitglied.Geburtstag.Value.Day);
 
-                var timespanSameYear = (projectedBirthdaySameYear - DateTime.Now);
-                var timespanPreviousYear = (projectedBirthdayPreviousYear - DateTime.Now);
+                var timespanSameYear = (projectedBirthdaySameYear - DateTime.UtcNow);
+                var timespanPreviousYear = (projectedBirthdayPreviousYear - DateTime.UtcNow);
                 
                 var checkForSameYear = -DAYS_TO_INCLUDE_BIRTHDAY_PAST <= timespanSameYear.Days && timespanSameYear.Days <= DAYS_TO_INCLUDE_BIRTHDAY_FUTURE;
                 var checkForPreviousYear = -DAYS_TO_INCLUDE_BIRTHDAY_PAST <= timespanPreviousYear.Days && timespanPreviousYear.Days <= DAYS_TO_INCLUDE_BIRTHDAY_FUTURE;
