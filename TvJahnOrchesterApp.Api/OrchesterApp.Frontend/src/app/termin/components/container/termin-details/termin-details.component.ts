@@ -51,8 +51,8 @@ export class TerminDetailsComponent implements OnInit {
   loadData(refreshEvent: any = null) {
     this.data$ = this.terminService.getTerminDetails(this.terminId).pipe(
       tap((data) => {
-        data.termin.startZeit = new Date(data.termin.startZeit + 'Z');
-        data.termin.endZeit = new Date(data.termin.endZeit + 'Z');
+        data.termin.startZeit = new Date(data.termin.startZeit);
+        data.termin.endZeit = new Date(data.termin.endZeit);
         if (refreshEvent) {
           refreshEvent.target.complete();
           this.isRefreshing = false;

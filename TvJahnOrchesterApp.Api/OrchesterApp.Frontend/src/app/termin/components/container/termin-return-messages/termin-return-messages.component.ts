@@ -88,7 +88,7 @@ export class TerminReturnMessagesComponent implements OnInit {
     this.data$ = this.terminService.getTerminResponses(this.terminId).pipe(
       tap((data) => {
         data.terminRückmeldungsTableEntries.forEach(entry => {
-          entry.letzteRückmeldung = entry.letzteRückmeldung ? new Date(entry.letzteRückmeldung + 'Z') : undefined
+          entry.letzteRückmeldung = entry.letzteRückmeldung ? new Date(entry.letzteRückmeldung) : undefined
         });
         if (refreshEvent) {
           refreshEvent.target.complete();

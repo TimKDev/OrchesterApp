@@ -54,18 +54,18 @@ services:
     image: postgres:latest
     container_name: orchester-app-db
     environment:
-        POSTGRES_USER: admin
+        POSTGRES_USER: postgres
         POSTGRES_PASSWORD_FILE: /run/secrets/db_admin_password
         POSTGRES_DB: OrchesterAppDB
     ports:
      - 5432:5432
     restart: always
     volumes:
-     - orchesterAppDbVolumn:/var/opt/postgresql/data
+     - orchesterAppPostgresDbVolumn:/var/lib/postgresql/data
     networks:
      - orchester-app-network
     secrets:
      - db_admin_password 
 
 volumes:
-  orchesterAppDbVolumn:
+  orchesterAppPostgresDbVolumn:

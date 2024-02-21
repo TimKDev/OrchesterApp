@@ -53,6 +53,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 if (user is null || user.Email is null || !tokenService.IsRefreshTokenValid(user, request.RefreshToken))
                 {
+                    //TTODO
                     throw new Exception("Invalid client request");
                 }
 
