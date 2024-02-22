@@ -30,8 +30,8 @@ export class MitgliedUpdateModalComponent  implements OnInit {
   ngOnInit(){
     this.data$ = this.us.autoUnsubscribe(this.mitgliederService.getSpecificMitglied(this.mitgliedsId)).pipe(tap(dataRaw => {
       let data = {
-        ...dataRaw, 
-        geburtstag: dataRaw.geburtstag ? formatDate(dataRaw.geburtstag, 'yyyy-MM-dd', 'en') : null,
+        ...dataRaw.orchesterMitglied, 
+        geburtstag: dataRaw.orchesterMitglied.geburtstag ? formatDate(dataRaw.orchesterMitglied.geburtstag, 'yyyy-MM-dd', 'UTC') : null,
       }
       this.formGroup.patchValue(data);
       this.formGroup.patchValue(data.adresse);

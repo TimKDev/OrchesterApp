@@ -41,7 +41,6 @@ export class TerminListeComponent {
 
   loadData(refreshEvent: any = null, useCache = true) {
     if(this.currentlyLoadingWithoutCache) return;
-    console.log('Loading data' + useCache)
     this.currentlyLoadingWithoutCache = !useCache;
     this.data$ = this.terminService.getAllTermins(useCache).pipe(
       tap((data) => {
@@ -52,7 +51,6 @@ export class TerminListeComponent {
           this.isRefreshing = false;
         } 
         this.currentlyLoadingWithoutCache = false;
-        console.log('finished loading data' + useCache);
       }),
       catchError(() => {this.currentlyLoadingWithoutCache = false; return NEVER})
     );

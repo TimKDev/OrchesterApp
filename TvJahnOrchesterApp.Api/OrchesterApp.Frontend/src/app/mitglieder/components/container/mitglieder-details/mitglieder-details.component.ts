@@ -25,19 +25,14 @@ import { PhotoService } from 'src/app/core/services/photo.service';
 })
 export class MitgliederDetailsComponent implements OnInit {
 
-  data!: { data: GetSpecificMitgliederResponse, instrumentDropdown: DropdownItem[], notenStimmeDropdown: DropdownItem[], positionDropdown: DropdownItem[], mitgliedsStatusDropdown: DropdownItem[]} | null;
+  data!: GetSpecificMitgliederResponse | null;
   mitgliedsId!: string;
-  dropdownItemsInstruments!: DropdownItem[];
-  dropdownItemsNotenstimme!: DropdownItem[];
-  dropdownItemsPosition!: DropdownItem[];
-  dropdownItemsMitgliedsStatus!: DropdownItem[];
 
   canUpdateMitglied = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
 
   constructor(
     private mitgliederService: MitgliederService,
     private route: ActivatedRoute,
-    private dropdownService: DropdownService,
     private router: Router,
     private us: Unsubscribe,
     private modalCtrl: ModalController,
@@ -63,21 +58,7 @@ export class MitgliederDetailsComponent implements OnInit {
   }
 
   loadData(refreshEvent: any = null) {
-    this.us.autoUnsubscribe(combineLatest([
-      this.mitgliederService.getSpecificMitglied(this.mitgliedsId),
-      this.dropdownService.getDropdownElements('Instrument'),
-      this.dropdownService.getDropdownElements('Notenstimme'),
-      this.dropdownService.getDropdownElements('Position'),
-      this.dropdownService.getDropdownElements('MitgliedsStatus'),
-    ])).pipe(
-      map(([data, instrumentDropdown, notenStimmeDropdown, positionDropdown, mitgliedsStatusDropdown]) => ({ data, instrumentDropdown, notenStimmeDropdown, positionDropdown, mitgliedsStatusDropdown })),
-      tap(result => {
-        this.dropdownItemsInstruments = result.instrumentDropdown;
-        this.dropdownItemsNotenstimme = result.notenStimmeDropdown;
-        this.dropdownItemsPosition = result.positionDropdown;
-        this.dropdownItemsMitgliedsStatus = result.mitgliedsStatusDropdown;
-      })
-    ).subscribe(res => {
+    this.us.autoUnsubscribe(this.mitgliederService.getSpecificMitglied(this.mitgliedsId)).subscribe(res => {
       this.data = res;
       if(refreshEvent) refreshEvent.target.complete();
     });
@@ -121,10 +102,10 @@ export class MitgliederDetailsComponent implements OnInit {
       component: MitgliedAdminUpdateModalComponent,
       componentProps: {
         "mitgliedsId": this.mitgliedsId,
-        "dropdownItemsNotenstimme": this.dropdownItemsNotenstimme,
-        "dropdownItemsInstruments": this.dropdownItemsInstruments,
-        "dropdownItemsPosition": this.dropdownItemsPosition,
-        "dropdownItemsMitgliedsStatus": this.dropdownItemsMitgliedsStatus,
+        "dropdownItemsNotenstimme": this.data?.notenstimmeDropdownItems,
+        "dropdownItemsInstruments": this.data?.instrumentDropdownItems,
+        "dropdownItemsPosition": this.data?.positionDropdownItems,
+        "dropdownItemsMitgliedsStatus": this.data?.mitgliedsStatusDropdownItems,
       }
     });
     modal.present();
