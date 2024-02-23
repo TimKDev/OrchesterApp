@@ -15,7 +15,6 @@ export class VerifyEmailInfoComponent  implements OnInit {
   showChangeEmailForm = false;
   changeEmailFormGroup!: FormGroup;
 
-
   constructor(
     private fb: FormBuilder,
     public authService: AuthenticationService,

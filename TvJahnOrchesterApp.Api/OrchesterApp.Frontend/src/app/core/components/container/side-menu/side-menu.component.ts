@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component } from '@angular/core';
 import { Router } from '@angular/router';
 import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 import { RolesService } from 'src/app/authentication/services/roles.service';
@@ -8,7 +8,7 @@ import { RolesService } from 'src/app/authentication/services/roles.service';
   templateUrl: './side-menu.component.html',
   styleUrls: ['./side-menu.component.scss'],
 })
-export class SideMenuComponent implements OnInit {
+export class SideMenuComponent {
 
   mainPages = [
     {
@@ -40,8 +40,6 @@ export class SideMenuComponent implements OnInit {
     public authService: AuthenticationService, 
     public rolesService: RolesService,
     private router: Router) { }
-
-  ngOnInit() { }
 
   async logout() {
     await this.authService.logout();

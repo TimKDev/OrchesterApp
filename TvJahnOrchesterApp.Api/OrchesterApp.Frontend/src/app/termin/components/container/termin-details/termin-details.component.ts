@@ -45,14 +45,12 @@ export class TerminDetailsComponent implements OnInit {
   ngOnInit() {
     this.activeTab = this.route.snapshot.params['activeTab'];
     this.terminId = this.route.snapshot.params['terminId'];
-    console.log('Init')
     this.loadData();
   }
 
   loadData(refreshEvent: any = null) {
     if(this.currentlyLoading) return;
     this.currentlyLoading = true;
-    console.log('Load Data')
     this.data$ = this.terminService.getTerminDetails(this.terminId).pipe(
       tap((data) => {
         data.termin.startZeit = new Date(data.termin.startZeit);
@@ -61,7 +59,7 @@ export class TerminDetailsComponent implements OnInit {
           refreshEvent.target.complete();
           this.isRefreshing = false;
         }
-        this.currentlyLoading = false
+        this.currentlyLoading = false;
       }),
       catchError(() => {this.currentlyLoading = false; return NEVER})
     );
@@ -69,7 +67,6 @@ export class TerminDetailsComponent implements OnInit {
 
   ionViewWillEnter() {
     if (!this.refreshService.needsRefreshing('TerminDetails')) return;
-    console.log('Enter')
     this.loadData();
   }
 

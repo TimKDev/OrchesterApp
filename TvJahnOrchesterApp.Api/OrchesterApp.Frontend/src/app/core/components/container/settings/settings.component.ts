@@ -12,7 +12,7 @@ import { confirmDialog } from 'src/app/core/helper/confirm';
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })
-export class SettingsComponent  implements OnInit {
+export class SettingsComponent {
 
   constructor(
     private authService: AuthenticationService,
@@ -21,8 +21,6 @@ export class SettingsComponent  implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
   ) { }
-
-  ngOnInit() {}
 
   @confirmDialog("Passwort ändern", "Möchten Sie das Passswort ihres Accounts wirklich ändern?")
   async changePassword(){
