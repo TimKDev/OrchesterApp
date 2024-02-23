@@ -24,9 +24,6 @@
           <ion-input formControlName="nachname" labelPlacement="stacked" label="Nachname" placeholder="Nachname"></ion-input>
         </ion-item>
         <ion-item>
-          <ion-input formControlName="registerKey" labelPlacement="stacked" label="Registrierungsschlüssel" placeholder="Registrierungsschlüssel"></ion-input>
-        </ion-item>
-        <ion-item>
           <ion-avatar *ngIf="formGroup.get('image')!.value" slot="start">
             <img [src]="'data:image/png;base64,' + formGroup.get('image')!.value" />
           </ion-avatar>

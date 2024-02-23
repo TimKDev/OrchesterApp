@@ -1,7 +1,6 @@
 export interface CreateMitgliedRequest{
   vorname: string, 
   nachname: string, 
-  registerKey: string,
   straße?: string, 
   hausnummer?: string,
   postleitzahl?: string,

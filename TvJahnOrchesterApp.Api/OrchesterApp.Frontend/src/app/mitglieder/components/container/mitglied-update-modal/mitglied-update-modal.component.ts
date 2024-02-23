@@ -31,7 +31,7 @@ export class MitgliedUpdateModalComponent  implements OnInit {
     this.data$ = this.us.autoUnsubscribe(this.mitgliederService.getSpecificMitglied(this.mitgliedsId)).pipe(tap(dataRaw => {
       let data = {
         ...dataRaw.orchesterMitglied, 
-        geburtstag: dataRaw.orchesterMitglied.geburtstag ? formatDate(dataRaw.orchesterMitglied.geburtstag, 'yyyy-MM-dd', 'UTC') : null,
+        geburtstag: dataRaw.orchesterMitglied.geburtstag ? formatDate(dataRaw.orchesterMitglied.geburtstag, 'yyyy-MM-dd', 'en') : null,
       }
       this.formGroup.patchValue(data);
       this.formGroup.patchValue(data.adresse);

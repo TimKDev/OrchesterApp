@@ -22,7 +22,6 @@ export class MitgliedCreateModalComponent implements OnInit {
   formGroup = this.formBuilder.group({
     vorname: ['', [Validators.required]],
     nachname: ['', [Validators.required]],
-    registerKey: ['', [Validators.required]],
     straße: null as string | null,
     hausnummer: null as string | null,
     postleitzahl: null as string | null,
