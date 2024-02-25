@@ -22,7 +22,7 @@ services:
       context: .
       dockerfile: OrchesterApp.Frontend/Dockerfile
     ports:
-      - 40085:80
+      - 40180:80
     depends_on:
       - orchesterapp.api
     networks:
@@ -37,7 +37,7 @@ services:
     depends_on:
         - postgresql
     ports: 
-        - "40081:8080"
+        - "40181:8080"
     networks:
         - orchester-app-network
     environment:

@@ -1,5 +1,5 @@
 export const environment = {
   production: true,
-  basePathBackend: '',
-  basePathFrontend: ''
+    basePathBackend: 'https://orchester-app.tim-kempkens.com/',
+    basePathFrontend: 'https://orchester-app.tim-kempkens.com/'
 };
