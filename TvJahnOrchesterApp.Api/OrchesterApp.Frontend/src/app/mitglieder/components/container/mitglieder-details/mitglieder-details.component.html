@@ -29,8 +29,8 @@
 
     <ion-card>
       <ion-item>
-        <ion-avatar *ngIf="res.orchesterMitglied.image" slot="start" class="profil-img">
-          <img [src]="'data:image/png;base64,' + res.orchesterMitglied.image" />
+        <ion-avatar slot="start" class="profil-img">
+          <img [src]="res.orchesterMitglied.image ? 'data:image/png;base64,' + res.orchesterMitglied.image : '/assets/avatar.svg'" />
         </ion-avatar>
         <h3>{{res.orchesterMitglied.vorname + ' ' + res.orchesterMitglied.nachname}}</h3>
       </ion-item>
