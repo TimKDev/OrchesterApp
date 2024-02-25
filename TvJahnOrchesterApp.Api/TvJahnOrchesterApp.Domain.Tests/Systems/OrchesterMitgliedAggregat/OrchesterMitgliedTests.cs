@@ -87,7 +87,7 @@ namespace TvJahnOrchesterApp.Domain.Tests.Systems.OrchesterMitgliedAggregat
 
                 //Asssert
                 sut.RegisterKey.Should().Be(_registrationKey);
-                sut.RegisterKeyExpirationDate.Should().BeAfter(DateTime.Now.AddDays(10).AddMinutes(-1));
+                sut.RegisterKeyExpirationDate.Should().BeAfter(DateTime.UtcNow.AddDays(10).AddMinutes(-1));
             }
 
             [Fact]
@@ -136,7 +136,7 @@ namespace TvJahnOrchesterApp.Domain.Tests.Systems.OrchesterMitgliedAggregat
                 sut.SetRegisterKey(testRegistrationKey);
 
                 // Assert
-                sut.RegisterKeyExpirationDate.Should().BeAtLeast(9.Days()).After(DateTime.Now);
+                sut.RegisterKeyExpirationDate.Should().BeAtLeast(9.Days()).After(DateTime.UtcNow);
             }
         }
 
@@ -170,7 +170,7 @@ namespace TvJahnOrchesterApp.Domain.Tests.Systems.OrchesterMitgliedAggregat
                 sut.ConnectWithUser(testUserId);
 
                 // Assert
-                sut.UserFirstConnected.Should().BeCloseTo(DateTime.Now, 1.Minutes());
+                sut.UserFirstConnected.Should().BeCloseTo(DateTime.UtcNow, 1.Minutes());
             }
         }
 

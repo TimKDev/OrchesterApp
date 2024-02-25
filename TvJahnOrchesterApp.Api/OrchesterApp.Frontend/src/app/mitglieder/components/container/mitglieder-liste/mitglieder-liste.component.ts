@@ -18,8 +18,8 @@ import { RolesService } from 'src/app/authentication/services/roles.service';
 export class MitgliederListeComponent implements OnInit{
   data!: GetAllMitgliederResponse[];
   displayedData!: GetAllMitgliederResponse[];
-
   canCreateNewMitglied = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
+  currentlyLoading = false;
 
   @ViewChild('searchBar') searchBar!: any;
 
@@ -32,7 +32,6 @@ export class MitgliederListeComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    if(this.refreshService.needsRefreshing('MitgliederListeComponent')) return;
     this.loadData();
   }
 
@@ -42,10 +41,13 @@ export class MitgliederListeComponent implements OnInit{
   }
 
   loadData(refreshEvent: any = null){
+    if(this.currentlyLoading) return;
+    this.currentlyLoading = true;
     this.us.autoUnsubscribe(this.mitgliederService.getAllMitglieder()).subscribe(res => {
       this.data = res;
       this.displayedData = res;
       if(refreshEvent) refreshEvent.target.complete();
+      this.currentlyLoading = false
     });
   }
 

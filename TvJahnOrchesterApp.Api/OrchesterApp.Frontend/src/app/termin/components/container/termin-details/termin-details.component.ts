@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
-import { Observable, map, tap } from 'rxjs';
+import { NEVER, Observable, catchError, map, tap } from 'rxjs';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-response';
 import { TerminService } from 'src/app/termin/services/termin.service';
@@ -29,6 +29,7 @@ export class TerminDetailsComponent implements OnInit {
   dateNow = new Date();
   noten = '';
   uniform = '';
+  currentlyLoading = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -44,20 +45,23 @@ export class TerminDetailsComponent implements OnInit {
   ngOnInit() {
     this.activeTab = this.route.snapshot.params['activeTab'];
     this.terminId = this.route.snapshot.params['terminId'];
-    if (this.refreshService.needsRefreshing('TerminDetails')) return;
     this.loadData();
   }
 
   loadData(refreshEvent: any = null) {
+    if(this.currentlyLoading) return;
+    this.currentlyLoading = true;
     this.data$ = this.terminService.getTerminDetails(this.terminId).pipe(
       tap((data) => {
-        data.termin.startZeit = new Date(data.termin.startZeit + 'Z');
-        data.termin.endZeit = new Date(data.termin.endZeit + 'Z');
+        data.termin.startZeit = new Date(data.termin.startZeit);
+        data.termin.endZeit = new Date(data.termin.endZeit);
         if (refreshEvent) {
           refreshEvent.target.complete();
           this.isRefreshing = false;
         }
-      })
+        this.currentlyLoading = false;
+      }),
+      catchError(() => {this.currentlyLoading = false; return NEVER})
     );
   }
 

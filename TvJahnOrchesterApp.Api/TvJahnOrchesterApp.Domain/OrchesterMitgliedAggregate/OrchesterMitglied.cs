@@ -25,7 +25,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
         public int? DefaultInstrument { get; private set; } 
         public int? DefaultNotenStimme { get; private set; }
         //public IReadOnlyList<OrchesterEigentumId> AusgeliehendesOrchesterEigentum => _ausgeliehendesOrchesterEigentum.AsReadOnly();
-        public string RegisterKey { get; private set; } = null!;
+        public string? RegisterKey { get; private set; }
         public DateTime RegisterKeyExpirationDate { get; private set; }
         public string? ConnectedUserId { get; private set; }
         public DateTime? UserFirstConnected { get; private set; }
@@ -36,7 +36,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         private OrchesterMitglied() { }
        
-        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string? handynummer, int? defaultInstrument, int? defaultNotenStimme, int mitgliedsStatus, string registrationKey, byte[]? image) : base(id)
+        private OrchesterMitglied(OrchesterMitgliedsId id, string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string? handynummer, int? defaultInstrument, int? defaultNotenStimme, int mitgliedsStatus, byte[]? image) : base(id)
         {
             Vorname = vorname;
             Nachname = nachname;
@@ -46,32 +46,31 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
             Handynummer = handynummer;
             DefaultInstrument = defaultInstrument;
             DefaultNotenStimme = defaultNotenStimme;
-            RegisterKey = registrationKey;
             OrchesterMitgliedsStatus = mitgliedsStatus;
-            RegisterKeyExpirationDate = DateTime.Now.AddDays(RegistrationKeyExpireDays);
+            RegisterKeyExpirationDate = DateTime.UtcNow.AddDays(RegistrationKeyExpireDays);
             Image = image;
         }
 
-        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string? handynummer, int? defaultInstrument, int? defaultNotenStimme, string registrationKey, int mitgliedsStatus, byte[]? image)
+        public static OrchesterMitglied Create(string vorname, string nachname, Adresse adresse, DateTime? geburtstag, string? telefonnummer, string? handynummer, int? defaultInstrument, int? defaultNotenStimme, int mitgliedsStatus, byte[]? image)
         {
-            return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag, telefonnummer, handynummer, defaultInstrument, defaultNotenStimme, mitgliedsStatus, registrationKey, image);
+            return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag, telefonnummer, handynummer, defaultInstrument, defaultNotenStimme, mitgliedsStatus, image);
         }
 
         public void SetRegisterKey(string key)
         {
             RegisterKey = key;
-            RegisterKeyExpirationDate = DateTime.Now.AddDays(RegistrationKeyExpireDays);
+            RegisterKeyExpirationDate = DateTime.UtcNow.AddDays(RegistrationKeyExpireDays);
         }
 
         public void ConnectWithUser(string userId)
         {
             ConnectedUserId = userId;
-            UserFirstConnected = DateTime.Now;
+            UserFirstConnected = DateTime.UtcNow;
         }
 
         public bool ValidateRegistrationKey(string key)
         {
-            return ConnectedUserId is null && RegisterKey == key && DateTime.Now <= RegisterKeyExpirationDate;
+            return ConnectedUserId is null && RegisterKey == key && DateTime.UtcNow <= RegisterKeyExpirationDate;
         }
 
         public void ChangeMitgliedsStatus(int mitgliedsStatus)
@@ -88,7 +87,7 @@ namespace TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate
 
         public void UserLogin()
         {
-            UserLastLogin = DateTime.Now;
+            UserLastLogin = DateTime.UtcNow;
         }
 
         public void SetMemberSince(DateTime? dateTime)

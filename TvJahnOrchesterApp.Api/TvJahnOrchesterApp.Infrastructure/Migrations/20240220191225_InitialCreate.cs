@@ -1,5 +1,6 @@
 ﻿using System;
 using Microsoft.EntityFrameworkCore.Migrations;
+using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 
 #nullable disable
 
@@ -17,9 +18,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "ArtInstrument",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -30,10 +31,10 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "AspNetRoles",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -44,9 +45,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "MitgliedsStatus",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -57,9 +58,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Noten",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -70,9 +71,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Notenstimme",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -83,9 +84,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Positions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -96,9 +97,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Rückmeldungsarten",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -109,9 +110,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "TerminArten",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -122,9 +123,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "TerminStatus",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -135,9 +136,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Uniform",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -148,10 +149,10 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Instrumente",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    ArtInstrumentId = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    Value = table.Column<string>(type: "text", nullable: false),
+                    ArtInstrumentId = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -168,11 +169,11 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "AspNetRoleClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    RoleId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -189,11 +190,12 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Termine",
                 columns: table => new
                 {
-                    TerminId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: false),
-                    TerminArt = table.Column<int>(type: "int", nullable: true),
-                    TerminStatus = table.Column<int>(type: "int", nullable: true),
-                    AbstimmungsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    TerminId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Name = table.Column<string>(type: "character varying(100)", maxLength: 100, nullable: false),
+                    Image = table.Column<byte[]>(type: "bytea", nullable: true),
+                    TerminArt = table.Column<int>(type: "integer", nullable: true),
+                    TerminStatus = table.Column<int>(type: "integer", nullable: true),
+                    AbstimmungsId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -216,18 +218,18 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Einsatzpläne",
                 columns: table => new
                 {
-                    EinsatzplanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TerminId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    StartZeit = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    EndZeit = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Treffpunkt_Straße = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Treffpunkt_Hausnummer = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Treffpunkt_Postleitzahl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Treffpunkt_Stadt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Treffpunkt_Zusatz = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Treffpunkt_Latitude = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Treffpunkt_Longitide = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    WeitereInformationen = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    EinsatzplanId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TerminId = table.Column<Guid>(type: "uuid", nullable: false),
+                    StartZeit = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    EndZeit = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Treffpunkt_Straße = table.Column<string>(type: "text", nullable: true),
+                    Treffpunkt_Hausnummer = table.Column<string>(type: "text", nullable: true),
+                    Treffpunkt_Postleitzahl = table.Column<string>(type: "text", nullable: true),
+                    Treffpunkt_Stadt = table.Column<string>(type: "text", nullable: true),
+                    Treffpunkt_Zusatz = table.Column<string>(type: "text", nullable: true),
+                    Treffpunkt_Latitude = table.Column<decimal>(type: "numeric", nullable: true),
+                    Treffpunkt_Longitide = table.Column<decimal>(type: "numeric", nullable: true),
+                    WeitereInformationen = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -244,11 +246,11 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "EinsatzplanNotenMapping",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NotenId = table.Column<int>(type: "int", nullable: false),
-                    EinsatzplanId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TerminId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NotenId = table.Column<int>(type: "integer", nullable: false),
+                    EinsatzplanId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TerminId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -271,17 +273,17 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "EinsatzplanUniformMapping",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UniformId = table.Column<int>(type: "int", nullable: false),
-                    EinsatzplanId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TerminId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UniformId = table.Column<int>(type: "integer", nullable: false),
+                    EinsatzplanId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TerminId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_EinsatzplanUniformMapping", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_EinsatzplanUniformMapping_Einsatzpläne_EinsatzplanId_TerminId",
+                        name: "FK_EinsatzplanUniformMapping_Einsatzpläne_EinsatzplanId_Termin~",
                         columns: x => new { x.EinsatzplanId, x.TerminId },
                         principalTable: "Einsatzpläne",
                         principalColumns: new[] { "EinsatzplanId", "TerminId" },
@@ -298,19 +300,19 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Zeitblöcke",
                 columns: table => new
                 {
-                    Id = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    EinsatzplanId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TerminId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Startzeit = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Endzeit = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Beschreibung = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adresse_Straße = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Adresse_Hausnummer = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Adresse_Postleitzahl = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Adresse_Stadt = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Adresse_Zusatz = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Adresse_Latitude = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Adresse_Longitide = table.Column<decimal>(type: "decimal(18,2)", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    EinsatzplanId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TerminId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Startzeit = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Endzeit = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    Beschreibung = table.Column<string>(type: "text", nullable: false),
+                    Adresse_Straße = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Hausnummer = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Postleitzahl = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Stadt = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Zusatz = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Latitude = table.Column<decimal>(type: "numeric", nullable: true),
+                    Adresse_Longitide = table.Column<decimal>(type: "numeric", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -327,11 +329,11 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "AspNetUserClaims",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ClaimType = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ClaimValue = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    ClaimType = table.Column<string>(type: "text", nullable: true),
+                    ClaimValue = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -342,10 +344,10 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "AspNetUserLogins",
                 columns: table => new
                 {
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderKey = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    ProviderDisplayName = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    ProviderKey = table.Column<string>(type: "text", nullable: false),
+                    ProviderDisplayName = table.Column<string>(type: "text", nullable: true),
+                    UserId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -356,8 +358,8 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "AspNetUserRoles",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    RoleId = table.Column<string>(type: "nvarchar(450)", nullable: false)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    RoleId = table.Column<string>(type: "text", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -374,24 +376,24 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "AspNetUsers",
                 columns: table => new
                 {
-                    Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    OrchesterMitgliedsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    RefreshToken = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    NormalizedEmail = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
-                    EmailConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    PasswordHash = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    SecurityStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    ConcurrencyStamp = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumber = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    PhoneNumberConfirmed = table.Column<bool>(type: "bit", nullable: false),
-                    TwoFactorEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    LockoutEnd = table.Column<DateTimeOffset>(type: "datetimeoffset", nullable: true),
-                    LockoutEnabled = table.Column<bool>(type: "bit", nullable: false),
-                    AccessFailedCount = table.Column<int>(type: "int", nullable: false)
+                    Id = table.Column<string>(type: "text", nullable: false),
+                    OrchesterMitgliedsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    RefreshToken = table.Column<string>(type: "text", nullable: true),
+                    RefreshTokenExpiryTime = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    UserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedUserName = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    Email = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    NormalizedEmail = table.Column<string>(type: "character varying(256)", maxLength: 256, nullable: true),
+                    EmailConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    PasswordHash = table.Column<string>(type: "text", nullable: true),
+                    SecurityStamp = table.Column<string>(type: "text", nullable: true),
+                    ConcurrencyStamp = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumber = table.Column<string>(type: "text", nullable: true),
+                    PhoneNumberConfirmed = table.Column<bool>(type: "boolean", nullable: false),
+                    TwoFactorEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    LockoutEnd = table.Column<DateTimeOffset>(type: "timestamp with time zone", nullable: true),
+                    LockoutEnabled = table.Column<bool>(type: "boolean", nullable: false),
+                    AccessFailedCount = table.Column<int>(type: "integer", nullable: false)
                 },
                 constraints: table =>
                 {
@@ -402,10 +404,10 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "AspNetUserTokens",
                 columns: table => new
                 {
-                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    LoginProvider = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Name = table.Column<string>(type: "nvarchar(450)", nullable: false),
-                    Value = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    UserId = table.Column<string>(type: "text", nullable: false),
+                    LoginProvider = table.Column<string>(type: "text", nullable: false),
+                    Name = table.Column<string>(type: "text", nullable: false),
+                    Value = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -422,27 +424,30 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "Orchestermitglieder",
                 columns: table => new
                 {
-                    OrchesterMitgliedsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Vorname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Nachname = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adresse_Straße = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adresse_Hausnummer = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adresse_Postleitzahl = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adresse_Stadt = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Adresse_Zusatz = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    Adresse_Latitude = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Adresse_Longitide = table.Column<decimal>(type: "decimal(18,2)", nullable: true),
-                    Geburtstag = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    Telefonnummer = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    Handynummer = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    DefaultInstrument = table.Column<int>(type: "int", nullable: true),
-                    DefaultNotenStimme = table.Column<int>(type: "int", nullable: true),
-                    RegisterKey = table.Column<string>(type: "nvarchar(max)", nullable: false),
-                    RegisterKeyExpirationDate = table.Column<DateTime>(type: "datetime2", nullable: false),
-                    ConnectedUserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
-                    UserFirstConnected = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    UserLastLogin = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    OrchesterMitgliedsStatus = table.Column<int>(type: "int", nullable: true)
+                    OrchesterMitgliedsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Vorname = table.Column<string>(type: "text", nullable: false),
+                    Nachname = table.Column<string>(type: "text", nullable: false),
+                    Image = table.Column<byte[]>(type: "bytea", nullable: true),
+                    Adresse_Straße = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Hausnummer = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Postleitzahl = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Stadt = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Zusatz = table.Column<string>(type: "text", nullable: true),
+                    Adresse_Latitude = table.Column<decimal>(type: "numeric", nullable: true),
+                    Adresse_Longitide = table.Column<decimal>(type: "numeric", nullable: true),
+                    Geburtstag = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    Telefonnummer = table.Column<string>(type: "text", nullable: true),
+                    Handynummer = table.Column<string>(type: "text", nullable: true),
+                    DefaultInstrument = table.Column<int>(type: "integer", nullable: true),
+                    DefaultNotenStimme = table.Column<int>(type: "integer", nullable: true),
+                    RegisterKey = table.Column<string>(type: "text", nullable: false),
+                    RegisterKeyExpirationDate = table.Column<DateTime>(type: "timestamp with time zone", nullable: false),
+                    ConnectedUserId = table.Column<string>(type: "text", nullable: true),
+                    UserFirstConnected = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    UserLastLogin = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    MemberSince = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    MemberSinceInYears = table.Column<int>(type: "integer", nullable: true),
+                    OrchesterMitgliedsStatus = table.Column<int>(type: "integer", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -477,15 +482,15 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "OrchestermitgliedPositions",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false),
-                    PositionId = table.Column<int>(type: "int", nullable: false),
-                    OrchesterMitgliedsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Id = table.Column<Guid>(type: "uuid", nullable: false),
+                    PositionId = table.Column<int>(type: "integer", nullable: false),
+                    OrchesterMitgliedsId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_OrchestermitgliedPositions", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMitgliedsId",
+                        name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMit~",
                         column: x => x.OrchesterMitgliedsId,
                         principalTable: "Orchestermitglieder",
                         principalColumn: "OrchesterMitgliedsId");
@@ -501,15 +506,15 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "TerminRückmeldungen",
                 columns: table => new
                 {
-                    TerminRückmeldungsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    TerminId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    OrchesterMitgliedsId = table.Column<Guid>(type: "uniqueidentifier", nullable: false),
-                    Zugesagt = table.Column<int>(type: "int", nullable: false),
-                    KommentarZusage = table.Column<string>(type: "nvarchar(max)", nullable: true),
-                    LetzteRückmeldung = table.Column<DateTime>(type: "datetime2", nullable: true),
-                    RückmeldungDurchAnderesOrchestermitglied = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    IstAnwesend = table.Column<bool>(type: "bit", nullable: false),
-                    KommentarAnwesenheit = table.Column<string>(type: "nvarchar(max)", nullable: true)
+                    TerminRückmeldungsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    TerminId = table.Column<Guid>(type: "uuid", nullable: false),
+                    OrchesterMitgliedsId = table.Column<Guid>(type: "uuid", nullable: false),
+                    Zugesagt = table.Column<int>(type: "integer", nullable: false),
+                    KommentarZusage = table.Column<string>(type: "text", nullable: true),
+                    LetzteRückmeldung = table.Column<DateTime>(type: "timestamp with time zone", nullable: true),
+                    RückmeldungDurchAnderesOrchestermitglied = table.Column<Guid>(type: "uuid", nullable: true),
+                    IstAnwesend = table.Column<bool>(type: "boolean", nullable: false),
+                    KommentarAnwesenheit = table.Column<string>(type: "text", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -521,7 +526,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                         principalColumn: "OrchesterMitgliedsId",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TerminRückmeldungen_Orchestermitglieder_RückmeldungDurchAnderesOrchestermitglied",
+                        name: "FK_TerminRückmeldungen_Orchestermitglieder_RückmeldungDurchAnd~",
                         column: x => x.RückmeldungDurchAnderesOrchestermitglied,
                         principalTable: "Orchestermitglieder",
                         principalColumn: "OrchesterMitgliedsId");
@@ -537,11 +542,11 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "TerminRückmeldungInstrumentMapping",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    InstrumentId = table.Column<int>(type: "int", nullable: false),
-                    TerminId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TerminRückmeldungsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    InstrumentId = table.Column<int>(type: "integer", nullable: false),
+                    TerminId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TerminRückmeldungsId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
@@ -553,7 +558,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TerminRückmeldungInstrumentMapping_TerminRückmeldungen_TerminRückmeldungsId_TerminId",
+                        name: "FK_TerminRückmeldungInstrumentMapping_TerminRückmeldungen_Term~",
                         columns: x => new { x.TerminRückmeldungsId, x.TerminId },
                         principalTable: "TerminRückmeldungen",
                         principalColumns: new[] { "TerminRückmeldungsId", "TerminId" },
@@ -564,23 +569,23 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "TerminRückmeldungNotenstimmeMapping",
                 columns: table => new
                 {
-                    Id = table.Column<int>(type: "int", nullable: false)
-                        .Annotation("SqlServer:Identity", "1, 1"),
-                    NotenstimmenId = table.Column<int>(type: "int", nullable: false),
-                    TerminId = table.Column<Guid>(type: "uniqueidentifier", nullable: true),
-                    TerminRückmeldungsId = table.Column<Guid>(type: "uniqueidentifier", nullable: true)
+                    Id = table.Column<int>(type: "integer", nullable: false)
+                        .Annotation("Npgsql:ValueGenerationStrategy", NpgsqlValueGenerationStrategy.IdentityByDefaultColumn),
+                    NotenstimmenId = table.Column<int>(type: "integer", nullable: false),
+                    TerminId = table.Column<Guid>(type: "uuid", nullable: true),
+                    TerminRückmeldungsId = table.Column<Guid>(type: "uuid", nullable: true)
                 },
                 constraints: table =>
                 {
                     table.PrimaryKey("PK_TerminRückmeldungNotenstimmeMapping", x => x.Id);
                     table.ForeignKey(
-                        name: "FK_TerminRückmeldungNotenstimmeMapping_Notenstimme_NotenstimmenId",
+                        name: "FK_TerminRückmeldungNotenstimmeMapping_Notenstimme_Notenstimme~",
                         column: x => x.NotenstimmenId,
                         principalTable: "Notenstimme",
                         principalColumn: "Id",
                         onDelete: ReferentialAction.Cascade);
                     table.ForeignKey(
-                        name: "FK_TerminRückmeldungNotenstimmeMapping_TerminRückmeldungen_TerminRückmeldungsId_TerminId",
+                        name: "FK_TerminRückmeldungNotenstimmeMapping_TerminRückmeldungen_Ter~",
                         columns: x => new { x.TerminRückmeldungsId, x.TerminId },
                         principalTable: "TerminRückmeldungen",
                         principalColumns: new[] { "TerminRückmeldungsId", "TerminId" },
@@ -713,8 +718,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "RoleNameIndex",
                 table: "AspNetRoles",
                 column: "NormalizedName",
-                unique: true,
-                filter: "[NormalizedName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetUserClaims_UserId",
@@ -746,8 +750,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "UserNameIndex",
                 table: "AspNetUsers",
                 column: "NormalizedUserName",
-                unique: true,
-                filter: "[NormalizedUserName] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Einsatzpläne_TerminId",
@@ -784,8 +787,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 name: "IX_Orchestermitglieder_ConnectedUserId",
                 table: "Orchestermitglieder",
                 column: "ConnectedUserId",
-                unique: true,
-                filter: "[ConnectedUserId] IS NOT NULL");
+                unique: true);
 
             migrationBuilder.CreateIndex(
                 name: "IX_Orchestermitglieder_DefaultInstrument",
@@ -843,7 +845,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 column: "InstrumentId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TerminRückmeldungInstrumentMapping_TerminRückmeldungsId_TerminId",
+                name: "IX_TerminRückmeldungInstrumentMapping_TerminRückmeldungsId_Ter~",
                 table: "TerminRückmeldungInstrumentMapping",
                 columns: new[] { "TerminRückmeldungsId", "TerminId" });
 
@@ -853,7 +855,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
                 column: "NotenstimmenId");
 
             migrationBuilder.CreateIndex(
-                name: "IX_TerminRückmeldungNotenstimmeMapping_TerminRückmeldungsId_TerminId",
+                name: "IX_TerminRückmeldungNotenstimmeMapping_TerminRückmeldungsId_Te~",
                 table: "TerminRückmeldungNotenstimmeMapping",
                 columns: new[] { "TerminRückmeldungsId", "TerminId" });
 

@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { NEVER, Observable, catchError, tap } from 'rxjs';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { DashboardService } from '../../../services/dashboard.service';
 import { DashboardGetResponse } from '../../../interfaces/dashboard-get-response';
@@ -14,6 +14,7 @@ export class DashboardComponent implements OnInit{
   
   data$!: Observable<DashboardGetResponse>;
   isRefreshing = false;
+  currentlyLoading = false;
 
   constructor(
     private dashboardService: DashboardService,
@@ -22,11 +23,12 @@ export class DashboardComponent implements OnInit{
   ) { }
 
   ngOnInit(): void {
-    if (this.refreshService.needsRefreshing('Dashboard')) return;
     this.loadData();
   }
 
   loadData(refreshEvent: any = null) {
+    if(this.currentlyLoading) return;
+    this.currentlyLoading = true;
     this.data$ = this.dashboardService.getDashboardData().pipe(
       tap((data) => {
         data.birthdayList.sort((a, b) => {
@@ -40,7 +42,9 @@ export class DashboardComponent implements OnInit{
           refreshEvent.target.complete();
           this.isRefreshing = false;
         }
-      })
+        this.currentlyLoading = false;
+      }),
+      catchError(() => {this.currentlyLoading = false; return NEVER})
     );
   }
 

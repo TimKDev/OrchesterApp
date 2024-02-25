@@ -94,6 +94,10 @@ export class CreateTerminModalComponent  implements OnInit {
       endZeit.setHours(value.endZeit[0] + value.endZeit[1]);
       endZeit.setMinutes(value.endZeit[3] + value.endZeit[4]);
     }
+    else{
+      endZeit.setHours(23);
+      endZeit.setMinutes(59);
+    }
     return this.modalCtrl.dismiss({
       ...value, 
       startZeit: startZeit,

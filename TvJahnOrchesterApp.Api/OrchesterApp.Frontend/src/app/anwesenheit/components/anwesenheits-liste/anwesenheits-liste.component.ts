@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AnwesenheitService } from '../../services/anwesenheit.service';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { AnwesenheitsListeGetResponseEntry } from '../../interfaces/anwesenheits-liste-get-response';
-import { Observable, tap } from 'rxjs';
+import { NEVER, Observable, catchError, tap } from 'rxjs';
 import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 
 @Component({
@@ -15,6 +15,7 @@ export class AnwesenheitsListeComponent implements OnInit {
   isRefreshing = false;
   defaultSegment = "default";
   nameOfCurrentUser = "";
+  currentlyLoading = false;
 
   private YEAR = 2024;
 
@@ -26,18 +27,21 @@ export class AnwesenheitsListeComponent implements OnInit {
 
   ngOnInit(): void {
     this.nameOfCurrentUser = this.authenticationService.connectedOrchesterMitgliedsName!;
-    if (this.refreshService.needsRefreshing('TerminListeComponent')) return;
     this.loadData();
   }
 
   loadData(refreshEvent: any = null) {
+    if(this.currentlyLoading) return;
+    this.currentlyLoading = true;
     this.data$ = this.anwesenheitsService.getAnwesenheitsListeForYear(this.YEAR).pipe(
       tap(() => {
         if (refreshEvent) {
           refreshEvent.target.complete();
           this.isRefreshing = false;
         }
-      })
+        this.currentlyLoading = false;
+      }),
+      catchError(() => {this.currentlyLoading = false; return NEVER})
     );
   }
 

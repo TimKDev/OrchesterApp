@@ -52,8 +52,10 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 var orchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(OrchesterMitgliedsId.Create(request.Id), cancellationToken);
                 var adresse = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt, request.Zusatz);
                 var imageAsByteArray = TransformImageService.ConvertToCompressedByteArray(request.Image);
+                DateTime? geburtstagUtc = request.Geburtstag is null ? null : request.Geburtstag.Value.ToUniversalTime();
+                DateTime? memberSinceUtc = request.MemberSince is null ? null : request.MemberSince.Value.ToUniversalTime();
 
-                orchesterMitglied.AdminUpdates(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.OrchesterMitgliedsStatus, request.MemberSince, request.Positions, imageAsByteArray);
+                orchesterMitglied.AdminUpdates(request.Vorname, request.Nachname, adresse, geburtstagUtc, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.OrchesterMitgliedsStatus, memberSinceUtc, request.Positions, imageAsByteArray);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

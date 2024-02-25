@@ -1,11 +1,14 @@
 ﻿using BuberDinner.Infrastructure.Authentication;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
+using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Logging;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
+using Npgsql;
 using System;
 using System.Runtime.CompilerServices;
 using System.Text;
@@ -40,7 +43,10 @@ namespace TvJahnOrchesterApp.Infrastructure
         public static IServiceCollection AddPersistence(this IServiceCollection services, ConfigurationManager configuration)
         {
             var connectionString = configuration.GetValueFromSecretOrConfig("ConnectionStrings:DefaultConnection");
-            services.AddDbContext<OrchesterDbContext>(options => options.UseSqlServer(connectionString));
+            services.AddDbContext<OrchesterDbContext>(options =>
+            {
+                options.UseNpgsql(connectionString);
+            });
 
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();

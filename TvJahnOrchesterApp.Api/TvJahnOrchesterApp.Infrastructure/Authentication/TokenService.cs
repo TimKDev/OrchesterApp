@@ -48,7 +48,7 @@ namespace TvJahnOrchesterApp.Infrastructure.Authentication
 
         public bool IsRefreshTokenValid(User user, string refreshToken)
         {
-            if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.Now)
+            if (user is null || user.RefreshToken != refreshToken || user.RefreshTokenExpiryTime <= DateTime.UtcNow)
             {
                 return false;
             }

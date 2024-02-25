@@ -15,7 +15,7 @@
       <ion-avatar *ngIf="formGroup.get('image')!.value" slot="start">
         <img [src]="'data:image/png;base64,' + formGroup.get('image')!.value" />
       </ion-avatar>
-      <h3>{{data.vorname + ' ' + data.nachname}}</h3>
+      <h3>{{data.orchesterMitglied.vorname + ' ' + data.orchesterMitglied.nachname}}</h3>
     </ion-item>
     
     <form [formGroup]="formGroup">

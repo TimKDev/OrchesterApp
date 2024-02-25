@@ -31,7 +31,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             return Results.Ok("Orchestermitglied wurde erfolgreich erstellt.");
         }
 
-        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, int[] Position, string RegisterKey, DateTime? MemberSince, string? Image) : IRequest<Unit>;
+        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, int[] Position, DateTime? MemberSince, string? Image) : IRequest<Unit>;
 
         private class CreateOrchesterMitgliedCommandValidation : AbstractValidator<CreateOrchesterMitgliedCommand>
         {
@@ -39,7 +39,6 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             {
                 RuleFor(x => x.Vorname).NotEmpty();
                 RuleFor(x => x.Nachname).NotEmpty();
-                RuleFor(x => x.RegisterKey).MinimumLength(6);
             }
         }
 
@@ -62,11 +61,13 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 }
 
                 var imageAsCompressedByteArray = TransformImageService.ConvertToCompressedByteArray(request.Image);
+                DateTime? geburtstagUtc = request.Geburtstag is null ? null : request.Geburtstag.Value.ToUniversalTime();
+                DateTime? memberSinceUtc = request.MemberSince is null ? null : request.MemberSince.Value.ToUniversalTime();
 
-                var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, request.RegisterKey, (int)MitgliedsStatusEnum.aktiv, imageAsCompressedByteArray);
+                var orchesterMitglied = Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, geburtstagUtc, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, (int)MitgliedsStatusEnum.aktiv, imageAsCompressedByteArray);
 
                 orchesterMitglied.UpdatePositions(request.Position);
-                orchesterMitglied.SetMemberSince(request.MemberSince);
+                orchesterMitglied.SetMemberSince(memberSinceUtc);
 
                 await _orchesterMitgliedRepository.CreateAsync(orchesterMitglied, cancellationToken);
                 return Unit.Value;

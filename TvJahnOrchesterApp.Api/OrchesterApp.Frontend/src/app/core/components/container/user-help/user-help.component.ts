@@ -5,10 +5,8 @@ import { Component, OnInit } from '@angular/core';
   templateUrl: './user-help.component.html',
   styleUrls: ['./user-help.component.scss'],
 })
-export class UserHelpComponent  implements OnInit {
+export class UserHelpComponent {
 
   constructor() { }
-
-  ngOnInit() {}
 
 }

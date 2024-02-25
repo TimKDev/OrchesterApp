@@ -32,7 +32,7 @@ namespace TvJahnOrchesterApp.Domain.UserAggregate
         public void SetRefreshToken(string? refreshToken)
         {
             RefreshToken = refreshToken;
-            RefreshTokenExpiryTime = DateTime.Now.AddDays(RefreshTokenExpireDays);
+            RefreshTokenExpiryTime = DateTime.UtcNow.AddDays(RefreshTokenExpireDays);
         }
     }
 }

@@ -1,15 +1,11 @@
-import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
-import { Observable, tap, combineLatest, map } from 'rxjs';
+import { Observable, combineLatest, map } from 'rxjs';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
 import { DropdownService } from 'src/app/core/services/dropdown.service';
 import { PhotoService } from 'src/app/core/services/photo.service';
-import { CreateMitgliedRequest } from 'src/app/mitglieder/interfaces/create-mitglied-request';
-import { GetSpecificMitgliederResponse } from 'src/app/mitglieder/interfaces/get-specific-mitglieder-response';
-import { MitgliederService } from 'src/app/mitglieder/services/mitglieder.service';
 
 @Component({
   selector: 'app-mitglied-create-modal',
@@ -26,7 +22,6 @@ export class MitgliedCreateModalComponent implements OnInit {
   formGroup = this.formBuilder.group({
     vorname: ['', [Validators.required]],
     nachname: ['', [Validators.required]],
-    registerKey: ['', [Validators.required]],
     straße: null as string | null,
     hausnummer: null as string | null,
     postleitzahl: null as string | null,

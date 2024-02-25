@@ -60,7 +60,9 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
 
                 var imageAsByteArray = TransformImageService.ConvertToCompressedByteArray(request.Image);
 
-                orchesterMitglied.UserUpdates(adresse, request.Geburtstag, request.Telefonnummer, request.Handynummer, imageAsByteArray);
+                DateTime? geburtstagUtc = request.Geburtstag is null ? null : request.Geburtstag.Value.ToUniversalTime();
+
+                orchesterMitglied.UserUpdates(adresse, geburtstagUtc, request.Telefonnummer, request.Handynummer, imageAsByteArray);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return Unit.Value;

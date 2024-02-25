@@ -1,5 +1,5 @@
 import { Component } from '@angular/core';
-import { Observable, tap } from 'rxjs';
+import { NEVER, Observable, catchError, tap } from 'rxjs';
 import { RolesService } from 'src/app/authentication/services/roles.service';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { RefreshService } from 'src/app/core/services/refresh.service';
@@ -22,6 +22,7 @@ export class TerminListeComponent {
   canCreateNewTermin = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
   isRefreshing = false;
   defaultSegment = "default";
+  currentlyLoadingWithoutCache = false;
 
   constructor(
     private terminService: TerminService,
@@ -35,20 +36,23 @@ export class TerminListeComponent {
   ngOnInit(): void {
     let selectedTab = this.route.snapshot.params['activeTab'];
     if(selectedTab !== undefined) this.defaultSegment = selectedTab;
-    if (this.refreshService.needsRefreshing('TerminListeComponent')) return;
     this.loadData();
   }
 
   loadData(refreshEvent: any = null, useCache = true) {
+    if(this.currentlyLoadingWithoutCache) return;
+    this.currentlyLoadingWithoutCache = !useCache;
     this.data$ = this.terminService.getAllTermins(useCache).pipe(
       tap((data) => {
-        data.terminData.forEach(t => t.startZeit = new Date(t.startZeit + 'Z'));
-        data.terminData.forEach(t => t.endZeit = new Date(t.endZeit + 'Z'));
+        data.terminData.forEach(t => t.startZeit = new Date(t.startZeit));
+        data.terminData.forEach(t => t.endZeit = new Date(t.endZeit));
         if (refreshEvent){
           refreshEvent.target.complete();
           this.isRefreshing = false;
         } 
-      })
+        this.currentlyLoadingWithoutCache = false;
+      }),
+      catchError(() => {this.currentlyLoadingWithoutCache = false; return NEVER})
     );
   }
 

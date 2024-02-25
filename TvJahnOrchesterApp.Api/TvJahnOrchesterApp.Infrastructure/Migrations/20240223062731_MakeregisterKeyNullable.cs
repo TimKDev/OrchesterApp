@@ -5,23 +5,25 @@
 namespace TvJahnOrchesterApp.Infrastructure.Migrations
 {
     /// <inheritdoc />
-    public partial class ImageForOrchesterMitglied : Migration
+    public partial class MakeregisterKeyNullable : Migration
     {
         /// <inheritdoc />
         protected override void Up(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMitgliedsId",
+                name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMit~",
                 table: "OrchestermitgliedPositions");
 
-            migrationBuilder.AddColumn<string>(
-                name: "Image",
+            migrationBuilder.AlterColumn<string>(
+                name: "RegisterKey",
                 table: "Orchestermitglieder",
-                type: "nvarchar(max)",
-                nullable: true);
+                type: "text",
+                nullable: true,
+                oldClrType: typeof(string),
+                oldType: "text");
 
             migrationBuilder.AddForeignKey(
-                name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMitgliedsId",
+                name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMit~",
                 table: "OrchestermitgliedPositions",
                 column: "OrchesterMitgliedsId",
                 principalTable: "Orchestermitglieder",
@@ -32,15 +34,21 @@ namespace TvJahnOrchesterApp.Infrastructure.Migrations
         protected override void Down(MigrationBuilder migrationBuilder)
         {
             migrationBuilder.DropForeignKey(
-                name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMitgliedsId",
+                name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMit~",
                 table: "OrchestermitgliedPositions");
 
-            migrationBuilder.DropColumn(
-                name: "Image",
-                table: "Orchestermitglieder");
+            migrationBuilder.AlterColumn<string>(
+                name: "RegisterKey",
+                table: "Orchestermitglieder",
+                type: "text",
+                nullable: false,
+                defaultValue: "",
+                oldClrType: typeof(string),
+                oldType: "text",
+                oldNullable: true);
 
             migrationBuilder.AddForeignKey(
-                name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMitgliedsId",
+                name: "FK_OrchestermitgliedPositions_Orchestermitglieder_OrchesterMit~",
                 table: "OrchestermitgliedPositions",
                 column: "OrchesterMitgliedsId",
                 principalTable: "Orchestermitglieder",
