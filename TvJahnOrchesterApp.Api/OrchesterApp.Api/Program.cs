@@ -36,7 +36,8 @@ namespace OrchesterApp.Api
                     app.UseHsts();
                 }
                 app.UseMiddleware<ErrorHandelingMiddleware>();
- 
+
+                app.UseDefaultFiles();
                 app.UseStaticFiles();
                 app.UseRouting();
                 app.UseCors(TvJahnOrchesterApp.Api.DependencyInjection.MyCorsPolicy);
@@ -45,7 +46,7 @@ namespace OrchesterApp.Api
                 app.UseAuthorization();
                 app.MapControllers();
                 app.RegisterEndpointsFeatures();
-                app.MapFallbackToFile("index.html");
+                app.MapFallbackToFile("/");
                 app.Run();
             }
         }

@@ -14,6 +14,7 @@ namespace TvJahnOrchesterApp.Api
 
             services.ConfigureCorsPolicy();
             services.AddControllers();
+            services.AddLogging();
 
             services.AddOutputCache(opts =>
             {
