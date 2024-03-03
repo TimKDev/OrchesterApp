@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
@@ -13,7 +14,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
         public static void MapRevokeUserLockedOutEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("api/authentication/remove-user-locked-out", PostRevokeUserLockedOut)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin }));
         }
 
         private static async Task<IResult> PostRevokeUserLockedOut([FromBody] RevokeUserLockedOutCommand revokeUserLockedOutCommand, CancellationToken cancellationToken, ISender sender)

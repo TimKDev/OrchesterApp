@@ -60,6 +60,11 @@ export class UpdateTerminModalComponent  implements OnInit {
     this.formGroup.markAsDirty();
   }
 
+  deleteCurrentImage(){
+    this.formGroup.patchValue({image: null});
+    this.formGroup.markAsDirty();
+  }
+
   confirm() {
     let value = this.formGroup.getRawValue();
     let startZeit = new Date(value.terminDate!);

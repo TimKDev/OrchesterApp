@@ -76,4 +76,9 @@ export class MitgliedCreateModalComponent implements OnInit {
     this.formGroup.markAsDirty();
   }
 
+  deleteCurrentImage(){
+    this.formGroup.patchValue({image: null});
+    this.formGroup.markAsDirty();
+  }
+
 }

@@ -19,7 +19,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             app.MapDelete("api/orchester-mitglied/{orchesterMitgliedsId}", DeleteDeleteOrchesterMitglied)
                 .RequireAuthorization(auth =>
                 {
-                    auth.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand });
+                    auth.RequireRole(new string[] { RoleNames.Admin });
                 });
         }
 

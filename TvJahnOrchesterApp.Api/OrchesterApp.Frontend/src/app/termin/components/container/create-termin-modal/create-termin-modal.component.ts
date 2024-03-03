@@ -78,6 +78,11 @@ export class CreateTerminModalComponent  implements OnInit {
     this.formGroup.markAsDirty();
   }
 
+  deleteCurrentImage(){
+    this.formGroup.patchValue({image: null});
+    this.formGroup.markAsDirty();
+  }
+
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
   }

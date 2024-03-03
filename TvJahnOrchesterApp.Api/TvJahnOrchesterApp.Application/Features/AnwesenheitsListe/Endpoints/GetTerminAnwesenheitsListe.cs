@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Models;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
 {
@@ -12,7 +13,7 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
         public static void MapGetTerminAnwesenheitsListeEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapGet("api/termin/anwesenheit/{terminId}", GetSpecificTerminAnwesenheitsListe)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> GetSpecificTerminAnwesenheitsListe(Guid terminId, ISender sender, CancellationToken cancellationToken)

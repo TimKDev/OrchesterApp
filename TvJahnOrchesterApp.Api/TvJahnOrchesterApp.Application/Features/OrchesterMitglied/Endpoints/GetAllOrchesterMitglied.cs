@@ -56,7 +56,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
                     result.Add(new GetAllOrchesterMitgliederResponse(mitglied.Id.Value, mitglied.Vorname, mitglied.Nachname, imageAsBase64, instrument?.Value, mitglied.MemberSinceInYears));
                    
                 }
-                return result.ToArray();
+                return result.OrderBy(e => e.Vorname).ToArray();
             }
         }
     }

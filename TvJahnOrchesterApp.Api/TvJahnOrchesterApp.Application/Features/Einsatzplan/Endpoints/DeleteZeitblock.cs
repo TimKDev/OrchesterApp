@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.Einsatzplan.Endpoints
 {
@@ -13,7 +14,7 @@ namespace TvJahnOrchesterApp.Application.Features.Einsatzplan.Endpoints
         public static void MapDeleteZeitblockEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapDelete("api/termin/einsatzPlan/{terminId}/zeitblock/{zeitBlockId}", DeleteEinsatzplanZeitblock)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> DeleteEinsatzplanZeitblock(Guid terminId, Guid zeitBlockId, ISender sender, CancellationToken cancellationToken)

@@ -40,6 +40,7 @@ export class TerminListeComponent {
   }
 
   loadData(refreshEvent: any = null, useCache = true) {
+    useCache = false; // Arbeite erstmal ohne Cache damit Terminupdates sofort gesehen werden!
     if(this.currentlyLoadingWithoutCache) return;
     this.currentlyLoadingWithoutCache = !useCache;
     this.data$ = this.terminService.getAllTermins(useCache).pipe(

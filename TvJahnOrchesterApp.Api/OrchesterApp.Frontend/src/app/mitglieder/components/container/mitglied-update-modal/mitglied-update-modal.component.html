@@ -25,6 +25,7 @@
         </ion-list-header>
         <ion-item>
           <ion-button (click)="uploadImage()">Bild hochladen</ion-button>
+          <ion-button style="margin-left: 12px;" *ngIf="formGroup.get('image')!.value" (click)="deleteCurrentImage()" [color]="'danger'">Bild löschen</ion-button>
         </ion-item>
         <ion-item>
           <ion-input formControlName="geburtstag" type="date" labelPlacement="stacked" label="Geburtstag" placeholder="Geburtstag"></ion-input>

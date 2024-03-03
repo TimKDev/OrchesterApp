@@ -8,6 +8,7 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Contracts.OrchestraMembers;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.ValueObjects;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.Einsatzplan.Endpoints
 {
@@ -16,7 +17,7 @@ namespace TvJahnOrchesterApp.Application.Features.Einsatzplan.Endpoints
         public static void MapUpdateZeitblockEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("api/termin/einsatzPlan/{terminId}/zeitblock", UpdateEinsatzplanZeitblock)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> UpdateEinsatzplanZeitblock(Guid terminId, [FromBody] EinsatzplanZeitblockUpdateCommand einsatzplanZeitblockUpdateCommand, ISender sender, CancellationToken cancellationToken)

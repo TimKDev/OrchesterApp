@@ -7,6 +7,7 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Contracts.OrchestraMembers;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.Einsatzplan.Endpoints
 {
@@ -15,7 +16,7 @@ namespace TvJahnOrchesterApp.Application.Features.Einsatzplan.Endpoints
         public static void MapUpdateEinsatzplanEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPut("api/termin/einsatzPlan/{terminId}", UpdateUpdateEinsatzplan)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> UpdateUpdateEinsatzplan([FromBody] EinsatzplanUpdateCommand einsatzplanUpdateCommand, ISender sender, CancellationToken cancellationToken)

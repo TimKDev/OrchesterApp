@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Enums;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Services;
@@ -15,7 +16,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
         public static void MapGetRückmeldungTerminEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapGet("api/termin/rückmeldung/{terminId}", GetRückmeldungTerminById)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> GetRückmeldungTerminById(Guid terminId, ISender sender, CancellationToken cancellationToken)

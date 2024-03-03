@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
 {
@@ -13,7 +14,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
         public static void MapUpdateInstrumentAndNotesRückmeldungEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPut("api/termin/rückmeldung/changeInstrumentsAndNotes", PutInstrumentAndNotesRückmeldung)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> PutInstrumentAndNotesRückmeldung([FromBody] RückmeldungChangeInstrumentsAndNotesCommand rückmeldungChangeInstrumentsAndNotesCommand, ISender sender, CancellationToken cancellationToken)

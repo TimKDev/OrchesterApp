@@ -64,7 +64,7 @@ namespace TvJahnOrchesterApp.Application.Features.Dashboard.Endpoints
                 var nextTermins = terminsForCurrentUser.Select(x => new TerminOverview(x.Id.Value, x.Name, x.TerminArt, x.EinsatzPlan.StartZeit, x.EinsatzPlan.EndZeit, x.TerminRückmeldungOrchesterMitglieder.First(r => r.OrchesterMitgliedsId == currentOrchesterMember.Id).Zugesagt)
                 );
                 // Next Birthdays:
-                var orchesterMembersWithBirthdayInNextDays = (await orchesterMitgliedRepository.GetAllAsync(cancellationToken)).Where(IsInDayRanch).Select(o => new BirthdayListEntry($"{o.Vorname} {o.Nachname}", TransformImageService.ConvertByteArrayToBase64(o.Image), o.Geburtstag!.Value));
+                var orchesterMembersWithBirthdayInNextDays = (await orchesterMitgliedRepository.GetAllAsync(cancellationToken)).Where(IsInDayRanch).Select(o => new BirthdayListEntry($"{o.Vorname} {o.Nachname}", TransformImageService.ConvertByteArrayToBase64(o.Image), o.Geburtstag!.Value)).OrderBy(o => o.Birthday.Month).OrderBy(o => o.Birthday.Day);
 
                 return new DashboardData(nextTermins.ToArray(), responseDropdownValues, terminArtDropdownValues, orchesterMembersWithBirthdayInNextDays.ToArray());
             }

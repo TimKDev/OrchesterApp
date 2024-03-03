@@ -8,6 +8,7 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using static TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints.CreateOrchesterMitglied;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
 {
@@ -16,7 +17,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
         public static void MapUpdateAnwesenheitsListeEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPut("api/termin/anwesenheit", UpdateTerminAnwesenheitsListe)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> UpdateTerminAnwesenheitsListe([FromBody] UpdateAnwesenheitsCommand updateAnwesenheitsCommand, ISender sender, CancellationToken cancellationToken)

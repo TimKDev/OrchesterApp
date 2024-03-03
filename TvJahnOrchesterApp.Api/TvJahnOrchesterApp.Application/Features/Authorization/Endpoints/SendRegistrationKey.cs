@@ -8,6 +8,7 @@ using System.Text;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Features.Authorization.Interfaces;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 
@@ -18,7 +19,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
         public static void MapSendRegistrationKeyEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("api/authentication/send-registration-key", PostSendRegistrationKey)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin }));
         }
 
         private static async Task<IResult> PostSendRegistrationKey([FromBody] SendRegistrationKeyCommand addRegistrationKeyCommand, CancellationToken cancellationToken, ISender sender)

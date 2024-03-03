@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 {
@@ -11,7 +12,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
         public static void MapDeleteTerminEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapDelete("api/termin/delete/{id}", DeleteTerminById)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> DeleteTerminById(Guid id, CancellationToken cancellationToken, ISender sender)

@@ -8,6 +8,7 @@ using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using TvJahnOrchesterApp.Domain.TerminAggregate.Entities;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Services;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 {
@@ -16,7 +17,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
         public static void MapUpdateTerminEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPut("api/termin/update", GetTerminById)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> GetTerminById(UpdateTerminCommand updateTerminCommand, ISender sender, CancellationToken cancellationToken)

@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Services;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Contracts.OrchestraMembers;
 using TvJahnOrchesterApp.Domain.Common.ValueObjects;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
@@ -18,7 +19,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
         public static void MapTerminCreateEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("api/termin/create", PostTerminCreate)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> PostTerminCreate([FromBody] CreateTerminCommand createTerminCommand, ISender sender, CancellationToken cancellationToken)

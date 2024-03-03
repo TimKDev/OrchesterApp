@@ -33,12 +33,25 @@
             [src]="data.termin.image ? 'data:image/png;base64,' + data.termin.image : '/assets/card-media.png'" />
           <ion-card-header>
             <ion-card-title>
-              <span *ngIf="data.termin.terminStatus !== 3; else abgesagt;">{{data.termin.terminName}}
-                ({{data.termin.terminArt | dropdown : data.terminArtenDropdownValues}})</span>
+              <span *ngIf="data.termin.terminStatus !== 3; else abgesagt;">
+                <ng-container *ngIf="data.termin.terminArt === 2; else noProbe">
+                  {{data.termin.terminName}}
+                </ng-container>
+                <ng-template #noProbe>
+                  {{data.termin.terminName}} ({{data.termin.terminArt | dropdown : data.terminArtenDropdownValues}})
+                </ng-template>
+              </span>
+
               <ng-template #abgesagt>
                 <s>
-                  <span>{{data.termin.terminName}} ({{data.termin.terminArt | dropdown :
-                    data.terminArtenDropdownValues}})</span>
+                  <span>
+                    <ng-container *ngIf="data.termin.terminArt === 2; else noProbe">
+                      {{data.termin.terminName}}
+                    </ng-container>
+                    <ng-template #noProbe>
+                      {{data.termin.terminName}} ({{data.termin.terminArt | dropdown : data.terminArtenDropdownValues}})
+                    </ng-template>
+                  </span>
                 </s>
               </ng-template>
             </ion-card-title>
@@ -89,7 +102,8 @@
                 <b>Kommentar:</b> <br>
                 {{data['terminRückmeldung'].kommentarZusage}}
               </div>
-              <div class="comment-div" *ngIf="data['terminRückmeldung']['vornameOther'] || data['terminRückmeldung']['nachnameOther']">
+              <div class="comment-div"
+                *ngIf="data['terminRückmeldung']['vornameOther'] || data['terminRückmeldung']['nachnameOther']">
                 <b>Rückmeldung durch:</b> <br>
                 {{data['terminRückmeldung']['vornameOther']}} {{data['terminRückmeldung']['nachnameOther']}}
               </div>

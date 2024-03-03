@@ -8,6 +8,7 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using static TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints.CreateOrchesterMitglied;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
 {
@@ -16,7 +17,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
         public static void MapUpdateRückmeldungForOtherUserEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPut("api/termin/rückmeldung/forUser", UpdateTerminRückmeldungForUser)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
         }
 
         private static async Task<IResult> UpdateTerminRückmeldungForUser([FromBody] RückmeldungForOtherUserCommand rückmeldungForOtherUserCommand, ISender sender, CancellationToken cancellationToken)

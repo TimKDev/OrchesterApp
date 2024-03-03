@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
@@ -15,7 +16,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
         public static void MapDeleteUserEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapDelete("api/authentication/delete-user/{userId}", DeleteDeleteUser)
-                .RequireAuthorization();
+                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin }));
         }
 
         private static async Task<IResult> DeleteDeleteUser(string userId, CancellationToken cancellationToken, ISender sender)

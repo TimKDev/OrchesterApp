@@ -16,7 +16,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapConfirmEmailEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/authentication/confirm-email", PostConfirmEmail);
+            app.MapPost("api/authentication/confirm-email", PostConfirmEmail)
+                .RequireAuthorization();
         }
 
         private static async Task<IResult> PostConfirmEmail([FromBody] ConfirmEmailCommand confirmEmailCommand, CancellationToken cancellationToken, ISender sender)
