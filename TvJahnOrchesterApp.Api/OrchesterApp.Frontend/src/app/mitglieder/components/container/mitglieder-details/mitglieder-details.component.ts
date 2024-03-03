@@ -118,6 +118,7 @@ export class MitgliederDetailsComponent implements OnInit {
 
   private updateAdminData(data: any){
     this.refreshService.refreshComponent("MitgliederListeComponent");
+    this.refreshService.refreshComponent('Dashboard');
     this.us.autoUnsubscribe(this.mitgliederService.updateAdminSpecificMitglied({...data, id: this.mitgliedsId} as UpdateAdminSpecificMitgliederRequest)).subscribe(() => {
       this.loadData();
     })
@@ -143,6 +144,7 @@ export class MitgliederDetailsComponent implements OnInit {
 
   private updateData(data: any){
     this.refreshService.refreshComponent("MitgliederListeComponent");
+    this.refreshService.refreshComponent('Dashboard');
     this.us.autoUnsubscribe(this.mitgliederService.updateSpecificMitglied({...data, id: this.mitgliedsId} as UpdateSpecificMitgliederRequest)).subscribe(() => {
       this.loadData();
     })

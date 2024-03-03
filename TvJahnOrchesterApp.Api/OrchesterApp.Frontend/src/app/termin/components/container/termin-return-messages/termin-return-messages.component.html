@@ -29,10 +29,13 @@
           Zurück zu Termin Details
         </ion-button>
         <h2>{{data.terminName}}</h2>
+      </div>
+
+      <div class="response-list">
         <ion-list>
           <ng-container *ngFor="let responseMessage of data['terminRückmeldungsTableEntries']">
             <ion-item [button]="true" detail="false"
-              (click)="openResponseDetails(responseMessage, data.responseDropdownValues)">
+              (click)="openResponseDetails(responseMessage, data.responseDropdownValues, data.startZeit < currentDateTime)">
               <div class="triangle-base" [class.triangle-green]="responseMessage.zugesagt === 3"
                 [class.triangle-yellow]="responseMessage.zugesagt === 1"
                 [class.triangle-red]="responseMessage.zugesagt === 2"></div>
@@ -56,8 +59,9 @@
         </ion-list>
       </div>
 
-      <div>
-        <ion-button fill="clear" expand="block" (click)="openAnwesenheitsControlling(data['terminRückmeldungsTableEntries'])">
+      <div *ngIf="data.startZeit < currentDateTime">
+        <ion-button fill="clear" expand="block"
+          (click)="openAnwesenheitsControlling(data['terminRückmeldungsTableEntries'])">
           Öffne Anwesenheitskontrolle
         </ion-button>
       </div>

@@ -135,6 +135,7 @@ export class TerminDetailsComponent implements OnInit {
     this.us.autoUnsubscribe(this.terminService.updateTerminDetails(data)).subscribe(() => {
       this.loadData(null);
       this.refreshService.refreshComponent('TerminListeComponent');
+      this.refreshService.refreshComponent('Dashboard');
     });
   }
 
@@ -143,12 +144,14 @@ export class TerminDetailsComponent implements OnInit {
     this.us.autoUnsubscribe(this.terminService.updateTerminResponse(dataWithTermin)).subscribe(() => {
       this.loadData(null);
       this.refreshService.refreshComponent('TerminListeComponent');
+      this.refreshService.refreshComponent('Dashboard');
     });
   }
 
   @confirmDialog("Achtung", "Möchten sie dieses Termin wirklich löschen? Falls der Termin abgesagt wurde und die Orchestermitglieder darüber informiert werden sollen, setzen sie lieber den Status auf 'Abgesagt'!")
   private deleteTermin(){
     this.refreshService.refreshComponent("TerminListeComponent");
+    this.refreshService.refreshComponent('Dashboard');
     this.terminService.deleteTermin(this.terminId).subscribe(() => {
       this.router.navigate(['tabs', 'termin']);
     });

@@ -21,6 +21,7 @@ export class TerminReturnMessagesComponent implements OnInit {
   public terminId!: string;
   public isRefreshing = false;
   public data$!: Observable<TerminResponseResponse>;
+  public currentDateTime = new Date();
 
   constructor(
     private terminService: TerminService,
@@ -39,12 +40,13 @@ export class TerminReturnMessagesComponent implements OnInit {
     this.loadData(event);
   }
 
-  public async openResponseDetails(response: TerminRückmeldungsTableEntry, responseDropdownValues: DropdownItem[]) {
+  public async openResponseDetails(response: TerminRückmeldungsTableEntry, responseDropdownValues: DropdownItem[], showAnwesenheit: boolean) {
     const modal = await this.modalCtrl.create({
       component: TerminReturnMessageDetailsComponent,
       componentProps: {
         "response": response,
-        "responseDropdownValues": responseDropdownValues
+        "responseDropdownValues": responseDropdownValues,
+        "showAnwesenheit": showAnwesenheit
       }
     });
     modal.present();
@@ -72,6 +74,7 @@ export class TerminReturnMessagesComponent implements OnInit {
       this.loadData(null);
       this.refreshService.refreshComponent('TerminListeComponent');
       this.refreshService.refreshComponent('TerminDetails');
+      this.refreshService.refreshComponent('Dashboard');
     });
   }
 
@@ -81,6 +84,7 @@ export class TerminReturnMessagesComponent implements OnInit {
       this.loadData(null);
       this.refreshService.refreshComponent('TerminListeComponent');
       this.refreshService.refreshComponent('TerminDetails');
+      this.refreshService.refreshComponent('Dashboard');
     });
   }
 
@@ -90,6 +94,8 @@ export class TerminReturnMessagesComponent implements OnInit {
         data.terminRückmeldungsTableEntries.forEach(entry => {
           entry.letzteRückmeldung = entry.letzteRückmeldung ? new Date(entry.letzteRückmeldung) : undefined
         });
+        data.startZeit = new Date(data.startZeit);
+        data.startZeit.setHours(0, 0, 0);
         if (refreshEvent) {
           refreshEvent.target.complete();
           this.isRefreshing = false;

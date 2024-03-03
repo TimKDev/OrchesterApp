@@ -28,7 +28,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
 
         public record TerminRückmeldungsTableEntry(Guid OrchesterMitgliedsId, string Vorname, string Nachname, string? VornameOther, string? NachnameOther, int Zugesagt, string? KommentarZusage, DateTime? LetzteRückmeldung, bool IstAnwesend, string? KommentarAnwesenheit);
 
-        public record TerminRückmeldungsResponse(Guid TerminId, string TerminName, TerminRückmeldungsTableEntry[] TerminRückmeldungsTableEntries, DropdownItem[] ResponseDropdownValues);
+        public record TerminRückmeldungsResponse(Guid TerminId, string TerminName, DateTime StartZeit, TerminRückmeldungsTableEntry[] TerminRückmeldungsTableEntries, DropdownItem[] ResponseDropdownValues);
 
         private record GetRückmeldungenTerminQuery(Guid TerminId) : IRequest<TerminRückmeldungsResponse>;
 
@@ -62,7 +62,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
                     terminRückmeldungOrchestermitglieder.Add(new TerminRückmeldungsTableEntry(orchesterMitglied.Id.Value, orchesterMitglied.Vorname, orchesterMitglied.Nachname, otherOrchesterMitglied?.Vorname, otherOrchesterMitglied?.Nachname, terminRückmeldung.Zugesagt, terminRückmeldung.KommentarZusage, terminRückmeldung.LetzteRückmeldung, terminRückmeldung.IstAnwesend, terminRückmeldung.KommentarAnwesenheit));
                 }
 
-                return new TerminRückmeldungsResponse(termin.Id.Value, termin.Name, terminRückmeldungOrchestermitglieder.ToArray(), responseDropdownValues);
+                return new TerminRückmeldungsResponse(termin.Id.Value, termin.Name, termin.EinsatzPlan.StartZeit, terminRückmeldungOrchestermitglieder.ToArray(), responseDropdownValues);
             }
         }
 

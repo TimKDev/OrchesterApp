@@ -41,13 +41,15 @@
           <ion-textarea [autoGrow]="true" formControlName="kommentarZusage" labelPlacement="stacked"
             label="Kommentar Zusage" placeholder="Kommentar Zusage"></ion-textarea>
         </ion-item>
-        <ion-item>
-          <ion-checkbox formControlName="istAnwesend">Anwesend?</ion-checkbox>
-        </ion-item>
-        <ion-item>
-          <ion-textarea [autoGrow]="true" formControlName="kommentarAnwesenheit" labelPlacement="stacked"
-            label="Kommentar Anwesenheit" placeholder="Kommentar Anwesenheit"></ion-textarea>
-        </ion-item>
+        <ng-container *ngIf="showAnwesenheit">
+          <ion-item>
+            <ion-checkbox formControlName="istAnwesend">Anwesend?</ion-checkbox>
+          </ion-item>
+          <ion-item>
+            <ion-textarea [autoGrow]="true" formControlName="kommentarAnwesenheit" labelPlacement="stacked"
+              label="Kommentar Anwesenheit" placeholder="Kommentar Anwesenheit"></ion-textarea>
+          </ion-item>
+        </ng-container>
       </ion-list>
     </form>
 
