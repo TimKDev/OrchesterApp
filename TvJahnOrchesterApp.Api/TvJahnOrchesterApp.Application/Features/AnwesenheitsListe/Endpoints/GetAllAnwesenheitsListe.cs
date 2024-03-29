@@ -13,7 +13,7 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
 {
     public static class GetAllAnwesenheitsListe
     {
-        private static readonly int NUMBER_TOP_LIST = 3;
+        private static readonly int NUMBER_TOP_LIST = 10;
         private static readonly List<int> TERMINART_USED_IN_ANWESENHEIT = new List<int>
         {
             (int)TerminArtEnum.Auftritt,

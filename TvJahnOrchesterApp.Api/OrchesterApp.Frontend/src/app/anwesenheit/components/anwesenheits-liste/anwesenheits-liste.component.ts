@@ -18,7 +18,7 @@ export class AnwesenheitsListeComponent implements OnInit {
   currentlyLoading = false;
 
   private YEAR = (new Date()).getFullYear();
-  private NUMBER_TOP_LIST = 3;
+  private NUMBER_TOP_LIST = 10;
 
   public extraEntryForCurrentUser?: AnwesenheitsListeGetResponseEntry;
 
