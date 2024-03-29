@@ -64,13 +64,17 @@ namespace TvJahnOrchesterApp.Application.Features.Dashboard.Endpoints
                 var nextTermins = terminsForCurrentUser.Select(x => new TerminOverview(x.Id.Value, x.Name, x.TerminArt, x.EinsatzPlan.StartZeit, x.EinsatzPlan.EndZeit, x.TerminRückmeldungOrchesterMitglieder.First(r => r.OrchesterMitgliedsId == currentOrchesterMember.Id).Zugesagt)
                 );
                 // Next Birthdays:
-                var orchesterMembersWithBirthdayInNextDays = (await orchesterMitgliedRepository.GetAllAsync(cancellationToken)).Where(IsInDayRanch).Select(o => new BirthdayListEntry($"{o.Vorname} {o.Nachname}", TransformImageService.ConvertByteArrayToBase64(o.Image), o.Geburtstag!.Value)).OrderBy(o => o.Birthday.Month).OrderBy(o => o.Birthday.Day);
+                var orchesterMembersWithBirthdayInNextDays = (await orchesterMitgliedRepository.GetAllAsync(cancellationToken)).Where(IsInDayRanch).Select(TransformToBirthdayListEntry).OrderBy(o => o.Birthday);
 
-                return new DashboardData(nextTermins.ToArray(), responseDropdownValues, terminArtDropdownValues, orchesterMembersWithBirthdayInNextDays.ToArray());
+                return new DashboardData(nextTermins.OrderBy(termin => termin.StartZeit).ToArray(), responseDropdownValues, terminArtDropdownValues, orchesterMembersWithBirthdayInNextDays.ToArray());
             }
 
             private bool IsInDayRanch(Domain.TerminAggregate.Termin termin)
             {
+                if(termin.EinsatzPlan.EndZeit < DateTime.UtcNow)
+                {
+                    return false;
+                }
                 var timespan = termin.EinsatzPlan.StartZeit - DateTime.UtcNow;
                 return 0 <= timespan.Days && timespan.Days <= DAYS_TO_INCLUDE_TERMIN;
             }
@@ -85,13 +89,51 @@ namespace TvJahnOrchesterApp.Application.Features.Dashboard.Endpoints
 
                 var projectedBirthdayPreviousYear = new DateTime(DateTime.UtcNow.Year - 1, orchesterMitglied.Geburtstag.Value.Month, orchesterMitglied.Geburtstag.Value.Day);
 
+                var projectedBirthdayNextYear = new DateTime(DateTime.UtcNow.Year + 1, orchesterMitglied.Geburtstag.Value.Month, orchesterMitglied.Geburtstag.Value.Day);
+
                 var timespanSameYear = (projectedBirthdaySameYear - DateTime.UtcNow);
                 var timespanPreviousYear = (projectedBirthdayPreviousYear - DateTime.UtcNow);
-                
+                var timespanNextYear = (projectedBirthdayNextYear - DateTime.UtcNow);
+
                 var checkForSameYear = -DAYS_TO_INCLUDE_BIRTHDAY_PAST <= timespanSameYear.Days && timespanSameYear.Days <= DAYS_TO_INCLUDE_BIRTHDAY_FUTURE;
                 var checkForPreviousYear = -DAYS_TO_INCLUDE_BIRTHDAY_PAST <= timespanPreviousYear.Days && timespanPreviousYear.Days <= DAYS_TO_INCLUDE_BIRTHDAY_FUTURE;
+                var checkForNextYear = -DAYS_TO_INCLUDE_BIRTHDAY_PAST <= timespanNextYear.Days && timespanNextYear.Days <= DAYS_TO_INCLUDE_BIRTHDAY_FUTURE;
 
-                return checkForSameYear || checkForPreviousYear;
+                return checkForSameYear || checkForPreviousYear || checkForNextYear;
+            }
+
+            private BirthdayListEntry TransformToBirthdayListEntry(Domain.OrchesterMitgliedAggregate.OrchesterMitglied orchesterMitglied)
+            {
+                var projectedBirthdaySameYear = new DateTime(DateTime.UtcNow.Year, orchesterMitglied.Geburtstag.Value.Month, orchesterMitglied.Geburtstag.Value.Day);
+
+                var projectedBirthdayPreviousYear = new DateTime(DateTime.UtcNow.Year - 1, orchesterMitglied.Geburtstag.Value.Month, orchesterMitglied.Geburtstag.Value.Day);
+
+                var projectedBirthdayNextYear = new DateTime(DateTime.UtcNow.Year + 1, orchesterMitglied.Geburtstag.Value.Month, orchesterMitglied.Geburtstag.Value.Day);
+
+                var timespanSameYear = (projectedBirthdaySameYear - DateTime.UtcNow);
+                var timespanPreviousYear = (projectedBirthdayPreviousYear - DateTime.UtcNow);
+                var timespanNextYear = (projectedBirthdayNextYear - DateTime.UtcNow);
+
+                var checkForSameYear = -DAYS_TO_INCLUDE_BIRTHDAY_PAST <= timespanSameYear.Days && timespanSameYear.Days <= DAYS_TO_INCLUDE_BIRTHDAY_FUTURE;
+                var checkForPreviousYear = -DAYS_TO_INCLUDE_BIRTHDAY_PAST <= timespanPreviousYear.Days && timespanPreviousYear.Days <= DAYS_TO_INCLUDE_BIRTHDAY_FUTURE;
+                var checkForNextYear = -DAYS_TO_INCLUDE_BIRTHDAY_PAST <= timespanNextYear.Days && timespanNextYear.Days <= DAYS_TO_INCLUDE_BIRTHDAY_FUTURE;
+
+                var projectedBirthday = orchesterMitglied.Geburtstag!.Value;
+
+                if (checkForSameYear)
+                {
+                    projectedBirthday = projectedBirthdaySameYear;
+                }
+                if (checkForPreviousYear)
+                {
+                    projectedBirthday = projectedBirthdayPreviousYear;
+                }
+                if (checkForNextYear)
+                {
+                    projectedBirthday = projectedBirthdayNextYear;
+                }
+
+                return new BirthdayListEntry($"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", TransformImageService.ConvertByteArrayToBase64(orchesterMitglied.Image), projectedBirthday);
             }
         }
     }

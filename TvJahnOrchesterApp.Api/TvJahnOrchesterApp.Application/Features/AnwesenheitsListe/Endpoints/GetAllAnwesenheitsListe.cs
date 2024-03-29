@@ -3,14 +3,24 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using System.Threading;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Dto;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Domain.Common.Enums;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 
 namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
 {
     public static class GetAllAnwesenheitsListe
     {
+        private static readonly int NUMBER_TOP_LIST = 3;
+        private static readonly List<int> TERMINART_USED_IN_ANWESENHEIT = new List<int>
+        {
+            (int)TerminArtEnum.Auftritt,
+            (int)TerminArtEnum.Probe,
+            (int)TerminArtEnum.Konzert
+        };
+
         public static void MapGetAllAnwesenheitsListeEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapGet("api/termin/anwesenheit/all/{year}", GetAnwesenheitsListe)
@@ -33,11 +43,13 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
         {
             private readonly IOrchesterMitgliedRepository _orchesterMitgliedRepository;
             private readonly ITerminRepository _terminRepository;
+            private readonly ICurrentUserService _currentUserService;
 
-            public GetAllAnwesenheitsListeQueryHandler(IOrchesterMitgliedRepository orchesterMitgliedRepository, ITerminRepository terminRepository)
+            public GetAllAnwesenheitsListeQueryHandler(IOrchesterMitgliedRepository orchesterMitgliedRepository, ITerminRepository terminRepository, ICurrentUserService currentUserService)
             {
                 _orchesterMitgliedRepository = orchesterMitgliedRepository;
                 _terminRepository = terminRepository;
+                _currentUserService = currentUserService;
             }
 
             public async Task<GlobalAnwesenheitsListenEintrag[]> Handle(GetAllAnwesenheitsListeQuery request, CancellationToken cancellationToken)
@@ -68,14 +80,28 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
                     result.Add(new GlobalAnwesenheitsListenEintrag(ordered.OrchesterMitgliedsId, nextRank, ordered.Name, ordered.anwesendeTermin, ordered.totalTermine, ordered.AnwesendProzent));
                 }
 
-                return result.ToArray();
+                if(await _currentUserService.IsUserVorstand(cancellationToken))
+                {
+                    return result.ToArray();
+                }
+
+                var currentOrchesterMitglied = await _currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
+                var currentOrchesterMitgliedListEntry = result.FirstOrDefault(e => e.OrchesterMitgliedsId == currentOrchesterMitglied.Id.Value);
+                var topListEntries = result.Take(NUMBER_TOP_LIST).ToList();
+
+                if (currentOrchesterMitgliedListEntry is not null && !topListEntries.Contains(currentOrchesterMitgliedListEntry))
+                {
+                    topListEntries.Add(currentOrchesterMitgliedListEntry);
+                }
+
+                return topListEntries.ToArray();
             }
 
             private async Task<Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)>> CalculateOrchesterTerminNumbersAsync(int year, OrchesterMitgliedWithName[] orchesterMitglieder, CancellationToken cancellationToken)
             {
                 Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)> result = new Dictionary<OrchesterMitgliedsId, (int numberAnwesendeTermine, int totalNumberTermine)>();
 
-                var terminsOfYear = await _terminRepository.GetTerminResponsesInYear(year, cancellationToken);
+                var terminsOfYear = await _terminRepository.GetTerminResponsesInYearAndPast(year, cancellationToken);
                 foreach (var orchesterMitglied in orchesterMitglieder)
                 {
                     result.Add(orchesterMitglied.Id, (0, 0));
@@ -83,6 +109,10 @@ namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
 
                 foreach (var termin in terminsOfYear)
                 {
+                    if(termin.TerminArt is null || !TERMINART_USED_IN_ANWESENHEIT.Contains((int)termin.TerminArt))
+                    {
+                        continue;
+                    }
                     foreach (var terminResponse in termin.RückmeldungOrchestermitglieder)
                     {
                         if (result.TryGetValue(terminResponse.OrchesterMitgliedsId, out (int numberAnwesendeTermine, int totalNumberTermine) numbers))

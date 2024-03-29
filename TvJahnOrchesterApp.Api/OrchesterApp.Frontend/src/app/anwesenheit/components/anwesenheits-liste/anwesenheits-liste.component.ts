@@ -17,7 +17,10 @@ export class AnwesenheitsListeComponent implements OnInit {
   nameOfCurrentUser = "";
   currentlyLoading = false;
 
-  private YEAR = 2024;
+  private YEAR = (new Date()).getFullYear();
+  private NUMBER_TOP_LIST = 3;
+
+  public extraEntryForCurrentUser?: AnwesenheitsListeGetResponseEntry;
 
   constructor(
     private anwesenheitsService: AnwesenheitService,
@@ -34,12 +37,15 @@ export class AnwesenheitsListeComponent implements OnInit {
     if(this.currentlyLoading) return;
     this.currentlyLoading = true;
     this.data$ = this.anwesenheitsService.getAnwesenheitsListeForYear(this.YEAR).pipe(
-      tap(() => {
+      tap((data) => {
         if (refreshEvent) {
           refreshEvent.target.complete();
           this.isRefreshing = false;
         }
         this.currentlyLoading = false;
+        if(data.length > this.NUMBER_TOP_LIST){
+          this.extraEntryForCurrentUser = data.pop();
+        }
       }),
       catchError(() => {this.currentlyLoading = false; return NEVER})
     );

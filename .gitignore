@@ -304,3 +304,4 @@ __pycache__/
 # End of https://www.toptal.com/developers/gitignore/api/angular,aspnetcore
 /TvJahnOrchesterApp.Api/Secrets
 /SQL
+/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Application/Features/AnwesenheitsListe/Models/GlobalAnwesenheitsListenEintrag.cs

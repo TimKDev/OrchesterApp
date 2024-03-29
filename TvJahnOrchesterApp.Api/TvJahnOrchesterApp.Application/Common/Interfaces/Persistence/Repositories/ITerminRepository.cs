@@ -11,6 +11,6 @@ namespace TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositor
         public Task<Domain.TerminAggregate.Termin> GetById(Guid guid, CancellationToken cancellationToken);
 
         public Task<bool> Delete(Guid guid, CancellationToken cancellationToken);
-        Task<TerminWithResponses[]> GetTerminResponsesInYear(int year, CancellationToken cancellationToken);
+        Task<TerminWithResponses[]> GetTerminResponsesInYearAndPast(int year, CancellationToken cancellationToken);
     }
 }

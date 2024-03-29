@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using System;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Enums;
@@ -62,7 +63,7 @@ namespace TvJahnOrchesterApp.Application.Features.TerminRückmeldung.Endpoints
                     terminRückmeldungOrchestermitglieder.Add(new TerminRückmeldungsTableEntry(orchesterMitglied.Id.Value, orchesterMitglied.Vorname, orchesterMitglied.Nachname, otherOrchesterMitglied?.Vorname, otherOrchesterMitglied?.Nachname, terminRückmeldung.Zugesagt, terminRückmeldung.KommentarZusage, terminRückmeldung.LetzteRückmeldung, terminRückmeldung.IstAnwesend, terminRückmeldung.KommentarAnwesenheit));
                 }
 
-                return new TerminRückmeldungsResponse(termin.Id.Value, termin.Name, termin.EinsatzPlan.StartZeit, terminRückmeldungOrchestermitglieder.ToArray(), responseDropdownValues);
+                return new TerminRückmeldungsResponse(termin.Id.Value, termin.Name, termin.EinsatzPlan.StartZeit, terminRückmeldungOrchestermitglieder.OrderByDescending(e => e.Zugesagt).ToArray(), responseDropdownValues);
             }
         }
 

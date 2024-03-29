@@ -7,5 +7,7 @@ namespace TvJahnOrchesterApp.Application.Common.Interfaces.Authentication
         Task<Domain.OrchesterMitgliedAggregate.OrchesterMitglied> GetCurrentOrchesterMitgliedAsync(CancellationToken cancellationToken);
 
         Task<User> GetCurrentUserAsync(CancellationToken cancellationToken);
+
+        Task<bool> IsUserVorstand(CancellationToken cancellationToken);
     }
 }

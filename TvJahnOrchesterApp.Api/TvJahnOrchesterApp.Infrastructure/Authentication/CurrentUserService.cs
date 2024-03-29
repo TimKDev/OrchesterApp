@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Domain.OrchesterMitgliedAggregate;
 using TvJahnOrchesterApp.Domain.UserAggregate;
 
@@ -42,6 +43,12 @@ namespace TvJahnOrchesterApp.Infrastructure.Authentication
                 cachedCurrentUser = await userManager.FindByIdAsync(currentUserId) ?? throw new Exception();
             }
             return cachedCurrentUser;
+        }
+
+        public async Task<bool> IsUserVorstand(CancellationToken cancellationToken)
+        {
+            var currentUser = await GetCurrentUserAsync(cancellationToken);
+            return await userManager.IsInRoleAsync(currentUser, RoleNames.Vorstand.ToString());
         }
     }
 }

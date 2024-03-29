@@ -25,22 +25,35 @@
     <div class="table-container">
       <table class="styled-table">
         <thead>
-            <tr>
-                <th>Ranking</th>
-                <th>Name</th>
-                <th>Anwesenheit</th>
-            </tr>
+          <tr>
+            <th>Ranking und Name</th>
+            <th>Anwesenheit</th>
+          </tr>
         </thead>
         <tbody>
-            <tr *ngFor="let row of data" [class.active-row]="nameOfCurrentUser === row.name">
-                <td>{{row.ranking}}</td>
-                <td>{{row.name}}</td>
-                <td>{{row.anwesendeTermin}} ({{row.anwesendProzent}}%)</td>
+          <tr *ngFor="let row of data" [class.active-row]="nameOfCurrentUser === row.name">
+            <td>{{row.ranking}}. {{row.name}}</td>
+            <td>{{row.anwesendeTermin}}/{{row.totalTermine}} ({{row.anwesendProzent}}%)</td>
+          </tr>
+          <tr>
+            <td>...</td>
+            <td>...</td>
+          </tr>
+          <ng-container *ngIf="extraEntryForCurrentUser">
+            <tr [class.active-row]="nameOfCurrentUser === extraEntryForCurrentUser.name">
+              <td>{{extraEntryForCurrentUser.ranking}}. {{extraEntryForCurrentUser.name}}</td>
+              <td>{{extraEntryForCurrentUser.anwesendeTermin}}/{{extraEntryForCurrentUser.totalTermine}}
+                ({{extraEntryForCurrentUser.anwesendProzent}}%)</td>
             </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+          </ng-container>
         </tbody>
-      </table>  
+      </table>
     </div>
-      
+
   </ng-container>
 
   <ng-template #loading>

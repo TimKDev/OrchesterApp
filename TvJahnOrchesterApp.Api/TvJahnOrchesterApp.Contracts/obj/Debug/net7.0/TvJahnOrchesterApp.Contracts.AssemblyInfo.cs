@@ -14,7 +14,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("TvJahnOrchesterApp.Contracts")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+867e538d0406e81f35be9ecd47751ccf3eb424cf")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+1c070521157d9104cae63915181421014472529a")]
 [assembly: System.Reflection.AssemblyProductAttribute("TvJahnOrchesterApp.Contracts")]
 [assembly: System.Reflection.AssemblyTitleAttribute("TvJahnOrchesterApp.Contracts")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

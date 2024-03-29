@@ -30,9 +30,9 @@ namespace TvJahnOrchesterApp.Infrastructure.Persistence.Repositories
             return _context.Set<Termin>().ToArrayAsync(cancellationToken);
         }
 
-        public Task<TerminWithResponses[]> GetTerminResponsesInYear(int year, CancellationToken cancellationToken)
+        public Task<TerminWithResponses[]> GetTerminResponsesInYearAndPast(int year, CancellationToken cancellationToken)
         {
-            return _context.Set<Termin>().AsNoTracking().Where(t => t.EinsatzPlan.EndZeit.Year == year).Select(t => new TerminWithResponses(t.Id, t.TerminRückmeldungOrchesterMitglieder)).ToArrayAsync(cancellationToken);
+            return _context.Set<Termin>().AsNoTracking().Where(t => t.EinsatzPlan.EndZeit.Year == year && t.EinsatzPlan.StartZeit < DateTime.UtcNow).Select(t => new TerminWithResponses(t.Id, t.TerminArt, t.TerminRückmeldungOrchesterMitglieder)).ToArrayAsync(cancellationToken);
         }
 
         public async Task<Termin> GetById(Guid guid, CancellationToken cancellationToken)
