@@ -55,7 +55,7 @@ namespace TvJahnOrchesterApp.Application.Common.Services
                         image.Resize(256, 256);
                         image.Write(compressedStream);
                         compressedStream.Position = 0;
-                        int loopCounter = 0;
+                        uint loopCounter = 0;
 
                         while (compressedStream.Length > targetSizeInBytes)
                         {

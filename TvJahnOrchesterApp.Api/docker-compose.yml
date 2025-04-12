@@ -5,22 +5,22 @@ networks:
     driver: bridge
 
 secrets:
-  connection_string_db: 
-    file: ./Secrets/ConnectionStringDb.txt 
+  connection_string_db:
+    file: ./Secrets/ConnectionStringDb.txt
   db_admin_password:
     file: ./Secrets/DbAdminPassword.txt
   jwt_secret:
-    file: ./Secrets/JWTSecret.txt 
+    file: ./Secrets/JWTSecret.txt
   google_mail_api_key:
-    file: ./Secrets/GoogleMailAPIKey.txt 
+    file: ./Secrets/GoogleMailAPIKey.txt
 
 
 services:
   orchesterapp.frontend:
     image: ${DOCKER_REGISTRY-}orchesterapp.frontend
-    build: 
+    build:
       context: .
-      dockerfile: OrchesterApp.Frontend/Dockerfile
+      dockerfile: OrchesterApp.Api/Frontend/Dockerfile
     ports:
       - 40180:80
     depends_on:
@@ -35,37 +35,37 @@ services:
       dockerfile: OrchesterApp.Api/Dockerfile
     container_name: orchester-app-api
     depends_on:
-        - postgresql
-    ports: 
-        - "40181:8080"
+      - postgresql
+    ports:
+      - "40181:8080"
     networks:
-        - orchester-app-network
+      - orchester-app-network
     environment:
-        ConnectionStrings__DefaultConnection: /run/secrets/connection_string_db
-        JWT_Secret_Key: /run/secrets/jwt_secret
-        Google_Mail_Api: /run/secrets/google_mail_api_key
-        ASPNETCORE_URLS: http://+:8080 
+      ConnectionStrings__DefaultConnection: /run/secrets/connection_string_db
+      JWT_Secret_Key: /run/secrets/jwt_secret
+      Google_Mail_Api: /run/secrets/google_mail_api_key
+      ASPNETCORE_URLS: http://+:8080
     secrets:
-        - connection_string_db    
-        - jwt_secret
-        - google_mail_api_key
-         
+      - connection_string_db
+      - jwt_secret
+      - google_mail_api_key
+  
   postgresql:
     image: postgres:latest
     container_name: orchester-app-db
     environment:
-        POSTGRES_USER: postgres
-        POSTGRES_PASSWORD_FILE: /run/secrets/db_admin_password
-        POSTGRES_DB: OrchesterAppDB
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_admin_password
+      POSTGRES_DB: OrchesterAppDB
     ports:
-     - 5432:5432
+      - 5432:5432
     restart: always
     volumes:
-     - orchesterAppPostgresDbVolumn:/var/lib/postgresql/data
+      - orchesterAppPostgresDbVolumn:/var/lib/postgresql/data
     networks:
-     - orchester-app-network
+      - orchester-app-network
     secrets:
-     - db_admin_password 
+      - db_admin_password
 
 volumes:
   orchesterAppPostgresDbVolumn:

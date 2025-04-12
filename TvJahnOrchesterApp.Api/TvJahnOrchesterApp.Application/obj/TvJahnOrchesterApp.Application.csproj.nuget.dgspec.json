@@ -1,38 +1,36 @@
 {
   "format": 1,
   "restore": {
-    "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Application\\TvJahnOrchesterApp.Application.csproj": {}
+    "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Application/TvJahnOrchesterApp.Application.csproj": {}
   },
   "projects": {
-    "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Application\\TvJahnOrchesterApp.Application.csproj": {
+    "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Application/TvJahnOrchesterApp.Application.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Application\\TvJahnOrchesterApp.Application.csproj",
+        "projectUniqueName": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Application/TvJahnOrchesterApp.Application.csproj",
         "projectName": "TvJahnOrchesterApp.Application",
-        "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Application\\TvJahnOrchesterApp.Application.csproj",
-        "packagesPath": "C:\\Users\\timke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Application\\obj\\",
+        "projectPath": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Application/TvJahnOrchesterApp.Application.csproj",
+        "packagesPath": "/home/tim/.nuget/packages/",
+        "outputPath": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Application/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\timke\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/tim/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Contracts\\TvJahnOrchesterApp.Contracts.csproj": {
-                "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Contracts\\TvJahnOrchesterApp.Contracts.csproj"
+              "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Contracts/TvJahnOrchesterApp.Contracts.csproj": {
+                "projectPath": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Contracts/TvJahnOrchesterApp.Contracts.csproj"
               },
-              "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj": {
-                "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj"
+              "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Domain/TvJahnOrchesterApp.Domain.csproj": {
+                "projectPath": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Domain/TvJahnOrchesterApp.Domain.csproj"
               }
             }
           }
@@ -41,15 +39,20 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "FluentResults": {
               "target": "Package",
-              "version": "[3.15.2, )"
+              "version": "[3.16.0, )"
             },
             "FluentValidation": {
               "target": "Package",
@@ -61,19 +64,19 @@
             },
             "Magick.NET-Q16-AnyCPU": {
               "target": "Package",
-              "version": "[13.5.0, )"
+              "version": "[14.6.0, )"
             },
             "MediatR": {
               "target": "Package",
-              "version": "[12.1.1, )"
+              "version": "[12.5.0, )"
             },
             "Microsoft.Extensions.DependencyInjection.Abstractions": {
               "target": "Package",
-              "version": "[7.0.0, )"
+              "version": "[8.0.2, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[8.8.0, )"
             }
           },
           "imports": [
@@ -87,6 +90,12 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.14, 8.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.AspNetCore.App": {
               "privateAssets": "none"
@@ -95,36 +104,34 @@
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.104/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Contracts\\TvJahnOrchesterApp.Contracts.csproj": {
+    "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Contracts/TvJahnOrchesterApp.Contracts.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Contracts\\TvJahnOrchesterApp.Contracts.csproj",
+        "projectUniqueName": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Contracts/TvJahnOrchesterApp.Contracts.csproj",
         "projectName": "TvJahnOrchesterApp.Contracts",
-        "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Contracts\\TvJahnOrchesterApp.Contracts.csproj",
-        "packagesPath": "C:\\Users\\timke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Contracts\\obj\\",
+        "projectPath": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Contracts/TvJahnOrchesterApp.Contracts.csproj",
+        "packagesPath": "/home/tim/.nuget/packages/",
+        "outputPath": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Contracts/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\timke\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/tim/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {
-              "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj": {
-                "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj"
+              "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Domain/TvJahnOrchesterApp.Domain.csproj": {
+                "projectPath": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Domain/TvJahnOrchesterApp.Domain.csproj"
               }
             }
           }
@@ -133,15 +140,20 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[8.8.0, )"
             }
           },
           "imports": [
@@ -155,38 +167,42 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.14, 8.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.104/PortableRuntimeIdentifierGraph.json"
         }
       }
     },
-    "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj": {
+    "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Domain/TvJahnOrchesterApp.Domain.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj",
+        "projectUniqueName": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Domain/TvJahnOrchesterApp.Domain.csproj",
         "projectName": "TvJahnOrchesterApp.Domain",
-        "projectPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\TvJahnOrchesterApp.Domain.csproj",
-        "packagesPath": "C:\\Users\\timke\\.nuget\\packages\\",
-        "outputPath": "C:\\Users\\timke\\source\\projects\\OrchesterApp\\TvJahnOrchesterApp.Api\\TvJahnOrchesterApp.Domain\\obj\\",
+        "projectPath": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Domain/TvJahnOrchesterApp.Domain.csproj",
+        "packagesPath": "/home/tim/.nuget/packages/",
+        "outputPath": "/home/tim/Source/projects/OrchesterApp/TvJahnOrchesterApp.Api/TvJahnOrchesterApp.Domain/obj/",
         "projectStyle": "PackageReference",
         "configFilePaths": [
-          "C:\\Users\\timke\\AppData\\Roaming\\NuGet\\NuGet.Config",
-          "C:\\Program Files (x86)\\NuGet\\Config\\Microsoft.VisualStudio.Offline.config"
+          "/home/tim/.nuget/NuGet/NuGet.Config"
         ],
         "originalTargetFrameworks": [
-          "net7.0"
+          "net8.0"
         ],
         "sources": {
-          "C:\\Program Files (x86)\\Microsoft SDKs\\NuGetPackages\\": {},
           "https://api.nuget.org/v3/index.json": {}
         },
         "frameworks": {
-          "net7.0": {
-            "targetAlias": "net7.0",
+          "net8.0": {
+            "targetAlias": "net8.0",
             "projectReferences": {}
           }
         },
@@ -194,19 +210,24 @@
           "warnAsError": [
             "NU1605"
           ]
+        },
+        "restoreAuditProperties": {
+          "enableAudit": "true",
+          "auditLevel": "low",
+          "auditMode": "direct"
         }
       },
       "frameworks": {
-        "net7.0": {
-          "targetAlias": "net7.0",
+        "net8.0": {
+          "targetAlias": "net8.0",
           "dependencies": {
             "Microsoft.AspNetCore.Identity.EntityFrameworkCore": {
               "target": "Package",
-              "version": "[7.0.10, )"
+              "version": "[8.0.10, )"
             },
             "System.IdentityModel.Tokens.Jwt": {
               "target": "Package",
-              "version": "[7.2.0, )"
+              "version": "[8.8.0, )"
             }
           },
           "imports": [
@@ -220,12 +241,18 @@
           ],
           "assetTargetFallback": true,
           "warn": true,
+          "downloadDependencies": [
+            {
+              "name": "Microsoft.AspNetCore.App.Ref",
+              "version": "[8.0.14, 8.0.14]"
+            }
+          ],
           "frameworkReferences": {
             "Microsoft.NETCore.App": {
               "privateAssets": "all"
             }
           },
-          "runtimeIdentifierGraphPath": "C:\\Program Files\\dotnet\\sdk\\8.0.101\\RuntimeIdentifierGraph.json"
+          "runtimeIdentifierGraphPath": "/usr/share/dotnet/sdk/9.0.104/PortableRuntimeIdentifierGraph.json"
         }
       }
     }

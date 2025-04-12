@@ -13,18 +13,22 @@
   <ItemGroup>
     <PackageReference Include="Mapster" Version="7.4.0" />
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
-    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="7.0.10"> 
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="8.0.10"> 
       <PrivateAssets>all</PrivateAssets>
       <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
     </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.19.5" />
-    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="7.2.0" />
+    <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.8.0" />
   </ItemGroup>
 
   <ItemGroup>
     <ProjectReference Include="..\TvJahnOrchesterApp.Application\TvJahnOrchesterApp.Application.csproj" />
     <ProjectReference Include="..\TvJahnOrchesterApp.Contracts\TvJahnOrchesterApp.Contracts.csproj" />
     <ProjectReference Include="..\TvJahnOrchesterApp.Infrastructure\TvJahnOrchesterApp.Infrastructure.csproj" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <Folder Include="Frontend\" />
   </ItemGroup>
 
 </Project>
