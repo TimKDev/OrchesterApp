@@ -1,0 +1,57 @@
+<ion-list style="padding-top: 16px">
+  <div class="app-info">
+    <div class="logo-container">
+      <img class="logo" src="/assets/tvjahnlogo.png" alt="">
+    </div>
+    <div class="user-name">Tv Jahn Bockum App</div>
+    <!-- <div class="user-mail">Tv Jahn Bockum</div> -->
+  </div>
+ 
+
+  <ion-item [button]="true" detail="false" class="user-info">
+    <ion-avatar aria-hidden="true" slot="start">
+      <img alt="" [src]="authService.userImage ? 'data:image/png;base64,' + authService.userImage : '/assets/avatar.svg'"/>
+    </ion-avatar>
+    <ion-label>
+      <h2>
+        <strong>{{authService.connectedOrchesterMitgliedsName}}</strong>
+      </h2>
+      <ion-text style="font-size: 13px;">{{authService.userEmail}}</ion-text><br />
+      <ion-note *ngIf="authService.userRoles" color="medium" class="ion-text-wrap" style="font-size: 13px;">
+        {{authService.userRoles.join(', ')}}
+      </ion-note>
+    </ion-label>
+  </ion-item>
+
+  <ion-menu-toggle>
+    <ion-item (click)="logout()" detail="false">
+      <ion-icon slot="start" name="log-out-outline"></ion-icon>
+      <ion-label>
+        Logout
+      </ion-label>
+    </ion-item>
+  </ion-menu-toggle>
+
+  <ion-menu-toggle autoHide="false" *ngFor="let p of mainPages; let i = index">
+    <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
+      <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
+      <ion-label>
+        {{p.title}}
+      </ion-label>
+    </ion-item>
+  </ion-menu-toggle>
+
+  <ng-container *ngIf="rolesService.isCurrentUserAdmin">
+    <ion-list-header>
+      Verwaltung
+    </ion-list-header>
+    <ion-menu-toggle autoHide="false" *ngFor="let p of managementPages; let i = index">
+      <ion-item [routerLink]="p.url" routerLinkActive="selected" routerDirection="root" detail="false">
+        <ion-icon slot="start" [name]="p.icon + '-outline'"></ion-icon>
+        <ion-label>
+          {{p.title}}
+        </ion-label>
+      </ion-item>
+    </ion-menu-toggle>
+  </ng-container>
+</ion-list>

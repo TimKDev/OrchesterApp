@@ -1,0 +1,65 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Anwesenheit
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Anwesenheit</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <!-- <pre>{{data | json}}</pre> -->
+    <div class="table-container">
+      <table class="styled-table">
+        <thead>
+          <tr>
+            <th>Ranking und Name</th>
+            <th>Anwesenheit</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr *ngFor="let row of data" [class.active-row]="nameOfCurrentUser === row.name">
+            <td>{{row.ranking}}. {{row.name}}</td>
+            <td>{{row.anwesendeTermin}}/{{row.totalTermine}} ({{row.anwesendProzent}}%)</td>
+          </tr>
+          <tr>
+            <td>...</td>
+            <td>...</td>
+          </tr>
+          <ng-container *ngIf="extraEntryForCurrentUser">
+            <tr [class.active-row]="nameOfCurrentUser === extraEntryForCurrentUser.name">
+              <td>{{extraEntryForCurrentUser.ranking}}. {{extraEntryForCurrentUser.name}}</td>
+              <td>{{extraEntryForCurrentUser.anwesendeTermin}}/{{extraEntryForCurrentUser.totalTermine}}
+                ({{extraEntryForCurrentUser.anwesendProzent}}%)</td>
+            </tr>
+            <tr>
+              <td>...</td>
+              <td>...</td>
+            </tr>
+          </ng-container>
+        </tbody>
+      </table>
+    </div>
+
+  </ng-container>
+
+  <ng-template #loading>
+    <ng-container *ngIf="!isRefreshing">
+      <app-loader></app-loader>
+    </ng-container>
+  </ng-template>
+
+</ion-content>

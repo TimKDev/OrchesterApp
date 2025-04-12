@@ -1,0 +1,48 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Mitglieder
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="padding-lr">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mitglieder</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ng-container *ngIf="displayedData; else loading">
+
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-list style="margin-top: 12px;">
+      <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
+        (ionInput)="search($event)"></ion-searchbar>
+
+      <app-contact-item *ngFor="let contact of displayedData" [name]="contact.vorname + ' ' + contact.nachname" [image]="contact.image"
+        [instruments]="contact.defaultInstrument" [memberSince]="contact.memberSinceInYears?.toString()"
+        [routerLink]="'details/' + contact.id">
+      </app-contact-item>
+      <ng-container *ngIf="displayedData.length === 0">
+        Kein Ergebnis
+      </ng-container>
+    </ion-list>
+    <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="canCreateNewMitglied">
+      <ion-fab-button class="ion-fab-button" (click)="openCreateOrchesterMitgliedModal()">
+        <ion-icon name="add"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+
+</ion-content>

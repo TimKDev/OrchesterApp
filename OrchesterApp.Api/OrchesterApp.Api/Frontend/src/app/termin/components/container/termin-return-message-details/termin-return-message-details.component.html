@@ -1,0 +1,64 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Zurück</ion-button>
+    </ion-buttons>
+    <ion-title>Rückmeldung</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true"
+        [disabled]="!formGroup.dirty || formGroup.invalid">Speichern</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Rückmeldung</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ng-container *ngIf="response; else loading">
+    <div style="margin-bottom: 8px;">
+      <ion-text *ngIf="response.vornameOther || response.nachnameOther" class="default-color ion-text-wrap"
+        style="font-size: 15px; color: white;">
+        <b>Rückmeldung durch:</b> {{response.vornameOther}} {{response.nachnameOther}} <br>
+      </ion-text>
+      <ion-note *ngIf="response['letzteRückmeldung']" color="medium" class="ion-text-wrap">
+        Letzte Rückmeldung: {{response['letzteRückmeldung'] | date : 'dd.MM.YYYY HH:mm'}}
+      </ion-note>
+    </div>
+
+    <form [formGroup]="formGroup">
+      <ion-list>
+        <ion-item>
+          <ion-select label="Rückmeldung" label-placement="stacked" formControlName="zugesagt">
+            <ion-select-option *ngFor="let responseDropdown of responseDropdownValues" [value]="responseDropdown.value"
+              [disabled]="responseDropdown.text === 'Nicht Zurückgemeldet'">{{responseDropdown.text}}</ion-select-option>
+          </ion-select>
+        </ion-item>
+        <ion-item>
+          <ion-textarea [autoGrow]="true" formControlName="kommentarZusage" labelPlacement="stacked"
+            label="Kommentar Zusage" placeholder="Kommentar Zusage"></ion-textarea>
+        </ion-item>
+        <ng-container *ngIf="showAnwesenheit">
+          <ion-item>
+            <ion-checkbox formControlName="istAnwesend">Anwesend?</ion-checkbox>
+          </ion-item>
+          <ion-item>
+            <ion-textarea [autoGrow]="true" formControlName="kommentarAnwesenheit" labelPlacement="stacked"
+              label="Kommentar Anwesenheit" placeholder="Kommentar Anwesenheit"></ion-textarea>
+          </ion-item>
+        </ng-container>
+      </ion-list>
+    </form>
+
+  </ng-container>
+
+
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+
+</ion-content>

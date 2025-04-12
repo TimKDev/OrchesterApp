@@ -1,0 +1,72 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Dashboard
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content  [fullscreen]="true" class="padding-lr">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Dashboard</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+    <ion-refresher-content></ion-refresher-content>
+  </ion-refresher>
+
+  <ng-container *ngIf="data$ | async as data; else loading">
+    <!-- <pre>{{data | json}}</pre> -->
+    <ion-card *ngIf="data.nextTermins.length !== 0">
+      <ion-card-header>
+        <ion-card-title>Nächste Termine</ion-card-title>
+        <ion-card-subtitle>Termine der nächsten 14 Tage</ion-card-subtitle>
+      </ion-card-header>
+    
+      <ion-card-content>
+        <ion-list>
+          <app-dashboard-termin-item *ngFor="let termin of data.nextTermins" [terminId]="termin.terminId" [terminName]="termin.name" [terminStartTime]="termin.startZeit"
+            [terminEndTime]=" termin.endZeit" [terminArt]="termin.terminArt" 
+            [terminResponse]="termin.zugesagt | dropdown : data['rückmeldungsDropdownItems']" (openTermin)="openTermin(termin.terminId)"></app-dashboard-termin-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card *ngIf="data.birthdayList.length !== 0">
+      <ion-card-header>
+        <ion-card-title>Geburtstage</ion-card-title>
+        <ion-card-subtitle>Liste aller Geburtstage der letzten 14 Tage und der nächsten 7 Tage.</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content>
+        <ion-list>
+          <app-dashboard-birthday-item *ngFor="let birthday of data.birthdayList" [name]="birthday.name" [image]="birthday.image" [birthday]="birthday.birthday"></app-dashboard-birthday-item>
+        </ion-list>
+      </ion-card-content>
+    </ion-card>
+
+    <ion-card>
+      <ion-card-header>
+        <ion-card-title>Internetpräsenz Orchester</ion-card-title>
+        <ion-card-subtitle>Verlinkungen zu anderen Internetpräsenzen des Orchesters</ion-card-subtitle>
+      </ion-card-header>
+      <ion-card-content class="links">
+        <a href="https://www.facebook.com/JahnBockum/" target=”_blank”><img src="/assets/facebook.png"></a>
+        <a href="https://www.instagram.com/blasorchester_tv_jahn_bockum/" target=”_blank”><img src="/assets/instagram.png" ></a>
+        <a href="https://www.youtube.com/channel/UCr1jrRRIyST4XGAk8y0_RMg" target=”_blank”><img src="/assets/youtube.png" ></a>
+        <a href="https://blasorchester-tvjahnbockum.de/" target=”_blank”> <img src="/assets/internet.png" ></a>
+      </ion-card-content>
+    </ion-card>
+
+  </ng-container>
+
+  <ng-template #loading>
+    <ng-container *ngIf="!isRefreshing">
+      <app-loader></app-loader>
+    </ng-container>
+  </ng-template>
+</ion-content>

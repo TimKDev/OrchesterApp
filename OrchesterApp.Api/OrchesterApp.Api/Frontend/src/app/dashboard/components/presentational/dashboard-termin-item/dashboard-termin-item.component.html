@@ -1,0 +1,19 @@
+<ion-item [button]="true" detail="false" (click)="emitOpenTermin()" class="default-color">
+  <div class="triangle-base" [class.auftritt]="terminArt === terminArtEnum.Auftritt"
+    [class.probe]="terminArt === terminArtEnum.Probe" [class.konzert]="terminArt === terminArtEnum.Konzert"
+    [class.freizeit]="terminArt === terminArtEnum.Freizeit" [class.reise]="terminArt === terminArtEnum.Reise"></div>
+  <ion-label>
+    <h2>
+      <strong> {{terminName}}</strong>
+    </h2>
+    <ion-text class="default-color ion-text-wrap" style="font-size: 14px; color: white;">Datum: {{terminStartTime |
+      date: 'dd.MM.YYYY'}}: {{terminStartTime | date :
+      'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</ion-text><br />
+    <ion-note color="medium" class="ion-text-wrap">
+      Mein Status: <span [class.red]="(terminResponse === 'Nicht Zurückgemeldet')">{{terminResponse}}</span>
+    </ion-note>
+  </ion-label>
+  <div class="metadata-end-wrapper" style="margin: 0;" slot="end">
+    <ion-icon color="medium" name="chevron-forward"></ion-icon>
+  </div>
+</ion-item>

@@ -1,0 +1,145 @@
+<ion-header [translucent]="true">
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-menu-button></ion-menu-button>
+    </ion-buttons>
+    <ion-title>
+      Mitglied Details
+    </ion-title>
+  </ion-toolbar>
+</ion-header>
+
+<ion-content [fullscreen]="true" class="ion-padding">
+  <ion-header collapse="condense">
+    <ion-toolbar>
+      <ion-title size="large">Mitglied Details</ion-title>
+    </ion-toolbar>
+  </ion-header>
+
+  <ng-container *ngIf="data as res; else loading">
+
+    <ion-refresher slot="fixed" (ionRefresh)="handleRefresh($event)">
+      <ion-refresher-content></ion-refresher-content>
+    </ion-refresher>
+
+    <ion-button [routerLink]="'/tabs/mitglieder'" class="back-btn">
+      <ion-icon slot="start" name="arrow-back"></ion-icon>
+      Zurück zur Übersicht
+    </ion-button>
+
+    <ion-card>
+      <ion-item>
+        <ion-avatar slot="start" class="profil-img">
+          <img [src]="res.orchesterMitglied.image ? 'data:image/png;base64,' + res.orchesterMitglied.image : '/assets/avatar.svg'" />
+        </ion-avatar>
+        <h3>{{res.orchesterMitglied.vorname + ' ' + res.orchesterMitglied.nachname}}</h3>
+      </ion-item>
+
+      <ion-card-content>
+        <div *ngIf="res.orchesterMitglied.orchesterMitgliedsStatus || res.orchesterMitglied.memberSince || res.orchesterMitglied.positions">
+          <ng-container *ngIf="res.orchesterMitglied.orchesterMitgliedsStatus">
+            Mitgliedsstatus: <span style="color: white;">{{res.orchesterMitglied.orchesterMitgliedsStatus | dropdown :
+              res.mitgliedsStatusDropdownItems}}</span>
+          </ng-container>
+          <ng-container *ngIf="res.orchesterMitglied.memberSince">
+            <br>Mitglied seit: <span style="color: white;">{{res.orchesterMitglied.memberSince | date : 'dd.MM.YYYY'}}</span>
+          </ng-container>
+          <ng-container *ngIf="res.orchesterMitglied.positions">
+            <br>Positionen: <span style="color: white;">{{res.orchesterMitglied.positions | dropdown : res.positionDropdownItems}}</span>
+          </ng-container>
+        </div>
+        <div *ngIf="res.orchesterMitglied.defaultInstrument || res.orchesterMitglied.defaultNotenStimme" class="border-top">
+          <ng-container *ngIf="res.orchesterMitglied.defaultInstrument">
+            Instrument: <span style="color: white;">{{res.orchesterMitglied.defaultInstrument | dropdown :
+              res.instrumentDropdownItems}}</span>
+          </ng-container>
+          <ng-container *ngIf="res.orchesterMitglied.defaultNotenStimme">
+            <br>Notenstimme: <span style="color: white;">{{res.orchesterMitglied.defaultNotenStimme | dropdown :
+              res.notenstimmeDropdownItems}}</span>
+          </ng-container>
+        </div>
+        <div *ngIf="res.orchesterMitglied.geburtstag" class="border-top">
+          Geburtstag: <span style="color: white;">{{res.orchesterMitglied.geburtstag | date : 'dd.MM.YYYY'}}</span>
+        </div>
+        <div *ngIf="res.orchesterMitglied.adresse['straße']" class="border-top">
+          Adresse: <br>
+          <span style="color: white;">
+            {{res.orchesterMitglied.adresse['straße']}} {{res.orchesterMitglied.adresse.hausnummer}}, <br>
+            {{res.orchesterMitglied.adresse.postleitzahl}}, {{res.orchesterMitglied.adresse.stadt}} <br>
+            {{res.orchesterMitglied.adresse.zusatz}}
+          </span>
+        </div>
+
+        <div class="border-top">
+          <div *ngIf="res.orchesterMitglied.handynummer">
+            Handy: <a [href]="'tel:' + res.orchesterMitglied.handynummer">{{res.orchesterMitglied.handynummer}}</a>
+          </div>
+          <div *ngIf="res.orchesterMitglied.telefonnummer">
+            Telefon: <a [href]="'tel:' + res.orchesterMitglied.telefonnummer">{{res.orchesterMitglied.telefonnummer}}</a>
+          </div>
+        </div>
+      </ion-card-content>
+
+    </ion-card>
+
+    <!-- <ion-list>
+      <ion-list-header color="tertiary">
+        <ion-label>Persönliche Angaben</ion-label>
+      </ion-list-header>
+      <app-data-item label="Name" [value]="res.orchesterMitglied.vorname + ' ' + res.orchesterMitglied.nachname "></app-data-item>
+      <ng-container
+        *ngIf="res.orchesterMitglied.adresse['straße'] && res.orchesterMitglied.adresse.hausnummer && res.orchesterMitglied.adresse.postleitzahl && res.orchesterMitglied.adresse.stadt; else adresseNotGiven">
+        <ng-container *ngIf="res.orchesterMitglied.adresse.zusatz; else adressWithoutAddition">
+          <app-data-item label="Adresse"
+            [value]="res.orchesterMitglied.adresse['straße'] + ' ' + res.orchesterMitglied.adresse.hausnummer + ', ' + res.orchesterMitglied.adresse.postleitzahl + ' ' + res.orchesterMitglied.adresse.stadt + ' (' + res.orchesterMitglied.adresse.zusatz + ')'">
+          </app-data-item>
+        </ng-container>
+        <ng-template #adressWithoutAddition>
+          <app-data-item label="Adresse"
+            [value]="res.orchesterMitglied.adresse['straße'] + ' ' + res.orchesterMitglied.adresse.hausnummer + ', ' + res.orchesterMitglied.adresse.postleitzahl + ' ' + res.orchesterMitglied.adresse.stadt">
+          </app-data-item>
+        </ng-template>
+      </ng-container>
+      <ng-template #adresseNotGiven>
+        <app-data-item label="Adresse" [value]="'Nicht angegeben'"></app-data-item>
+      </ng-template>
+      <app-data-item label="Geburtstag" [value]="res.orchesterMitglied.geburtstag | date : 'dd.MM.YYYY'"></app-data-item>
+      <app-data-item label="Telefonnummer" [value]="res.orchesterMitglied.telefonnummer" [unknownValue]="'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Handynummer" [value]="res.orchesterMitglied.handynummer" [unknownValue]="'Nicht angegeben'"></app-data-item>
+    </ion-list>
+
+    <ion-list class="mg-top">
+      <ion-list-header color="tertiary">
+        <ion-label>Orchester Informationen</ion-label>
+      </ion-list-header>
+      <app-data-item label="Instrument"
+        [value]="res.orchesterMitglied.defaultInstrument | dropdown : res.instrumentDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Stimme"
+        [value]="res.orchesterMitglied.defaultNotenStimme | dropdown : res.notenStimmeDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Orchestermitglied seit"
+        [value]="res.orchesterMitglied.memberSince | date : 'dd.MM.YYYY'" [unknownValue]="'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Positionen"
+          [value]="res.orchesterMitglied.positions | dropdown : res.positionDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
+      <app-data-item label="Mitglieds Status"
+        [value]="res.orchesterMitglied.orchesterMitgliedsStatus | dropdown : res.mitgliedsStatusDropdown" [unknownValue]="'Nicht angegeben'"></app-data-item>
+    </ion-list> -->
+
+    <ion-button *ngIf="canUpdateMitglied" fill="clear" expand="block" (click)="setOpen(true)">
+      Bearbeite Mitglied
+    </ion-button>
+    <ion-action-sheet [isOpen]="isActionSheetOpen" header="Bearbeite Mitglied" [buttons]="actionSheetButtons"
+      (didDismiss)="setOpen(false)"></ion-action-sheet>
+
+    <ion-fab *ngIf="getLoggedInOrchesterMitgliedsName() === res.orchesterMitglied.vorname + ' ' + res.orchesterMitglied.nachname" slot="fixed"
+      vertical="bottom" horizontal="end">
+      <ion-fab-button class="ion-fab-button" (click)="openUpdateOrchesterMitgliedModal()">
+        <ion-icon name="pencil-outline"></ion-icon>
+      </ion-fab-button>
+    </ion-fab>
+  </ng-container>
+
+  <ng-template #loading>
+    <app-loader></app-loader>
+  </ng-template>
+
+</ion-content>
