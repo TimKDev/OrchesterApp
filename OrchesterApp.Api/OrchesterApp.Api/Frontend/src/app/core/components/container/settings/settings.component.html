@@ -17,6 +17,20 @@
   </ion-header>
 
   <ion-list [inset]="true">
+    <ion-item>
+      <ion-icon name="contrast-outline" style="margin-right: 16px;"></ion-icon>
+      <ion-label>
+        <h2>Design</h2>
+        <p class="ion-text-wrap" style="font-size: 13px;">Zwischen hellem und dunklem Modus wechseln</p>
+      </ion-label>
+      <ion-toggle 
+        slot="end" 
+        [checked]="isDarkMode" 
+        (ionChange)="toggleTheme()"
+        aria-label="Design Modus">
+      </ion-toggle>
+    </ion-item>
+    
     <ion-item button detail="true" (click)="changePassword()">
       <ion-icon name="key-outline" style="margin-right: 16px;"></ion-icon>
       <ion-label>

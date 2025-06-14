@@ -1,5 +1,6 @@
 import { Component, NgZone } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { ThemeService } from './shared/services/theme.service';
 
 @Component({
   selector: 'app-root',
@@ -7,19 +8,20 @@ import { Platform } from '@ionic/angular';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
-  constructor(private platform: Platform, private zone: NgZone) {
+  constructor(
+    private platform: Platform, 
+    private zone: NgZone,
+    private themeService: ThemeService
+  ) {
     this.initializeApp();
   }
 
   initializeApp() {
     this.platform.ready().then(() => {
       this.zone.run(() => {
-        this.forceDarkMode();
+        // Theme service will automatically initialize with saved theme or default to dark
+        // No need to force dark mode here anymore
       });
     });
-  }
-
-  forceDarkMode() {
-    document.body.classList.add('dark-theme'); // Add your custom class for dark mode
   }
 }

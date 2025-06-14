@@ -6,13 +6,15 @@ import { catchError } from 'rxjs';
 import { AuthenticationService, CLIENT_URI_EMAIL_CONFIRMATION, CLIENT_URI_PASSWORD_RESET } from 'src/app/authentication/services/authentication.service';
 import { AuthorizedAuthServiceService } from 'src/app/authentication/services/authorized-auth-service.service';
 import { confirmDialog } from 'src/app/core/helper/confirm';
+import { ThemeService } from 'src/app/shared/services/theme.service';
 
 @Component({
   selector: 'app-settings',
   templateUrl: './settings.component.html',
   styleUrls: ['./settings.component.scss'],
 })
-export class SettingsComponent {
+export class SettingsComponent implements OnInit {
+  isDarkMode: boolean = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -20,7 +22,19 @@ export class SettingsComponent {
     private router: Router,
     private loadingController: LoadingController,
     private alertController: AlertController,
+    private themeService: ThemeService,
   ) { }
+
+  ngOnInit() {
+    // Subscribe to theme changes
+    this.themeService.theme$.subscribe(theme => {
+      this.isDarkMode = theme === 'dark';
+    });
+  }
+
+  toggleTheme() {
+    this.themeService.toggleTheme();
+  }
 
   @confirmDialog("Passwort ändern", "Möchten Sie das Passswort ihres Accounts wirklich ändern?")
   async changePassword(){
