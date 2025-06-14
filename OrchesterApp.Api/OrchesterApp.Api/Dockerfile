@@ -6,10 +6,10 @@ FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 ARG BUILD_CONFIGURATION=Release
 WORKDIR /src
 COPY ["OrchesterApp.Api/OrchesterApp.Api.csproj", "OrchesterApp.Api/"]
-COPY ["TvJahnOrchesterApp.Application/TvJahnOrchesterApp.Application.csproj", "TvJahnOrchesterApp.Application/"]
-COPY ["TvJahnOrchesterApp.Contracts/TvJahnOrchesterApp.Contracts.csproj", "TvJahnOrchesterApp.Contracts/"]
-COPY ["TvJahnOrchesterApp.Domain/TvJahnOrchesterApp.Domain.csproj", "TvJahnOrchesterApp.Domain/"]
-COPY ["TvJahnOrchesterApp.Infrastructure/TvJahnOrchesterApp.Infrastructure.csproj", "TvJahnOrchesterApp.Infrastructure/"]
+COPY ["OrchesterApp.Application/OrchesterApp.Application.csproj", "OrchesterApp.Application/"]
+COPY ["OrchesterApp.Contracts/OrchesterApp.Contracts.csproj", "OrchesterApp.Contracts/"]
+COPY ["OrchesterApp.Domain/OrchesterApp.Domain.csproj", "OrchesterApp.Domain/"]
+COPY ["OrchesterApp.Infrastructure/OrchesterApp.Infrastructure.csproj", "OrchesterApp.Infrastructure/"]
 RUN dotnet restore "./OrchesterApp.Api/./OrchesterApp.Api.csproj"
 COPY . .
 WORKDIR "/src/OrchesterApp.Api"

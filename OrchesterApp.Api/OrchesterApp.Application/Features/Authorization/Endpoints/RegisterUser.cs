@@ -8,9 +8,7 @@ using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
-using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using OrchesterApp.Domain.UserAggregate;
-using TvJahnOrchesterApp.Application.Features.Authorization.Interfaces;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
