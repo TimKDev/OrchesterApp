@@ -1,5 +1,6 @@
+<div class="birthday-item-wrapper">
 <ion-item>
-  <ion-avatar aria-hidden="true" slot="start">
+  <ion-avatar slot="start">
     <img alt="" [src]="image ? 'data:image/png;base64,' + image : '/assets/avatar.svg'"/>
   </ion-avatar>
   <ion-label>
@@ -9,3 +10,4 @@
     <ion-text style="font-size: 14px;">Geburtstag: {{birthday | date: 'dd.MM.'}}</ion-text><br />
   </ion-label>
 </ion-item>
+</div>

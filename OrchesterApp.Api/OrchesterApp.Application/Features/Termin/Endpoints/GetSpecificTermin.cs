@@ -30,7 +30,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
         private record GetTerminByIdQuery(Guid Id) : IRequest<GetTerminByIdResponse>;
 
-        private record GetTerminByIdResponse(TerminDetails Termin, TerminRückmeldung TerminRückmeldung, DropdownItem[] TerminArtenDropdownValues, DropdownItem[] TerminStatusDropdownValues, DropdownItem[] ResponseDropdownValues, DropdownItem[] NotenDropdownValues, DropdownItem[] UniformDropdownValues);
+        private record GetTerminByIdResponse(TerminDetails Termin, TerminRückmeldung? TerminRückmeldung, DropdownItem[] TerminArtenDropdownValues, DropdownItem[] TerminStatusDropdownValues, DropdownItem[] ResponseDropdownValues, DropdownItem[] NotenDropdownValues, DropdownItem[] UniformDropdownValues);
 
         private record TerminDetails(string TerminName, int? TerminArt, int? TerminStatus, DateTime StartZeit, DateTime EndZeit, string? Straße, string? Hausnummer, string? Postleitzahl, string? Stadt, string? Zusatz, decimal? Latitude, decimal? Longitude, int[] Noten, int[] Uniform, string? WeitereInformationen, string? Image);
 
@@ -61,20 +61,17 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
                 var termin = await terminRepository.GetById(request.Id, cancellationToken);
                 var currentOrchesterMitglied = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
-                var currrentUserRückmeldung = termin.TerminRückmeldungOrchesterMitglieder.FirstOrDefault(r => r.OrchesterMitgliedsId == currentOrchesterMitglied.Id);
-                if (currrentUserRückmeldung is null)
-                {
-                    throw new Exception("Throw custom exception");
-                }
+                var currrentUserRueckmeldung = termin.TerminRückmeldungOrchesterMitglieder.FirstOrDefault(r => r.OrchesterMitgliedsId == currentOrchesterMitglied.Id);
+                
                 OrchesterApp.Domain.OrchesterMitgliedAggregate.OrchesterMitglied? otherOrchesterMitglied = null;
-                if (currrentUserRückmeldung.RückmeldungDurchAnderesOrchestermitglied is not null)
+                if (currrentUserRueckmeldung is not null && currrentUserRueckmeldung.RückmeldungDurchAnderesOrchestermitglied is not null)
                 {
-                    otherOrchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(currrentUserRückmeldung.RückmeldungDurchAnderesOrchestermitglied, cancellationToken);
+                    otherOrchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(currrentUserRueckmeldung.RückmeldungDurchAnderesOrchestermitglied, cancellationToken);
                 }
 
                 return new GetTerminByIdResponse(
                     new TerminDetails(termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, termin.EinsatzPlan.Treffpunkt.Straße, termin.EinsatzPlan.Treffpunkt.Hausnummer, termin.EinsatzPlan.Treffpunkt.Postleitzahl, termin.EinsatzPlan.Treffpunkt.Stadt, termin.EinsatzPlan.Treffpunkt.Zusatz, termin.EinsatzPlan.Treffpunkt.Latitude, termin.EinsatzPlan.Treffpunkt.Longitide, termin.EinsatzPlan.EinsatzplanNotenMappings.Select(n => n.NotenId).ToArray(), termin.EinsatzPlan.EinsatzplanUniformMappings.Select(t => t.UniformId).ToArray(), termin.EinsatzPlan.WeitereInformationen, TransformImageService.ConvertByteArrayToBase64(termin.Image)),
-                    new TerminRückmeldung(currrentUserRückmeldung.Zugesagt, currrentUserRückmeldung.KommentarZusage, otherOrchesterMitglied?.Vorname, otherOrchesterMitglied?.Nachname, currrentUserRückmeldung.IstAnwesend, currrentUserRückmeldung.KommentarAnwesenheit),
+                    currrentUserRueckmeldung is null ? null : new TerminRückmeldung(currrentUserRueckmeldung.Zugesagt, currrentUserRueckmeldung.KommentarZusage, otherOrchesterMitglied?.Vorname, otherOrchesterMitglied?.Nachname, currrentUserRueckmeldung.IstAnwesend, currrentUserRueckmeldung.KommentarAnwesenheit),
                     terminArtenDropdownValues,
                     terminStatusDropdownValues,
                     responseDropdownValues,

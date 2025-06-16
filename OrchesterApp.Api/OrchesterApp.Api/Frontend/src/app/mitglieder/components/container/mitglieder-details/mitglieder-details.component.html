@@ -38,32 +38,32 @@
       <ion-card-content>
         <div *ngIf="res.orchesterMitglied.orchesterMitgliedsStatus || res.orchesterMitglied.memberSince || res.orchesterMitglied.positions">
           <ng-container *ngIf="res.orchesterMitglied.orchesterMitgliedsStatus">
-            Mitgliedsstatus: <span style="color: white;">{{res.orchesterMitglied.orchesterMitgliedsStatus | dropdown :
+            Mitgliedsstatus: <span>{{res.orchesterMitglied.orchesterMitgliedsStatus | dropdown :
               res.mitgliedsStatusDropdownItems}}</span>
           </ng-container>
           <ng-container *ngIf="res.orchesterMitglied.memberSince">
-            <br>Mitglied seit: <span style="color: white;">{{res.orchesterMitglied.memberSince | date : 'dd.MM.YYYY'}}</span>
+            <br>Mitglied seit: <span>{{res.orchesterMitglied.memberSince | date : 'dd.MM.YYYY'}}</span>
           </ng-container>
           <ng-container *ngIf="res.orchesterMitglied.positions">
-            <br>Positionen: <span style="color: white;">{{res.orchesterMitglied.positions | dropdown : res.positionDropdownItems}}</span>
+            <br>Positionen: <span>{{res.orchesterMitglied.positions | dropdown : res.positionDropdownItems}}</span>
           </ng-container>
         </div>
         <div *ngIf="res.orchesterMitglied.defaultInstrument || res.orchesterMitglied.defaultNotenStimme" class="border-top">
           <ng-container *ngIf="res.orchesterMitglied.defaultInstrument">
-            Instrument: <span style="color: white;">{{res.orchesterMitglied.defaultInstrument | dropdown :
+            Instrument: <span>{{res.orchesterMitglied.defaultInstrument | dropdown :
               res.instrumentDropdownItems}}</span>
           </ng-container>
           <ng-container *ngIf="res.orchesterMitglied.defaultNotenStimme">
-            <br>Notenstimme: <span style="color: white;">{{res.orchesterMitglied.defaultNotenStimme | dropdown :
+            <br>Notenstimme: <span>{{res.orchesterMitglied.defaultNotenStimme | dropdown :
               res.notenstimmeDropdownItems}}</span>
           </ng-container>
         </div>
         <div *ngIf="res.orchesterMitglied.geburtstag" class="border-top">
-          Geburtstag: <span style="color: white;">{{res.orchesterMitglied.geburtstag | date : 'dd.MM.YYYY'}}</span>
+          Geburtstag: <span>{{res.orchesterMitglied.geburtstag | date : 'dd.MM.YYYY'}}</span>
         </div>
         <div *ngIf="res.orchesterMitglied.adresse['straße']" class="border-top">
           Adresse: <br>
-          <span style="color: white;">
+          <span>
             {{res.orchesterMitglied.adresse['straße']}} {{res.orchesterMitglied.adresse.hausnummer}}, <br>
             {{res.orchesterMitglied.adresse.postleitzahl}}, {{res.orchesterMitglied.adresse.stadt}} <br>
             {{res.orchesterMitglied.adresse.zusatz}}

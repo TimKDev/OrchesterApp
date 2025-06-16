@@ -21,7 +21,7 @@ export class TerminListeComponent {
   data$!: Observable<TerminListDataResponse>;
   canCreateNewTermin = this.rolesService.isCurrentUserAdmin || this.rolesService.isCurrentUserVorstand;
   isRefreshing = false;
-  defaultSegment = "default";
+  defaultSegment = "overview";
   currentlyLoadingWithoutCache = false;
 
   constructor(
@@ -50,7 +50,7 @@ export class TerminListeComponent {
         if (refreshEvent){
           refreshEvent.target.complete();
           this.isRefreshing = false;
-        } 
+        }
         this.currentlyLoadingWithoutCache = false;
       }),
       catchError(() => {this.currentlyLoadingWithoutCache = false; return NEVER})

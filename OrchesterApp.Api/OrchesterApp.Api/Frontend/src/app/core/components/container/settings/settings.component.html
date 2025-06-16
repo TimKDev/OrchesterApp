@@ -23,14 +23,13 @@
         <h2>Design</h2>
         <p class="ion-text-wrap" style="font-size: 13px;">Zwischen hellem und dunklem Modus wechseln</p>
       </ion-label>
-      <ion-toggle 
-        slot="end" 
-        [checked]="isDarkMode" 
-        (ionChange)="toggleTheme()"
-        aria-label="Design Modus">
+      <ion-toggle
+        slot="end"
+        [checked]="isDarkMode"
+        (ionChange)="toggleTheme()">
       </ion-toggle>
     </ion-item>
-    
+
     <ion-item button detail="true" (click)="changePassword()">
       <ion-icon name="key-outline" style="margin-right: 16px;"></ion-icon>
       <ion-label>
@@ -38,7 +37,7 @@
         <p class="ion-text-wrap" style="font-size: 13px;">Passwort des eingeloggten Accounts ändern</p>
       </ion-label>
     </ion-item>
-    
+
     <ion-item button detail="true" (click)="changeMail()">
       <ion-icon name="mail-outline" style="margin-right: 16px;"></ion-icon>
       <ion-label>
