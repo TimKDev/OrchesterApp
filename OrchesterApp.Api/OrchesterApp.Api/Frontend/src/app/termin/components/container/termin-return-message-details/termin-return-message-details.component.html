@@ -21,7 +21,7 @@
   <ng-container *ngIf="response; else loading">
     <div style="margin-bottom: 8px;">
       <ion-text *ngIf="response.vornameOther || response.nachnameOther" class="default-color ion-text-wrap"
-        style="font-size: 15px; color: white;">
+        style="font-size: 15px;">
         <b>Rückmeldung durch:</b> {{response.vornameOther}} {{response.nachnameOther}} <br>
       </ion-text>
       <ion-note *ngIf="response['letzteRückmeldung']" color="medium" class="ion-text-wrap">

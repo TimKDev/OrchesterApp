@@ -6,10 +6,16 @@ ion-content {
 }
 
 .input-group {
-  background: #fff;
+  background-color: var(--ion-item-background);
+  color: var(--ion-text-color);
   border-radius: 10px;
   overflow: hidden;
   margin-bottom: 15px;
+}
+
+.input-group ion-item {
+  --background: transparent;
+  --color: var(--ion-text-color);
 }
 
 .errors {

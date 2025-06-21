@@ -24,3 +24,53 @@
 @import "@ionic/angular/css/text-alignment.css";
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
+
+/* Global Theme Fixes for Better Browser Compatibility */
+body, html {
+  color: var(--ion-text-color, #000000);
+  background-color: var(--ion-background-color, #ffffff);
+}
+
+/* Ensure consistent theme application */
+.light-theme, html.light-theme, html.light-theme body {
+  color: var(--ion-text-color, #000000);
+  background-color: var(--ion-background-color, #fafafa);
+}
+
+.dark-theme, html.dark-theme, html.dark-theme body {
+  color: var(--ion-text-color, #ffffff);
+  background-color: var(--ion-background-color, #121212);
+}
+
+/* Smooth theme transitions */
+.theme-transition * {
+  transition: color 0.2s ease-in-out, background-color 0.2s ease-in-out !important;
+}
+
+/* Fix for Ionic components not inheriting theme colors properly */
+ion-content, ion-header, ion-toolbar, ion-item, ion-label {
+  color: var(--ion-text-color);
+}
+
+/* Ensure proper text visibility in all components */
+ion-item {
+  --color: var(--ion-text-color);
+}
+
+ion-label {
+  color: var(--ion-text-color);
+}
+
+/* Fix for hardcoded colors that don't respect theme */
+h1, h2, h3, h4, h5, h6, p, span, div {
+  color: inherit;
+}
+
+/* Ensure proper contrast for medium color in both themes */
+.light-theme ion-note[color="medium"] {
+  --color: var(--ion-color-medium-shade);
+}
+
+.dark-theme ion-note[color="medium"] {
+  --color: var(--ion-color-medium-tint);
+}
