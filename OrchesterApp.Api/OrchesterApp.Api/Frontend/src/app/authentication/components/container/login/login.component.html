@@ -5,29 +5,31 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="login()" [formGroup]="credentials">
-    <div class="input-group">
-      <ion-item>
-        <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
-      </ion-item>
-      <div *ngIf="(email?.dirty || email?.touched) && email?.errors" class="errors">
-        <span *ngIf="email?.errors?.['required']">Email wird benötigt. </span>
+  <div class="login-container">
+    <form (ngSubmit)="login()" [formGroup]="credentials">
+      <div class="input-group">
+        <ion-item>
+          <ion-input type="email" placeholder="Email" formControlName="email"></ion-input>
+        </ion-item>
+        <div *ngIf="(email?.dirty || email?.touched) && email?.errors" class="errors">
+          <span *ngIf="email?.errors?.['required']">Email wird benötigt. </span>
+        </div>
+        <ion-item>
+          <app-show-hide-password>
+            <ion-input type="password" placeholder="Passwort"
+              formControlName="password"></ion-input>
+          </app-show-hide-password>
+        </ion-item>
+        <div *ngIf="(password?.dirty || password?.touched) && password?.errors" class="errors">
+          <span *ngIf="password?.errors?.['required']">Passwort wird benötigt.</span>
+        </div>
       </div>
-      <ion-item>
-        <app-show-hide-password>
-          <ion-input type="password" placeholder="Passwort"
-            formControlName="password"></ion-input>
-        </app-show-hide-password>
-      </ion-item>
-      <div *ngIf="(password?.dirty || password?.touched) && password?.errors" class="errors">
-        <span *ngIf="password?.errors?.['required']">Passwort wird benötigt.</span>
-      </div>
-    </div>
 
-    <ion-button type="submit" expand="block" [disabled]="!credentials.valid">Log in</ion-button>
-    <ion-button (click)="forgotPassword()" type="button" expand="block" fill="clear"
-      class="registration-button">
-      Passwort vergessen?
-    </ion-button>
-  </form>
+      <ion-button type="submit" expand="block" [disabled]="!credentials.valid">Log in</ion-button>
+      <ion-button (click)="forgotPassword()" type="button" expand="block" fill="clear"
+        class="registration-button">
+        Passwort vergessen?
+      </ion-button>
+    </form>
+  </div>
 </ion-content>

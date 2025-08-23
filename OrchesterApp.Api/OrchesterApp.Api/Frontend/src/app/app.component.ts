@@ -1,6 +1,8 @@
 import { Component, NgZone } from '@angular/core';
 import { Platform } from '@ionic/angular';
+import { Router, NavigationEnd } from '@angular/router';
 import { ThemeService } from './shared/services/theme.service';
+import { filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-root',
@@ -8,12 +10,16 @@ import { ThemeService } from './shared/services/theme.service';
   styleUrls: ['app.component.scss'],
 })
 export class AppComponent {
+  showSidenav: boolean = true;
+
   constructor(
     private platform: Platform, 
     private zone: NgZone,
-    private themeService: ThemeService
+    private themeService: ThemeService,
+    private router: Router
   ) {
     this.initializeApp();
+    this.setupRouterListener();
   }
 
   initializeApp() {
@@ -23,5 +29,14 @@ export class AppComponent {
         // No need to force dark mode here anymore
       });
     });
+  }
+
+  private setupRouterListener() {
+    this.router.events
+      .pipe(filter(event => event instanceof NavigationEnd))
+      .subscribe((event) => {
+        const navigationEndEvent = event as NavigationEnd;
+        this.showSidenav = !navigationEndEvent.url.startsWith('/auth');
+      });
   }
 }

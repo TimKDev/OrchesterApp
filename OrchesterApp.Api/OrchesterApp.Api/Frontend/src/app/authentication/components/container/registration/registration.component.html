@@ -5,36 +5,38 @@
 </ion-header>
 
 <ion-content>
-  <form (ngSubmit)="register()" [formGroup]="registerForm">
-    <div class="input-group">
-      <ion-item>
-        <app-show-hide-password>
-          <ion-input type="password" placeholder="Passwort"
-            formControlName="password"></ion-input>
-        </app-show-hide-password>
-      </ion-item>
-      <div *ngIf="(password?.dirty || password?.touched) && password?.errors" class="errors">
-        <span *ngIf="password?.errors?.['required']">Passwort wird benötigt. </span>
-        <span *ngIf="password?.errors?.['minlength']">Passwort muss mindestens 6 Zeichen enthalten. </span>
+  <div class="registration-container">
+    <form (ngSubmit)="register()" [formGroup]="registerForm">
+      <div class="input-group">
+        <ion-item>
+          <app-show-hide-password>
+            <ion-input type="password" placeholder="Passwort"
+              formControlName="password"></ion-input>
+          </app-show-hide-password>
+        </ion-item>
+        <div *ngIf="(password?.dirty || password?.touched) && password?.errors" class="errors">
+          <span *ngIf="password?.errors?.['required']">Passwort wird benötigt. </span>
+          <span *ngIf="password?.errors?.['minlength']">Passwort muss mindestens 6 Zeichen enthalten. </span>
+        </div>
+
+        <ion-item>
+          <app-show-hide-password>
+            <ion-input type="password" placeholder="Wiederhole Passwort"
+              formControlName="confirmPassword"></ion-input>
+          </app-show-hide-password>
+        </ion-item>
+        <div *ngIf="(confirmPassword?.dirty || confirmPassword?.touched) && confirmPassword?.errors" class="errors">
+          <span *ngIf="confirmPassword?.errors?.['required']">Passwort wird benötigt. </span>
+          <span *ngIf="confirmPassword?.errors?.['minlength']">Passwort muss mindestens 6 Zeichen enthalten. </span>
+          <span *ngIf="confirmPassword?.errors?.['mustMatch']">Passwörter stimmen nicht überein. </span>
+        </div>
       </div>
 
-      <ion-item>
-        <app-show-hide-password>
-          <ion-input type="password" placeholder="Wiederhole Passwort"
-            formControlName="confirmPassword"></ion-input>
-        </app-show-hide-password>
-      </ion-item>
-      <div *ngIf="(confirmPassword?.dirty || confirmPassword?.touched) && confirmPassword?.errors" class="errors">
-        <span *ngIf="confirmPassword?.errors?.['required']">Passwort wird benötigt. </span>
-        <span *ngIf="confirmPassword?.errors?.['minlength']">Passwort muss mindestens 6 Zeichen enthalten. </span>
-        <span *ngIf="confirmPassword?.errors?.['mustMatch']">Passwörter stimmen nicht überein. </span>
-      </div>
-    </div>
-
-    <ion-button slot="bottom" type="submit" expand="block" [disabled]="!registerForm.valid">Registriere
-      dich</ion-button>
-  </form>
-  <ion-button routerLink="/auth/" type="button" expand="block" fill="clear" class="back-to-login-button">
-    Zurück zum Login
-  </ion-button>
+      <ion-button slot="bottom" type="submit" expand="block" [disabled]="!registerForm.valid">Registriere
+        dich</ion-button>
+    </form>
+    <ion-button routerLink="/auth/" type="button" expand="block" fill="clear" class="back-to-login-button">
+      Zurück zum Login
+    </ion-button>
+  </div>
 </ion-content>
