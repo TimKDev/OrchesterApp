@@ -1,12 +1,15 @@
 <ion-item [button]="true" detail="false" [class.abgesagt]="terminStatus === 'Abgesagt' && !(terminEndTime < dateNow)"
   [class.nicht-angenommen]="terminStatus === 'Angefragt' && !(terminEndTime < dateNow)" (click)="emitOpenTermin()">
-  <div class="triangle-base" 
+  <div class="triangle-base"
     [class.auftritt]="terminArt === terminArtEnum.Auftritt"
-    [class.probe]="terminArt === terminArtEnum.Probe" 
-    [class.konzert]="terminArt === terminArtEnum.Konzert" 
-    [class.freizeit]="terminArt === terminArtEnum.Freizeit" 
+    [class.probe]="terminArt === terminArtEnum.Probe"
+    [class.konzert]="terminArt === terminArtEnum.Konzert"
+    [class.freizeit]="terminArt === terminArtEnum.Freizeit"
     [class.reise]="terminArt === terminArtEnum.Reise">
   </div>
+  <ion-avatar slot="start">
+    <img alt="" [src]="image ? 'data:image/png;base64,' + image : '/assets/avatar.svg'"/>
+  </ion-avatar>
   <ion-label>
     <h2>
       <strong *ngIf="terminStatus !== 'Abgesagt'; else abgesagt"> {{terminName}}</strong>
@@ -14,13 +17,13 @@
         <s><strong>{{terminName}}</strong></s>
       </ng-template>
     </h2>
-    <ion-text class="ion-text-wrap" style="font-size: 14px;" color="medium">Datum: {{terminStartTime | date
+    <ion-text class="ion-text-wrap" style="font-size: 14px;" color="medium"> {{terminStartTime | date
       :
       'dd.MM.YYYY'}}: {{terminStartTime | date :
       'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</ion-text><br />
     <ion-note color="medium" class="ion-text-wrap">
       <ng-container *ngIf="!(terminEndTime < dateNow)">
-        Mein Status: {{terminResponse}}
+        {{terminResponse}}
         <ion-icon class="alert-icon" *ngIf="(terminResponse === 'Nicht Zurückgemeldet')" name="alert-outline"
           color="danger">
         </ion-icon><br>

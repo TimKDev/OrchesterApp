@@ -1,6 +1,5 @@
 ﻿using MediatR;
 using Microsoft.AspNetCore.Builder;
-using Microsoft.AspNetCore.Hosting;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
@@ -9,8 +8,6 @@ using TvJahnOrchesterApp.Application.Features.Dropdown.Enums;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Services;
 using OrchesterApp.Domain.Common.Enums;
-using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
-using OrchesterApp.Domain.TerminAggregate.Entities;
 
 namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 {

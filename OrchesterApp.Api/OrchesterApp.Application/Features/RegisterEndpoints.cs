@@ -1,4 +1,5 @@
 ﻿using Microsoft.AspNetCore.Routing;
+using OrchesterApp.Application.Features.FileStorage;
 using TvJahnOrchesterApp.Application.Common;
 using TvJahnOrchesterApp.Application.Features.Abstimmung;
 using TvJahnOrchesterApp.Application.Features.AnwesenheitsListe;
@@ -25,6 +26,7 @@ namespace TvJahnOrchesterApp.Application.Features
             app.RegisterEndpointsTerminRückmeldungFeature();
             app.RegisterEndpointsAnwesenheitsListeFeature();
             app.RegisterEndpointsDropdown();
+            app.RegisterFileStorageEndpoints();
         }
     }
 }

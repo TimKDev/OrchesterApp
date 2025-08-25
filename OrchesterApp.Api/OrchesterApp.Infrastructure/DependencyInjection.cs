@@ -18,12 +18,14 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using OrchesterApp.Infrastructure.Extensions;
+using OrchesterApp.Infrastructure.FileStorage;
 
 namespace OrchesterApp.Infrastructure
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddInfrastructure(this IServiceCollection services, ConfigurationManager configuration)
+        public static IServiceCollection AddInfrastructure(this IServiceCollection services,
+            ConfigurationManager configuration)
         {
             services
                 .AddPersistence(configuration)
@@ -33,17 +35,17 @@ namespace OrchesterApp.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddPersistence(this IServiceCollection services, ConfigurationManager configuration)
+        public static IServiceCollection AddPersistence(this IServiceCollection services,
+            ConfigurationManager configuration)
         {
             var connectionString = configuration.GetValueFromSecretOrConfig("ConnectionStrings:DefaultConnection");
-            services.AddDbContext<OrchesterDbContext>(options =>
-            {
-                options.UseNpgsql(connectionString);
-            });
+            services.AddDbContext<OrchesterDbContext>(options => { options.UseNpgsql(connectionString); });
 
+            services.AddScoped<IFileStorageService, FileStorageService>();
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITerminRepository, TerminRepository>();
+            services.AddScoped<IFileStorageRepository, FileStorageRepository>();
             services.AddScoped<IInstrumentRepository, InstrumentRepository>();
             services.AddScoped<IDropdownRepository, InstrumentRepository>();
             services.AddScoped<IDropdownRepository, NotenstimmeRepository>();
@@ -72,21 +74,22 @@ namespace OrchesterApp.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddAuthentication(this IServiceCollection services, ConfigurationManager configuration)
+        public static IServiceCollection AddAuthentication(this IServiceCollection services,
+            ConfigurationManager configuration)
         {
             services.AddIdentity<User, IdentityRole>(opt =>
-            {
-                // Hier können Optionen für die Authentication mit Identity gesetzt werden:
-                opt.Password.RequireNonAlphanumeric = false;
-                opt.Password.RequireUppercase = false;
-                opt.User.RequireUniqueEmail = true;
-                opt.Lockout.AllowedForNewUsers = true;
-                opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
-                opt.Lockout.MaxFailedAccessAttempts = 3;
-                opt.SignIn.RequireConfirmedEmail = false;
-            }).AddEntityFrameworkStores<OrchesterDbContext>()
-            .AddDefaultTokenProviders()
-            ;
+                {
+                    // Hier können Optionen für die Authentication mit Identity gesetzt werden:
+                    opt.Password.RequireNonAlphanumeric = false;
+                    opt.Password.RequireUppercase = false;
+                    opt.User.RequireUniqueEmail = true;
+                    opt.Lockout.AllowedForNewUsers = true;
+                    opt.Lockout.DefaultLockoutTimeSpan = TimeSpan.FromMinutes(60);
+                    opt.Lockout.MaxFailedAccessAttempts = 3;
+                    opt.SignIn.RequireConfirmedEmail = false;
+                }).AddEntityFrameworkStores<OrchesterDbContext>()
+                .AddDefaultTokenProviders()
+                ;
 
             var jwtSettings = new JwtSettings();
             configuration.Bind(JwtSettings.SectionName, jwtSettings);

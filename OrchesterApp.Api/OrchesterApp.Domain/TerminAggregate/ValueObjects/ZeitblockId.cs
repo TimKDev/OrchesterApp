@@ -1,17 +1,14 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OrchesterApp.Domain.Common.Models;
+﻿using OrchesterApp.Domain.Common.Models;
 
 namespace OrchesterApp.Domain.TerminAggregate.ValueObjects
 {
-    public sealed class ZeitblockId: ValueObject
+    public sealed class ZeitblockId : ValueObject
     {
         public Guid Value { get; private set; }
 
-        private ZeitblockId() { }
+        private ZeitblockId()
+        {
+        }
 
         private ZeitblockId(Guid value)
         {

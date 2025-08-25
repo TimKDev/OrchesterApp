@@ -3,10 +3,11 @@ using Microsoft.EntityFrameworkCore;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate;
 using OrchesterApp.Domain.TerminAggregate;
 using OrchesterApp.Domain.UserAggregate;
+using TvJahnOrchesterApp.Application.Common.Models;
 
 namespace OrchesterApp.Infrastructure.Persistence
 {
-    public class OrchesterDbContext: IdentityDbContext<User>
+    public class OrchesterDbContext : IdentityDbContext<User>
     {
         public OrchesterDbContext(DbContextOptions<OrchesterDbContext> options) : base(options)
         {
@@ -14,11 +15,13 @@ namespace OrchesterApp.Infrastructure.Persistence
 
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
-            modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrchesterDbContext).Assembly); 
+            modelBuilder.ApplyConfigurationsFromAssembly(typeof(OrchesterDbContext).Assembly);
             base.OnModelCreating(modelBuilder);
         }
 
         public DbSet<OrchesterMitglied> OrchesterMitglieder { get; set; } = null!;
         public DbSet<Termin> Termin { get; set; } = null!;
+        public DbSet<TvJahnOrchesterApp.Application.Common.Models.FileStorage> FileStorages { get; set; } = null!;
+        public DbSet<FileDataBytea> FileDataByteas { get; set; } = null!;
     }
 }

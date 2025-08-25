@@ -20,6 +20,7 @@ export class TerminItemComponent  implements OnInit {
   @Input() positiveResponse!: number;
   @Input() negativeResponse!: number;
   @Input() highAuth!: boolean;
+  @Input() image!: string;
   @Output() openTermin = new EventEmitter<void>();
 
   terminArtEnum = TerminArt;
