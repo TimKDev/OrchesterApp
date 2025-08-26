@@ -1,0 +1,1 @@
+﻿public record GetFileResult(string FileName, string ContentType, Stream FileStream);

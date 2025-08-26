@@ -6,6 +6,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using System.Text;
+using Minio;
 using OrchesterApp.Domain.UserAggregate;
 using OrchesterApp.Infrastructure.Authentication;
 using OrchesterApp.Infrastructure.Email;
@@ -30,22 +31,21 @@ namespace OrchesterApp.Infrastructure
             services
                 .AddPersistence(configuration)
                 .AddEmail(configuration)
+                .AddMinioStorage(configuration)
                 .AddAuthentication(configuration);
 
             return services;
         }
 
-        public static IServiceCollection AddPersistence(this IServiceCollection services,
+        private static IServiceCollection AddPersistence(this IServiceCollection services,
             ConfigurationManager configuration)
         {
             var connectionString = configuration.GetValueFromSecretOrConfig("ConnectionStrings:DefaultConnection");
             services.AddDbContext<OrchesterDbContext>(options => { options.UseNpgsql(connectionString); });
 
-            services.AddScoped<IFileStorageService, FileStorageService>();
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITerminRepository, TerminRepository>();
-            services.AddScoped<IFileStorageRepository, FileStorageRepository>();
             services.AddScoped<IInstrumentRepository, InstrumentRepository>();
             services.AddScoped<IDropdownRepository, InstrumentRepository>();
             services.AddScoped<IDropdownRepository, NotenstimmeRepository>();
@@ -60,7 +60,7 @@ namespace OrchesterApp.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddEmail(this IServiceCollection services, ConfigurationManager configuration)
+        private static IServiceCollection AddEmail(this IServiceCollection services, ConfigurationManager configuration)
         {
             var emailConfig = new EmailConfiguration();
 
@@ -74,7 +74,31 @@ namespace OrchesterApp.Infrastructure
             return services;
         }
 
-        public static IServiceCollection AddAuthentication(this IServiceCollection services,
+        private static IServiceCollection AddMinioStorage(this IServiceCollection services,
+            IConfiguration configuration)
+        {
+            services.Configure<MinioSettings>(configuration.GetSection(MinioSettings.SectionName));
+
+            services.AddMinio(configureClient =>
+            {
+                var minioSettings = configuration.GetSection(MinioSettings.SectionName).Get<MinioSettings>() ??
+                                    throw new Exception("Missing minio settings");
+                configureClient
+                    .WithEndpoint(minioSettings.Endpoint)
+                    .WithCredentials(minioSettings.AccessKey, minioSettings.SecretKey);
+
+                if (minioSettings.Secure)
+                {
+                    configureClient.WithSSL();
+                }
+            });
+
+            services.AddScoped<IFileStorageService, MinioFileStorageService>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddAuthentication(this IServiceCollection services,
             ConfigurationManager configuration)
         {
             services.AddIdentity<User, IdentityRole>(opt =>

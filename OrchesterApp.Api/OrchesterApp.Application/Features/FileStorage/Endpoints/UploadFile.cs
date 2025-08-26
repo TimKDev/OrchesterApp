@@ -16,7 +16,7 @@ public static class UploadFile
             .RequireAuthorization();
     }
 
-    public static async Task<IResult> HandleAsync([FromRoute] Guid fileId, [FromBody] IFormFile file, ISender sender,
+    private static async Task<IResult> HandleAsync([FromRoute] Guid fileId, [FromBody] IFormFile file, ISender sender,
         CancellationToken cancellationToken)
     {
         await using var stream = file.OpenReadStream();
@@ -41,7 +41,7 @@ public static class UploadFile
             RuleFor(x => x.FileName).NotEmpty();
             RuleFor(x => x.ContentType).NotEmpty();
             RuleFor(x => x.FileStream).NotEmpty();
-            RuleFor(x => x.FileStream.Length).LessThan(10 * 1024 * 1024);
+            RuleFor(x => x.FileStream.Length).LessThan(FileUploadLimitInMb * 1024 * 1024);
         }
     }
 
@@ -56,7 +56,9 @@ public static class UploadFile
 
         public async Task<Unit> Handle(UploadFileCommand request, CancellationToken cancellationToken)
         {
-            await _fileStorageService.StoreFileAsync(request.FileId, request.FileName, request.ContentType,
+            var objectName = $"{request.FileId}{Path.GetExtension(request.FileName)}";
+
+            await _fileStorageService.StoreFileAsync(objectName, request.ContentType,
                 request.FileStream);
 
             return Unit.Value;

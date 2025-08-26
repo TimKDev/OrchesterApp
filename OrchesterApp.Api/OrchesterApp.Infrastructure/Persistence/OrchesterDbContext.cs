@@ -21,7 +21,5 @@ namespace OrchesterApp.Infrastructure.Persistence
 
         public DbSet<OrchesterMitglied> OrchesterMitglieder { get; set; } = null!;
         public DbSet<Termin> Termin { get; set; } = null!;
-        public DbSet<TvJahnOrchesterApp.Application.Common.Models.FileStorage> FileStorages { get; set; } = null!;
-        public DbSet<FileDataBytea> FileDataByteas { get; set; } = null!;
     }
 }
