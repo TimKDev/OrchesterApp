@@ -31,26 +31,31 @@ namespace OrchesterApp.Infrastructure.Persistence.Configurations
 
             builder.HasOne<TerminArt>().WithMany().HasForeignKey(m => m.TerminArt).OnDelete(DeleteBehavior.SetNull);
 
-            builder.HasOne<TerminStatus>().WithMany().HasForeignKey(m => m.TerminStatus).OnDelete(DeleteBehavior.SetNull);
+            builder.HasOne<TerminStatus>().WithMany().HasForeignKey(m => m.TerminStatus)
+                .OnDelete(DeleteBehavior.SetNull);
 
             builder.Property(x => x.Name)
                 .HasMaxLength(100);
 
             builder.OwnsOne(x => x.EinsatzPlan, ConfigureEinsatzplanTable);
 
-            builder.OwnsMany(x => x.TerminRückmeldungOrchesterMitglieder, ConfigureTerminRückmeldungOrchesterMitgliederTable);
+            builder.OwnsMany(x => x.TerminRückmeldungOrchesterMitglieder,
+                ConfigureTerminRückmeldungOrchesterMitgliederTable);
 
-            builder.Metadata.FindNavigation(nameof(Termin.TerminRückmeldungOrchesterMitglieder))!.SetPropertyAccessMode(PropertyAccessMode.Field);
+            builder.OwnsMany(x => x.Dokumente); ================
+
+            builder.Metadata.FindNavigation(nameof(Termin.TerminRückmeldungOrchesterMitglieder))!.SetPropertyAccessMode(
+                PropertyAccessMode.Field);
 
             builder.Property(x => x.AbstimmungsId)
                 .HasConversion(
                     id => id.Value,
                     value => AbstimmungsId.Create(value)
                 );
-
         }
 
-        private void ConfigureEinsatzplanTable(OwnedNavigationBuilder<Termin, EinsatzPlan> builder) {
+        private void ConfigureEinsatzplanTable(OwnedNavigationBuilder<Termin, EinsatzPlan> builder)
+        {
             builder.ToTable("Einsatzpläne");
             builder.WithOwner().HasForeignKey("TerminId");
             builder.HasKey(nameof(EinsatzPlan.Id), "TerminId");
@@ -58,8 +63,8 @@ namespace OrchesterApp.Infrastructure.Persistence.Configurations
                 .ValueGeneratedNever()
                 .HasColumnName("EinsatzplanId")
                 .HasConversion(id => id.Value,
-                value => EinsatzplanId.Create(value)
-            );
+                    value => EinsatzplanId.Create(value)
+                );
             builder.OwnsOne(x => x.Treffpunkt);
             builder.OwnsMany(x => x.ZeitBlocks, ConfigureZeitBlock);
 
@@ -103,7 +108,8 @@ namespace OrchesterApp.Infrastructure.Persistence.Configurations
             builder.OwnsOne(x => x.Adresse);
         }
 
-        private void ConfigureTerminRückmeldungOrchesterMitgliederTable(OwnedNavigationBuilder<Termin, TerminRückmeldungOrchestermitglied> builder)
+        private void ConfigureTerminRückmeldungOrchesterMitgliederTable(
+            OwnedNavigationBuilder<Termin, TerminRückmeldungOrchestermitglied> builder)
         {
             builder.ToTable("TerminRückmeldungen");
             builder.WithOwner().HasForeignKey("TerminId");
@@ -132,14 +138,17 @@ namespace OrchesterApp.Infrastructure.Persistence.Configurations
                     value => OrchesterMitgliedsId.Create(value)
                 );
 
-            builder.HasOne<OrchesterMitglied>().WithMany().HasForeignKey(x => x.RückmeldungDurchAnderesOrchestermitglied);
+            builder.HasOne<OrchesterMitglied>().WithMany()
+                .HasForeignKey(x => x.RückmeldungDurchAnderesOrchestermitglied);
 
             builder.OwnsMany(m => m.TerminRückmeldungNotenstimmenMappings, terminRückmeldungNotenstimmeMappingBuilder =>
             {
                 terminRückmeldungNotenstimmeMappingBuilder.ToTable("TerminRückmeldungNotenstimmeMapping");
                 terminRückmeldungNotenstimmeMappingBuilder.HasKey(x => x.Id);
-                terminRückmeldungNotenstimmeMappingBuilder.HasOne<Notenstimme>().WithMany().HasForeignKey(m => m.NotenstimmenId);
-                terminRückmeldungNotenstimmeMappingBuilder.WithOwner().HasForeignKey("TerminRückmeldungsId", "TerminId");
+                terminRückmeldungNotenstimmeMappingBuilder.HasOne<Notenstimme>().WithMany()
+                    .HasForeignKey(m => m.NotenstimmenId);
+                terminRückmeldungNotenstimmeMappingBuilder.WithOwner()
+                    .HasForeignKey("TerminRückmeldungsId", "TerminId");
             });
 
 
@@ -147,15 +156,20 @@ namespace OrchesterApp.Infrastructure.Persistence.Configurations
             {
                 terminRückmeldungInstrumentMappingBuilder.ToTable("TerminRückmeldungInstrumentMapping");
                 terminRückmeldungInstrumentMappingBuilder.HasKey(x => x.Id);
-                terminRückmeldungInstrumentMappingBuilder.HasOne<Instrument>().WithMany().HasForeignKey(m => m.InstrumentId);
+                terminRückmeldungInstrumentMappingBuilder.HasOne<Instrument>().WithMany()
+                    .HasForeignKey(m => m.InstrumentId);
                 terminRückmeldungInstrumentMappingBuilder.WithOwner().HasForeignKey("TerminRückmeldungsId", "TerminId");
             });
 
-            builder.Navigation(s => s.TerminRückmeldungNotenstimmenMappings).Metadata.SetField("_terminRückmeldungNotenstimmenMappings");
-            builder.Navigation(s => s.TerminRückmeldungNotenstimmenMappings).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Navigation(s => s.TerminRückmeldungNotenstimmenMappings).Metadata
+                .SetField("_terminRückmeldungNotenstimmenMappings");
+            builder.Navigation(s => s.TerminRückmeldungNotenstimmenMappings)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
 
-            builder.Navigation(s => s.TerminRückmeldungInstrumentMappings).Metadata.SetField("_terminRückmeldungInstrumentMappings");
-            builder.Navigation(s => s.TerminRückmeldungInstrumentMappings).UsePropertyAccessMode(PropertyAccessMode.Field);
+            builder.Navigation(s => s.TerminRückmeldungInstrumentMappings).Metadata
+                .SetField("_terminRückmeldungInstrumentMappings");
+            builder.Navigation(s => s.TerminRückmeldungInstrumentMappings)
+                .UsePropertyAccessMode(PropertyAccessMode.Field);
         }
     }
 }

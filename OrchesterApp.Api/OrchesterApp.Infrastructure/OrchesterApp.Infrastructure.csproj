@@ -22,7 +22,7 @@
         <PackageReference Include="Minio.AspNetCore" Version="6.0.1"/>
         <PackageReference Include="NETCore.MailKit" Version="2.1.0"/>
         <PackageReference Include="Npgsql.EntityFrameworkCore.PostgreSQL" Version="8.0.4"/>
-        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.8.0"/>
+        <PackageReference Include="System.IdentityModel.Tokens.Jwt" Version="8.14.0"/>
     </ItemGroup>
 
     <ItemGroup>
