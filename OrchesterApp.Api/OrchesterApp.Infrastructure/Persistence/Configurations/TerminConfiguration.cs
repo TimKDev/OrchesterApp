@@ -42,7 +42,7 @@ namespace OrchesterApp.Infrastructure.Persistence.Configurations
             builder.OwnsMany(x => x.TerminRückmeldungOrchesterMitglieder,
                 ConfigureTerminRückmeldungOrchesterMitgliederTable);
 
-            builder.OwnsMany(x => x.Dokumente); ================
+            builder.OwnsMany(x => x.Dokumente);
 
             builder.Metadata.FindNavigation(nameof(Termin.TerminRückmeldungOrchesterMitglieder))!.SetPropertyAccessMode(
                 PropertyAccessMode.Field);

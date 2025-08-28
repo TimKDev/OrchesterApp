@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using Npgsql.EntityFrameworkCore.PostgreSQL.Metadata;
 using OrchesterApp.Infrastructure.Persistence;
@@ -11,9 +12,11 @@ using OrchesterApp.Infrastructure.Persistence;
 namespace OrchesterApp.Infrastructure.Migrations
 {
     [DbContext(typeof(OrchesterDbContext))]
-    partial class OrchesterDbContextModelSnapshot : ModelSnapshot
+    [Migration("20250828043628_TerminDokumente")]
+    partial class TerminDokumente
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
