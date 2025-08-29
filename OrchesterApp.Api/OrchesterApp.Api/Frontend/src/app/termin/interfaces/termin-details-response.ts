@@ -26,7 +26,8 @@ export interface TerminDetails {
   noten: number[],
   uniform: number[],
   weitereInformationen?: string,
-  image?: string
+  image?: string,
+  dokumente?: string[]
 }
 
 export interface TerminRückmeldung {

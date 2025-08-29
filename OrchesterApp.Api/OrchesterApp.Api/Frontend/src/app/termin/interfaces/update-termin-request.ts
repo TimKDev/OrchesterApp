@@ -1,4 +1,5 @@
 export interface UpdateTerminRequest {
+  terminId?: string,
   terminName: string,
   terminArt: number,
   terminStatus: number,
@@ -13,5 +14,8 @@ export interface UpdateTerminRequest {
   longitude?: number,
   noten: number[],
   uniform: number[],
-  orchestermitgliedIds: string[]
+  orchestermitgliedIds: string[] | null,
+  weitereInformationen?: string,
+  image?: string,
+  dokumente: string[]
 }

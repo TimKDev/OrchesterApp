@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
-import { NEVER, Observable, catchError, map, tap } from 'rxjs';
+import { NEVER, Observable, catchError, map, tap, switchMap, forkJoin, of } from 'rxjs';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-response';
 import { TerminService } from 'src/app/termin/services/termin.service';
@@ -12,6 +12,8 @@ import { UpdateTerminResponseRequest } from 'src/app/termin/interfaces/update-te
 import { UpdateTerminRequest } from 'src/app/termin/interfaces/update-termin-request';
 import { RolesService } from 'src/app/authentication/services/roles.service';
 import { confirmDialog } from 'src/app/core/helper/confirm';
+import { FileUploadService } from 'src/app/core/services/file-upload.service';
+import { environment } from 'src/environments/environment';
 
 @Component({
   selector: 'app-termin-details',
@@ -30,6 +32,10 @@ export class TerminDetailsComponent implements OnInit {
   noten = '';
   uniform = '';
   currentlyLoading = false;
+  uploadedFiles: File[] = [];
+  isUploadingFiles = false;
+
+  private data?: TerminDetailsResponse;
 
   constructor(
     private route: ActivatedRoute,
@@ -39,7 +45,8 @@ export class TerminDetailsComponent implements OnInit {
     private modalCtrl: ModalController,
     private us: Unsubscribe,
     private rolesService: RolesService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    public fileUploadService: FileUploadService
   ) { }
 
   ngOnInit() {
@@ -55,6 +62,7 @@ export class TerminDetailsComponent implements OnInit {
       tap((data) => {
         data.termin.startZeit = new Date(data.termin.startZeit);
         data.termin.endZeit = new Date(data.termin.endZeit);
+        this.data = data;
         if (refreshEvent) {
           refreshEvent.target.complete();
           this.isRefreshing = false;
@@ -132,6 +140,11 @@ export class TerminDetailsComponent implements OnInit {
   }
 
   private updateTermin(data: UpdateTerminRequest) {
+    // Ensure dokumente field is included
+    if (!data.dokumente) {
+      data.dokumente = [];
+    }
+
     this.us.autoUnsubscribe(this.terminService.updateTerminDetails(data)).subscribe(() => {
       this.loadData(null);
       this.refreshService.refreshComponent('TerminListeComponent');
@@ -161,4 +174,14 @@ export class TerminDetailsComponent implements OnInit {
     this.router.navigate(['tabs', 'termin', 'return-messages', this.terminId]);
   }
 
+  public downloadFile(objectName: string): void {
+    const downloadUrl = `${environment.basePathBackend}api/files/download/${objectName}`;
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = this.fileUploadService.getOriginalFileName(objectName);
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
 }

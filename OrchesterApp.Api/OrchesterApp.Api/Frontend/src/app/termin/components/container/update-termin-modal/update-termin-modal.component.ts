@@ -2,6 +2,7 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
 import { ModalController } from '@ionic/angular';
+import { FileUploadService } from 'src/app/core/services/file-upload.service';
 import { PhotoService } from 'src/app/core/services/photo.service';
 import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-response';
 
@@ -13,6 +14,7 @@ import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-
 export class UpdateTerminModalComponent  implements OnInit {
 
   dataTermin!: TerminDetailsResponse;
+  dokuments = [] as FileItem[];
 
   formGroup = this.formBuilder.group({
     terminName: ['', [Validators.required]],
@@ -32,26 +34,50 @@ export class UpdateTerminModalComponent  implements OnInit {
     uniform: [] as number[],
     orchestermitgliedIds: null as string[] | null,
     weitereInformationen: [''],
-    image: ['']
+    image: [''],
   });
 
   constructor(
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
-    private photoService: PhotoService
+    private photoService: PhotoService,
+    public fileUploadService: FileUploadService
   ) { }
 
   ngOnInit() {
     this.formGroup.patchValue({
-      ...this.dataTermin.termin, 
+      ...this.dataTermin.termin,
       terminDate: formatDate(this.dataTermin.termin.startZeit, 'yyyy-MM-dd', 'en_EN'),
       startZeit: formatDate(this.dataTermin.termin.startZeit, 'HH:mm', 'en_EN'),
       endZeit: formatDate(this.dataTermin.termin.endZeit, 'HH:mm', 'en_EN'),
     } as any);
+
+    this.dokuments = this.dataTermin.termin.dokumente?.map(name => ({name})) ?? [];
   }
 
   cancel() {
     return this.modalCtrl.dismiss(null, 'cancel');
+  }
+
+  public uploadFile(){
+    const input = document.createElement('input');
+    input.type = 'file';
+    input.multiple = true;
+    input.accept = '.pdf,.doc,.docx,.jpg,.jpeg,.png,.txt';
+
+    input.onchange = (event: any) => {
+      const files = Array.from(event.target.files as FileList);
+      this.dokuments = [...this.dokuments, ...files.map(f => ({
+        name: f.name,
+        file: f
+      } as FileItem))];
+    };
+
+    input.click();
+  }
+
+  public deleteFile(index: number){
+    this.dokuments.splice(index, 1);
   }
 
   async uploadImage(){
@@ -78,9 +104,15 @@ export class UpdateTerminModalComponent  implements OnInit {
       endZeit.setMinutes(value.endZeit[3] + value.endZeit[4]);
     }
     return this.modalCtrl.dismiss({
-      ...value, 
+      ...value,
       startZeit: startZeit,
-      endZeit: endZeit
+      endZeit: endZeit,
+      dokumente: this.dokuments
     }, 'confirm');
   }
+}
+
+export interface FileItem{
+  name: string,
+  file?: File
 }

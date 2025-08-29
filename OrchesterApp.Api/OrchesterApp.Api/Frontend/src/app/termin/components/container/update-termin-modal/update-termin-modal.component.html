@@ -67,6 +67,19 @@
         </ion-item>
       </ion-list>
 
+
+      <ion-list class="mg-top">
+        <ion-list-header color="tertiary">
+          <ion-label>Dokumente</ion-label>
+        </ion-list-header>
+          <ion-item *ngFor="let dokument of dokuments; let i = index">
+            <ion-icon name="document-outline" slot="start"></ion-icon>
+            <ion-label>{{dokument.name}}</ion-label>
+            <ion-icon name="close-outline" slot="end" (click)="deleteFile(i)"></ion-icon>
+          </ion-item>
+          <ion-button size="small" (click)="uploadFile()">Dokument hochladen</ion-button>
+      </ion-list>
+
       <ion-list class="mg-top">
         <ion-list-header color="tertiary">
           <ion-label>Treffpunkt</ion-label>
