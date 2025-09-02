@@ -14,6 +14,7 @@ export class DashboardTerminItemComponent implements OnInit {
   @Input() terminResponse!: string;
   @Input() terminStartTime!: Date;
   @Input() terminEndTime!: Date;
+  @Input() image?: string;
   @Output() openTermin = new EventEmitter<void>();
 
   terminArtEnum = TerminArt;

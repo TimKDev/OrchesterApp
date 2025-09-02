@@ -7,9 +7,7 @@
     [class.freizeit]="terminArt === terminArtEnum.Freizeit"
     [class.reise]="terminArt === terminArtEnum.Reise">
   </div>
-  <ion-avatar slot="start">
-    <img alt="" [src]="image ? 'data:image/png;base64,' + image : '/assets/avatar.svg'"/>
-  </ion-avatar>
+  <img class="image" [src]="image ? 'data:image/png;base64,' + image : '/assets/card-media.png'"/>
   <ion-label>
     <h2>
       <strong *ngIf="terminStatus !== 'Abgesagt'; else abgesagt"> {{terminName}}</strong>
@@ -23,10 +21,8 @@
       'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</ion-text><br />
     <ion-note color="medium" class="ion-text-wrap">
       <ng-container *ngIf="!(terminEndTime < dateNow)">
-        {{terminResponse}}
-        <ion-icon class="alert-icon" *ngIf="(terminResponse === 'Nicht Zurückgemeldet')" name="alert-outline"
-          color="danger">
-        </ion-icon><br>
+        <span [class.red]="(terminResponse === 'Nicht Zurückgemeldet')">{{terminResponse}}</span>
+        <br>
       </ng-container>
       <ng-container *ngIf="terminEndTime < dateNow">
         Teilgenommen: {{istAnwesend ? 'Ja' : 'Nein'}}<br>

@@ -9,7 +9,7 @@
       <app-termin-item *ngFor="let termin of data.terminData" [terminId]="termin.terminId"
         [terminStatus]="termin.terminStatus | dropdown : data.terminStatusDropdownValues" [terminName]="termin.name"
         [terminResponse]="termin.zugesagt | dropdown : data.responseDropdownValues"
-        [terminArt]="termin.terminArt" [terminStartTime]="termin.startZeit"
+        [terminArt]="termin.terminArt" [terminStartTime]="termin.startZeit" [image]="termin.image"
         [terminEndTime]="termin.endZeit" [noResponse]="termin.noResponse" [positiveResponse]="termin.positiveResponse"
         [negativeResponse]="termin.negativeResponse" [istAnwesend]="termin.istAnwesend" [highAuth]="canCreateNewTermin"
         (openTermin)="openTermin(termin.terminId)">

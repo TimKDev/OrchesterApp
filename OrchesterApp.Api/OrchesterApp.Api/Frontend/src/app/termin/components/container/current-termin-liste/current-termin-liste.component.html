@@ -10,7 +10,7 @@
         [terminResponse]="termin.zugesagt | dropdown : data.responseDropdownValues"
         [terminArt]="termin.terminArt" [terminStartTime]="termin.startZeit"
         [terminEndTime]="termin.endZeit" [noResponse]="termin.noResponse" [positiveResponse]="termin.positiveResponse"
-        [negativeResponse]="termin.negativeResponse" [istAnwesend]="termin.istAnwesend" [highAuth]="canCreateNewTermin"
+        [negativeResponse]="termin.negativeResponse" [image]="termin.image" [istAnwesend]="termin.istAnwesend" [highAuth]="canCreateNewTermin"
         (openTermin)="openTermin(termin.terminId)">
       </app-termin-item>
 

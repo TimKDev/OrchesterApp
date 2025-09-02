@@ -8,6 +8,7 @@ using TvJahnOrchesterApp.Application.Features.Dropdown.Enums;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Models;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Services;
 using OrchesterApp.Domain.Common.Enums;
+using TvJahnOrchesterApp.Application.Common.Services;
 
 namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 {
@@ -27,9 +28,25 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
         private record GetAllTermineQuery() : IRequest<GetAllTermineResponse>;
 
-        private record GetAllTermineResponse(TerminData[] TerminData, DropdownItem[] TerminArtenDropdownValues, DropdownItem[] TerminStatusDropdownValues, DropdownItem[] ResponseDropdownValues);
+        private record GetAllTermineResponse(
+            TerminData[] TerminData,
+            DropdownItem[] TerminArtenDropdownValues,
+            DropdownItem[] TerminStatusDropdownValues,
+            DropdownItem[] ResponseDropdownValues);
 
-        private record TerminData(Guid TerminId, string Name, int? TerminArt, int? TerminStatus, DateTime StartZeit, DateTime EndZeit, int Zugesagt, bool IstAnwesend, int NoResponse, int PositiveResponse, int NegativeResponse);
+        private record TerminData(
+            Guid TerminId,
+            string Name,
+            int? TerminArt,
+            int? TerminStatus,
+            DateTime StartZeit,
+            DateTime EndZeit,
+            int Zugesagt,
+            bool IstAnwesend,
+            int NoResponse,
+            int PositiveResponse,
+            int NegativeResponse,
+            string? Image);
 
         private class GetAllTermineQueryHandler : IRequestHandler<GetAllTermineQuery, GetAllTermineResponse>
         {
@@ -37,21 +54,27 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             private readonly ICurrentUserService currentUserService;
             private readonly IDropdownService dropdownService;
 
-            public GetAllTermineQueryHandler(ITerminRepository terminRepository, ICurrentUserService currentUserService, IDropdownService dropdownService)
+            public GetAllTermineQueryHandler(ITerminRepository terminRepository, ICurrentUserService currentUserService,
+                IDropdownService dropdownService)
             {
                 this.terminRepository = terminRepository;
                 this.currentUserService = currentUserService;
                 this.dropdownService = dropdownService;
             }
 
-            public async Task<GetAllTermineResponse> Handle(GetAllTermineQuery request, CancellationToken cancellationToken)
+            public async Task<GetAllTermineResponse> Handle(GetAllTermineQuery request,
+                CancellationToken cancellationToken)
             {
                 var terminResult = await GetTerminDataList(cancellationToken);
-                var terminArtenDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.TerminArten, cancellationToken);
-                var terminStatusDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.TerminStatus, cancellationToken);
-                var responseDropdownValues = await dropdownService.GetAllDropdownValuesAsync(DropdownNames.Rückmeldungsart, cancellationToken);
+                var terminArtenDropdownValues =
+                    await dropdownService.GetAllDropdownValuesAsync(DropdownNames.TerminArten, cancellationToken);
+                var terminStatusDropdownValues =
+                    await dropdownService.GetAllDropdownValuesAsync(DropdownNames.TerminStatus, cancellationToken);
+                var responseDropdownValues =
+                    await dropdownService.GetAllDropdownValuesAsync(DropdownNames.Rückmeldungsart, cancellationToken);
 
-                return new GetAllTermineResponse(terminResult, terminArtenDropdownValues, terminStatusDropdownValues, responseDropdownValues);
+                return new GetAllTermineResponse(terminResult, terminArtenDropdownValues, terminStatusDropdownValues,
+                    responseDropdownValues);
             }
 
             private async Task<TerminData[]> GetTerminDataList(CancellationToken cancellationToken)
@@ -60,8 +83,11 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 var termins = (await terminRepository.GetAll(cancellationToken));
                 foreach (var termin in termins)
                 {
-                    var currentOrchesterMitglied = await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
-                    var currrentUserRückmeldung = termin.TerminRückmeldungOrchesterMitglieder.FirstOrDefault(r => r.OrchesterMitgliedsId == currentOrchesterMitglied.Id);
+                    var currentOrchesterMitglied =
+                        await currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
+                    var currrentUserRückmeldung =
+                        termin.TerminRückmeldungOrchesterMitglieder.FirstOrDefault(r =>
+                            r.OrchesterMitgliedsId == currentOrchesterMitglied.Id);
 
                     var countNoResponse = 0;
                     var countPositiveResponse = 0;
@@ -72,17 +98,23 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                         {
                             countNoResponse++;
                         }
+
                         if (rückmeldung.Zugesagt == (int)RückmeldungsartEnum.Zugesagt)
                         {
                             countPositiveResponse++;
                         }
+
                         if (rückmeldung.Zugesagt == (int)RückmeldungsartEnum.Abgesagt)
                         {
                             countNegativeResponse++;
                         }
                     }
 
-                    var terminEntry = new TerminData(termin.Id.Value, termin.Name, termin.TerminArt, termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit, currrentUserRückmeldung?.Zugesagt ?? (int)RückmeldungsartEnum.NichtZurückgemeldet, currrentUserRückmeldung?.IstAnwesend ?? false, countNoResponse, countPositiveResponse, countNegativeResponse);
+                    var terminEntry = new TerminData(termin.Id.Value, termin.Name, termin.TerminArt,
+                        termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit,
+                        currrentUserRückmeldung?.Zugesagt ?? (int)RückmeldungsartEnum.NichtZurückgemeldet,
+                        currrentUserRückmeldung?.IstAnwesend ?? false, countNoResponse, countPositiveResponse,
+                        countNegativeResponse, TransformImageService.ConvertByteArrayToBase64(termin.Image));
 
                     terminResult.Add(terminEntry);
                 }
