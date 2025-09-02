@@ -67,4 +67,8 @@ export class TerminService {
   public updateTerminAnwesenheitControl(data: UpdateTerminAnwesenheitsRequest){
     return this.http.put('api/termin/anwesenheit', data);
   }
+
+  public downloadFile(objectName: string){
+    return this.http.getBlob(`api/files/download/${objectName}`);
+  }
 }

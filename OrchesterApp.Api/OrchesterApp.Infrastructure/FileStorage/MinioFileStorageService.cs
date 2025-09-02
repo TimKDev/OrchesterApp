@@ -49,6 +49,7 @@ public class MinioFileStorageService : IFileStorageService
                 .WithObject(objectName);
 
             var objectStat = await _minioClient.StatObjectAsync(statObjectArgs, cancellationToken);
+            stream.Position = 0;
 
             return new GetFileResult(objectStat.ObjectName, objectStat.ContentType, stream);
         }

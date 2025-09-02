@@ -72,6 +72,7 @@ export class UpdateTerminModalComponent  implements OnInit {
         name: this.fileUploadService.transformFileNameWithGuid(f.name),
         file: f
       } as FileItem))];
+      this.formGroup.markAsDirty();
     };
 
     input.click();
@@ -79,6 +80,7 @@ export class UpdateTerminModalComponent  implements OnInit {
 
   public deleteFile(index: number){
     this.dokuments.splice(index, 1);
+    this.formGroup.markAsDirty();
   }
 
   async uploadImage(){

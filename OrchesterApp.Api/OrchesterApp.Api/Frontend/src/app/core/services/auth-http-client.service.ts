@@ -31,6 +31,13 @@ export class AuthHttpClientService {
     return this.http.delete<T>(environment.basePathBackend + url, {headers: this.createAuthHeader()});
   }
 
+  getBlob(url: string): Observable<Blob> {
+    return this.http.get(environment.basePathBackend + url, {
+      headers: this.createAuthHeaderForFiles(),
+      responseType: 'blob'
+    });
+  }
+
   private createAuthHeader(){
     return new HttpHeaders({
       'Content-Type': 'application/json',
