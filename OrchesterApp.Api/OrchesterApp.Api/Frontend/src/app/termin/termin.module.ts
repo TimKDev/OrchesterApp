@@ -20,6 +20,7 @@ import { TerminOverviewComponent } from './components/container/termin-overview/
 import { SelectTerminsFromDatePipe } from './pipes/select-termins-from-date.pipe';
 import { TerminResponseModalComponent } from './components/container/termin-response-modal/termin-response-modal.component';
 import { TerminAnwesenheitControlModalComponent } from './components/container/termin-anwesenheit-control-modal/termin-anwesenheit-control-modal.component';
+import { FileNamePipe } from './pipes/file-name.pipe';
 
 
 @NgModule({
@@ -46,7 +47,8 @@ import { TerminAnwesenheitControlModalComponent } from './components/container/t
     TerminRoutingModule,
     IonicModule,
     ReactiveFormsModule,
-    FormsModule
+    FormsModule,
+    FileNamePipe
   ]
 })
 export class TerminModule { }

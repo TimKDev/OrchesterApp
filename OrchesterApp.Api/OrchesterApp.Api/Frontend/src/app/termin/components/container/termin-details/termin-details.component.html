@@ -121,7 +121,7 @@
               <ion-list>
                 <ion-item *ngFor="let dokument of data['termin']['dokumente']" button (click)="downloadFile(dokument)">
                   <ion-icon name="document-outline" slot="start"></ion-icon>
-                  <ion-label>{{this.fileUploadService.getOriginalFileName(dokument)}}</ion-label>
+                  <ion-label>{{dokument | fileName}}</ion-label>
                   <ion-icon name="download-outline" slot="end"></ion-icon>
                 </ion-item>
               </ion-list>

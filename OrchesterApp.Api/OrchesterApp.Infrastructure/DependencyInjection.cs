@@ -85,12 +85,8 @@ namespace OrchesterApp.Infrastructure
                                     throw new Exception("Missing minio settings");
                 configureClient
                     .WithEndpoint(minioSettings.Endpoint)
-                    .WithCredentials(minioSettings.AccessKey, minioSettings.SecretKey);
-
-                if (minioSettings.Secure)
-                {
-                    configureClient.WithSSL();
-                }
+                    .WithCredentials(minioSettings.AccessKey, minioSettings.SecretKey)
+                    .WithSSL(minioSettings.Secure);
             });
 
             services.AddScoped<IFileStorageService, MinioFileStorageService>();

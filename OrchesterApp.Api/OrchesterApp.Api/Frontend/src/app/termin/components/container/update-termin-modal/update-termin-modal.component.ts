@@ -5,6 +5,7 @@ import { ModalController } from '@ionic/angular';
 import { FileUploadService } from 'src/app/core/services/file-upload.service';
 import { PhotoService } from 'src/app/core/services/photo.service';
 import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-response';
+import { FileNamePipe } from 'src/app/termin/pipes/file-name.pipe';
 
 @Component({
   selector: 'app-update-termin-modal',
@@ -68,7 +69,7 @@ export class UpdateTerminModalComponent  implements OnInit {
     input.onchange = (event: any) => {
       const files = Array.from(event.target.files as FileList);
       this.dokuments = [...this.dokuments, ...files.map(f => ({
-        name: f.name,
+        name: this.fileUploadService.transformFileNameWithGuid(f.name),
         file: f
       } as FileItem))];
     };

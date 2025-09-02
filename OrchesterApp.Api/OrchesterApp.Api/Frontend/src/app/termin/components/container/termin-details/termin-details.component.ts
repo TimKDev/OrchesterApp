@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
-import { NEVER, Observable, catchError, map, tap, switchMap, forkJoin, of } from 'rxjs';
+import { NEVER, Observable, catchError, map, tap, switchMap, forkJoin, of, combineLatest } from 'rxjs';
 import { RefreshService } from 'src/app/core/services/refresh.service';
 import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-response';
 import { TerminService } from 'src/app/termin/services/termin.service';
@@ -9,7 +9,7 @@ import { UpdateTerminModalComponent } from '../update-termin-modal/update-termin
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { TerminResponseModalComponent } from '../termin-response-modal/termin-response-modal.component';
 import { UpdateTerminResponseRequest } from 'src/app/termin/interfaces/update-termin-response-request';
-import { UpdateTerminRequest } from 'src/app/termin/interfaces/update-termin-request';
+import { UpdateTerminModal, UpdateTerminRequest } from 'src/app/termin/interfaces/update-termin-request';
 import { RolesService } from 'src/app/authentication/services/roles.service';
 import { confirmDialog } from 'src/app/core/helper/confirm';
 import { FileUploadService } from 'src/app/core/services/file-upload.service';
@@ -139,16 +139,34 @@ export class TerminDetailsComponent implements OnInit {
     this.updateTermin(data);
   }
 
-  private updateTermin(data: UpdateTerminRequest) {
-    // Ensure dokumente field is included
+  public downloadFile(objectName: string): void {
+    const downloadUrl = `${environment.basePathBackend}api/files/download/${objectName}`;
+    const link = document.createElement('a');
+    link.href = downloadUrl;
+    link.download = this.fileUploadService.revertGuidTransformation(objectName);
+    link.target = '_blank';
+    document.body.appendChild(link);
+    link.click();
+    document.body.removeChild(link);
+  }
+
+  private updateTermin(data: UpdateTerminModal) {
     if (!data.dokumente) {
       data.dokumente = [];
     }
 
-    this.us.autoUnsubscribe(this.terminService.updateTerminDetails(data)).subscribe(() => {
-      this.loadData(null);
-      this.refreshService.refreshComponent('TerminListeComponent');
-      this.refreshService.refreshComponent('Dashboard');
+    this.us.autoUnsubscribe(
+      this.terminService.updateTerminDetails({...data, dokumente: data.dokumente.map(d => d.name)})).pipe(
+        switchMap(() => {
+          return combineLatest(data.dokumente
+            .filter(d => !!d.file)
+            .map(d => this.fileUploadService.uploadFile(d.name, d.file!)))
+        })
+      )
+      .subscribe(() => {
+        this.loadData(null);
+        this.refreshService.refreshComponent('TerminListeComponent');
+        this.refreshService.refreshComponent('Dashboard');
     });
   }
 
@@ -172,16 +190,5 @@ export class TerminDetailsComponent implements OnInit {
 
   private navigateToTerminReturnMessages(){
     this.router.navigate(['tabs', 'termin', 'return-messages', this.terminId]);
-  }
-
-  public downloadFile(objectName: string): void {
-    const downloadUrl = `${environment.basePathBackend}api/files/download/${objectName}`;
-    const link = document.createElement('a');
-    link.href = downloadUrl;
-    link.download = this.fileUploadService.getOriginalFileName(objectName);
-    link.target = '_blank';
-    document.body.appendChild(link);
-    link.click();
-    document.body.removeChild(link);
   }
 }

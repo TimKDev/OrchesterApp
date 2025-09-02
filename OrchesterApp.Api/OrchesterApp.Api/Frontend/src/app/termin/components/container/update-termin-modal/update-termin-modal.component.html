@@ -74,7 +74,7 @@
         </ion-list-header>
           <ion-item *ngFor="let dokument of dokuments; let i = index">
             <ion-icon name="document-outline" slot="start"></ion-icon>
-            <ion-label>{{dokument.name}}</ion-label>
+            <ion-label>{{dokument.name | fileName}}</ion-label>
             <ion-icon name="close-outline" slot="end" (click)="deleteFile(i)"></ion-icon>
           </ion-item>
           <ion-button size="small" (click)="uploadFile()">Dokument hochladen</ion-button>

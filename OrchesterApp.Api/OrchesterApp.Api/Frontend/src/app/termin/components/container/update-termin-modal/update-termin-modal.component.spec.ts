@@ -1,7 +1,7 @@
 import { ComponentFixture, TestBed, waitForAsync } from '@angular/core/testing';
 import { IonicModule } from '@ionic/angular';
 
-import { UpdateTerminModalComponent } from './update-termin-modal.component';
+import { FileItem, UpdateTerminModalComponent } from './update-termin-modal.component';
 
 describe('UpdateTerminModalComponent', () => {
   let component: UpdateTerminModalComponent;
