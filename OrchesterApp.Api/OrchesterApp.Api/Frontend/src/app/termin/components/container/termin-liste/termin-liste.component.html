@@ -20,30 +20,31 @@
     <ion-refresher-content></ion-refresher-content>
   </ion-refresher>
 
-  <ion-segment [value]="defaultSegment" #segment>
-    <ion-segment-button value="overview">
-      <ion-label>Übersicht</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="default">
-      <ion-label>Aktuell</ion-label>
-    </ion-segment-button>
-    <ion-segment-button value="history">
-      <ion-label>Historie</ion-label>
-    </ion-segment-button>
-  </ion-segment>
+    <ion-segment [value]="defaultSegment" #segment>
+      <ion-segment-button value="overview">
+        <ion-label>Übersicht</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="default">
+        <ion-label>Aktuell</ion-label>
+      </ion-segment-button>
+      <ion-segment-button value="history">
+        <ion-label>Historie</ion-label>
+      </ion-segment-button>
+    </ion-segment>
 
-  <ng-container *ngIf="data$ | async as data; else loading">
-    <ng-container *ngIf="segment.value === 'overview'">
-      <app-termin-overview [data]="data"></app-termin-overview>
-    </ng-container>
-    <ng-container *ngIf="segment.value === 'default'">
-      <app-current-termin-liste [data]="data" [canCreateNewTermin]="canCreateNewTermin" (createTermin)="openCreateTerminModal()"></app-current-termin-liste>
-    </ng-container>
-    <ng-container *ngIf="segment.value === 'history'">
-      <app-history-termin-liste [data]="data" [canCreateNewTermin]="canCreateNewTermin"></app-history-termin-liste>
-    </ng-container>
-  </ng-container>
-  
+
+    <div *ngIf="data$ | async as data; else loading" class="termin-liste-container">
+      <ng-container *ngIf="segment.value === 'overview'">
+        <app-termin-overview [data]="data"></app-termin-overview>
+      </ng-container>
+      <ng-container *ngIf="segment.value === 'default'">
+        <app-current-termin-liste [data]="data" [canCreateNewTermin]="canCreateNewTermin" (createTermin)="openCreateTerminModal()"></app-current-termin-liste>
+      </ng-container>
+      <ng-container *ngIf="segment.value === 'history'">
+        <app-history-termin-liste [data]="data" [canCreateNewTermin]="canCreateNewTermin"></app-history-termin-liste>
+      </ng-container>
+    </div>
+
   <ng-template #loading>
     <ng-container *ngIf="!isRefreshing">
       <app-loader></app-loader>

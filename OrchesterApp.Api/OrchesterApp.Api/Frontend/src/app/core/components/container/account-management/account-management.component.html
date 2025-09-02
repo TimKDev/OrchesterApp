@@ -25,10 +25,12 @@
       <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
         (ionInput)="search($event)"></ion-searchbar>
 
-      <app-account-item *ngFor="let accountInfo of displayedData"
-        [routerLink]="'details/' + accountInfo.orchesterMitgliedsId" [name]="accountInfo.orchesterMitgliedsName"
-        [email]="accountInfo.email" [lastLogin]="accountInfo.lastLogin"
-        [connected]="accountInfo.userId !== null"></app-account-item>
+      <div class="account-item">
+        <app-account-item *ngFor="let accountInfo of displayedData"
+          [routerLink]="'details/' + accountInfo.orchesterMitgliedsId" [name]="accountInfo.orchesterMitgliedsName"
+          [email]="accountInfo.email" [lastLogin]="accountInfo.lastLogin"
+          [connected]="accountInfo.userId !== null"></app-account-item>
+      </div>
     </ion-list>
   </ng-container>
 

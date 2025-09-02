@@ -4,9 +4,13 @@
   position: fixed;
   bottom: -50px;
   right: 15px;
-
 }
 
-ion-searchbar{
-  position: sticky;
+ion-list{
+  height: 100%;
+}
+
+.termin-list {
+  height: calc(100% - 58px);
+  overflow-y: auto;
 }

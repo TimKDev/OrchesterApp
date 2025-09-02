@@ -22,17 +22,19 @@
       <ion-refresher-content></ion-refresher-content>
     </ion-refresher>
 
-    <ion-list style="margin-top: 12px;">
+    <ion-list>
       <ion-searchbar #searchBar show-clear-button="always" placeholder="Suche Account"
         (ionInput)="search($event)"></ion-searchbar>
 
-      <app-contact-item *ngFor="let contact of displayedData" [name]="contact.vorname + ' ' + contact.nachname" [image]="contact.image"
-        [instruments]="contact.defaultInstrument" [memberSince]="contact.memberSinceInYears?.toString()"
-        [routerLink]="'details/' + contact.id">
-      </app-contact-item>
-      <ng-container *ngIf="displayedData.length === 0">
-        Kein Ergebnis
-      </ng-container>
+      <div class="contact-list">
+        <app-contact-item *ngFor="let contact of displayedData" [name]="contact.vorname + ' ' + contact.nachname" [image]="contact.image"
+          [instruments]="contact.defaultInstrument" [memberSince]="contact.memberSinceInYears?.toString()"
+          [routerLink]="'details/' + contact.id">
+        </app-contact-item>
+        <ng-container *ngIf="displayedData.length === 0">
+          Kein Ergebnis
+        </ng-container>
+      </div>
     </ion-list>
     <ion-fab slot="fixed" vertical="bottom" horizontal="end" *ngIf="canCreateNewMitglied">
       <ion-fab-button class="ion-fab-button" (click)="openCreateOrchesterMitgliedModal()">

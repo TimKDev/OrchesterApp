@@ -15,3 +15,12 @@ ion-searchbar{
   padding-inline-start: var(--ion-padding, 12px);
   padding-inline-end: var(--ion-padding, 12px);
 }
+
+ion-list{
+  height: 100%;
+}
+
+.contact-list {
+  height: calc(100% - 58px);
+  overflow-y: auto;
+}

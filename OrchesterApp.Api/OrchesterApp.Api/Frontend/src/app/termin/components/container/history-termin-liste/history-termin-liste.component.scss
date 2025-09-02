@@ -1,3 +1,8 @@
-ion-searchbar{
-  position: sticky;
+ion-list{
+  height: 100%;
+}
+
+.termin-list {
+  height: calc(100% - 58px);
+  overflow-y: auto;
 }

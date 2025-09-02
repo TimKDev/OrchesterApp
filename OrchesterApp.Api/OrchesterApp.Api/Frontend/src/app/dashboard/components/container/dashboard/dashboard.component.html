@@ -22,16 +22,16 @@
 
   <ng-container *ngIf="data$ | async as data; else loading">
     <!-- <pre>{{data | json}}</pre> -->
-    <ion-card *ngIf="data.nextTermins.length !== 0">
+    <ion-card  *ngIf="data.nextTermins.length !== 0">
       <ion-card-header>
         <ion-card-title>Nächste Termine</ion-card-title>
         <ion-card-subtitle>Termine der nächsten 14 Tage</ion-card-subtitle>
       </ion-card-header>
-    
-      <ion-card-content>
+
+      <ion-card-content class="card">
         <ion-list>
           <app-dashboard-termin-item *ngFor="let termin of data.nextTermins" [terminId]="termin.terminId" [terminName]="termin.name" [terminStartTime]="termin.startZeit"
-            [terminEndTime]=" termin.endZeit" [terminArt]="termin.terminArt" 
+            [terminEndTime]=" termin.endZeit" [terminArt]="termin.terminArt"
             [terminResponse]="termin.zugesagt | dropdown : data['rückmeldungsDropdownItems']" (openTermin)="openTermin(termin.terminId)"></app-dashboard-termin-item>
         </ion-list>
       </ion-card-content>
@@ -42,7 +42,7 @@
         <ion-card-title>Geburtstage</ion-card-title>
         <ion-card-subtitle>Liste aller Geburtstage der letzten 14 Tage und der nächsten 7 Tage.</ion-card-subtitle>
       </ion-card-header>
-      <ion-card-content>
+      <ion-card-content class="card">
         <ion-list>
           <app-dashboard-birthday-item *ngFor="let birthday of data.birthdayList" [name]="birthday.name" [image]="birthday.image" [birthday]="birthday.birthday"></app-dashboard-birthday-item>
         </ion-list>
@@ -54,7 +54,7 @@
         <ion-card-title>Internetpräsenz Orchester</ion-card-title>
         <ion-card-subtitle>Verlinkungen zu anderen Internetpräsenzen des Orchesters</ion-card-subtitle>
       </ion-card-header>
-      <ion-card-content class="links">
+      <ion-card-content class="links" >
         <a href="https://www.facebook.com/JahnBockum/" target=”_blank”><img src="/assets/facebook.png"></a>
         <a href="https://www.instagram.com/blasorchester_tv_jahn_bockum/" target=”_blank”><img src="/assets/instagram.png" ></a>
         <a href="https://www.youtube.com/channel/UCr1jrRRIyST4XGAk8y0_RMg" target=”_blank”><img src="/assets/youtube.png" ></a>
