@@ -19,6 +19,10 @@ export class AuthHttpClientService {
     return this.http.post<T>(environment.basePathBackend + url, body, {headers: this.createAuthHeader()});
   }
 
+  postFile<T>(url: string, body: FormData): Observable<T>{
+    return this.http.post<T>(environment.basePathBackend + url, body, {headers: this.createAuthHeaderForFiles()});
+  }
+
   put<T>(url: string, body: any): Observable<T>{
     return this.http.put<T>(environment.basePathBackend + url, body, {headers: this.createAuthHeader()});
   }
@@ -30,6 +34,12 @@ export class AuthHttpClientService {
   private createAuthHeader(){
     return new HttpHeaders({
       'Content-Type': 'application/json',
+      'Authorization': `Bearer ${this.authService.token}`
+    });
+  }
+
+  private createAuthHeaderForFiles(){
+    return new HttpHeaders({
       'Authorization': `Bearer ${this.authService.token}`
     });
   }

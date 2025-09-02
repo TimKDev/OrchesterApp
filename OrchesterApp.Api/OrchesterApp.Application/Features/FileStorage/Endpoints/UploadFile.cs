@@ -12,21 +12,22 @@ public static class UploadFile
 {
     public static void MapUploadFileEndpoint(this IEndpointRouteBuilder app)
     {
-        app.MapPost("/api/files/upload/{fileId}", HandleAsync)
-            .RequireAuthorization();
+        app.MapPost("/api/files/upload/{fileName}", HandleAsync)
+            .RequireAuthorization()
+            .Accepts<IFormFile>("multipart/form-data")
+            .DisableAntiforgery();
     }
 
-    private static async Task<IResult> HandleAsync([FromRoute] Guid fileId, [FromBody] IFormFile file, ISender sender,
+    private static async Task<IResult> HandleAsync([FromRoute] string fileName, IFormFile file, ISender sender,
         CancellationToken cancellationToken)
     {
         await using var stream = file.OpenReadStream();
-        await sender.Send(new UploadFileCommand(fileId, file.FileName, file.ContentType, stream), cancellationToken);
+        await sender.Send(new UploadFileCommand(fileName, file.ContentType, stream), cancellationToken);
 
         return Results.Ok("File wurde erfolgreich uploaded");
     }
 
     private record UploadFileCommand(
-        Guid FileId,
         string FileName,
         string ContentType,
         Stream FileStream) : IRequest<Unit>;
@@ -37,7 +38,6 @@ public static class UploadFile
 
         public UploadFileCommandValidation()
         {
-            RuleFor(x => x.FileId).NotEmpty();
             RuleFor(x => x.FileName).NotEmpty();
             RuleFor(x => x.ContentType).NotEmpty();
             RuleFor(x => x.FileStream).NotEmpty();
@@ -56,9 +56,7 @@ public static class UploadFile
 
         public async Task<Unit> Handle(UploadFileCommand request, CancellationToken cancellationToken)
         {
-            var objectName = $"{request.FileId}{Path.GetExtension(request.FileName)}";
-
-            await _fileStorageService.StoreFileAsync(objectName, request.ContentType,
+            await _fileStorageService.StoreFileAsync(request.FileName, request.ContentType,
                 request.FileStream);
 
             return Unit.Value;

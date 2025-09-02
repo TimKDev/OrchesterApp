@@ -1,6 +1,8 @@
 ﻿using System.Reflection;
 using Mapster;
 using MapsterMapper;
+using Microsoft.AspNetCore.Http;
+using Microsoft.AspNetCore.Http.Features;
 
 namespace OrchesterApp.Api
 {
@@ -13,6 +15,15 @@ namespace OrchesterApp.Api
             services.ConfigureCorsPolicy();
             services.AddControllers();
             services.AddLogging();
+
+            // Configure multipart form options for file uploads
+            services.Configure<FormOptions>(options =>
+            {
+                options.MultipartBodyLengthLimit = 50 * 1024 * 1024; // 50 MB
+                options.ValueLengthLimit = int.MaxValue;
+                options.ValueCountLimit = int.MaxValue;
+                options.KeyLengthLimit = int.MaxValue;
+            });
 
             services.AddOutputCache(opts =>
             {

@@ -12,15 +12,14 @@ namespace OrchesterApp.Application.Features.FileStorage.Endpoints
     {
         public static void MapDownloadFileEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("/api/files/download/{objectName}", HandleAsync)
+            app.MapGet("/api/files/download/{objectName}", HandleAsync)
                 .RequireAuthorization();
         }
 
-        private static async Task<IResult> HandleAsync([FromRoute] string objectName, [FromBody] IFormFile file,
+        private static async Task<IResult> HandleAsync([FromRoute] string objectName,
             ISender sender,
             CancellationToken cancellationToken)
         {
-            await using var stream = file.OpenReadStream();
             var result = await sender.Send(new DownloadFileQuery(objectName), cancellationToken);
 
             return result is not null
