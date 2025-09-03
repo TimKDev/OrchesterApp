@@ -15,13 +15,14 @@
         <s><strong>{{terminName}}</strong></s>
       </ng-template>
     </h2>
-    <ion-text class="ion-text-wrap" style="font-size: 14px;" color="medium"> {{terminStartTime | date
+    <ion-text class="ion-text-wrap" color="medium"> <b style="color: white;">{{terminStartTime | date
       :
       'dd.MM.YYYY'}}: {{terminStartTime | date :
-      'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</ion-text><br />
+      'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</b></ion-text><br />
     <ion-note color="medium" class="ion-text-wrap">
       <ng-container *ngIf="!(terminEndTime < dateNow)">
-        <span [class.red]="(terminResponse === 'Nicht Zurückgemeldet')">{{terminResponse}}</span>
+        <span [class.red]="(terminResponse === 'Nicht Zurückgemeldet')"
+        [class.green]="(terminResponse === 'Zugesagt')">{{terminResponse}}</span>
         <br>
       </ng-container>
       <ng-container *ngIf="terminEndTime < dateNow">
@@ -29,7 +30,7 @@
       </ng-container>
       <ng-container *ngIf="highAuth">
         Rückmeldungen: <span style="color: red;">{{negativeResponse}}</span> | <span>{{noResponse}}</span> | <span
-          style="color: greenyellow;">{{positiveResponse}}</span>
+          style="color: rgb(25, 255, 45);">{{positiveResponse}}</span>
       </ng-container>
     </ion-note>
   </ion-label>
