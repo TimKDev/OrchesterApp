@@ -25,6 +25,33 @@
 @import "@ionic/angular/css/text-transformation.css";
 @import "@ionic/angular/css/flex-utils.css";
 
+/* PWA Fullscreen Support */
+/* Handle safe areas for devices with notches (iPhone X+, etc.) */
+html, body {
+  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
+  margin: 0;
+  height: 100vh;
+  height: 100dvh; /* Dynamic viewport height for mobile browsers */
+}
+
+/* Ensure the app takes full screen space */
+ion-app {
+  min-height: 100vh;
+  min-height: 100dvh;
+}
+
+/* Handle status bar area in fullscreen mode */
+@media (display-mode: fullscreen) {
+  html, body {
+    padding-top: env(safe-area-inset-top);
+  }
+  
+  /* Adjust header padding for fullscreen */
+  ion-header {
+    padding-top: env(safe-area-inset-top);
+  }
+}
+
 /* Global Theme Fixes for Better Browser Compatibility */
 body, html {
   color: var(--ion-text-color, #000000);

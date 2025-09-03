@@ -1,13 +1,13 @@
 <div class="main">
   <!-- <pre>{{data | json}}</pre> -->
   <ion-datetime presentation="date" [value]="currentDate | date : 'YYYY-MM-dd'" [highlightedDates]="highlightedDates" #date></ion-datetime>
-
-    <ion-list class="termin-list">
-      <ion-item>
-        <ion-label class="ion-label">
-          Termine am {{transformDate(date.value)}}:
-        </ion-label>
-      </ion-item>
+  <ion-list class="termin-list">
+    <ion-item>
+      <ion-label class="ion-label">
+        Termine am {{transformDate(date.value)}}:
+      </ion-label>
+    </ion-item>
+    <div class="termine">
       <app-termin-item *ngFor="let termin of data.terminData | selectTerminsFromDate : date.value" [terminId]="termin.terminId"
         [terminStatus]="termin.terminStatus | dropdown : data.terminStatusDropdownValues" [terminName]="termin.name"
         [terminResponse]="termin.zugesagt | dropdown : data.responseDropdownValues"
@@ -22,6 +22,6 @@
           </h3>
         </ion-label>
       </ion-item>
-    </ion-list>
-
+    </div>
+  </ion-list>
 </div>
