@@ -13,7 +13,8 @@ secrets:
     file: ./Secrets/JWTSecret.txt
   google_mail_api_key:
     file: ./Secrets/GoogleMailAPIKey.txt
-
+  minio_password:
+    file: ./Secrets/MinioPassword.txt
 
 services:
   orchesterapp.frontend:
@@ -44,11 +45,13 @@ services:
       ConnectionStrings__DefaultConnection: /run/secrets/connection_string_db
       JWT_Secret_Key: /run/secrets/jwt_secret
       Google_Mail_Api: /run/secrets/google_mail_api_key
+      Minio_Password: /run/secrets/minio_password
       ASPNETCORE_URLS: http://+:8080
     secrets:
       - connection_string_db
       - jwt_secret
       - google_mail_api_key
+      - minio_password
   
   postgresql:
     image: postgres:latest
@@ -75,12 +78,14 @@ services:
       - "9001:9001"      # MinIO Console
     environment:
       MINIO_ROOT_USER: minioadmin
-      MINIO_ROOT_PASSWORD: minioadmin123
+      MINIO_ROOT_PASSWORD_FILE: /run/secrets/minio_password
     volumes:
       - minio_data:/data
     command: server /data --console-address ":9001"
     networks:
       - orchester-app-network
+    secrets:
+      - minio_password
     healthcheck:
       test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
       interval: 30s

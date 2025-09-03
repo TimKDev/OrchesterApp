@@ -75,14 +75,16 @@ namespace OrchesterApp.Infrastructure
         }
 
         private static IServiceCollection AddMinioStorage(this IServiceCollection services,
-            IConfiguration configuration)
+            ConfigurationManager configuration)
         {
+            var minioSettings = new MinioSettings();
+            configuration.Bind(MinioSettings.SectionName, minioSettings);
+            minioSettings.SecretKey = configuration.GetValueFromSecretOrConfig("Minio_Password")!;
+
             services.Configure<MinioSettings>(configuration.GetSection(MinioSettings.SectionName));
 
             services.AddMinio(configureClient =>
             {
-                var minioSettings = configuration.GetSection(MinioSettings.SectionName).Get<MinioSettings>() ??
-                                    throw new Exception("Missing minio settings");
                 configureClient
                     .WithEndpoint(minioSettings.Endpoint)
                     .WithCredentials(minioSettings.AccessKey, minioSettings.SecretKey)
