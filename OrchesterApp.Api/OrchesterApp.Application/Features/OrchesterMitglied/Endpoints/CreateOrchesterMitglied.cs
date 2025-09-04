@@ -24,13 +24,30 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
                 });
         }
 
-        private static async Task<IResult> PostOrchesterMitglied([FromBody] CreateOrchesterMitgliedCommand createOrchesterMitgliedCommand, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> PostOrchesterMitglied(
+            [FromBody] CreateOrchesterMitgliedCommand createOrchesterMitgliedCommand, ISender sender,
+            CancellationToken cancellationToken)
         {
             await sender.Send(createOrchesterMitgliedCommand);
             return Results.Ok("Orchestermitglied wurde erfolgreich erstellt.");
         }
 
-        private record CreateOrchesterMitgliedCommand(string Vorname, string Nachname, string Straße, string Hausnummer, string Postleitzahl, string Stadt, string Zusatz, DateTime? Geburtstag, string Telefonnummer, string Handynummer, int? DefaultInstrument, int? DefaultNotenStimme, int[] Position, DateTime? MemberSince, string? Image) : IRequest<Unit>;
+        private record CreateOrchesterMitgliedCommand(
+            string Vorname,
+            string Nachname,
+            string Straße,
+            string Hausnummer,
+            string Postleitzahl,
+            string Stadt,
+            string Zusatz,
+            DateTime? Geburtstag,
+            string Telefonnummer,
+            string Handynummer,
+            int? DefaultInstrument,
+            int? DefaultNotenStimme,
+            int[] Position,
+            DateTime? MemberSince,
+            string? Image) : IRequest<Unit>;
 
         private class CreateOrchesterMitgliedCommandValidation : AbstractValidator<CreateOrchesterMitgliedCommand>
         {
@@ -54,23 +71,26 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
             {
                 var adresse = Adresse.Create(request.Straße, request.Hausnummer, request.Postleitzahl, request.Stadt);
 
-                if (await _orchesterMitgliedRepository.GetByNameAsync(request.Vorname, request.Nachname, cancellationToken) is not null)
+                if (await _orchesterMitgliedRepository.GetByNameAsync(request.Vorname, request.Nachname,
+                        cancellationToken) is not null)
                 {
-                    throw new DuplicatedOrchesterMitgliedsNameException($"Name: {request.Vorname} {request.Nachname} existiert bereits.");
+                    throw new DuplicatedOrchesterMitgliedsNameException(
+                        $"Name: {request.Vorname} {request.Nachname} existiert bereits.");
                 }
 
                 var imageAsCompressedByteArray = TransformImageService.ConvertToCompressedByteArray(request.Image);
-                DateTime? geburtstagUtc = request.Geburtstag is null ? null : request.Geburtstag.Value.ToUniversalTime();
-                DateTime? memberSinceUtc = request.MemberSince is null ? null : request.MemberSince.Value.ToUniversalTime();
+                DateTime? geburtstagUtc = request.Geburtstag?.ToUniversalTime();
+                DateTime? memberSinceUtc = request.MemberSince?.ToUniversalTime();
 
-                var orchesterMitglied = OrchesterApp.Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(request.Vorname, request.Nachname, adresse, geburtstagUtc, request.Telefonnummer, request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme, (int)MitgliedsStatusEnum.aktiv, imageAsCompressedByteArray);
+                var orchesterMitglied = OrchesterApp.Domain.OrchesterMitgliedAggregate.OrchesterMitglied.Create(
+                    request.Vorname, request.Nachname, adresse, geburtstagUtc, request.Telefonnummer,
+                    request.Handynummer, request.DefaultInstrument, request.DefaultNotenStimme,
+                    (int)MitgliedsStatusEnum.aktiv, memberSinceUtc, imageAsCompressedByteArray);
 
                 orchesterMitglied.UpdatePositions(request.Position);
-                orchesterMitglied.SetMemberSince(memberSinceUtc);
 
                 await _orchesterMitgliedRepository.CreateAsync(orchesterMitglied, cancellationToken);
                 return Unit.Value;
-
             }
         }
     }
