@@ -2,6 +2,7 @@
 using OrchesterApp.Domain.TerminAggregate;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Dto;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+
 namespace OrchesterApp.Infrastructure.Persistence.Repositories
 {
     internal class TerminRepository : ITerminRepository
@@ -26,9 +27,20 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
             return _context.Set<Termin>().ToArrayAsync(cancellationToken);
         }
 
-        public Task<TerminWithResponses[]> GetTerminResponsesInYearAndPast(int year, CancellationToken cancellationToken)
+        public Task<Termin[]> GetTerminsOfLast12Months(CancellationToken cancellationToken)
         {
-            return _context.Set<Termin>().AsNoTracking().Where(t => t.EinsatzPlan.EndZeit.Year == year && t.EinsatzPlan.StartZeit < DateTime.UtcNow).Select(t => new TerminWithResponses(t.Id, t.TerminArt, t.TerminRückmeldungOrchesterMitglieder)).ToArrayAsync(cancellationToken);
+            return _context.Set<Termin>()
+                .Where(t => t.EinsatzPlan.StartZeit >= DateTime.UtcNow.AddMonths(-12))
+                .ToArrayAsync(cancellationToken);
+        }
+
+        public Task<TerminWithResponses[]> GetTerminResponsesInYearAndPast(int year,
+            CancellationToken cancellationToken)
+        {
+            return _context.Set<Termin>().AsNoTracking()
+                .Where(t => t.EinsatzPlan.EndZeit.Year == year && t.EinsatzPlan.StartZeit < DateTime.UtcNow)
+                .Select(t => new TerminWithResponses(t.Id, t.TerminArt, t.TerminRückmeldungOrchesterMitglieder))
+                .ToArrayAsync(cancellationToken);
         }
 
         public async Task<Termin> GetById(Guid guid, CancellationToken cancellationToken)
@@ -43,6 +55,4 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
             return termin;
         }
     }
-
-    
 }

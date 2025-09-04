@@ -61,10 +61,13 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
         private class CreateOrchesterMitgliedCommandHandler : IRequestHandler<CreateOrchesterMitgliedCommand, Unit>
         {
             private readonly IOrchesterMitgliedRepository _orchesterMitgliedRepository;
+            private readonly ITerminRepository _terminRepository;
 
-            public CreateOrchesterMitgliedCommandHandler(IOrchesterMitgliedRepository orchesterMitgliedRepository)
+            public CreateOrchesterMitgliedCommandHandler(IOrchesterMitgliedRepository orchesterMitgliedRepository,
+                ITerminRepository terminRepository)
             {
                 _orchesterMitgliedRepository = orchesterMitgliedRepository;
+                _terminRepository = terminRepository;
             }
 
             public async Task<Unit> Handle(CreateOrchesterMitgliedCommand request, CancellationToken cancellationToken)
@@ -89,7 +92,15 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
 
                 orchesterMitglied.UpdatePositions(request.Position);
 
-                await _orchesterMitgliedRepository.CreateAsync(orchesterMitglied, cancellationToken);
+                var termineOfLast12Months = await _terminRepository.GetTerminsOfLast12Months(cancellationToken);
+
+                foreach (var termin in termineOfLast12Months)
+                {
+                    termin.AddMitgliedToTermin(orchesterMitglied);
+                }
+
+                await _orchesterMitgliedRepository.CreateAsync(
+                    orchesterMitglied, cancellationToken);
                 return Unit.Value;
             }
         }

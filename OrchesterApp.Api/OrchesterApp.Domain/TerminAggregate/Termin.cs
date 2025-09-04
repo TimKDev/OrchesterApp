@@ -2,6 +2,7 @@
 using OrchesterApp.Domain.Common.Enums;
 using OrchesterApp.Domain.Common.Models;
 using OrchesterApp.Domain.Common.ValueObjects;
+using OrchesterApp.Domain.OrchesterMitgliedAggregate;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.Entities;
 using OrchesterApp.Domain.TerminAggregate.ValueObjects;
@@ -69,6 +70,15 @@ namespace OrchesterApp.Domain.TerminAggregate
 
             return new Termin(TerminId.CreateUnique(), terminRückmeldungOrchesterMitglieder, name, terminArt,
                 einsatzplan, (int)terminStatus, image, abstimmungsId);
+        }
+
+        public void AddMitgliedToTermin(OrchesterMitglied mitglied)
+        {
+            var terminRueckmeldung = TerminRückmeldungOrchestermitglied.Create(mitglied.Id,
+                [mitglied.DefaultInstrument],
+                [mitglied.DefaultNotenStimme]);
+
+            _terminRückmeldungOrchesterMitglieder.Add(terminRueckmeldung);
         }
 
         public void RückmeldenZuTermin(OrchesterMitgliedsId orchesterMitgliedsId, int zugesagt,
