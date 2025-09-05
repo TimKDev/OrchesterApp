@@ -10,6 +10,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization
         {
             services.AddScoped<IVerificationEmailService, VerificationEmailService>();
             services.AddScoped<ISendRegistrationEmailService, SendRegistrationEmailService>();
+            services.AddScoped<ISendPasswordResetEmailService, SendPasswordResetEmailService>();
 
             return services;
         }

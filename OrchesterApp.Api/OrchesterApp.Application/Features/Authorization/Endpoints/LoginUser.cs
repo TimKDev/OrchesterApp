@@ -24,7 +24,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             app.MapPost("api/authentication/login", PostLoginUser);
         }
 
-        private static async Task<IResult> PostLoginUser([FromBody] LoginQuery loginQuery, ISender sender, CancellationToken cancellationToken)
+        private static async Task<IResult> PostLoginUser([FromBody] LoginQuery loginQuery, ISender sender,
+            CancellationToken cancellationToken)
         {
             var authResult = await sender.Send(loginQuery);
             return Results.Ok(authResult);
@@ -49,7 +50,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             private readonly IEmailService emailService;
             private readonly IUnitOfWork unitOfWork;
 
-            public LoginQueryHandler(UserManager<User> userManager, ITokenService tokenService, IEmailService emailService, IOrchesterMitgliedRepository orchesterMitgliedRepo, IUnitOfWork unitOfWork)
+            public LoginQueryHandler(UserManager<User> userManager, ITokenService tokenService,
+                IEmailService emailService, IOrchesterMitgliedRepository orchesterMitgliedRepo, IUnitOfWork unitOfWork)
             {
                 this.userManager = userManager;
                 this.tokenService = tokenService;
@@ -58,26 +60,30 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 this.unitOfWork = unitOfWork;
             }
 
-            //TTODO Refactor in kleinere Methoden
             public async Task<AuthenticationResult> Handle(LoginQuery request, CancellationToken cancellationToken)
             {
                 if (await userManager.FindByEmailAsync(request.Email) is not User user)
                 {
                     throw new InvalidCredentialsException();
                 }
+
                 if (await userManager.IsLockedOutAsync(user))
                 {
-                    var content = $"Your account is locked out. To reset the password click this link: {request.ClientUri}";
-                    var message = new Message(new string[] { request.Email }, "Locked out account information", content);
+                    var content =
+                        $"Your account is locked out. To reset the password click this link: {request.ClientUri}";
+                    var message = new Message(new string[] { request.Email }, "Locked out account information",
+                        content);
 
                     await emailService.SendEmailAsync(message);
 
                     throw new AccountLockedException();
                 }
+
                 if (!await userManager.IsEmailConfirmedAsync(user))
                 {
                     throw new MailNotVerifiedException(request.Email);
                 }
+
                 if (!await userManager.CheckPasswordAsync(user, request.Password))
                 {
                     await userManager.AccessFailedAsync(user);
@@ -98,9 +104,10 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 orchesterMitglied!.UserLogin();
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
-                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, token, refreshToken, roles.ToArray(), TransformImageService.ConvertByteArrayToBase64(orchesterMitglied.Image));
+                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}",
+                    user.Email, token, refreshToken, roles.ToArray(),
+                    TransformImageService.ConvertByteArrayToBase64(orchesterMitglied.Image));
             }
         }
-
     }
 }

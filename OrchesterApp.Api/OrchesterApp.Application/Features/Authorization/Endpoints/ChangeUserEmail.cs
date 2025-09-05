@@ -19,13 +19,15 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             app.MapPut("api/authentication/change-user-email", PutChangeUserEmail);
         }
 
-        private static async Task<IResult> PutChangeUserEmail([FromBody] ChangeUserEmailCommand changeUserEmailCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PutChangeUserEmail([FromBody] ChangeUserEmailCommand changeUserEmailCommand,
+            CancellationToken cancellationToken, ISender sender)
         {
             await sender.Send(changeUserEmailCommand);
             return Results.Ok("User Email wurde erfolgreich geändert");
         }
 
-        private record ChangeUserEmailCommand(string OldEmail, string Password, string NewEmail, string ClientUri) : IRequest<Unit>;
+        private record ChangeUserEmailCommand(string OldEmail, string Password, string NewEmail, string ClientUri)
+            : IRequest<Unit>;
 
         private class ChangeUserEmailCommandHandler : IRequestHandler<ChangeUserEmailCommand, Unit>
         {
@@ -34,7 +36,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             private readonly IVerificationEmailService verificationEmailService;
 
 
-            public ChangeUserEmailCommandHandler(UserManager<User> userManager, IUnitOfWork unitOfWork, IVerificationEmailService verificationEmailService)
+            public ChangeUserEmailCommandHandler(UserManager<User> userManager, IUnitOfWork unitOfWork,
+                IVerificationEmailService verificationEmailService)
             {
                 this.userManager = userManager;
                 this.unitOfWork = unitOfWork;
@@ -48,15 +51,18 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 {
                     throw new Exception("User not found");
                 }
-                if(!await userManager.CheckPasswordAsync(user, request.Password))
+
+                if (!await userManager.CheckPasswordAsync(user, request.Password))
                 {
                     throw new Exception("Unauthorized");
                 }
+
                 var userWithNewMail = await userManager.FindByEmailAsync(request.NewEmail);
-                if(userWithNewMail is not null)
+                if (userWithNewMail is not null)
                 {
                     throw new Exception("Email adresse is already taken!");
                 }
+
                 var validUserEmailToken = await userManager.GenerateChangeEmailTokenAsync(user, request.NewEmail);
                 await userManager.ChangeEmailAsync(user, request.NewEmail, validUserEmailToken);
                 user.EmailConfirmed = false;

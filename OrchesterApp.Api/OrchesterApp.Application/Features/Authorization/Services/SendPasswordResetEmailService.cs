@@ -1,63 +1,56 @@
-﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.WebUtilities;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Common.Models;
 using TvJahnOrchesterApp.Application.Features.Authorization.Interfaces;
-using OrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Services
 {
-    //Common Send Verification Email Logic => Kann wiederverwendet werden innerhalb des Features
-    public class VerificationEmailService: IVerificationEmailService
+    internal class SendPasswordResetEmailService : ISendPasswordResetEmailService
     {
         private readonly IEmailService emailService;
-        private readonly UserManager<User> userManager;
 
-        public VerificationEmailService(IEmailService emailService, UserManager<User> userManager)
+        public SendPasswordResetEmailService(IEmailService emailService)
         {
             this.emailService = emailService;
-            this.userManager = userManager;
         }
 
-        public async Task SendTo(User user, string clientUri)
+        public async Task SendTo(string email, string resetToken, string clientUri)
         {
-            var emailConfirmationToken = await userManager.GenerateEmailConfirmationTokenAsync(user);
             var param = new Dictionary<string, string?>
-                {
-                    {"token", emailConfirmationToken },
-                    {"email", user.Email }
-                };
+            {
+                { "token", resetToken },
+                { "email", email }
+            };
             var callback = QueryHelpers.AddQueryString(clientUri, param);
-            
-            var subject = "Orchester App - E-Mail-Adresse bestätigen";
-            
+            var subject = "Orchester App - Passwort zurücksetzen";
             var plainTextContent = CreatePlainTextContent(callback);
-            
             var htmlContent = CreateHtmlContent(callback);
-            
+
             var message = new Message(
-                [user.Email], 
-                subject, 
-                plainTextContent, 
-                htmlContent, 
+                [email],
+                subject,
+                plainTextContent,
+                htmlContent,
                 "Orchester App Team");
-            
+
             await emailService.SendEmailAsync(message);
         }
-        
-        private string CreatePlainTextContent(string verificationLink)
+
+        private static string CreatePlainTextContent(string resetLink)
         {
-            return $@"E-Mail-Bestätigung für die Orchester App
+            return $@"Passwort zurücksetzen - Orchester App
 
 Hallo!
 
-Um Ihr Konto in der Orchester App zu aktivieren, bestätigen Sie bitte Ihre E-Mail-Adresse, indem Sie auf den folgenden Link klicken:
+Sie haben eine Anfrage zum Zurücksetzen Ihres Passworts für die Orchester App gestellt.
 
-{verificationLink}
+Um ein neues Passwort zu erstellen, klicken Sie bitte auf den folgenden Link:
+
+{resetLink}
 
 Dieser Link ist aus Sicherheitsgründen nur begrenzte Zeit gültig.
 
-Falls Sie sich nicht bei der Orchester App registriert haben, können Sie diese E-Mail einfach ignorieren.
+Falls Sie diese Anfrage nicht gestellt haben, können Sie diese E-Mail einfach ignorieren. Ihr Passwort wird nicht geändert.
 
 Mit freundlichen Grüßen,
 Das Orchester App Team
@@ -65,15 +58,15 @@ Das Orchester App Team
 ---
 Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-Mail.";
         }
-        
-        private string CreateHtmlContent(string verificationLink)
+
+        private static string CreateHtmlContent(string resetLink)
         {
             return $@"<!DOCTYPE html>
 <html lang=""de"">
 <head>
     <meta charset=""UTF-8"">
     <meta name=""viewport"" content=""width=device-width, initial-scale=1.0"">
-    <title>E-Mail bestätigen - Orchester App</title>
+    <title>Passwort zurücksetzen - Orchester App</title>
     <style>
         body {{
             font-family: Arial, sans-serif;
@@ -84,7 +77,7 @@ Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-
             padding: 20px;
         }}
         .header {{
-            background-color: #1976d2;
+            background-color: #f44336;
             color: white;
             padding: 20px;
             text-align: center;
@@ -98,12 +91,20 @@ Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-
         .button {{
             display: inline-block;
             padding: 12px 30px;
-            background-color: #4caf50;
+            background-color: #f44336;
             color: white;
             text-decoration: none;
             border-radius: 5px;
             margin: 20px 0;
             font-weight: bold;
+        }}
+        .warning-box {{
+            background-color: #fff3cd;
+            border: 1px solid #ffeaa7;
+            border-radius: 5px;
+            padding: 15px;
+            margin: 15px 0;
+            border-left: 4px solid #f39c12;
         }}
         .footer {{
             background-color: #f1f1f1;
@@ -117,26 +118,33 @@ Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-
 </head>
 <body>
     <div class=""header"">
-        <h1>📧 E-Mail-Bestätigung</h1>
+        <h1>🔒 Passwort zurücksetzen</h1>
     </div>
     
     <div class=""content"">
         <p>Hallo!</p>
         
-        <p>Um Ihr Konto in der Orchester App zu aktivieren, bestätigen Sie bitte Ihre E-Mail-Adresse, indem Sie auf den folgenden Button klicken:</p>
+        <p>Sie haben eine Anfrage zum Zurücksetzen Ihres Passworts für die Orchester App gestellt.</p>
+        
+        <p>Um ein neues Passwort zu erstellen, klicken Sie bitte auf den folgenden Button:</p>
         
         <div style=""text-align: center;"">
-            <a href=""{verificationLink}"" class=""button"">E-Mail-Adresse bestätigen</a>
+            <a href=""{resetLink}"" class=""button"">Neues Passwort erstellen</a>
         </div>
         
         <p>Oder kopieren Sie diesen Link in Ihren Browser:</p>
         <p style=""word-break: break-all; background-color: #fff; padding: 10px; border: 1px solid #ddd; border-radius: 3px;"">
-            {verificationLink}
+            {resetLink}
         </p>
         
-        <p><strong>Wichtiger Hinweis:</strong> Dieser Link ist aus Sicherheitsgründen nur begrenzte Zeit gültig.</p>
-        
-        <p>Falls Sie sich nicht bei der Orchester App registriert haben, können Sie diese E-Mail einfach ignorieren.</p>
+        <div class=""warning-box"">
+            <p><strong>⚠️ Wichtige Sicherheitshinweise:</strong></p>
+            <ul>
+                <li>Dieser Link ist nur begrenzte Zeit gültig</li>
+                <li>Falls Sie diese Anfrage nicht gestellt haben, ignorieren Sie diese E-Mail</li>
+                <li>Ihr aktuelles Passwort bleibt unverändert, bis Sie ein neues erstellen</li>
+            </ul>
+        </div>
         
         <p>Mit freundlichen Grüßen,<br>
         Das Orchester App Team</p>
@@ -149,4 +157,4 @@ Diese E-Mail wurde automatisch generiert. Bitte antworten Sie nicht auf diese E-
 </html>";
         }
     }
-}
+} 

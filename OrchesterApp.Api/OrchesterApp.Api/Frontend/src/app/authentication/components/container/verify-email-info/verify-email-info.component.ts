@@ -27,13 +27,14 @@ export class VerifyEmailInfoComponent  implements OnInit {
     this.changeEmailFormGroup = this.fb.group({
       password: ['', [Validators.required, Validators.minLength(6)]],
       newEmail: ['', [Validators.required, Validators.email]],
+      oldEmail: [this.authService.userEmail, [Validators.required, Validators.email]],
     });
   }
 
   async changeEmail() {
     const loading = await this.loadingController.create();
     await loading.present();
-    this.authService.changeEmail({...this.changeEmailFormGroup.value, oldEmail: this.authService.userEmail!, clientUri: CLIENT_URI_EMAIL_CONFIRMATION})
+    this.authService.changeEmail({...this.changeEmailFormGroup.value, clientUri: CLIENT_URI_EMAIL_CONFIRMATION})
       .pipe(catchError(async () => {
         await loading.dismiss()
       }))
@@ -66,6 +67,10 @@ export class VerifyEmailInfoComponent  implements OnInit {
         });
         return await alert.present();
       });
+  }
+
+  get oldEmail() {
+    return this.changeEmailFormGroup.get('oldEmail');
   }
 
   get newEmail() {

@@ -13,7 +13,7 @@ export class AppComponent {
   showSidenav: boolean = true;
 
   constructor(
-    private platform: Platform, 
+    private platform: Platform,
     private zone: NgZone,
     private themeService: ThemeService,
     private router: Router
@@ -22,6 +22,7 @@ export class AppComponent {
     this.setupRouterListener();
   }
 
+  // Nicht entfernen!! Ohne funktioniert Tabellen Styling nicht mehr???
   initializeApp() {
     this.platform.ready().then(() => {
       this.zone.run(() => {

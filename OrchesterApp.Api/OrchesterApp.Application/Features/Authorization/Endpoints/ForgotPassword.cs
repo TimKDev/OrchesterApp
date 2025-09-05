@@ -4,9 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.AspNetCore.WebUtilities;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
-using TvJahnOrchesterApp.Application.Common.Models;
+using TvJahnOrchesterApp.Application.Features.Authorization.Interfaces;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors;
 using OrchesterApp.Domain.UserAggregate;
 
@@ -30,12 +28,12 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
         private class ForgotPasswordCommandHandler : IRequestHandler<ForgotPasswordCommand, Unit>
         {
             private readonly UserManager<User> userManager;
-            private readonly IEmailService emailService;
+            private readonly ISendPasswordResetEmailService sendPasswordResetEmailService;
 
-            public ForgotPasswordCommandHandler(IEmailService emailService, UserManager<User> userManager)
+            public ForgotPasswordCommandHandler(UserManager<User> userManager, ISendPasswordResetEmailService sendPasswordResetEmailService)
             {
-                this.emailService = emailService;
                 this.userManager = userManager;
+                this.sendPasswordResetEmailService = sendPasswordResetEmailService;
             }
 
             public async Task<Unit> Handle(ForgotPasswordCommand request, CancellationToken cancellationToken)
@@ -51,16 +49,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 }
 
                 var token = await userManager.GeneratePasswordResetTokenAsync(user);
-                var param = new Dictionary<string, string?>
-                {
-                    {"token", token },
-                    {"email", request.Email }
-                };
 
-                var callback = QueryHelpers.AddQueryString(request.ClientUri, param);
-                var message = new Message(new string[] { user.Email! }, "Reset password token", callback);
-
-                await emailService.SendEmailAsync(message);
+                await sendPasswordResetEmailService.SendTo(user.Email!, token, request.ClientUri);
 
                 return Unit.Value;
             }

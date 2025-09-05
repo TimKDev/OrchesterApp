@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { AuthenticationService } from '../../../services/authentication.service';
 import { LoadingController } from '@ionic/angular';
+import { catchError, NEVER } from 'rxjs';
 
 @Component({
   selector: 'app-email-confirmed',
@@ -22,7 +23,14 @@ export class EmailConfirmedComponent  implements OnInit {
     const email = this.route.snapshot.queryParams['email'];
     const loading = await this.loadingController.create();
     await loading.present();
-    this.authService.confirmEmail({email, token}).subscribe(async () => {
+    this.authService.confirmEmail({email, token})
+    .pipe(
+      catchError(async () => {
+        await loading.dismiss();
+        return NEVER;
+      })
+    )
+    .subscribe(async () => {
       this.showSuccessMessage = true;
       await loading.dismiss();
     });

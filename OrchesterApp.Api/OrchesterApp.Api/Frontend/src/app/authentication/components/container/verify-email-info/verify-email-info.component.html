@@ -11,7 +11,7 @@
   <p class="info-text-2">
     Nachdem deine Mail verifiziert wurde, kannst du dich ganz normal anmelden, indem du zurück zum <a routerLink="/auth/">Login</a> gehst.
   </p>
-  
+
     <ion-button (click)="resendVerificationMail()" type="button" expand="block" fill="clear"
     class="resend-mail-button">
     Versende die E-Mail erneut
@@ -24,6 +24,12 @@
 
   <form *ngIf="showChangeEmailForm" (ngSubmit)="changeEmail()" [formGroup]="changeEmailFormGroup">
     <div class="input-group">
+      <ion-item>
+        <ion-input type="email" placeholder="Neue Email" formControlName="oldEmail"></ion-input>
+      </ion-item>
+      <div *ngIf="(oldEmail?.dirty || oldEmail?.touched) && oldEmail?.errors" class="errors">
+        <span *ngIf="oldEmail?.errors?.['required']">Alte Email wird benötigt. </span>
+      </div>
       <ion-item>
         <ion-input type="email" placeholder="Neue Email" formControlName="newEmail"></ion-input>
       </ion-item>
@@ -41,7 +47,7 @@
       </div>
     </div>
 
-    
+
 
     <ion-button type="submit" expand="block" [disabled]="!changeEmailFormGroup.valid">Ändere Email</ion-button>
   </form>

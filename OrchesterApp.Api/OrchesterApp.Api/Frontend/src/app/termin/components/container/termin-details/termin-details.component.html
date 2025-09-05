@@ -91,11 +91,8 @@
                 [class.color-red]="data['terminRückmeldung'].zugesagt === 2"></div>
               <div>
                 <b>Meine Rückmeldung:</b> <br>
-                <span>
+                <span [class.red]="((data['terminRückmeldung'].zugesagt | dropdown : data.responseDropdownValues)  === 'Nicht Zurückgemeldet') && !(data.termin.endZeit < dateNow)">
                   {{data["terminRückmeldung"].zugesagt | dropdown : data.responseDropdownValues }}
-                  <ion-icon *ngIf="(data['terminRückmeldung'].zugesagt === 1) && !(data.termin.endZeit < dateNow)"
-                    name="alert-outline" color="danger">
-                  </ion-icon>
                 </span>
               </div>
               <div class="comment-div" *ngIf="data['terminRückmeldung'].kommentarZusage">

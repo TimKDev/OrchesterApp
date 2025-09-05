@@ -4,10 +4,6 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.VisualBasic;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
-using TvJahnOrchesterApp.Application.Features.Authorization.Interfaces;
 using OrchesterApp.Domain.UserAggregate;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
@@ -16,11 +12,11 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
     {
         public static void MapConfirmEmailEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPost("api/authentication/confirm-email", PostConfirmEmail)
-                .RequireAuthorization();
+            app.MapPost("api/authentication/confirm-email", PostConfirmEmail);
         }
 
-        private static async Task<IResult> PostConfirmEmail([FromBody] ConfirmEmailCommand confirmEmailCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostConfirmEmail([FromBody] ConfirmEmailCommand confirmEmailCommand,
+            CancellationToken cancellationToken, ISender sender)
         {
             await sender.Send(confirmEmailCommand);
             return Results.Ok("User Email wurde erfolgreich verifiziert.");
@@ -44,6 +40,7 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 {
                     throw new Exception("User not found");
                 }
+
                 var confirmResult = await userManager.ConfirmEmailAsync(user, request.Token);
                 if (!confirmResult.Succeeded)
                 {
