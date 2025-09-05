@@ -15,12 +15,16 @@
 }
 
 .green{
-  color: white;
+  color: var(--ion-text-color);
   //color: rgb(25, 255, 45);
 }
 
 .ion-text-wrap{
   font-size: 14px;
+}
+
+.date {
+  color: var(--ion-text-color);
 }
 
 .image{
