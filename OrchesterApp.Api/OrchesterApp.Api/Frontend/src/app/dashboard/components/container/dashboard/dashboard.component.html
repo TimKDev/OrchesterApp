@@ -31,7 +31,7 @@
       <ion-card-content class="card">
         <ion-list>
           <app-dashboard-termin-item *ngFor="let termin of data.nextTermins" [terminId]="termin.terminId" [terminName]="termin.name" [terminStartTime]="termin.startZeit"
-            [terminEndTime]=" termin.endZeit" [terminArt]="termin.terminArt"
+            [terminEndTime]=" termin.endZeit" [terminArt]="termin.terminArt" [image]="termin.image"
             [terminResponse]="termin.zugesagt | dropdown : data['rückmeldungsDropdownItems']" (openTermin)="openTermin(termin.terminId)"></app-dashboard-termin-item>
         </ion-list>
       </ion-card-content>

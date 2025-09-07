@@ -15,9 +15,10 @@ export interface BirthdayListEntry {
 
 export interface TerminOverview {
   terminId: string,
-   name: string, 
-   terminArt?: number, 
-   startZeit: Date, 
-   endZeit: Date, 
-   zugesagt: number
+   name: string,
+   terminArt?: number,
+   startZeit: Date,
+   endZeit: Date,
+   zugesagt: number,
+   image?: string
 }

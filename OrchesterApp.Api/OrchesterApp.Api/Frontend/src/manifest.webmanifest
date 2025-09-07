@@ -1,7 +1,7 @@
 {
-  "name": "Tv Jahn Bockum Orchester App",
+  "name": "Orchester App",
   "short_name": "Orchester App",
-  "description": "Orchester App für TV Jahn Bockum",
+  "description": "Orchester App",
   "start_url": "/",
   "display": "fullscreen",
   "orientation": "portrait",
