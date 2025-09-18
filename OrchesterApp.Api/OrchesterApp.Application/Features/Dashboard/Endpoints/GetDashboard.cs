@@ -82,7 +82,9 @@ namespace TvJahnOrchesterApp.Application.Features.Dashboard.Endpoints
                 );
                 // Next Birthdays:
                 var orchesterMembersWithBirthdayInNextDays =
-                    (await orchesterMitgliedRepository.GetAllAsync(cancellationToken)).Where(IsInDayRanch)
+                    (await orchesterMitgliedRepository.GetAllAsync(cancellationToken))
+                    .Where(m => m.IsAktiv())
+                    .Where(IsInDayRanch)
                     .Select(TransformToBirthdayListEntry).OrderBy(o => o.Birthday);
 
                 return new DashboardData(nextTermins.OrderBy(termin => termin.StartZeit).ToArray(),

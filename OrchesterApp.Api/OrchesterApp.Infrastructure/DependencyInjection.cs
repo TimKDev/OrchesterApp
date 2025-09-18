@@ -32,7 +32,8 @@ namespace OrchesterApp.Infrastructure
                 .AddPersistence(configuration)
                 .AddEmail(configuration)
                 .AddMinioStorage(configuration)
-                .AddAuthentication(configuration);
+                .AddAuthentication(configuration)
+                .AddScoped<InitDatabaseService>();
 
             return services;
         }
@@ -62,6 +63,13 @@ namespace OrchesterApp.Infrastructure
 
         private static IServiceCollection AddEmail(this IServiceCollection services, ConfigurationManager configuration)
         {
+            if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
+            {
+                services.AddScoped<IEmailService, TestEmailService>();
+
+                return services;
+            }
+
             var emailConfig = new EmailConfiguration();
 
             configuration.Bind(EmailConfiguration.SectionName, emailConfig);
@@ -69,7 +77,6 @@ namespace OrchesterApp.Infrastructure
 
             services.AddSingleton(emailConfig);
             services.AddScoped<IEmailService, EmailService>();
-            services.AddScoped<InitDatabaseService>();
 
             return services;
         }

@@ -3,6 +3,7 @@ using OrchesterApp.Domain.Common.ValueObjects;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate.Entities;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.Common.Entities;
+using OrchesterApp.Domain.Common.Enums;
 
 namespace OrchesterApp.Domain.OrchesterMitgliedAggregate
 {
@@ -83,6 +84,11 @@ namespace OrchesterApp.Domain.OrchesterMitgliedAggregate
         {
             return new OrchesterMitglied(OrchesterMitgliedsId.CreateUnique(), vorname, nachname, adresse, geburtstag,
                 telefonnummer, handynummer, defaultInstrument, defaultNotenStimme, mitgliedsStatus, memberSince, image);
+        }
+
+        public bool IsAktiv()
+        {
+            return OrchesterMitgliedsStatus == (int)MitgliedsStatusEnum.aktiv;
         }
 
         public void SetRegisterKey(string key)

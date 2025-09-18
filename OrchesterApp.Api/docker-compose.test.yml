@@ -1,0 +1,103 @@
+
+version: '3.4'
+
+networks:
+  orchester-app-network:
+    driver: bridge
+
+secrets:
+  connection_string_db:
+    file: ./Secrets/ConnectionStringDb.txt
+  db_admin_password:
+    file: ./Secrets/DbAdminPassword.txt
+  jwt_secret:
+    file: ./Secrets/JWTSecret.txt
+  google_mail_api_key:
+    file: ./Secrets/GoogleMailAPIKey.txt
+  minio_password:
+    file: ./Secrets/MinioPassword.txt
+
+services:
+  orchesterapp.frontend:
+    image: ${DOCKER_REGISTRY-}orchesterapp.frontend
+    build:
+      context: .
+      dockerfile: OrchesterApp.Api/Frontend/Dockerfile
+    ports:
+      - 40180:80
+    depends_on:
+      - orchesterapp.api
+    networks:
+      - orchester-app-network
+
+  orchesterapp.api:
+    image: ${DOCKER_REGISTRY-}tvjahnorchesterappapi
+    build:
+      context: .
+      dockerfile: OrchesterApp.Api/Dockerfile
+    container_name: orchester-app-api
+    user: "1000:1000"
+    depends_on:
+      - postgresql
+    ports:
+      - "40181:8080"
+    networks:
+      - orchester-app-network
+    volumes:
+      - /home/tim/temp/test-mails:/app/TestMails
+    environment:
+      ConnectionStrings__DefaultConnection: /run/secrets/connection_string_db
+      JWT_Secret_Key: /run/secrets/jwt_secret
+      Google_Mail_Api: /run/secrets/google_mail_api_key
+      Minio_Password: /run/secrets/minio_password
+      ASPNETCORE_URLS: http://+:8080
+    secrets:
+      - connection_string_db
+      - jwt_secret
+      - google_mail_api_key
+      - minio_password
+  
+  postgresql:
+    image: postgres:latest
+    container_name: orchester-app-db
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD_FILE: /run/secrets/db_admin_password
+      POSTGRES_DB: OrchesterAppDB
+    ports:
+      - 5432:5432
+    restart: always
+    volumes:
+      - orchesterAppPostgresDbVolume:/var/lib/postgresql/data
+    networks:
+      - orchester-app-network
+    secrets:
+      - db_admin_password
+  
+  minio:
+    image: minio/minio:latest
+    container_name: minio
+    ports:
+      - "9000:9000"      # MinIO API
+      - "9001:9001"      # MinIO Console
+    environment:
+      MINIO_ROOT_USER: minioadmin
+      MINIO_ROOT_PASSWORD_FILE: /run/secrets/minio_password
+    volumes:
+      - minio_data:/data
+    command: server /data --console-address ":9001"
+    networks:
+      - orchester-app-network
+    secrets:
+      - minio_password
+    healthcheck:
+      test: [ "CMD", "curl", "-f", "http://localhost:9000/minio/health/live" ]
+      interval: 30s
+      timeout: 20s
+      retries: 3
+
+volumes:
+  orchesterAppPostgresDbVolume:
+  minio_data:
+    driver: local
+    

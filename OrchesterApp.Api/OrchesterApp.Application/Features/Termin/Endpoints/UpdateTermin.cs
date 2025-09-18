@@ -8,7 +8,9 @@ using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.Entities;
 using OrchesterApp.Domain.Common.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate;
+using OrchesterApp.Domain.TerminAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
+using TvJahnOrchesterApp.Application.Common.Models;
 using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
@@ -18,11 +20,11 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
     {
         public static void MapUpdateTerminEndpoint(this IEndpointRouteBuilder app)
         {
-            app.MapPut("api/termin/update", GetTerminById)
+            app.MapPut("api/termin/update", UpdateTerminById)
                 .RequireAuthorization(r => r.RequireRole(RoleNames.Admin, RoleNames.Vorstand));
         }
 
-        private static async Task<IResult> GetTerminById(UpdateTerminCommand updateTerminCommand, ISender sender,
+        private static async Task<IResult> UpdateTerminById(UpdateTerminCommand updateTerminCommand, ISender sender,
             CancellationToken cancellationToken)
         {
             var response = await sender.Send(updateTerminCommand, cancellationToken);
@@ -58,15 +60,17 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
             private readonly IUnitOfWork unitOfWork;
             private readonly IFileStorageService _fileStorageService;
+            private readonly IEmailService _emailService;
 
             public UpdateTerminCommandHandler(ITerminRepository terminRepository,
                 IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork,
-                IFileStorageService fileStorageService)
+                IFileStorageService fileStorageService, IEmailService emailService)
             {
                 this.terminRepository = terminRepository;
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
                 this.unitOfWork = unitOfWork;
                 _fileStorageService = fileStorageService;
+                _emailService = emailService;
             }
 
             public async Task<OrchesterApp.Domain.TerminAggregate.Termin> Handle(UpdateTerminCommand request,
@@ -104,6 +108,11 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
                 if (request.OrchestermitgliedIds is null)
                 {
+                    await _emailService.SendEmailAsync(new Message([
+                        "boo1@gmail.com",
+                        "boo2@gmail.com",
+                        "boo3@gmail.com",
+                    ], "Test", "Test Content"));
                     await unitOfWork.SaveChangesAsync(cancellationToken);
                     return termin;
                 }

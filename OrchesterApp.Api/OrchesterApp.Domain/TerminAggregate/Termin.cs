@@ -9,21 +9,6 @@ using OrchesterApp.Domain.TerminAggregate.ValueObjects;
 
 namespace OrchesterApp.Domain.TerminAggregate
 {
-    public sealed class TerminDokument : ValueObject
-    {
-        public string Name { get; private set; }
-
-        public TerminDokument(string name)
-        {
-            Name = name;
-        }
-
-        public override IEnumerable<object> GetEqualityComponents()
-        {
-            yield return Name;
-        }
-    }
-
     public sealed class Termin : AggregateRoot<TerminId, Guid>
     {
         private readonly List<TerminRückmeldungOrchestermitglied> _terminRückmeldungOrchesterMitglieder = new();
