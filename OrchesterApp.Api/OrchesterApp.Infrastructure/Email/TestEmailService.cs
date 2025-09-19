@@ -10,19 +10,15 @@ public class TestEmailService : IEmailService
     {
         foreach (var senderMail in message.To)
         {
-            var mailPath = GetFakeMailAddressPath(senderMail);
-            if (!Directory.Exists(mailPath))
-            {
-                Directory.CreateDirectory(mailPath);
-            }
-
-            await using var file = File.Create(Path.Combine(mailPath, $"{message.Subject}_{Guid.NewGuid()}.txt"));
+            await using var file = File.Create(Path.Combine(Environment.CurrentDirectory, "TestMails",
+                ComputeFileName(message, senderMail)));
             await file.WriteAsync(Encoding.UTF8.GetBytes(message.Content), CancellationToken.None);
         }
     }
 
-    private string GetFakeMailAddressPath(string senderMail)
+    private static string ComputeFileName(Message message, string senderMail)
     {
-        return Path.Combine(Environment.CurrentDirectory, "TestMails", senderMail);
+        var uniqueEnd = Guid.NewGuid().ToString().Skip(8).Take(4);
+        return $"{senderMail}_{message.Subject}_{uniqueEnd}.txt";
     }
 }
