@@ -8,9 +8,15 @@
 
     <ItemGroup>
         <Folder Include="AbstimmungsAggregate\Enums\"/>
+        <Folder Include="NotificationAggregate\Entities\"/>
+        <Folder Include="NotificationAggregate\Enums\"/>
+        <Folder Include="NotificationAggregate\ValueObjects\"/>
         <Folder Include="TerminAggregate\Enums\"/>
         <Folder Include="UserAggregate\Entities\"/>
         <Folder Include="UserAggregate\Enums\"/>
+        <Folder Include="UserNotificationAggregate\Entities\" />
+        <Folder Include="UserNotificationAggregate\Enums\" />
+        <Folder Include="UserNotificationAggregate\ValueObjects\" />
         <Folder Include="\Enums\"/>
     </ItemGroup>
 

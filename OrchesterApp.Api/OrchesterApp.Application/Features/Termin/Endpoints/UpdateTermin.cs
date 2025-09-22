@@ -108,11 +108,6 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
                 if (request.OrchestermitgliedIds is null)
                 {
-                    await _emailService.SendEmailAsync(new Message([
-                        "boo1@gmail.com",
-                        "boo2@gmail.com",
-                        "boo3@gmail.com",
-                    ], "Test", "Test Content"));
                     await unitOfWork.SaveChangesAsync(cancellationToken);
                     return termin;
                 }
@@ -128,6 +123,10 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return termin;
+            }
+
+            private Task PublishChangeNotification()
+            {
             }
         }
     }
