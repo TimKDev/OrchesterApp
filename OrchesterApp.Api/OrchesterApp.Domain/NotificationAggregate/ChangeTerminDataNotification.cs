@@ -6,8 +6,8 @@ namespace OrchesterApp.Domain.NotificationAggregate;
 
 public sealed class ChangeTerminDataNotification : Notification
 {
-    public TerminStatus? OldTerminStatus { get; private set; }
-    public TerminStatus? NewTerminStatus { get; private set; }
+    public int? OldTerminStatus { get; private set; }
+    public int? NewTerminStatus { get; private set; }
     public DateTime? OldStartZeit { get; private set; }
     public DateTime? NewStartZeit { get; private set; }
     public DateTime? OldEndZeit { get; private set; }
@@ -25,10 +25,9 @@ public sealed class ChangeTerminDataNotification : Notification
 
     private ChangeTerminDataNotification(NotificationType type, NotificationCategory category,
         NotificationUrgency urgency, TerminId? terminId, DateTime createdAt,
-        HashSet<UserNotificationId> userNotificationIds, TerminStatus? oldTerminStatus,
-        TerminStatus? newTerminStatus,
+        int? oldTerminStatus, int? newTerminStatus,
         DateTime? oldStartZeit, DateTime? newStartZeit, DateTime? oldEndZeit, DateTime? newEndZeit) : base(type,
-        category, urgency, terminId, createdAt, userNotificationIds)
+        category, urgency, terminId, createdAt)
     {
         OldTerminStatus = oldTerminStatus;
         NewTerminStatus = newTerminStatus;
@@ -46,48 +45,25 @@ public sealed class ChangeTerminDataNotification : Notification
               ?? new ChangeTerminDataNotificationDto();
 
         return new ChangeTerminDataNotification(notification.Type, notification.Category,
-            notification.Urgency, notification.TerminId, notification.CreatedAt,
-            notification.UserNotifications.ToHashSet(), dataDto.OldTerminStatus, dataDto.NewTerminStatus,
+            notification.Urgency, notification.TerminId, notification.CreatedAt, dataDto.OldTerminStatus,
+            dataDto.NewTerminStatus,
             dataDto.OldStartZeit, dataDto.NewStartZeit, dataDto.OldEndZeit, dataDto.NewEndZeit);
     }
 
-    public static ChangeTerminDataNotification New(TerminId terminId)
+    public static ChangeTerminDataNotification New(TerminId terminId, TerminData oldTerminData,
+        TerminData newTerminData)
     {
         return new ChangeTerminDataNotification(NotificationType.Information, NotificationCategory.ChangeTerminData,
-            NotificationUrgency.Medium, terminId, DateTime.UtcNow,
-            [], null, null, null, null, null, null);
-    }
-
-    public ChangeTerminDataNotification NotifyAboutTerminStatusChange(TerminStatus oldStatus,
-        TerminStatus newStatus)
-    {
-        OldTerminStatus = oldStatus;
-        NewTerminStatus = newStatus;
-
-        return this;
-    }
-
-    public ChangeTerminDataNotification NotifyAboutStartTimeChange(DateTime oldStartZeit, DateTime newStartZeit)
-    {
-        OldStartZeit = oldStartZeit;
-        NewStartZeit = newStartZeit;
-
-        return this;
-    }
-
-    public ChangeTerminDataNotification NotifyAboutEndTimeChange(DateTime oldEndZeit, DateTime newEndZeit)
-    {
-        OldEndZeit = oldEndZeit;
-        NewEndZeit = newEndZeit;
-
-        return this;
+            NotificationUrgency.Medium, terminId, DateTime.UtcNow, oldTerminData.TerminStatus,
+            newTerminData.TerminStatus, oldTerminData.StartZeit,
+            newTerminData.StartZeit, oldTerminData.EndZeit, newTerminData.EndZeit);
     }
 
     [Serializable]
     private record ChangeTerminDataNotificationDto
     {
-        public TerminStatus? OldTerminStatus { get; init; }
-        public TerminStatus? NewTerminStatus { get; init; }
+        public int? OldTerminStatus { get; init; }
+        public int? NewTerminStatus { get; init; }
         public DateTime? OldStartZeit { get; init; }
         public DateTime? NewStartZeit { get; init; }
         public DateTime? OldEndZeit { get; init; }

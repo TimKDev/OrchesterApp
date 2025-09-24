@@ -149,5 +149,20 @@ namespace OrchesterApp.Domain.TerminAggregate
                 }
             }
         }
+
+        public bool IsInFuture()
+        {
+            return EinsatzPlan.StartZeit > DateTime.UtcNow;
+        }
+
+        public bool IsInPast()
+        {
+            return !IsInFuture() && !IsNow();
+        }
+
+        public bool IsNow()
+        {
+            return EinsatzPlan.StartZeit <= DateTime.UtcNow && EinsatzPlan.EndZeit >= DateTime.UtcNow;
+        }
     }
 }

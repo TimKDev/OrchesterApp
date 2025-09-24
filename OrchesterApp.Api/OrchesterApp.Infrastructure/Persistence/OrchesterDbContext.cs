@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Identity.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore;
+using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate;
 using OrchesterApp.Domain.TerminAggregate;
 using OrchesterApp.Domain.UserAggregate;
@@ -21,5 +22,7 @@ namespace OrchesterApp.Infrastructure.Persistence
 
         public DbSet<OrchesterMitglied> OrchesterMitglieder { get; set; } = null!;
         public DbSet<Termin> Termin { get; set; } = null!;
+        public DbSet<Notification> Notifications { get; set; } = null!;
+        public DbSet<UserNotification> UserNotifications { get; set; } = null!;
     }
 }

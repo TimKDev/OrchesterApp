@@ -22,5 +22,10 @@ namespace OrchesterApp.Domain.UserAggregate.ValueObjects
         {
             return new UserId(Guid.NewGuid());
         }
+
+        public static UserId Create(Guid id)
+        {
+            return new UserId(id);
+        }
     }
 }

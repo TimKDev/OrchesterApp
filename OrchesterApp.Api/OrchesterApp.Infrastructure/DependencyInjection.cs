@@ -47,6 +47,8 @@ namespace OrchesterApp.Infrastructure
             services.AddScoped<IOrchesterMitgliedRepository, OrchesterMitgliedRepository>();
             services.AddScoped<IUnitOfWork, UnitOfWork>();
             services.AddScoped<ITerminRepository, TerminRepository>();
+            services.AddScoped<INotificationRepository, NotificationRepository>();
+            services.AddScoped<IUserNotificationRepository, UserNotificationRepository>();
             services.AddScoped<IInstrumentRepository, InstrumentRepository>();
             services.AddScoped<IDropdownRepository, InstrumentRepository>();
             services.AddScoped<IDropdownRepository, NotenstimmeRepository>();

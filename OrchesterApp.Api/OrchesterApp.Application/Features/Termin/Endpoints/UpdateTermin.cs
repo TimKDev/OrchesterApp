@@ -2,13 +2,17 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
+using OrchesterApp.Domain.Common.Entities;
+using OrchesterApp.Domain.Common.Enums;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.Entities;
 using OrchesterApp.Domain.Common.ValueObjects;
+using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.TerminAggregate;
 using OrchesterApp.Domain.TerminAggregate.ValueObjects;
+using OrchesterApp.Domain.UserAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Common.Models;
 using TvJahnOrchesterApp.Application.Common.Services;
@@ -61,16 +65,18 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             private readonly IUnitOfWork unitOfWork;
             private readonly IFileStorageService _fileStorageService;
             private readonly IEmailService _emailService;
+            private readonly INotifyService _notifyService;
 
             public UpdateTerminCommandHandler(ITerminRepository terminRepository,
                 IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork,
-                IFileStorageService fileStorageService, IEmailService emailService)
+                IFileStorageService fileStorageService, IEmailService emailService, INotifyService notifyService)
             {
                 this.terminRepository = terminRepository;
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
                 this.unitOfWork = unitOfWork;
                 _fileStorageService = fileStorageService;
                 _emailService = emailService;
+                _notifyService = notifyService;
             }
 
             public async Task<OrchesterApp.Domain.TerminAggregate.Termin> Handle(UpdateTerminCommand request,
@@ -78,6 +84,9 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             {
                 var termin = await terminRepository.GetById(request.TerminId, cancellationToken) ??
                              throw new Exception($"Termin {request.TerminId} not found");
+
+                var oldTerminData = new TerminData(termin.TerminStatus, termin.EinsatzPlan.StartZeit,
+                    termin.EinsatzPlan.EndZeit);
 
                 termin.UpdateName(request.TerminName);
                 termin.UpdateTerminArt(request.TerminArt);
@@ -106,28 +115,96 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                     await Task.WhenAll(deletionTasks);
                 }
 
-                if (request.OrchestermitgliedIds is null)
+                if (request.OrchestermitgliedIds is not null)
                 {
-                    await unitOfWork.SaveChangesAsync(cancellationToken);
-                    return termin;
+                    var orchesterMitglieder = await orchesterMitgliedRepository.QueryByIdsAsync(
+                        request.OrchestermitgliedIds.Select(OrchesterMitgliedsId.Create).ToArray(), cancellationToken);
+
+                    var terminRückmeldungOrchesterMitglieder = orchesterMitglieder.Select(o =>
+                        TerminRückmeldungOrchestermitglied.Create(o.Id, new List<int?> { o.DefaultInstrument },
+                            new List<int?> { o.DefaultNotenStimme })).ToArray();
+
+                    termin.UpdateTerminRückmeldungOrchestermitglied(terminRückmeldungOrchesterMitglieder);
                 }
 
-                var orchesterMitglieder = await orchesterMitgliedRepository.QueryByIdAsync(
-                    request.OrchestermitgliedIds.Select(OrchesterMitgliedsId.Create).ToArray(), cancellationToken);
+                var newTerminData = new TerminData(termin.TerminStatus, termin.EinsatzPlan.StartZeit,
+                    termin.EinsatzPlan.EndZeit);
 
-                var terminRückmeldungOrchesterMitglieder = orchesterMitglieder.Select(o =>
-                    TerminRückmeldungOrchestermitglied.Create(o.Id, new List<int?> { o.DefaultInstrument },
-                        new List<int?> { o.DefaultNotenStimme })).ToArray();
+                //TODO Vllt auslagern in ein Domain Event aber trotzdem noch in einer Transaktion
+                await PublishChangeNotification(termin, oldTerminData, newTerminData);
 
-                termin.UpdateTerminRückmeldungOrchestermitglied(terminRückmeldungOrchesterMitglieder);
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
                 return termin;
             }
 
-            private Task PublishChangeNotification()
+            private async Task PublishChangeNotification(OrchesterApp.Domain.TerminAggregate.Termin termin,
+                TerminData oldTerminData,
+                TerminData newTerminData)
             {
+                if (termin.IsInPast() || oldTerminData == newTerminData)
+                {
+                    return;
+                }
+
+                var terminDataChangedNotification =
+                    ChangeTerminDataNotification.New(termin.Id, oldTerminData, newTerminData);
+
+                var mitgliederForNotification = termin.TerminRückmeldungOrchesterMitglieder
+                    .Where(r => r.Zugesagt is (int)RückmeldungsartEnum.Zugesagt
+                        or (int)RückmeldungsartEnum.NichtZurückgemeldet)
+                    .Select(r => r.OrchesterMitgliedsId).ToList();
+
+                await _notifyService.PublishNotificationAsync(terminDataChangedNotification, mitgliederForNotification);
             }
         }
+    }
+
+
+    public class NotifyService : INotifyService
+    {
+        private readonly IOrchesterMitgliedRepository _orchesterMitgliedRepository;
+        private readonly INotificationRepository _notificationRepository;
+        private readonly IUserNotificationRepository _userNotificationRepository;
+
+        public NotifyService(IOrchesterMitgliedRepository orchesterMitgliedRepository,
+            INotificationRepository notificationRepository, IUserNotificationRepository userNotificationRepository)
+        {
+            this._orchesterMitgliedRepository = orchesterMitgliedRepository;
+            _notificationRepository = notificationRepository;
+            _userNotificationRepository = userNotificationRepository;
+        }
+
+        public async Task PublishNotificationAsync(Notification notification,
+            List<OrchesterMitgliedsId> mitgliedsIds, CancellationToken cancellationToken = default)
+        {
+            var orchesterMitglieder =
+                await _orchesterMitgliedRepository.QueryByIdsAsync(mitgliedsIds.ToArray(), cancellationToken);
+
+            var userIdsForNotification = new List<UserId>();
+            foreach (var orchesterMitglied in orchesterMitglieder)
+            {
+                if (Guid.TryParse(orchesterMitglied.ConnectedUserId, out var userId))
+                {
+                    userIdsForNotification.Add(UserId.Create(userId));
+                }
+            }
+
+            if (!userIdsForNotification.Any())
+            {
+                return;
+            }
+
+            await _notificationRepository.Save(notification, cancellationToken);
+
+            //Wo definieren wir über welche Channels eine Notification verschickt werden soll?
+            _userNotificationRepository
+        }
+    }
+
+    public interface INotifyService
+    {
+        Task PublishNotificationAsync(Notification notification,
+            List<OrchesterMitgliedsId> mitgliedsIds, CancellationToken cancellationToken = default);
     }
 }

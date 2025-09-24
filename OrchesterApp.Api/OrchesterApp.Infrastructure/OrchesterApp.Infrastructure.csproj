@@ -34,4 +34,16 @@
         <Folder Include="Persistence\Dto\"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <Compile Remove="OrchesterApp.Infrastructure\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <EmbeddedResource Remove="OrchesterApp.Infrastructure\**"/>
+    </ItemGroup>
+
+    <ItemGroup>
+        <None Remove="OrchesterApp.Infrastructure\**"/>
+    </ItemGroup>
+
 </Project>
