@@ -6,6 +6,7 @@ namespace TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositor
     {
         Task<Notification> Save(Notification notification, CancellationToken cancellationToken);
         Task<Notification> GetById(NotificationId id, CancellationToken cancellationToken);
+        Task<List<Notification>> GetByIds(IList<NotificationId> ids, CancellationToken cancellationToken);
         Task<bool> Delete(NotificationId id, CancellationToken cancellationToken);
     }
-} 
+}

@@ -5,10 +5,13 @@ namespace TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositor
 {
     public interface IUserNotificationRepository
     {
-        Task<UserNotification> Save(UserNotification userNotification, CancellationToken cancellationToken);
+        Task Save(IList<UserNotification> userNotification, CancellationToken cancellationToken);
         Task<UserNotification> GetById(UserNotificationId id, CancellationToken cancellationToken);
         Task<UserNotification[]> GetByUserId(UserId userId, CancellationToken cancellationToken);
-        Task<UserNotification[]> GetByNotificationId(NotificationId notificationId, CancellationToken cancellationToken);
+
+        Task<UserNotification[]>
+            GetByNotificationIds(IList<NotificationId> notificationId, CancellationToken cancellationToken);
+
         Task<bool> Delete(UserNotificationId id, CancellationToken cancellationToken);
     }
-} 
+}

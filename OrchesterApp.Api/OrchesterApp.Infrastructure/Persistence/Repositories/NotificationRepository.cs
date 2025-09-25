@@ -13,17 +13,14 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
             _context = context;
         }
 
-        public async Task<bool> Delete(NotificationId id, CancellationToken cancellationToken)
+        public Task<Notification> GetById(NotificationId id, CancellationToken cancellationToken)
         {
-            var itemToRemove = await GetById(id, cancellationToken);
-            _context.Set<Notification>().Remove(itemToRemove);
-            await _context.SaveChangesAsync(cancellationToken);
-            return true;
+            return _context.Set<Notification>().FirstAsync(i => i.Id.Value == id.Value, cancellationToken);
         }
 
-        public async Task<Notification> GetById(NotificationId id, CancellationToken cancellationToken)
+        public Task<List<Notification>> GetByIds(IList<NotificationId> ids, CancellationToken cancellationToken)
         {
-            return (await _context.Set<Notification>().ToListAsync(cancellationToken)).First(i => i.Id.Value == id.Value);
+            return _context.Set<Notification>().Where(n => ids.Contains(n.Id)).ToListAsync(cancellationToken);
         }
 
         public async Task<Notification> Save(Notification notification, CancellationToken cancellationToken)
@@ -31,5 +28,13 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
             await _context.Set<Notification>().AddAsync(notification, cancellationToken);
             return notification;
         }
+
+        public async Task<bool> Delete(NotificationId id, CancellationToken cancellationToken)
+        {
+            var itemToRemove = await GetById(id, cancellationToken);
+            _context.Set<Notification>().Remove(itemToRemove);
+
+            return true;
+        }
     }
-} 
+}

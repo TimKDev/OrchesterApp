@@ -18,31 +18,32 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
         {
             var itemToRemove = await GetById(id, cancellationToken);
             _context.Set<UserNotification>().Remove(itemToRemove);
-            await _context.SaveChangesAsync(cancellationToken);
+
             return true;
         }
 
-        public async Task<UserNotification> GetById(UserNotificationId id, CancellationToken cancellationToken)
+        public Task<UserNotification> GetById(UserNotificationId id, CancellationToken cancellationToken)
         {
-            return (await _context.Set<UserNotification>().ToListAsync(cancellationToken)).First(i => i.Id.Value == id.Value);
+            return _context.Set<UserNotification>().FirstAsync(i => i.Id.Value == id.Value, cancellationToken);
         }
 
-        public async Task<UserNotification[]> GetByUserId(UserId userId, CancellationToken cancellationToken)
+        public Task<UserNotification[]> GetByUserId(UserId userId, CancellationToken cancellationToken)
         {
-            return (await _context.Set<UserNotification>().ToListAsync(cancellationToken))
-                .Where(un => un.UserId.Value == userId.Value).ToArray();
+            return _context.Set<UserNotification>().Where(un => un.UserId.Value == userId.Value)
+                .ToArrayAsync(cancellationToken);
         }
 
-        public async Task<UserNotification[]> GetByNotificationId(NotificationId notificationId, CancellationToken cancellationToken)
+        public Task<UserNotification[]> GetByNotificationIds(IList<NotificationId> notificationIds,
+            CancellationToken cancellationToken)
         {
-            return (await _context.Set<UserNotification>().ToListAsync(cancellationToken))
-                .Where(un => un.NotificationId.Value == notificationId.Value).ToArray();
+            return _context.Set<UserNotification>().Where(un => notificationIds.Contains(un.NotificationId))
+                .ToArrayAsync(cancellationToken);
         }
 
-        public async Task<UserNotification> Save(UserNotification userNotification, CancellationToken cancellationToken)
+        public Task Save(IList<UserNotification> userNotification,
+            CancellationToken cancellationToken)
         {
-            await _context.Set<UserNotification>().AddAsync(userNotification, cancellationToken);
-            return userNotification;
+            return _context.Set<UserNotification>().AddRangeAsync(userNotification, cancellationToken);
         }
     }
-} 
+}
