@@ -12,7 +12,7 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown
 {
     public static class DependencyInjection
     {
-        public static IServiceCollection AddDashboardFeature(this IServiceCollection services)
+        public static IServiceCollection AddDropdownFeature(this IServiceCollection services)
         {
             return services.AddScoped<IDropdownService, DropdownService>();
         }

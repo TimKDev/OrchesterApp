@@ -31,4 +31,10 @@ public class UserNotification : AggregateRoot<UserNotificationId, Guid>
         return new UserNotification(UserNotificationId.CreateUnique(), userId, notificationId, SendStatus.Pending,
             null, notificationSink);
     }
+
+    public void SendedSuccessfully()
+    {
+        SendStatus = SendStatus.Success;
+        SendAt = DateTime.UtcNow;
+    }
 }

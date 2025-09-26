@@ -2,8 +2,6 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
-using Microsoft.Extensions.Logging;
-using OrchesterApp.Domain.Common.Entities;
 using OrchesterApp.Domain.Common.Enums;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
@@ -11,10 +9,8 @@ using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.Entities;
 using OrchesterApp.Domain.Common.ValueObjects;
 using OrchesterApp.Domain.NotificationAggregate;
-using OrchesterApp.Domain.TerminAggregate;
 using OrchesterApp.Domain.TerminAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
-using TvJahnOrchesterApp.Application.Common.Models;
 using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
@@ -65,18 +61,19 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             private readonly IUnitOfWork unitOfWork;
             private readonly IFileStorageService _fileStorageService;
             private readonly INotifyService _notifyService;
-            private readonly ISender _sender;
+            private readonly INotificationBackgroundService _notificationBackgroundService;
 
             public UpdateTerminCommandHandler(ITerminRepository terminRepository,
                 IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork,
-                IFileStorageService fileStorageService, INotifyService notifyService, ISender sender)
+                IFileStorageService fileStorageService, INotifyService notifyService,
+                INotificationBackgroundService notificationBackgroundService)
             {
                 this.terminRepository = terminRepository;
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
                 this.unitOfWork = unitOfWork;
                 _fileStorageService = fileStorageService;
                 _notifyService = notifyService;
-                _sender = sender;
+                _notificationBackgroundService = notificationBackgroundService;
             }
 
             public async Task<OrchesterApp.Domain.TerminAggregate.Termin> Handle(UpdateTerminCommand request,
@@ -137,7 +134,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
                 if (notificationId is not null)
                 {
-                    _ = _sender.Send(new NotificationSender.Command([notificationId]));
+                    await _notificationBackgroundService.EnqueueNotificationAsync(notificationId);
                 }
 
                 return termin;

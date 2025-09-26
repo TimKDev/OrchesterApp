@@ -17,8 +17,8 @@ namespace TvJahnOrchesterApp.Application.Features
     {
         public static void RegisterEndpointsFeatures(this IEndpointRouteBuilder app)
         {
-            app.RegisterEndpointsOrchesterMitgliedFeature();
-            app.RegisterEndpointsTerminDashboardFeature();
+            app.RegisterEndpointsOrchestermitgliedsFeature();
+            app.RegisterEndpointsDashboardFeature();
             app.RegisterEndpointsAbstimmungFeature();
             app.RegisterEndpointsAuthorizationFeature();
             app.RegisterEndpointsEinsatzplanFeature();

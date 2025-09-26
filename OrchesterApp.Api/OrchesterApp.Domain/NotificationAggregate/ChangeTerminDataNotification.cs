@@ -23,10 +23,10 @@ public sealed class ChangeTerminDataNotification : Notification
         NewEndZeit = NewEndZeit,
     });
 
-    private ChangeTerminDataNotification(NotificationType type, NotificationCategory category,
+    private ChangeTerminDataNotification(NotificationId id, NotificationType type, NotificationCategory category,
         NotificationUrgency urgency, TerminId? terminId, DateTime createdAt,
         int? oldTerminStatus, int? newTerminStatus,
-        DateTime? oldStartZeit, DateTime? newStartZeit, DateTime? oldEndZeit, DateTime? newEndZeit) : base(type,
+        DateTime? oldStartZeit, DateTime? newStartZeit, DateTime? oldEndZeit, DateTime? newEndZeit) : base(id, type,
         category, urgency, terminId, createdAt)
     {
         OldTerminStatus = oldTerminStatus;
@@ -44,7 +44,7 @@ public sealed class ChangeTerminDataNotification : Notification
             : JsonSerializer.Deserialize<ChangeTerminDataNotificationDto>(notification.Data)
               ?? new ChangeTerminDataNotificationDto();
 
-        return new ChangeTerminDataNotification(notification.Type, notification.Category,
+        return new ChangeTerminDataNotification(notification.Id, notification.Type, notification.Category,
             notification.Urgency, notification.TerminId, notification.CreatedAt, dataDto.OldTerminStatus,
             dataDto.NewTerminStatus,
             dataDto.OldStartZeit, dataDto.NewStartZeit, dataDto.OldEndZeit, dataDto.NewEndZeit);
@@ -53,7 +53,8 @@ public sealed class ChangeTerminDataNotification : Notification
     public static ChangeTerminDataNotification New(TerminId terminId, TerminData oldTerminData,
         TerminData newTerminData)
     {
-        return new ChangeTerminDataNotification(NotificationType.Information, NotificationCategory.ChangeTerminData,
+        return new ChangeTerminDataNotification(NotificationId.CreateUnique(), NotificationType.Information,
+            NotificationCategory.ChangeTerminData,
             NotificationUrgency.Medium, terminId, DateTime.UtcNow, oldTerminData.TerminStatus,
             newTerminData.TerminStatus, oldTerminData.StartZeit,
             newTerminData.StartZeit, oldTerminData.EndZeit, newTerminData.EndZeit);

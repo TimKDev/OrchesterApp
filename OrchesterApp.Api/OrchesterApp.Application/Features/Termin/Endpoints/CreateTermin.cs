@@ -9,7 +9,6 @@ using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using OrchesterApp.Domain.Common.ValueObjects;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.Entities;
-using static TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints.CreateOrchesterMitglied;
 
 namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 {

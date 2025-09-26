@@ -1,9 +1,8 @@
 ﻿using MediatR;
-using Microsoft.Extensions.Logging;
 using OrchesterApp.Domain.NotificationAggregate;
 using TvJahnOrchesterApp.Application.Common.ExtensionMethods;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
-using TvJahnOrchesterApp.Application.Common.Models;
 
 namespace TvJahnOrchesterApp.Application.Common.Services;
 
@@ -15,12 +14,17 @@ public static class NotificationSender
     {
         private readonly INotificationRepository _notificationRepository;
         private readonly IUserNotificationRepository _userNotificationRepository;
+        private readonly INotificationEmailSender _notificationEmailSender;
+        private readonly IUnitOfWork _unitOfWork;
 
         public NotificationSenderCommandHandler(INotificationRepository notificationRepository,
-            IUserNotificationRepository userNotificationRepository)
+            IUserNotificationRepository userNotificationRepository, INotificationEmailSender notificationEmailSender,
+            IUnitOfWork unitOfWork)
         {
             _notificationRepository = notificationRepository;
             _userNotificationRepository = userNotificationRepository;
+            _notificationEmailSender = notificationEmailSender;
+            _unitOfWork = unitOfWork;
         }
 
         public async Task Handle(Command request, CancellationToken cancellationToken)
@@ -29,58 +33,38 @@ public static class NotificationSender
                 await _userNotificationRepository.GetByNotificationIds(request.NotificationIds, cancellationToken)
                     .Parallelize(_notificationRepository.GetByIds(request.NotificationIds, cancellationToken));
 
+            var notificationDict =
+                notifications.ToDictionary(n => n.Id,
+                    n => (Notification: n,
+                        UserNotifications: userNotifications.Where(u => u.NotificationId == n.Id).ToList()));
+
             foreach (var notificationId in request.NotificationIds)
             {
+                if (!notificationDict.TryGetValue(notificationId, out var selectedNotification))
+                {
+                    continue;
+                }
+
+                var emailUserNotifications = selectedNotification.UserNotifications
+                    .Where(u => u.NotificationSink == NotificationSink.Email)
+                    .ToList();
+
+                await _notificationEmailSender.SendEmailsForNotificationAsync(selectedNotification.Notification,
+                    emailUserNotifications, cancellationToken);
+
+                await SetUserNotificationStatusToSendedAsync(emailUserNotifications, cancellationToken);
             }
         }
 
-        private Task HandleNotificationAsync()
+        private async Task SetUserNotificationStatusToSendedAsync(List<UserNotification> emailUserNotifications,
+            CancellationToken cancellationToken)
         {
-        }
-    }
-}
+            foreach (var userNotification in emailUserNotifications)
+            {
+                userNotification.SendedSuccessfully();
+            }
 
-public class NotificationEmailSender : INotificationEmailSender
-{
-    public Task SendEmailsForNotificationAsync(Notification notification, IList<UserNotification> userNotifications,
-        CancellationToken cancellationToken)
-    {
-    }
-}
-
-public interface INotificationEmailSender
-{
-    Task SendEmailsForNotificationAsync(Notification notification, IList<UserNotification> userNotifications,
-        CancellationToken cancellationToken);
-}
-
-public interface INotificationCategoryEmailSender
-{
-    NotificationCategory NotificationCategory { get; }
-
-    Task<List<Message>> CreateMessageAsync(Notification notification, IList<UserNotification> userNotification,
-        CancellationToken cancellationToken);
-}
-
-public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
-{
-    private readonly ILogger<ChangeTerminDataEmailSender> _logger;
-
-    public ChangeTerminDataEmailSender(ILogger<ChangeTerminDataEmailSender> logger)
-    {
-        _logger = logger;
-    }
-
-    public NotificationCategory NotificationCategory => NotificationCategory.ChangeTerminData;
-
-    public async Task<List<Message>> CreateMessageAsync(Notification notification,
-        IList<UserNotification> userNotification,
-        CancellationToken cancellationToken)
-    {
-        if (notification is not ChangeTerminDataNotification changeTerminDataNotification)
-        {
-            _logger.LogError("Invalid notification type.");
-            return [];
+            await _unitOfWork.SaveChangesAsync(cancellationToken);
         }
     }
 }

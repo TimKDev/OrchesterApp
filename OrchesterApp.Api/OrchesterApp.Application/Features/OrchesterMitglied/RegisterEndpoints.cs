@@ -5,7 +5,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied
 {
     public static class RegisterEndpoints
     {
-        public static void RegisterEndpointsTerminDashboardFeature(this IEndpointRouteBuilder app) 
+        public static void RegisterEndpointsOrchestermitgliedsFeature(this IEndpointRouteBuilder app)
         {
             app.MapCreateOrchesterMitgliedEndpoint();
             app.MapDeleteOrchesterMitgliedEndpoint();

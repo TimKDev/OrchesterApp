@@ -2,10 +2,11 @@
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using System.Reflection;
+using TvJahnOrchesterApp.Application.Common;
 using TvJahnOrchesterApp.Application.Common.Behaviors;
-using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization;
 using TvJahnOrchesterApp.Application.Features.Dropdown;
+using TvJahnOrchesterApp.Application.Features.Termin;
 
 namespace TvJahnOrchesterApp.Application
 {
@@ -21,7 +22,9 @@ namespace TvJahnOrchesterApp.Application
             services.AddValidatorsFromAssembly(Assembly.GetExecutingAssembly());
 
             services.AddAuthorizationFeature();
-            services.AddDashboardFeature();
+            services.AddDropdownFeature();
+            services.AddTerminFeature();
+            services.AddCommon();
 
             return services;
         }

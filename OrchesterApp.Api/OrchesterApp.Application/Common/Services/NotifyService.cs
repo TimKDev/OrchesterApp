@@ -3,7 +3,6 @@ using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.UserAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
-using TvJahnOrchesterApp.Application.Features.Termin.Endpoints;
 
 namespace TvJahnOrchesterApp.Application.Common.Services;
 
