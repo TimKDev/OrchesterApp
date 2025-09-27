@@ -1,12 +1,11 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
-using OrchesterApp.Domain.UserAggregate.ValueObjects;
+﻿using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 
-namespace TvJahnOrchesterApp.Application.Common.Interfaces.Dto
+namespace TvJahnOrchesterApp.Application.Common.Models
 {
-    public record OrchesterMitgliedAdminInfo(OrchesterMitgliedsId Id, string Vorname, string Nachname, string? ConnectedUserId, DateTime? UserLastLogin);
+    public record OrchesterMitgliedAdminInfo(
+        OrchesterMitgliedsId Id,
+        string Vorname,
+        string Nachname,
+        string? ConnectedUserId,
+        DateTime? UserLastLogin);
 }

@@ -1,5 +1,5 @@
-﻿using TvJahnOrchesterApp.Application.Common.Interfaces.Dto;
-using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
+﻿using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
+using TvJahnOrchesterApp.Application.Common.Models;
 
 namespace TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories
 {

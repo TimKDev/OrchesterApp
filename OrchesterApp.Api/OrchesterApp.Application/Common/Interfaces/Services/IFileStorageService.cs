@@ -1,3 +1,5 @@
+using TvJahnOrchesterApp.Application.Common.Models;
+
 namespace TvJahnOrchesterApp.Application.Common.Interfaces.Services
 {
     public interface IFileStorageService

@@ -2,7 +2,7 @@
 using OrchesterApp.Domain.UserAggregate;
 using TvJahnOrchesterApp.Application.Common.Models;
 
-namespace TvJahnOrchesterApp.Application.Common.Services;
+namespace TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 
 public interface INotificationCategoryEmailSender
 {

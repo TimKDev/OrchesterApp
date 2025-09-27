@@ -26,4 +26,8 @@
         <FrameworkReference Include="Microsoft.AspNetCore.App"/>
     </ItemGroup>
 
+    <ItemGroup>
+        <EmbeddedResource Include="Features\Termin\NotificationCategoryEmailSender\ChangeTerminDataEmailTemplate.html" />
+    </ItemGroup>
+
 </Project>

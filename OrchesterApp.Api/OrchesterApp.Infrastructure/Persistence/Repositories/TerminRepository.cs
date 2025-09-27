@@ -1,7 +1,7 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using OrchesterApp.Domain.TerminAggregate;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Dto;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Models;
 
 namespace OrchesterApp.Infrastructure.Persistence.Repositories
 {

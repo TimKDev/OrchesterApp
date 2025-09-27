@@ -6,7 +6,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 
-namespace OrchesterApp.Application.Features.FileStorage.Endpoints;
+namespace TvJahnOrchesterApp.Application.Features.FileStorage.Endpoints;
 
 public static class UploadFile
 {

@@ -1,7 +1,7 @@
 using Microsoft.AspNetCore.Routing;
-using OrchesterApp.Application.Features.FileStorage.Endpoints;
+using TvJahnOrchesterApp.Application.Features.FileStorage.Endpoints;
 
-namespace OrchesterApp.Application.Features.FileStorage
+namespace TvJahnOrchesterApp.Application.Features.FileStorage
 {
     public static class RegisterEndpoints
     {

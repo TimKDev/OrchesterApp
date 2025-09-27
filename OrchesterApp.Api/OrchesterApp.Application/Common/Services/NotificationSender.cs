@@ -1,6 +1,7 @@
 ﻿using MediatR;
 using OrchesterApp.Domain.NotificationAggregate;
 using TvJahnOrchesterApp.Application.Common.ExtensionMethods;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 

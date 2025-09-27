@@ -5,8 +5,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
+using TvJahnOrchesterApp.Application.Common.Models;
 
-namespace OrchesterApp.Application.Features.FileStorage.Endpoints
+namespace TvJahnOrchesterApp.Application.Features.FileStorage.Endpoints
 {
     public static class DownloadFile
     {

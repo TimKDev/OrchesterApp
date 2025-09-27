@@ -3,6 +3,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.UserAggregate;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 
 namespace TvJahnOrchesterApp.Application.Common.Services;

@@ -2,6 +2,7 @@
 using Minio;
 using Minio.DataModel.Args;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
+using TvJahnOrchesterApp.Application.Common.Models;
 
 namespace OrchesterApp.Infrastructure.FileStorage;
 

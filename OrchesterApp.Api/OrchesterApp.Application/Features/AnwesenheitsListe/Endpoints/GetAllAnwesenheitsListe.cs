@@ -3,10 +3,10 @@ using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Dto;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using OrchesterApp.Domain.Common.Enums;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
+using TvJahnOrchesterApp.Application.Common.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.AnwesenheitsListe.Endpoints
 {
