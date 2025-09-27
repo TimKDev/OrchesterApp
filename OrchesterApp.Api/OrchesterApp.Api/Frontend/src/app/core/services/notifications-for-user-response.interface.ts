@@ -1,4 +1,4 @@
-import { NotificationDto } from "./notification-dto.interface";
+import { NotificationDto } from "../interfaces/notification-dto.interface";
 
 export interface NotificationsForUserResponse {
   notifications: NotificationDto[];

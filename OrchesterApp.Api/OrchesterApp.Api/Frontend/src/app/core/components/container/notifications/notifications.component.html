@@ -37,13 +37,6 @@
         <p style="font-size: 13px; margin-bottom: 0px;">{{ notification.message }}</p>
         <ion-note style="font-weight: 600;">{{ notification.createdAt | date:'dd.MM.yyyy HH:mm' }}</ion-note>
       </ion-label>
-
-      <ion-badge
-        *ngIf="!notification.isRead"
-        slot="end"
-        [color]="getNotificationColor(notification.urgency)">
-        Neu
-      </ion-badge>
     </ion-item>
   </ion-list>
 

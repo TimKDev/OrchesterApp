@@ -20,7 +20,7 @@ export class AppComponent implements OnInit, OnDestroy {
   constructor(
     private platform: Platform,
     private zone: NgZone,
-    private themeService: ThemeService,
+    private themeService: ThemeService, //Nicht entfernen!
     private router: Router,
     private notificationService: NotificationService,
     private notificationApiService: NotificationApiService
@@ -35,7 +35,7 @@ export class AppComponent implements OnInit, OnDestroy {
     });
 
     this.notificationApiService.getNotificationsForUser().subscribe((response) => {
-      this.notificationService.numberOfUnread.next(response.notifications.filter(n => !n.isRead).length);
+    this.notificationService.numberOfUnread.next(response.notifications.filter(n => !n.isRead).length);
     });
   }
 

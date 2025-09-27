@@ -3,7 +3,7 @@ import { Location } from '@angular/common';
 import { Router } from '@angular/router';
 import { Observable, NEVER, catchError } from 'rxjs';
 import { NotificationApiService } from 'src/app/core/services/notification-api.service';
-import { NotificationDto } from 'src/app/core/services/notification-dto.interface';
+import { NotificationDto } from 'src/app/core/interfaces/notification-dto.interface';
 import { NotificationUrgency } from 'src/app/core/services/notification-urgency.enum';
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { NotificationType } from 'src/app/core/services/notification-type.enum';

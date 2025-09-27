@@ -1,5 +1,5 @@
-import { NotificationType } from "./notification-type.enum";
-import { NotificationUrgency } from "./notification-urgency.enum";
+import { NotificationType } from "../services/notification-type.enum";
+import { NotificationUrgency } from "../services/notification-urgency.enum";
 
 export interface NotificationDto {
   id: string;
