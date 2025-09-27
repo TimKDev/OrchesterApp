@@ -21,7 +21,7 @@ public class NotifyService : INotifyService
     }
 
     public async Task PublishNotificationAsync(Notification notification,
-        List<OrchesterMitgliedsId> mitgliedsIds, NotificationSink[] notificationSinks,
+        List<OrchesterMitgliedsId> mitgliedsIds, List<NotificationSink> notificationSinks,
         CancellationToken cancellationToken = default)
     {
         if (!notificationSinks.Any())

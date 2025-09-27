@@ -8,6 +8,7 @@ import { AccountManagementComponent } from './components/container/account-manag
 import { AuthGuard } from './guards/auth.guard';
 import { AccountDetailsComponent } from './components/container/account-details/account-details.component';
 import { ImpressumComponent } from './components/container/impressum/impressum.component';
+import { NotificationsComponent } from './components/container/notifications/notifications.component';
 
 const routes: Routes = [
   {
@@ -36,6 +37,10 @@ const routes: Routes = [
       },
       {path: 'account-management', component: AccountManagementComponent},
       {path: 'account-management/details/:orchesterMitgliedsId', component: AccountDetailsComponent},
+      {
+        path: 'notifications',
+        component: NotificationsComponent
+      },
       {
         path: 'help',
         component: UserHelpComponent

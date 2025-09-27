@@ -15,6 +15,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { SideMenuComponent } from './components/container/side-menu/side-menu.component';
 import { AccountItemComponent } from './components/presentational/account-item/account-item.component';
 import { ImpressumComponent } from './components/container/impressum/impressum.component';
+import { NotificationsComponent } from './components/container/notifications/notifications.component';
 
 
 @NgModule({
@@ -28,7 +29,8 @@ import { ImpressumComponent } from './components/container/impressum/impressum.c
     GetCardColorPipe,
     SideMenuComponent, 
     AccountItemComponent,
-    ImpressumComponent
+    ImpressumComponent,
+    NotificationsComponent
   ],
   imports: [
     SharedModule,

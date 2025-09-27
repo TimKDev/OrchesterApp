@@ -11,7 +11,7 @@ namespace TvJahnOrchesterApp.Application.Features.Notification.Endpoints;
 
 public static class AcknowledgeNotification
 {
-    public static void MapUpdateTerminEndpoint(this IEndpointRouteBuilder app)
+    public static void MapAcknowledgeNotificationEndpoint(this IEndpointRouteBuilder app)
     {
         app.MapPost("api/notifications/acknowledge/", AcknowledgeNotificationForUser)
             .RequireAuthorization();

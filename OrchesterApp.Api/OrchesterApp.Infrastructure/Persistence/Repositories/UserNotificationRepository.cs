@@ -35,7 +35,7 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
         public Task<UserNotification[]> GetByUserId(UserId userId, int limitResult, CancellationToken cancellationToken)
         {
             return _context.Set<UserNotification>()
-                .Where(un => un.UserId.Value == userId.Value && un.NotificationSink == NotificationSink.Portal)
+                .Where(un => un.UserId == userId && un.NotificationSink == NotificationSink.Portal)
                 .OrderBy(un => un.CreatedAt)
                 .Take(limitResult)
                 .ToArrayAsync(cancellationToken);

@@ -7,5 +7,5 @@ public interface INotifyService
 {
     Task PublishNotificationAsync(Notification notification,
         List<OrchesterMitgliedsId> mitgliedsIds,
-        NotificationSink[] selectedSinks, CancellationToken cancellationToken = default);
+        List<NotificationSink> selectedSinks, CancellationToken cancellationToken = default);
 }

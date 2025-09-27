@@ -7,6 +7,7 @@ using TvJahnOrchesterApp.Application.Features.Dashboard;
 using TvJahnOrchesterApp.Application.Features.Dropdown;
 using TvJahnOrchesterApp.Application.Features.Einsatzplan;
 using TvJahnOrchesterApp.Application.Features.FileStorage;
+using TvJahnOrchesterApp.Application.Features.Notification;
 using TvJahnOrchesterApp.Application.Features.OrchesterMitglied;
 using TvJahnOrchesterApp.Application.Features.Termin;
 using TvJahnOrchesterApp.Application.Features.TerminRückmeldung;
@@ -27,6 +28,7 @@ namespace TvJahnOrchesterApp.Application.Features
             app.RegisterEndpointsAnwesenheitsListeFeature();
             app.RegisterEndpointsDropdown();
             app.RegisterFileStorageEndpoints();
+            app.RegisterEndpointsNotificationFeature();
         }
     }
 }

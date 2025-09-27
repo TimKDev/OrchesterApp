@@ -12,4 +12,18 @@
   </ion-split-pane>
 
   <ion-router-outlet *ngIf="!showSidenav"></ion-router-outlet>
+
+  <ion-button
+    *ngIf="showSidenav"
+    fill="clear"
+    (click)="openNotifications()"
+    class="notification-button">
+    <ion-icon name="notifications-outline" slot="icon-only"></ion-icon>
+    <ion-badge
+      *ngIf="unreadNotifications > 0"
+      class="notification-badge"
+      color="danger">
+      {{ unreadNotifications }}
+    </ion-badge>
+  </ion-button>
 </ion-app>

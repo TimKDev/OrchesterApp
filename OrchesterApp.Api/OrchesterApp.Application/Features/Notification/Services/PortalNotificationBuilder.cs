@@ -20,6 +20,6 @@ public class PortalNotificationBuilder : IPortalNotificationBuilder
             throw new Exception($"No notification builder found for notification category {notification.Category}");
         }
 
-        return notificationBuilder.Build(notification);
+        return notificationBuilder.Build(NotificationFactory.Create(notification));
     }
 }

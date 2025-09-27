@@ -53,7 +53,8 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             Guid[]? OrchestermitgliedIds,
             string? WeitereInformationen,
             string? Image,
-            string[] Dokumente) : IRequest<OrchesterApp.Domain.TerminAggregate.Termin>;
+            string[] Dokumente,
+            bool ShouldEmailBeSend) : IRequest<OrchesterApp.Domain.TerminAggregate.Termin>;
 
         private class
             UpdateTerminCommandHandler : IRequestHandler<UpdateTerminCommand,
@@ -135,7 +136,8 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 //TODO Vllt auslagern in ein Domain Event aber trotzdem noch in einer Transaktion
                 var author = await _currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
                 var notificationId =
-                    await PublishChangeNotification(termin, oldTerminData, newTerminData, author.GetName());
+                    await PublishChangeNotification(termin, oldTerminData, newTerminData, author.GetName(),
+                        request.ShouldEmailBeSend);
 
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -151,7 +153,8 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 OrchesterApp.Domain.TerminAggregate.Termin termin,
                 TerminData oldTerminData,
                 TerminData newTerminData,
-                string author)
+                string author,
+                bool shouldEmailBeSend)
             {
                 if (termin.IsInPast() || oldTerminData == newTerminData)
                 {
@@ -166,8 +169,15 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                         or (int)RückmeldungsartEnum.NichtZurückgemeldet)
                     .Select(r => r.OrchesterMitgliedsId).ToList();
 
+                List<NotificationSink> notificationSinks = [NotificationSink.Portal];
+
+                if (shouldEmailBeSend)
+                {
+                    notificationSinks.Add(NotificationSink.Email);
+                }
+
                 await _notifyService.PublishNotificationAsync(terminDataChangedNotification, mitgliederForNotification,
-                    [NotificationSink.Email, NotificationSink.Portal]);
+                    notificationSinks);
 
                 return terminDataChangedNotification.Id;
             }
