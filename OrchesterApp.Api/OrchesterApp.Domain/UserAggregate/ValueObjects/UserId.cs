@@ -11,14 +11,21 @@ namespace OrchesterApp.Domain.UserAggregate.ValueObjects
             yield return Value;
         }
 
-        private UserId() { }
-        
+        public override string ToString()
+        {
+            return Value.ToString();
+        }
+
+        private UserId()
+        {
+        }
+
         private UserId(Guid userId)
         {
             Value = userId;
         }
 
-        public static UserId CreateUnique() 
+        public static UserId CreateUnique()
         {
             return new UserId(Guid.NewGuid());
         }

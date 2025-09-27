@@ -36,7 +36,8 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
         public Task<UserNotification[]> GetByNotificationIds(IList<NotificationId> notificationIds,
             CancellationToken cancellationToken)
         {
-            return _context.Set<UserNotification>().Where(un => notificationIds.Contains(un.NotificationId))
+            return _context.Set<UserNotification>()
+                .Where(un => notificationIds.Contains(un.NotificationId))
                 .ToArrayAsync(cancellationToken);
         }
 

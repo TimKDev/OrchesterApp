@@ -6,28 +6,18 @@ namespace OrchesterApp.Domain.NotificationAggregate;
 
 public sealed class ChangeTerminDataNotification : Notification
 {
-    public int? OldTerminStatus { get; private set; }
-    public int? NewTerminStatus { get; private set; }
-    public DateTime? OldStartZeit { get; private set; }
-    public DateTime? NewStartZeit { get; private set; }
-    public DateTime? OldEndZeit { get; private set; }
-    public DateTime? NewEndZeit { get; private set; }
-
-    public override string Data => JsonSerializer.Serialize(new ChangeTerminDataNotificationDto()
-    {
-        OldTerminStatus = OldTerminStatus,
-        NewTerminStatus = NewTerminStatus,
-        OldStartZeit = OldStartZeit,
-        NewStartZeit = NewStartZeit,
-        OldEndZeit = OldEndZeit,
-        NewEndZeit = NewEndZeit,
-    });
+    public int? OldTerminStatus { get; }
+    public int? NewTerminStatus { get; }
+    public DateTime? OldStartZeit { get; }
+    public DateTime? NewStartZeit { get; }
+    public DateTime? OldEndZeit { get; }
+    public DateTime? NewEndZeit { get; }
 
     private ChangeTerminDataNotification(NotificationId id, NotificationType type, NotificationCategory category,
-        NotificationUrgency urgency, TerminId? terminId, DateTime createdAt,
+        NotificationUrgency urgency, TerminId? terminId, DateTime createdAt, string? data,
         int? oldTerminStatus, int? newTerminStatus,
         DateTime? oldStartZeit, DateTime? newStartZeit, DateTime? oldEndZeit, DateTime? newEndZeit) : base(id, type,
-        category, urgency, terminId, createdAt)
+        category, urgency, terminId, createdAt, data)
     {
         OldTerminStatus = oldTerminStatus;
         NewTerminStatus = newTerminStatus;
@@ -45,19 +35,43 @@ public sealed class ChangeTerminDataNotification : Notification
               ?? new ChangeTerminDataNotificationDto();
 
         return new ChangeTerminDataNotification(notification.Id, notification.Type, notification.Category,
-            notification.Urgency, notification.TerminId, notification.CreatedAt, dataDto.OldTerminStatus,
-            dataDto.NewTerminStatus,
-            dataDto.OldStartZeit, dataDto.NewStartZeit, dataDto.OldEndZeit, dataDto.NewEndZeit);
+            notification.Urgency, notification.TerminId, notification.CreatedAt, notification.Data,
+            dataDto.OldTerminStatus, dataDto.NewTerminStatus, dataDto.OldStartZeit, dataDto.NewStartZeit,
+            dataDto.OldEndZeit, dataDto.NewEndZeit);
     }
 
     public static ChangeTerminDataNotification New(TerminId terminId, TerminData oldTerminData,
         TerminData newTerminData)
     {
+        var doesStartTimeChange = oldTerminData.StartZeit != newTerminData.StartZeit;
+        var doesEndTimeChange = oldTerminData.EndZeit != newTerminData.EndZeit;
+        var doesTerminStatusChange = oldTerminData.TerminStatus != newTerminData.TerminStatus;
+
+        var oldStatusValue = doesTerminStatusChange ? oldTerminData.TerminStatus : null;
+        var newStatusValue = doesTerminStatusChange ? newTerminData.TerminStatus : null;
+        DateTime? oldStartTimeValue = doesStartTimeChange ? oldTerminData.StartZeit : null;
+        DateTime? newStartTimeValue = doesStartTimeChange ? newTerminData.StartZeit : null;
+        DateTime? oldEndValue = doesEndTimeChange ? oldTerminData.EndZeit : null;
+        DateTime? newEndValue = doesEndTimeChange ? newTerminData.EndZeit : null;
+
+        var data = JsonSerializer.Serialize(new ChangeTerminDataNotificationDto()
+        {
+            OldTerminStatus = oldStatusValue,
+            NewTerminStatus = newStatusValue,
+            OldStartZeit = oldStartTimeValue,
+            NewStartZeit = newStartTimeValue,
+            OldEndZeit = oldEndValue,
+            NewEndZeit = newEndValue,
+        });
+
         return new ChangeTerminDataNotification(NotificationId.CreateUnique(), NotificationType.Information,
             NotificationCategory.ChangeTerminData,
-            NotificationUrgency.Medium, terminId, DateTime.UtcNow, oldTerminData.TerminStatus,
-            newTerminData.TerminStatus, oldTerminData.StartZeit,
-            newTerminData.StartZeit, oldTerminData.EndZeit, newTerminData.EndZeit);
+            NotificationUrgency.Medium, terminId, DateTime.UtcNow, data,
+            oldStatusValue,
+            newStatusValue,
+            oldStartTimeValue,
+            newStartTimeValue,
+            oldEndValue, newEndValue);
     }
 
     [Serializable]

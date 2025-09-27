@@ -9,13 +9,13 @@ namespace OrchesterApp.Domain.NotificationAggregate
         public NotificationCategory Category { get; private set; }
         public NotificationUrgency Urgency { get; private set; }
         public TerminId? TerminId { get; private set; }
-        public virtual string? Data { get; }
+        public string? Data { get; }
 
         public DateTime CreatedAt { get; private set; }
 
         protected Notification(NotificationId id, NotificationType type, NotificationCategory category,
             NotificationUrgency urgency,
-            TerminId? terminId, DateTime createdAt)
+            TerminId? terminId, DateTime createdAt, string? data)
         {
             Id = id;
             Type = type;
@@ -23,10 +23,7 @@ namespace OrchesterApp.Domain.NotificationAggregate
             Urgency = urgency;
             TerminId = terminId;
             CreatedAt = createdAt;
-        }
-
-        private Notification()
-        {
+            Data = data;
         }
     }
 }

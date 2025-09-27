@@ -29,13 +29,14 @@ public static class NotificationSender
 
         public async Task Handle(Command request, CancellationToken cancellationToken)
         {
-            var (userNotifications, notifications) =
-                await _userNotificationRepository.GetByNotificationIds(request.NotificationIds, cancellationToken)
-                    .Parallelize(_notificationRepository.GetByIds(request.NotificationIds, cancellationToken));
+            var userNotifications =
+                await _userNotificationRepository.GetByNotificationIds(request.NotificationIds, cancellationToken);
+
+            var notifications = await _notificationRepository.GetByIds(request.NotificationIds, cancellationToken);
 
             var notificationDict =
                 notifications.ToDictionary(n => n.Id,
-                    n => (Notification: n,
+                    n => (Notification: NotificationFactory.Create(n),
                         UserNotifications: userNotifications.Where(u => u.NotificationId == n.Id).ToList()));
 
             foreach (var notificationId in request.NotificationIds)

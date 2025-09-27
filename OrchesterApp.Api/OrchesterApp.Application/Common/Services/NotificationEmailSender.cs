@@ -45,7 +45,7 @@ public class NotificationEmailSender : INotificationEmailSender
             .ToListAsync(cancellationToken);
 
         var userNotificationsDict =
-            userNotifications.ToDictionary(u => u, u => users.FirstOrDefault(user => user.Id == u.Id.ToString()));
+            userNotifications.ToDictionary(u => u, u => users.FirstOrDefault(user => user.Id == u.UserId.ToString()));
 
         var messagesToSend = notificationCategoryEmailSender.CreateMessage(notification, userNotifications,
             userNotificationsDict);

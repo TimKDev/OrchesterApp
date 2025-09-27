@@ -18,7 +18,7 @@ public class TestEmailService : IEmailService
 
     private static string ComputeFileName(Message message, string senderMail)
     {
-        var uniqueEnd = Guid.NewGuid().ToString().Skip(8).Take(4);
+        var uniqueEnd = new string(Guid.NewGuid().ToString().Skip(9).Take(4).ToArray());
         return $"{senderMail}_{message.Subject}_{uniqueEnd}.txt";
     }
 }

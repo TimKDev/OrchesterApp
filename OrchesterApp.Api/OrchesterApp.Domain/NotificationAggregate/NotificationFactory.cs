@@ -2,7 +2,7 @@
 
 public static class NotificationFactory
 {
-    public static TNotification Create<TNotification>(Notification notification) where TNotification : Notification
+    public static Notification Create(Notification notification)
     {
         var result = notification.Category switch
         {
@@ -11,7 +11,6 @@ public static class NotificationFactory
             _ => throw new ArgumentOutOfRangeException()
         };
 
-        return result as TNotification ??
-               throw new Exception("Provided notification does not match expected notification type.");
+        return result;
     }
 }
