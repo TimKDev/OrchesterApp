@@ -2,6 +2,7 @@
 using Microsoft.AspNetCore.Identity;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate;
 using OrchesterApp.Domain.UserAggregate;
+using OrchesterApp.Domain.UserAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
@@ -14,10 +15,11 @@ namespace OrchesterApp.Infrastructure.Authentication
         private readonly UserManager<User> userManager;
         private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
 
-        private User cachedCurrentUser = null!;
-        private OrchesterMitglied cachedCurrentOrchesterMitglied = null!;
+        private User? cachedCurrentUser;
+        private OrchesterMitglied? cachedCurrentOrchesterMitglied;
 
-        public CurrentUserService(IOrchesterMitgliedRepository orchesterMitgliedRepository, UserManager<User> userManager, IHttpContextAccessor httpContext)
+        public CurrentUserService(IOrchesterMitgliedRepository orchesterMitgliedRepository,
+            UserManager<User> userManager, IHttpContextAccessor httpContext)
         {
             this.orchesterMitgliedRepository = orchesterMitgliedRepository;
             this.userManager = userManager;
@@ -26,22 +28,25 @@ namespace OrchesterApp.Infrastructure.Authentication
 
         public async Task<OrchesterMitglied> GetCurrentOrchesterMitgliedAsync(CancellationToken cancellationToken)
         {
-            if(cachedCurrentOrchesterMitglied is null)
+            if (cachedCurrentOrchesterMitglied is null)
             {
                 var orchesterMitgliedsId = (await GetCurrentUserAsync(cancellationToken)).OrchesterMitgliedsId;
-                cachedCurrentOrchesterMitglied = await orchesterMitgliedRepository.GetByIdAsync(orchesterMitgliedsId, cancellationToken);
+                cachedCurrentOrchesterMitglied =
+                    await orchesterMitgliedRepository.GetByIdAsync(orchesterMitgliedsId, cancellationToken);
             }
+
             return cachedCurrentOrchesterMitglied;
         }
 
         public async Task<User> GetCurrentUserAsync(CancellationToken cancellationToken)
         {
-            if(cachedCurrentUser is null)
+            if (cachedCurrentUser is null)
             {
                 var userClaim = httpContext.HttpContext?.User ?? throw new Exception();
                 var currentUserId = userClaim.Claims.FirstOrDefault(c => c.Type == "Id")!.Value;
                 cachedCurrentUser = await userManager.FindByIdAsync(currentUserId) ?? throw new Exception();
             }
+
             return cachedCurrentUser;
         }
 
@@ -49,6 +54,18 @@ namespace OrchesterApp.Infrastructure.Authentication
         {
             var currentUser = await GetCurrentUserAsync(cancellationToken);
             return await userManager.IsInRoleAsync(currentUser, RoleNames.Vorstand.ToString());
+        }
+
+        public async Task<UserId> GetCurrentUserIdAsync(CancellationToken cancellationToken)
+        {
+            var currentUser = await GetCurrentUserAsync(cancellationToken);
+
+            if (!Guid.TryParse(currentUser.Id, out var userId))
+            {
+                throw new Exception("UserId could not be parsed as Guid");
+            }
+
+            return UserId.Create(userId);
         }
     }
 }

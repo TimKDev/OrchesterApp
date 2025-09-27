@@ -6,6 +6,7 @@ using TvJahnOrchesterApp.Application.Common;
 using TvJahnOrchesterApp.Application.Common.Behaviors;
 using TvJahnOrchesterApp.Application.Features.Authorization;
 using TvJahnOrchesterApp.Application.Features.Dropdown;
+using TvJahnOrchesterApp.Application.Features.Notification;
 using TvJahnOrchesterApp.Application.Features.Termin;
 
 namespace TvJahnOrchesterApp.Application
@@ -23,7 +24,7 @@ namespace TvJahnOrchesterApp.Application
 
             services.AddAuthorizationFeature();
             services.AddDropdownFeature();
-            services.AddTerminFeature();
+            services.AddNotificationFeature();
             services.AddCommon();
 
             return services;

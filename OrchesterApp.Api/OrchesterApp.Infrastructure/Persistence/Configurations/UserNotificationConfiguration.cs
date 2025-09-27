@@ -45,6 +45,10 @@ namespace OrchesterApp.Infrastructure.Persistence.Configurations
 
             builder.Property(un => un.SendAt);
 
+            builder.Property(un => un.CreatedAt);
+
+            builder.Property(un => un.IsRead);
+
             builder.HasOne<Notification>()
                 .WithMany()
                 .HasForeignKey(un => un.NotificationId)

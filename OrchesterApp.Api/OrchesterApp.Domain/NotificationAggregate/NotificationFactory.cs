@@ -1,4 +1,6 @@
-﻿namespace OrchesterApp.Domain.NotificationAggregate;
+﻿using OrchesterApp.Domain.NotificationAggregate.Notifications;
+
+namespace OrchesterApp.Domain.NotificationAggregate;
 
 public static class NotificationFactory
 {

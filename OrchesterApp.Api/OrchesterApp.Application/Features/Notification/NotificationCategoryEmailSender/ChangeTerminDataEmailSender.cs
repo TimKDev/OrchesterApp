@@ -2,11 +2,12 @@
 using System.Text;
 using Microsoft.Extensions.Logging;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.UserAggregate;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Models;
 
-namespace TvJahnOrchesterApp.Application.Features.Termin.NotificationCategoryEmailSender;
+namespace TvJahnOrchesterApp.Application.Features.Notification.NotificationCategoryEmailSender;
 
 public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
 {
@@ -19,7 +20,7 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
 
     public NotificationCategory NotificationCategory => NotificationCategory.ChangeTerminData;
 
-    public List<Message> CreateMessage(Notification notification,
+    public List<Message> CreateMessage(OrchesterApp.Domain.NotificationAggregate.Notification notification,
         IList<UserNotification> userNotifications,
         Dictionary<UserNotification, User?> userNotificationsDict)
     {
@@ -40,7 +41,7 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
 
             var changesContent = BuildChangesContent(changeTerminDataNotification);
             var textContent = BuildTextContent(changeTerminDataNotification);
-            var htmlContent = BuildHtmlContent(changesContent);
+            var htmlContent = BuildHtmlContent(changesContent, changeTerminDataNotification.Author);
 
             var message = new Message([user.Email], "Termindaten haben sich geändert", textContent, htmlContent);
 
@@ -54,7 +55,6 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
     {
         var changes = new StringBuilder();
 
-        // Start time change
         if (notification.OldStartZeit.HasValue && notification.NewStartZeit.HasValue)
         {
             changes.AppendLine(
@@ -66,7 +66,6 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
                 $"</div>");
         }
 
-        // End time change
         if (notification.OldEndZeit.HasValue && notification.NewEndZeit.HasValue)
         {
             changes.AppendLine(
@@ -78,7 +77,6 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
                 $"</div>");
         }
 
-        // Status change (if we have status mappings in the future)
         if (notification.OldTerminStatus.HasValue && notification.NewTerminStatus.HasValue)
         {
             changes.AppendLine(
@@ -100,7 +98,8 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
         var content = new StringBuilder();
         content.AppendLine("Hallo!");
         content.AppendLine();
-        content.AppendLine("Die Daten für einen Termin wurden geändert. Hier sind die Details:");
+        content.AppendLine(
+            $"Die Daten für einen Termin wurden von {notification.Author} geändert. Hier sind die Details:");
         content.AppendLine();
 
         if (notification.OldStartZeit.HasValue && notification.NewStartZeit.HasValue)
@@ -130,7 +129,7 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
         return content.ToString();
     }
 
-    private static string BuildHtmlContent(string changesContent)
+    private static string BuildHtmlContent(string changesContent, string author)
     {
         try
         {
@@ -147,7 +146,9 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
             using var reader = new StreamReader(stream);
             var template = reader.ReadToEnd();
 
-            return template.Replace("{{CHANGES_CONTENT}}", changesContent);
+            return template
+                .Replace("{{CHANGES_CONTENT}}", changesContent)
+                .Replace("{{Author}}", author);
         }
         catch (Exception ex)
         {

@@ -9,8 +9,10 @@ using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.Entities;
 using OrchesterApp.Domain.Common.ValueObjects;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.TerminAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
@@ -63,11 +65,12 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             private readonly IFileStorageService _fileStorageService;
             private readonly INotifyService _notifyService;
             private readonly INotificationBackgroundService _notificationBackgroundService;
+            private readonly ICurrentUserService _currentUserService;
 
             public UpdateTerminCommandHandler(ITerminRepository terminRepository,
                 IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork,
                 IFileStorageService fileStorageService, INotifyService notifyService,
-                INotificationBackgroundService notificationBackgroundService)
+                INotificationBackgroundService notificationBackgroundService, ICurrentUserService currentUserService)
             {
                 this.terminRepository = terminRepository;
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
@@ -75,6 +78,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 _fileStorageService = fileStorageService;
                 _notifyService = notifyService;
                 _notificationBackgroundService = notificationBackgroundService;
+                _currentUserService = currentUserService;
             }
 
             public async Task<OrchesterApp.Domain.TerminAggregate.Termin> Handle(UpdateTerminCommand request,
@@ -129,7 +133,9 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                     termin.EinsatzPlan.EndZeit);
 
                 //TODO Vllt auslagern in ein Domain Event aber trotzdem noch in einer Transaktion
-                var notificationId = await PublishChangeNotification(termin, oldTerminData, newTerminData);
+                var author = await _currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
+                var notificationId =
+                    await PublishChangeNotification(termin, oldTerminData, newTerminData, author.GetName());
 
                 await unitOfWork.SaveChangesAsync(cancellationToken);
 
@@ -144,7 +150,8 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             private async Task<NotificationId?> PublishChangeNotification(
                 OrchesterApp.Domain.TerminAggregate.Termin termin,
                 TerminData oldTerminData,
-                TerminData newTerminData)
+                TerminData newTerminData,
+                string author)
             {
                 if (termin.IsInPast() || oldTerminData == newTerminData)
                 {
@@ -152,7 +159,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 }
 
                 var terminDataChangedNotification =
-                    ChangeTerminDataNotification.New(termin.Id, oldTerminData, newTerminData);
+                    ChangeTerminDataNotification.New(termin.Id, oldTerminData, newTerminData, author);
 
                 var mitgliederForNotification = termin.TerminRückmeldungOrchesterMitglieder
                     .Where(r => r.Zugesagt is (int)RückmeldungsartEnum.Zugesagt

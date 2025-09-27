@@ -27,9 +27,17 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
             return _context.Set<UserNotification>().FirstAsync(i => i.Id.Value == id.Value, cancellationToken);
         }
 
-        public Task<UserNotification[]> GetByUserId(UserId userId, CancellationToken cancellationToken)
+        public Task<List<UserNotification>> GetByIds(List<UserNotificationId> ids, CancellationToken cancellationToken)
         {
-            return _context.Set<UserNotification>().Where(un => un.UserId.Value == userId.Value)
+            return _context.Set<UserNotification>().Where(u => ids.Contains(u.Id)).ToListAsync(cancellationToken);
+        }
+
+        public Task<UserNotification[]> GetByUserId(UserId userId, int limitResult, CancellationToken cancellationToken)
+        {
+            return _context.Set<UserNotification>()
+                .Where(un => un.UserId.Value == userId.Value && un.NotificationSink == NotificationSink.Portal)
+                .OrderBy(un => un.CreatedAt)
+                .Take(limitResult)
                 .ToArrayAsync(cancellationToken);
         }
 

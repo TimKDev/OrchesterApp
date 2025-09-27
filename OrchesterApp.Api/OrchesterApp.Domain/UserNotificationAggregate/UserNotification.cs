@@ -9,15 +9,18 @@ public class UserNotification : AggregateRoot<UserNotificationId, Guid>
     public NotificationId NotificationId { get; private set; }
     public SendStatus SendStatus { get; private set; }
     public DateTime? SendAt { get; private set; }
+    public DateTime CreatedAt { get; private set; }
     public NotificationSink NotificationSink { get; private set; }
+    public bool IsRead { get; private set; } = false;
 
     private UserNotification(UserNotificationId id, UserId userId, NotificationId notificationId,
-        SendStatus sendStatus, DateTime? sendAt, NotificationSink notificationSink) : base(id)
+        SendStatus sendStatus, DateTime createdAt, DateTime? sendAt, NotificationSink notificationSink) : base(id)
     {
         UserId = userId;
         NotificationId = notificationId;
         SendStatus = sendStatus;
         SendAt = sendAt;
+        CreatedAt = createdAt;
         NotificationSink = notificationSink;
     }
 
@@ -29,6 +32,7 @@ public class UserNotification : AggregateRoot<UserNotificationId, Guid>
         NotificationSink notificationSink)
     {
         return new UserNotification(UserNotificationId.CreateUnique(), userId, notificationId, SendStatus.Pending,
+            DateTime.UtcNow,
             null, notificationSink);
     }
 
@@ -36,5 +40,10 @@ public class UserNotification : AggregateRoot<UserNotificationId, Guid>
     {
         SendStatus = SendStatus.Success;
         SendAt = DateTime.UtcNow;
+    }
+
+    public void MarkAsRead()
+    {
+        IsRead = true;
     }
 }

@@ -1,8 +1,10 @@
-﻿using System.Text.Json;
-using OrchesterApp.Domain.Common.Entities;
+﻿using System.Text;
+using System.Text.Json;
+using OrchesterApp.Domain.Common.Enums;
 using OrchesterApp.Domain.TerminAggregate.ValueObjects;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 
-namespace OrchesterApp.Domain.NotificationAggregate;
+namespace OrchesterApp.Domain.NotificationAggregate.Notifications;
 
 public sealed class ChangeTerminDataNotification : Notification
 {
@@ -12,11 +14,13 @@ public sealed class ChangeTerminDataNotification : Notification
     public DateTime? NewStartZeit { get; }
     public DateTime? OldEndZeit { get; }
     public DateTime? NewEndZeit { get; }
+    public string Author { get; }
 
     private ChangeTerminDataNotification(NotificationId id, NotificationType type, NotificationCategory category,
         NotificationUrgency urgency, TerminId? terminId, DateTime createdAt, string? data,
         int? oldTerminStatus, int? newTerminStatus,
-        DateTime? oldStartZeit, DateTime? newStartZeit, DateTime? oldEndZeit, DateTime? newEndZeit) : base(id, type,
+        DateTime? oldStartZeit, DateTime? newStartZeit, DateTime? oldEndZeit, DateTime? newEndZeit,
+        string author) : base(id, type,
         category, urgency, terminId, createdAt, data)
     {
         OldTerminStatus = oldTerminStatus;
@@ -25,6 +29,7 @@ public sealed class ChangeTerminDataNotification : Notification
         NewStartZeit = newStartZeit;
         OldEndZeit = oldEndZeit;
         NewEndZeit = newEndZeit;
+        Author = author;
     }
 
     public static ChangeTerminDataNotification Create(Notification notification)
@@ -37,11 +42,11 @@ public sealed class ChangeTerminDataNotification : Notification
         return new ChangeTerminDataNotification(notification.Id, notification.Type, notification.Category,
             notification.Urgency, notification.TerminId, notification.CreatedAt, notification.Data,
             dataDto.OldTerminStatus, dataDto.NewTerminStatus, dataDto.OldStartZeit, dataDto.NewStartZeit,
-            dataDto.OldEndZeit, dataDto.NewEndZeit);
+            dataDto.OldEndZeit, dataDto.NewEndZeit, dataDto.Author);
     }
 
     public static ChangeTerminDataNotification New(TerminId terminId, TerminData oldTerminData,
-        TerminData newTerminData)
+        TerminData newTerminData, string author)
     {
         var doesStartTimeChange = oldTerminData.StartZeit != newTerminData.StartZeit;
         var doesEndTimeChange = oldTerminData.EndZeit != newTerminData.EndZeit;
@@ -62,6 +67,7 @@ public sealed class ChangeTerminDataNotification : Notification
             NewStartZeit = newStartTimeValue,
             OldEndZeit = oldEndValue,
             NewEndZeit = newEndValue,
+            Author = author
         });
 
         return new ChangeTerminDataNotification(NotificationId.CreateUnique(), NotificationType.Information,
@@ -71,7 +77,29 @@ public sealed class ChangeTerminDataNotification : Notification
             newStatusValue,
             oldStartTimeValue,
             newStartTimeValue,
-            oldEndValue, newEndValue);
+            oldEndValue, newEndValue, author);
+    }
+
+    public PortalNotificationContent GetPortalNotificationContent()
+    {
+        var stringBuilder = new StringBuilder();
+        if (OldTerminStatus.HasValue && NewTerminStatus.HasValue)
+        {
+            stringBuilder.AppendLine(
+                $"{Author} hat den Terminstatus auf {((TerminStatusEnum)NewTerminStatus.Value).ToString()} geändert.");
+        }
+
+        if (OldStartZeit.HasValue && NewStartZeit.HasValue)
+        {
+            stringBuilder.AppendLine($"{Author} hat die Startzeit auf {NewStartZeit.Value} geändert.");
+        }
+
+        if (OldEndZeit.HasValue && NewEndZeit.HasValue)
+        {
+            stringBuilder.AppendLine($"{Author} hat die Endzeit auf {NewEndZeit.Value} geändert.");
+        }
+
+        return new PortalNotificationContent("Terminänderung", stringBuilder.ToString());
     }
 
     [Serializable]
@@ -83,5 +111,6 @@ public sealed class ChangeTerminDataNotification : Notification
         public DateTime? NewStartZeit { get; init; }
         public DateTime? OldEndZeit { get; init; }
         public DateTime? NewEndZeit { get; init; }
+        public string Author { get; init; }
     }
 }

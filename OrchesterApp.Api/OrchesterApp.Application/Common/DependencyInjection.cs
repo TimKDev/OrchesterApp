@@ -10,7 +10,6 @@ public static class DependencyInjection
 {
     public static IServiceCollection AddCommon(this IServiceCollection services)
     {
-        services.AddScoped<INotificationEmailSender, NotificationEmailSender>();
         services.AddScoped<INotifyService, NotifyService>();
 
         services.AddSingleton<NotificationBackgroundService>();

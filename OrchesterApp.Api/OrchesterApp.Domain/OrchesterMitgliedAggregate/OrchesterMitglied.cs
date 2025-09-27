@@ -190,5 +190,10 @@ namespace OrchesterApp.Domain.OrchesterMitgliedAggregate
             MemberSince = memberSince;
             UpdatePositions(positionIds);
         }
+
+        public string GetName()
+        {
+            return $"{Vorname} {Nachname}";
+        }
     }
 }

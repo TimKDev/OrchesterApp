@@ -27,7 +27,7 @@
     </ItemGroup>
 
     <ItemGroup>
-        <EmbeddedResource Include="Features\Termin\NotificationCategoryEmailSender\ChangeTerminDataEmailTemplate.html" />
+        <EmbeddedResource Include="Features\Notification\NotificationCategoryEmailSender\ChangeTerminDataEmailTemplate.html"/>
     </ItemGroup>
 
 </Project>
