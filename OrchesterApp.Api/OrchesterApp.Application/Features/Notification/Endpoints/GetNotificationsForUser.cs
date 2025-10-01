@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 using TvJahnOrchesterApp.Application.Features.Notification.Models;
 
 namespace TvJahnOrchesterApp.Application.Features.Notification.Endpoints;
@@ -68,7 +69,7 @@ public static class GetNotificationsForUser
                     continue;
                 }
 
-                var portalMessage = _portalNotificationBuilder.Build(notification);
+                var portalMessage = await _portalNotificationBuilder.BuildAsync(notification, cancellationToken);
 
                 result.Add(new NotificationDto(
                     userNotification.Id.Value, portalMessage.Title, portalMessage.Message, userNotification.IsRead,

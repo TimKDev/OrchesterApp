@@ -1,7 +1,7 @@
 ﻿using Microsoft.Extensions.DependencyInjection;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Services;
-using TvJahnOrchesterApp.Application.Features.Notification.Endpoints;
+using TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 using TvJahnOrchesterApp.Application.Features.Notification.NotificationCategoryEmailSender;
 using TvJahnOrchesterApp.Application.Features.Notification.PortalNotificationBuilder;
 

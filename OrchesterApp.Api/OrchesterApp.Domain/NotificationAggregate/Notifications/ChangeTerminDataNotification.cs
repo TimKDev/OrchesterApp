@@ -80,24 +80,33 @@ public sealed class ChangeTerminDataNotification : Notification
             oldEndValue, newEndValue, author);
     }
 
-    public PortalNotificationContent GetPortalNotificationContent()
+    public PortalNotificationContent GetPortalNotificationContent(string? terminName, DateTime? terminStartZeit)
     {
         var stringBuilder = new StringBuilder();
+
+        if (!string.IsNullOrEmpty(terminName) && terminStartZeit.HasValue)
+        {
+            stringBuilder.Append($"{terminName} am {terminStartZeit.Value:dd.MM.yyyy}: ");
+        }
+
+        var changes = new List<string>();
+
         if (OldTerminStatus.HasValue && NewTerminStatus.HasValue)
         {
-            stringBuilder.AppendLine(
-                $"{Author} hat den Terminstatus auf {((TerminStatusEnum)NewTerminStatus.Value).ToString()} geändert.");
+            changes.Add($"Status → {((TerminStatusEnum)NewTerminStatus.Value).ToString()}");
         }
 
         if (OldStartZeit.HasValue && NewStartZeit.HasValue)
         {
-            stringBuilder.AppendLine($"{Author} hat die Startzeit auf {NewStartZeit.Value} geändert.");
+            changes.Add($"Start → {NewStartZeit.Value:dd.MM.yyyy HH:mm}");
         }
 
         if (OldEndZeit.HasValue && NewEndZeit.HasValue)
         {
-            stringBuilder.AppendLine($"{Author} hat die Endzeit auf {NewEndZeit.Value} geändert.");
+            changes.Add($"Ende → {NewEndZeit.Value:dd.MM.yyyy HH:mm}");
         }
+
+        stringBuilder.Append(string.Join(", ", changes));
 
         return new PortalNotificationContent("Terminänderung", stringBuilder.ToString());
     }

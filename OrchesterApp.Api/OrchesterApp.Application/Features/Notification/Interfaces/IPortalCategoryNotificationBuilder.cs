@@ -1,9 +1,13 @@
 ﻿using OrchesterApp.Domain.NotificationAggregate;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 
-namespace TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
+namespace TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 
 public interface IPortalCategoryNotificationBuilder
 {
     NotificationCategory NotificationCategory { get; }
-    PortalNotificationContent Build(Notification notification);
+
+    Task<PortalNotificationContent>
+        BuildAsync(OrchesterApp.Domain.NotificationAggregate.Notification notification,
+            CancellationToken cancellationToken);
 }
