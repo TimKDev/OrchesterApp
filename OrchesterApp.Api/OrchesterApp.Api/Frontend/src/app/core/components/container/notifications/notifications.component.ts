@@ -8,6 +8,12 @@ import { NotificationUrgency } from 'src/app/core/services/notification-urgency.
 import { NotificationService } from 'src/app/core/services/notification.service';
 import { NotificationType } from 'src/app/core/services/notification-type.enum';
 
+interface NotificationGroup {
+  date: string;
+  displayDate: string;
+  notifications: NotificationDto[];
+}
+
 @Component({
   selector: 'app-notifications',
   templateUrl: './notifications.component.html',
@@ -16,6 +22,7 @@ import { NotificationType } from 'src/app/core/services/notification-type.enum';
 export class NotificationsComponent implements OnInit, OnDestroy{
 
   notifications: NotificationDto[] = [];
+  groupedNotifications: NotificationGroup[] = [];
   isLoading = true;
   isRefreshing = false;
 
@@ -57,6 +64,7 @@ export class NotificationsComponent implements OnInit, OnDestroy{
       })
     ).subscribe((response) => {
       this.notifications = response.notifications;
+      this.groupedNotifications = this.groupNotificationsByDate(response.notifications);
       this.isLoading = false;
       this.updateUnreadCount(response.notifications.filter(n => !n.isRead).length);
 
@@ -64,6 +72,45 @@ export class NotificationsComponent implements OnInit, OnDestroy{
         refreshEvent.target.complete();
         this.isRefreshing = false;
       }
+    });
+  }
+
+  private groupNotificationsByDate(notifications: NotificationDto[]): NotificationGroup[] {
+    const groups = new Map<string, NotificationDto[]>();
+    const today = new Date();
+    const yesterday = new Date(today);
+    yesterday.setDate(yesterday.getDate() - 1);
+
+    notifications.forEach(notification => {
+      const notificationDate = new Date(notification.createdAt);
+      const dateKey = notificationDate.toLocaleDateString('de-DE');
+
+      if (!groups.has(dateKey)) {
+        groups.set(dateKey, []);
+      }
+      groups.get(dateKey)!.push(notification);
+    });
+
+    return Array.from(groups.entries()).map(([date, notifs]) => {
+      const notificationDate = new Date(notifs[0].createdAt);
+      const dateKey = notificationDate.toLocaleDateString('de-DE');
+      const todayKey = today.toLocaleDateString('de-DE');
+      const yesterdayKey = yesterday.toLocaleDateString('de-DE');
+
+      let displayDate: string;
+      if (dateKey === todayKey) {
+        displayDate = 'Heute';
+      } else if (dateKey === yesterdayKey) {
+        displayDate = 'Gestern';
+      } else {
+        displayDate = date;
+      }
+
+      return {
+        date: dateKey,
+        displayDate,
+        notifications: notifs
+      };
     });
   }
 

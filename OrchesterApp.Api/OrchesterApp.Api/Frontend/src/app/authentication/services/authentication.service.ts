@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { BehaviorSubject, tap, throwError } from 'rxjs';
+import { BehaviorSubject, from, switchMap, tap, throwError } from 'rxjs';
 import { LoginRequest } from '../interfaces/login-request';
 import { LoginResponse } from '../interfaces/login-response';
 import { UnauthorizedHttpClientService } from 'src/app/core/services/unauthorized-http-client.service';
@@ -81,14 +81,21 @@ export class AuthenticationService {
 
   public refresh(){
     if (!this.token || !this.refreshToken) {
-      return throwError(() => new Error("Token or Refreshtoken not found."));
+      return from(this.loadTokensFromStorage()).pipe(switchMap(() =>
+        this.http.post<LoginResponse>("api/authentication/refresh", { token: this.token, refreshToken: this.refreshToken }).pipe(
+          tap( async res => {
+            await this.setTokens(res.token, res.refreshToken, res.name, res.email, res.userRoles, res.image);
+          })
+        )
+      ));
     }
+
     return this.http.post<LoginResponse>("api/authentication/refresh", { token: this.token, refreshToken: this.refreshToken })
     .pipe(
       tap( async res => {
         await this.setTokens(res.token, res.refreshToken, res.name, res.email, res.userRoles, res.image);
       })
-    );
+    );;
   }
 
   public changeEmail(changeEmailRequest: ChangeEmailRequest){
