@@ -11,35 +11,40 @@
   padding: 2rem;
   text-align: center;
   color: var(--ion-color-medium);
-  
+
   ion-icon {
     margin-bottom: 1rem;
     opacity: 0.5;
   }
-  
+
   p {
     margin: 0;
     font-size: 1rem;
   }
 }
 
+.createdAt{
+  display: block;
+  text-align: right;
+}
+
 ion-item {
   --padding-start: 16px;
   --padding-end: 16px;
   --background: var(--ion-notification-background-read);
-  
+
   ion-label {
     h2 {
       margin-bottom: 4px;
       font-size: 1rem;
     }
-    
+
     p {
       margin: 4px 0;
       color: var(--ion-color-medium);
       font-size: 0.9rem;
     }
-    
+
     ion-note {
       font-size: 0.8rem;
     }
@@ -71,13 +76,13 @@ ion-badge {
   padding: 2rem;
   text-align: center;
   color: var(--ion-color-medium);
-  
+
   ion-spinner {
     margin-bottom: 1rem;
   }
-  
+
   p {
     margin: 0;
     font-size: 1rem;
   }
-} 
+}

@@ -40,8 +40,8 @@
                     (click)="navigateToTermin(notification.terminId)" class="termin-button"></ion-icon>
           <span>{{ notification.title }}</span>
         </h2>
-        <p style="font-size: 13px; margin-bottom: 0px;">{{ notification.message }}</p>
-        <ion-note style="font-weight: 600;">{{ notification.createdAt | date:'dd.MM.yyyy HH:mm' }}</ion-note>
+        <p style="font-size: 13px; font-weight: 600; margin-bottom: 0px;">{{ notification.message }}</p>
+        <ion-note class="createdAt">{{ notification.createdAt | date:'dd.MM.yyyy HH:mm' }}</ion-note>
       </ion-label>
     </ion-item>
   </ion-list>

@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Preferences } from '@capacitor/preferences';
-import { BehaviorSubject, tap } from 'rxjs';
+import { BehaviorSubject, tap, throwError } from 'rxjs';
 import { LoginRequest } from '../interfaces/login-request';
 import { LoginResponse } from '../interfaces/login-response';
 import { UnauthorizedHttpClientService } from 'src/app/core/services/unauthorized-http-client.service';
@@ -30,11 +30,11 @@ export const CLIENT_URI_REGISTRATION = `${environment.basePathFrontend}auth/regi
 export class AuthenticationService {
   public token: string | null = null;
   public refreshToken: string | null = null;
-  public connectedOrchesterMitgliedsName: string | null = null; 
-  public userEmail: string | null = null; 
+  public connectedOrchesterMitgliedsName: string | null = null;
+  public userEmail: string | null = null;
   public userRoles: string[] | null = null;
   public userImage: string | null = null;
-  public userRoleSubject = new BehaviorSubject<string[]>([]); 
+  public userRoleSubject = new BehaviorSubject<string[]>([]);
 
   constructor(
     private http: UnauthorizedHttpClientService,
@@ -81,7 +81,7 @@ export class AuthenticationService {
 
   public refresh(){
     if (!this.token || !this.refreshToken) {
-      throw new Error("Refresh not possible");
+      return throwError(() => new Error("Token or Refreshtoken not found."));
     }
     return this.http.post<LoginResponse>("api/authentication/refresh", { token: this.token, refreshToken: this.refreshToken })
     .pipe(

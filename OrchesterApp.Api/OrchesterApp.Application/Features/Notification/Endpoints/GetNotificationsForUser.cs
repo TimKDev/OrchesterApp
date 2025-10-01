@@ -69,7 +69,7 @@ public static class GetNotificationsForUser
                     continue;
                 }
 
-                var portalMessage = await _portalNotificationBuilder.BuildAsync(notification, cancellationToken);
+                var portalMessage = _portalNotificationBuilder.Build(notification);
 
                 result.Add(new NotificationDto(
                     userNotification.Id.Value, portalMessage.Title, portalMessage.Message, userNotification.IsRead,

@@ -15,12 +15,14 @@ public sealed class ChangeTerminDataNotification : Notification
     public DateTime? OldEndZeit { get; }
     public DateTime? NewEndZeit { get; }
     public string Author { get; }
+    public string TerminName { get; }
+    public DateTime TerminStartZeit { get; }
 
     private ChangeTerminDataNotification(NotificationId id, NotificationType type, NotificationCategory category,
         NotificationUrgency urgency, TerminId? terminId, DateTime createdAt, string? data,
         int? oldTerminStatus, int? newTerminStatus,
         DateTime? oldStartZeit, DateTime? newStartZeit, DateTime? oldEndZeit, DateTime? newEndZeit,
-        string author) : base(id, type,
+        string author, string terminName, DateTime terminStartZeit) : base(id, type,
         category, urgency, terminId, createdAt, data)
     {
         OldTerminStatus = oldTerminStatus;
@@ -30,6 +32,8 @@ public sealed class ChangeTerminDataNotification : Notification
         OldEndZeit = oldEndZeit;
         NewEndZeit = newEndZeit;
         Author = author;
+        TerminName = terminName;
+        TerminStartZeit = terminStartZeit;
     }
 
     public static ChangeTerminDataNotification Create(Notification notification)
@@ -42,11 +46,11 @@ public sealed class ChangeTerminDataNotification : Notification
         return new ChangeTerminDataNotification(notification.Id, notification.Type, notification.Category,
             notification.Urgency, notification.TerminId, notification.CreatedAt, notification.Data,
             dataDto.OldTerminStatus, dataDto.NewTerminStatus, dataDto.OldStartZeit, dataDto.NewStartZeit,
-            dataDto.OldEndZeit, dataDto.NewEndZeit, dataDto.Author);
+            dataDto.OldEndZeit, dataDto.NewEndZeit, dataDto.Author, dataDto.TerminName, dataDto.TerminStartZeit);
     }
 
     public static ChangeTerminDataNotification New(TerminId terminId, TerminData oldTerminData,
-        TerminData newTerminData, string author)
+        TerminData newTerminData, string author, string terminName, DateTime terminStartZeit)
     {
         var doesStartTimeChange = oldTerminData.StartZeit != newTerminData.StartZeit;
         var doesEndTimeChange = oldTerminData.EndZeit != newTerminData.EndZeit;
@@ -67,7 +71,9 @@ public sealed class ChangeTerminDataNotification : Notification
             NewStartZeit = newStartTimeValue,
             OldEndZeit = oldEndValue,
             NewEndZeit = newEndValue,
-            Author = author
+            Author = author,
+            TerminName = terminName,
+            TerminStartZeit = terminStartZeit
         });
 
         return new ChangeTerminDataNotification(NotificationId.CreateUnique(), NotificationType.Information,
@@ -77,17 +83,13 @@ public sealed class ChangeTerminDataNotification : Notification
             newStatusValue,
             oldStartTimeValue,
             newStartTimeValue,
-            oldEndValue, newEndValue, author);
+            oldEndValue, newEndValue, author, terminName, terminStartZeit);
     }
 
-    public PortalNotificationContent GetPortalNotificationContent(string? terminName, DateTime? terminStartZeit)
+    public PortalNotificationContent GetPortalNotificationContent()
     {
         var stringBuilder = new StringBuilder();
-
-        if (!string.IsNullOrEmpty(terminName) && terminStartZeit.HasValue)
-        {
-            stringBuilder.Append($"{terminName} am {terminStartZeit.Value:dd.MM.yyyy}: ");
-        }
+        stringBuilder.Append($"{TerminName} am {TerminStartZeit:dd.MM.yyyy}: ");
 
         var changes = new List<string>();
 
@@ -121,5 +123,7 @@ public sealed class ChangeTerminDataNotification : Notification
         public DateTime? OldEndZeit { get; init; }
         public DateTime? NewEndZeit { get; init; }
         public string Author { get; init; }
+        public string TerminName { get; init; }
+        public DateTime TerminStartZeit { get; init; }
     }
 }

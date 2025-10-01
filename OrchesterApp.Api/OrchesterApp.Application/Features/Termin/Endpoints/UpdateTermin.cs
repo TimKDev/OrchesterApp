@@ -162,7 +162,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 }
 
                 var terminDataChangedNotification =
-                    ChangeTerminDataNotification.New(termin.Id, oldTerminData, newTerminData, author);
+                    ChangeTerminDataNotification.New(termin.Id, oldTerminData, newTerminData, author, termin.Name, termin.EinsatzPlan.StartZeit);
 
                 var mitgliederForNotification = termin.TerminRückmeldungOrchesterMitglieder
                     .Where(r => r.Zugesagt is (int)RückmeldungsartEnum.Zugesagt
