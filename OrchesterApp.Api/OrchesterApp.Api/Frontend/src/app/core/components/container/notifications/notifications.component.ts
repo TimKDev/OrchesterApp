@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnDestroy, OnInit } from '@angular/core';
 import { Location } from '@angular/common';
 import { Router } from '@angular/router';
-import { Observable, NEVER, catchError } from 'rxjs';
+import { Observable, NEVER, catchError, Subject, bufferWhen, debounceTime, filter, mergeMap, Subscription } from 'rxjs';
 import { NotificationApiService } from 'src/app/core/services/notification-api.service';
 import { NotificationDto } from 'src/app/core/interfaces/notification-dto.interface';
 import { NotificationUrgency } from 'src/app/core/services/notification-urgency.enum';
@@ -13,10 +13,14 @@ import { NotificationType } from 'src/app/core/services/notification-type.enum';
   templateUrl: './notifications.component.html',
   styleUrls: ['./notifications.component.scss'],
 })
-export class NotificationsComponent implements OnInit {
+export class NotificationsComponent implements OnInit, OnDestroy{
 
   notifications: NotificationDto[] = [];
   isLoading = true;
+  isRefreshing = false;
+
+  private addUnreadMessageSubject = new Subject<string>();
+  private unreadMessageSubscription?: Subscription;
 
   constructor(
     private location: Location,
@@ -27,21 +31,45 @@ export class NotificationsComponent implements OnInit {
 
   ngOnInit() {
     this.loadNotifications();
+    this.unreadMessageSubscription = this.addUnreadMessageSubject.pipe(
+      bufferWhen(() => this.addUnreadMessageSubject.pipe(debounceTime(3000))),
+      filter(buffer => buffer.length > 0),
+      mergeMap(buffer => this.notificationApiService.acknowledgeNotifications(
+        {userNotificationIds : buffer}))
+    ).subscribe();
   }
 
-  private loadNotifications() {
+  ngOnDestroy(): void {
+    this.unreadMessageSubscription?.unsubscribe();
+  }
+
+  private loadNotifications(refreshEvent: any = null) {
     this.isLoading = true;
 
     this.notificationApiService.getNotificationsForUser().pipe(
       catchError(() => {
         this.isLoading = false;
+        if (refreshEvent) {
+          refreshEvent.target.complete();
+          this.isRefreshing = false;
+        }
         return NEVER;
       })
     ).subscribe((response) => {
       this.notifications = response.notifications;
       this.isLoading = false;
       this.updateUnreadCount(response.notifications.filter(n => !n.isRead).length);
+
+      if (refreshEvent) {
+        refreshEvent.target.complete();
+        this.isRefreshing = false;
+      }
     });
+  }
+
+  public handleRefresh(event: any) {
+    this.isRefreshing = true;
+    this.loadNotifications(event);
   }
 
   getNotificationIcon(type: NotificationType): string {
@@ -89,7 +117,7 @@ export class NotificationsComponent implements OnInit {
     if (!notification.isRead) {
       notification.isRead = true;
       this.updateUnreadCount(this.notificationService.numberOfUnread.value - 1);
-      //Hier sollte noch der zweite Endpunkt aufgerufen werden
+      this.addUnreadMessageSubject.next(notification.id);
     }
   }
 

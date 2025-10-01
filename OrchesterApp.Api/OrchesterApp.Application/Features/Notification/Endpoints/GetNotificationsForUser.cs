@@ -30,7 +30,7 @@ public static class GetNotificationsForUser
     private class
         NotificationsForUserQueryHandler : IRequestHandler<GetNotificationsForUserQuery, NotificationsForUserResponse>
     {
-        private const int NumberOfNotifications = 50;
+        private const int NumberOfNotifications = 20;
         private readonly ICurrentUserService _currentUserService;
         private readonly IUserNotificationRepository _userNotificationRepository;
         private readonly INotificationRepository _notificationRepository;
@@ -71,14 +71,14 @@ public static class GetNotificationsForUser
                 var portalMessage = _portalNotificationBuilder.Build(notification);
 
                 result.Add(new NotificationDto(
-                    userNotification.Id, portalMessage.Title, portalMessage.Message, userNotification.IsRead,
+                    userNotification.Id.Value, portalMessage.Title, portalMessage.Message, userNotification.IsRead,
                     notification.Type,
                     notification.Urgency,
                     notification.TerminId, notification.CreatedAt
                 ));
             }
 
-            return new NotificationsForUserResponse(result);
+            return new NotificationsForUserResponse(result.OrderByDescending(n => n.CreatedAt).ToList());
         }
     }
 }

@@ -25,7 +25,7 @@ public static class AcknowledgeNotification
         return Results.Ok();
     }
 
-    private record AcknowledgeNotificationCommand(List<UserNotificationId> UserNotificationIds) : IRequest;
+    private record AcknowledgeNotificationCommand(List<Guid> UserNotificationIds) : IRequest;
 
     private class AcknowledgeNotificationCommandHandler : IRequestHandler<AcknowledgeNotificationCommand>
     {
@@ -45,7 +45,8 @@ public static class AcknowledgeNotification
         {
             var currentUserId = await _currentUserService.GetCurrentUserIdAsync(cancellationToken);
             var userNotifications =
-                await _userNotificationRepository.GetByIds(request.UserNotificationIds, cancellationToken);
+                await _userNotificationRepository.GetByIds(
+                    request.UserNotificationIds.Select(UserNotificationId.Create).ToList(), cancellationToken);
 
             foreach (var userNotification in userNotifications.Where(u => u.UserId == currentUserId))
             {

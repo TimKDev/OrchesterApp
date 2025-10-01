@@ -4,7 +4,7 @@ using OrchesterApp.Domain.TerminAggregate.ValueObjects;
 namespace TvJahnOrchesterApp.Application.Features.Notification.Models;
 
 public record NotificationDto(
-    UserNotificationId Id,
+    Guid Id,
     string Title,
     string Message,
     bool IsRead,
