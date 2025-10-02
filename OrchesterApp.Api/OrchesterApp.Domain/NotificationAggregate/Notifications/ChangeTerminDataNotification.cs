@@ -14,6 +14,10 @@ public sealed class ChangeTerminDataNotification : Notification
     public DateTime? NewStartZeit { get; }
     public DateTime? OldEndZeit { get; }
     public DateTime? NewEndZeit { get; }
+    public bool HasTreffpunktChanged { get; }
+    public bool HasDokumentChanged { get; }
+    public bool HasUniformChanged { get; }
+    public bool HasNotenChanged { get; }
     public string Author { get; }
     public string TerminName { get; }
     public DateTime TerminStartZeit { get; }
@@ -22,6 +26,7 @@ public sealed class ChangeTerminDataNotification : Notification
         NotificationUrgency urgency, TerminId? terminId, DateTime createdAt, string? data,
         int? oldTerminStatus, int? newTerminStatus,
         DateTime? oldStartZeit, DateTime? newStartZeit, DateTime? oldEndZeit, DateTime? newEndZeit,
+        bool hasTreffpunktChanged, bool hasDokumentChanged, bool hasUniformChanged, bool hasNotenChanged,
         string author, string terminName, DateTime terminStartZeit) : base(id, type,
         category, urgency, terminId, createdAt, data)
     {
@@ -31,6 +36,10 @@ public sealed class ChangeTerminDataNotification : Notification
         NewStartZeit = newStartZeit;
         OldEndZeit = oldEndZeit;
         NewEndZeit = newEndZeit;
+        HasTreffpunktChanged = hasTreffpunktChanged;
+        HasDokumentChanged = hasDokumentChanged;
+        HasUniformChanged = hasUniformChanged;
+        HasNotenChanged = hasNotenChanged;
         Author = author;
         TerminName = terminName;
         TerminStartZeit = terminStartZeit;
@@ -46,7 +55,9 @@ public sealed class ChangeTerminDataNotification : Notification
         return new ChangeTerminDataNotification(notification.Id, notification.Type, notification.Category,
             notification.Urgency, notification.TerminId, notification.CreatedAt, notification.Data,
             dataDto.OldTerminStatus, dataDto.NewTerminStatus, dataDto.OldStartZeit, dataDto.NewStartZeit,
-            dataDto.OldEndZeit, dataDto.NewEndZeit, dataDto.Author, dataDto.TerminName, dataDto.TerminStartZeit);
+            dataDto.OldEndZeit, dataDto.NewEndZeit, dataDto.HasTreffpunktChanged, dataDto.HasDokumentChanged,
+            dataDto.HasUniformChanged, dataDto.HasNotenChanged, dataDto.Author, dataDto.TerminName,
+            dataDto.TerminStartZeit);
     }
 
     public static ChangeTerminDataNotification New(TerminId terminId, TerminData oldTerminData,
@@ -55,6 +66,10 @@ public sealed class ChangeTerminDataNotification : Notification
         var doesStartTimeChange = oldTerminData.StartZeit != newTerminData.StartZeit;
         var doesEndTimeChange = oldTerminData.EndZeit != newTerminData.EndZeit;
         var doesTerminStatusChange = oldTerminData.TerminStatus != newTerminData.TerminStatus;
+        var hasTreffpunktChanged = oldTerminData.Treffpunkt != newTerminData.Treffpunkt;
+        var hasDokumentChanged = !AreListsEqual(oldTerminData.Dokumente, newTerminData.Dokumente);
+        var hasUniformChanged = !AreListsEqual(oldTerminData.Uniform, newTerminData.Uniform);
+        var hasNotenChanged = !AreListsEqual(oldTerminData.Noten, newTerminData.Noten);
 
         var oldStatusValue = doesTerminStatusChange ? oldTerminData.TerminStatus : null;
         var newStatusValue = doesTerminStatusChange ? newTerminData.TerminStatus : null;
@@ -71,6 +86,10 @@ public sealed class ChangeTerminDataNotification : Notification
             NewStartZeit = newStartTimeValue,
             OldEndZeit = oldEndValue,
             NewEndZeit = newEndValue,
+            HasTreffpunktChanged = hasTreffpunktChanged,
+            HasDokumentChanged = hasDokumentChanged,
+            HasUniformChanged = hasUniformChanged,
+            HasNotenChanged = hasNotenChanged,
             Author = author,
             TerminName = terminName,
             TerminStartZeit = terminStartZeit
@@ -83,7 +102,17 @@ public sealed class ChangeTerminDataNotification : Notification
             newStatusValue,
             oldStartTimeValue,
             newStartTimeValue,
-            oldEndValue, newEndValue, author, terminName, terminStartZeit);
+            oldEndValue, newEndValue, hasTreffpunktChanged, hasDokumentChanged, hasUniformChanged,
+            hasNotenChanged, author, terminName, terminStartZeit);
+    }
+
+    private static bool AreListsEqual<T>(IReadOnlyList<T>? list1, IReadOnlyList<T>? list2)
+    {
+        if (list1 is null && list2 is null) return true;
+        if (list1 is null || list2 is null) return false;
+        if (list1.Count != list2.Count) return false;
+
+        return list1.OrderBy(x => x).SequenceEqual(list2.OrderBy(x => x));
     }
 
     public PortalNotificationContent GetPortalNotificationContent()
@@ -108,6 +137,26 @@ public sealed class ChangeTerminDataNotification : Notification
             changes.Add($"Ende → {NewEndZeit.Value:dd.MM.yyyy HH:mm}");
         }
 
+        if (HasTreffpunktChanged)
+        {
+            changes.Add("Treffpunkt wurde verändert");
+        }
+
+        if (HasDokumentChanged)
+        {
+            changes.Add("Dokument wurde verändert");
+        }
+
+        if (HasUniformChanged)
+        {
+            changes.Add("Uniform wurde verändert");
+        }
+
+        if (HasNotenChanged)
+        {
+            changes.Add("Noten wurden verändert");
+        }
+
         stringBuilder.Append(string.Join(", ", changes));
 
         return new PortalNotificationContent("Terminänderung", stringBuilder.ToString());
@@ -122,6 +171,10 @@ public sealed class ChangeTerminDataNotification : Notification
         public DateTime? NewStartZeit { get; init; }
         public DateTime? OldEndZeit { get; init; }
         public DateTime? NewEndZeit { get; init; }
+        public bool HasTreffpunktChanged { get; init; }
+        public bool HasDokumentChanged { get; init; }
+        public bool HasUniformChanged { get; init; }
+        public bool HasNotenChanged { get; init; }
         public string Author { get; init; }
         public string TerminName { get; init; }
         public DateTime TerminStartZeit { get; init; }

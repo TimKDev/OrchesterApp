@@ -88,8 +88,14 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 var termin = await terminRepository.GetById(request.TerminId, cancellationToken) ??
                              throw new Exception($"Termin {request.TerminId} not found");
 
-                var oldTerminData = new TerminData(termin.TerminStatus, termin.EinsatzPlan.StartZeit,
-                    termin.EinsatzPlan.EndZeit);
+                var oldTerminData = new TerminData(
+                    termin.TerminStatus,
+                    termin.EinsatzPlan.StartZeit,
+                    termin.EinsatzPlan.EndZeit,
+                    termin.EinsatzPlan.Treffpunkt,
+                    termin.Dokumente.Select(d => d.Name).ToList(),
+                    termin.EinsatzPlan.EinsatzplanUniformMappings.Select(u => u.UniformId).ToList(),
+                    termin.EinsatzPlan.EinsatzplanNotenMappings.Select(n => n.NotenId).ToList());
 
                 termin.UpdateName(request.TerminName);
                 termin.UpdateTerminArt(request.TerminArt);
@@ -130,8 +136,14 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                     termin.UpdateTerminRückmeldungOrchestermitglied(terminRückmeldungOrchesterMitglieder);
                 }
 
-                var newTerminData = new TerminData(termin.TerminStatus, termin.EinsatzPlan.StartZeit,
-                    termin.EinsatzPlan.EndZeit);
+                var newTerminData = new TerminData(
+                    termin.TerminStatus,
+                    termin.EinsatzPlan.StartZeit,
+                    termin.EinsatzPlan.EndZeit,
+                    termin.EinsatzPlan.Treffpunkt,
+                    termin.Dokumente.Select(d => d.Name).ToList(),
+                    termin.EinsatzPlan.EinsatzplanUniformMappings.Select(u => u.UniformId).ToList(),
+                    termin.EinsatzPlan.EinsatzplanNotenMappings.Select(n => n.NotenId).ToList());
 
                 //TODO Vllt auslagern in ein Domain Event aber trotzdem noch in einer Transaktion
                 var author = await _currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);

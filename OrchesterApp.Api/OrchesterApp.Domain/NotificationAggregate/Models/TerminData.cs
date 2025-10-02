@@ -1,3 +1,12 @@
-﻿namespace OrchesterApp.Domain.NotificationAggregate;
+﻿using OrchesterApp.Domain.Common.ValueObjects;
 
-public record TerminData(int? TerminStatus, DateTime StartZeit, DateTime EndZeit);
+namespace OrchesterApp.Domain.NotificationAggregate;
+
+public record TerminData(
+    int? TerminStatus,
+    DateTime StartZeit,
+    DateTime EndZeit,
+    Adresse? Treffpunkt,
+    IReadOnlyList<string>? Dokumente,
+    IReadOnlyList<int>? Uniform,
+    IReadOnlyList<int>? Noten);
