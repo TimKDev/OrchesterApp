@@ -1,3 +1,3 @@
-﻿namespace TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
+﻿namespace OrchesterApp.Domain.NotificationAggregate.Models;
 
 public record PortalNotificationContent(string Title, string Message);

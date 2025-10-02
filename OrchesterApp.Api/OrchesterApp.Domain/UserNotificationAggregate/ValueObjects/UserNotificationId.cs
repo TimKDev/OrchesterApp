@@ -1,6 +1,6 @@
 ﻿using OrchesterApp.Domain.Common.Models;
 
-namespace OrchesterApp.Domain.NotificationAggregate;
+namespace OrchesterApp.Domain.UserNotificationAggregate.ValueObjects;
 
 public class UserNotificationId : AggregateRootId<Guid>
 {

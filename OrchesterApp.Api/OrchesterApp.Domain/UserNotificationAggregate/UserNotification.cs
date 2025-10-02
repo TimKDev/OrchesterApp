@@ -1,7 +1,10 @@
 ﻿using OrchesterApp.Domain.Common.Models;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using OrchesterApp.Domain.UserAggregate.ValueObjects;
+using OrchesterApp.Domain.UserNotificationAggregate.Enums;
+using OrchesterApp.Domain.UserNotificationAggregate.ValueObjects;
 
-namespace OrchesterApp.Domain.NotificationAggregate;
+namespace OrchesterApp.Domain.UserNotificationAggregate;
 
 public class UserNotification : AggregateRoot<UserNotificationId, Guid>
 {

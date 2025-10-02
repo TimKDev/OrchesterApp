@@ -1,6 +1,6 @@
 ﻿using OrchesterApp.Domain.Common.ValueObjects;
 
-namespace OrchesterApp.Domain.NotificationAggregate;
+namespace OrchesterApp.Domain.NotificationAggregate.Models;
 
 public record TerminData(
     int? TerminStatus,

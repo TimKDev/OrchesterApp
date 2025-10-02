@@ -1,4 +1,4 @@
-﻿namespace OrchesterApp.Domain.NotificationAggregate;
+﻿namespace OrchesterApp.Domain.UserNotificationAggregate.Enums;
 
 public enum NotificationSink
 {

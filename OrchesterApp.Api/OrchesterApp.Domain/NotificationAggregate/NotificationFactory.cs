@@ -1,4 +1,5 @@
-﻿using OrchesterApp.Domain.NotificationAggregate.Notifications;
+﻿using OrchesterApp.Domain.NotificationAggregate.Enums;
+using OrchesterApp.Domain.NotificationAggregate.Notifications;
 
 namespace OrchesterApp.Domain.NotificationAggregate;
 

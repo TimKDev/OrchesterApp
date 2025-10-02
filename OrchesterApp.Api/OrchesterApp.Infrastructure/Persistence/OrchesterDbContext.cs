@@ -4,6 +4,7 @@ using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate;
 using OrchesterApp.Domain.TerminAggregate;
 using OrchesterApp.Domain.UserAggregate;
+using OrchesterApp.Domain.UserNotificationAggregate;
 using TvJahnOrchesterApp.Application.Common.Models;
 
 namespace OrchesterApp.Infrastructure.Persistence

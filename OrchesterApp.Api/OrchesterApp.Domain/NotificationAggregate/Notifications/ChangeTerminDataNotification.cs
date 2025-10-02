@@ -1,8 +1,10 @@
 ﻿using System.Text;
 using System.Text.Json;
 using OrchesterApp.Domain.Common.Enums;
+using OrchesterApp.Domain.NotificationAggregate.Enums;
+using OrchesterApp.Domain.NotificationAggregate.Models;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.ValueObjects;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 
 namespace OrchesterApp.Domain.NotificationAggregate.Notifications;
 

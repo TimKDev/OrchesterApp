@@ -1,7 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using OrchesterApp.Domain.UserAggregate.ValueObjects;
+using OrchesterApp.Domain.UserNotificationAggregate;
+using OrchesterApp.Domain.UserNotificationAggregate.ValueObjects;
 
 namespace OrchesterApp.Infrastructure.Persistence.Configurations
 {

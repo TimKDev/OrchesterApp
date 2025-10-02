@@ -1,6 +1,10 @@
 using Microsoft.EntityFrameworkCore;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using OrchesterApp.Domain.UserAggregate.ValueObjects;
+using OrchesterApp.Domain.UserNotificationAggregate;
+using OrchesterApp.Domain.UserNotificationAggregate.Enums;
+using OrchesterApp.Domain.UserNotificationAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 
 namespace OrchesterApp.Infrastructure.Persistence.Repositories
