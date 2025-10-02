@@ -19,7 +19,8 @@ export interface UpdateTerminRequest {
   orchestermitgliedIds: string[] | null,
   weitereInformationen?: string,
   image?: string,
-  dokumente: string[]
+  dokumente: string[],
+  shouldEmailBeSend: boolean
 }
 
 export interface UpdateTerminModal {

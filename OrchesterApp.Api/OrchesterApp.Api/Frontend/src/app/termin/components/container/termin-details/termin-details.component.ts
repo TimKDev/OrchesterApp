@@ -1,7 +1,7 @@
 import {Component, OnInit} from '@angular/core';
 import {ActivatedRoute, Router} from '@angular/router';
 import {AlertController, ModalController} from '@ionic/angular';
-import {NEVER, Observable, catchError, map, tap, switchMap, forkJoin, of, combineLatest} from 'rxjs';
+import {NEVER, Observable, catchError, tap, switchMap, of, combineLatest} from 'rxjs';
 import {RefreshService} from 'src/app/core/services/refresh.service';
 import {TerminDetailsResponse} from 'src/app/termin/interfaces/termin-details-response';
 import {TerminService} from 'src/app/termin/services/termin.service';
@@ -9,13 +9,10 @@ import {UpdateTerminModalComponent} from '../update-termin-modal/update-termin-m
 import {Unsubscribe} from 'src/app/core/helper/unsubscribe';
 import {TerminResponseModalComponent} from '../termin-response-modal/termin-response-modal.component';
 import {UpdateTerminResponseRequest} from 'src/app/termin/interfaces/update-termin-response-request';
-import {UpdateTerminModal, UpdateTerminRequest} from 'src/app/termin/interfaces/update-termin-request';
+import {UpdateTerminModal} from 'src/app/termin/interfaces/update-termin-request';
 import {RolesService} from 'src/app/authentication/services/roles.service';
 import {confirmDialog} from 'src/app/core/helper/confirm';
 import {FileUploadService} from 'src/app/core/services/file-upload.service';
-import {environment} from 'src/environments/environment';
-import {FileNamePipe} from 'src/app/termin/pipes/file-name.pipe';
-import {AuthHttpClientService} from 'src/app/core/services/auth-http-client.service';
 
 @Component({
   selector: 'app-termin-details',
@@ -142,7 +139,21 @@ export class TerminDetailsComponent implements OnInit {
     const {data, role} = await modal.onWillDismiss();
     if (role === 'cancel') return;
     data.terminId = this.terminId;
-    this.updateTermin(data);
+    
+    // Check if termin is today or in the future
+    const terminStartDate = new Date(data.startZeit);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    terminStartDate.setHours(0, 0, 0, 0);
+    
+    if (terminStartDate >= today) {
+      // Ask user if emails should be sent
+      const shouldEmailBeSend = await this.askForEmailNotification();
+      this.updateTermin(data, shouldEmailBeSend);
+    } else {
+      // Termin is in the past, don't send emails
+      this.updateTermin(data, false);
+    }
   }
 
   public downloadFile(objectName: string): void {
@@ -158,13 +169,13 @@ export class TerminDetailsComponent implements OnInit {
       });
   }
 
-  private updateTermin(data: UpdateTerminModal) {
+  private updateTermin(data: UpdateTerminModal, shouldEmailBeSend: boolean) {
     if (!data.dokumente) {
       data.dokumente = [];
     }
 
     this.us.autoUnsubscribe(
-      this.terminService.updateTerminDetails({...data, dokumente: data.dokumente.map(d => d.name)})).pipe(
+      this.terminService.updateTerminDetails({...data, dokumente: data.dokumente.map(d => d.name), shouldEmailBeSend})).pipe(
       switchMap(() => {
         const filesToAdd = data.dokumente.filter(d => !!d.file);
         return filesToAdd.length == 0 ? of(true) : combineLatest(filesToAdd.map(d => this.fileUploadService.uploadFile(d.name, d.file!)));
@@ -175,6 +186,27 @@ export class TerminDetailsComponent implements OnInit {
         this.refreshService.refreshComponent('TerminListeComponent');
         this.refreshService.refreshComponent('Dashboard');
       });
+  }
+
+  private async askForEmailNotification(): Promise<boolean> {
+    const alert = await this.alertController.create({
+      header: 'E-Mail Benachrichtigung',
+      message: 'Möchten Sie die betroffenen Orchestermitglieder per E-Mail über diese Terminänderungen informieren?',
+      buttons: [
+        {
+          text: 'Nein',
+          role: 'cancel',
+        },
+        {
+          text: 'Ja',
+          role: 'confirm',
+        },
+      ]
+    });
+    
+    await alert.present();
+    const alertResult = await alert.onDidDismiss();
+    return alertResult.role === 'confirm';
   }
 
   private updateResponse(data: UpdateTerminResponseRequest) {
