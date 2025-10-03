@@ -13,7 +13,9 @@ public static class DependencyInjection
     {
         services.AddScoped<INotificationEmailSender, NotificationEmailSender>();
         services.AddScoped<INotificationCategoryEmailSender, ChangeTerminDataEmailSender>();
+        services.AddScoped<INotificationCategoryEmailSender, CustomMessageEmailSender>();
         services.AddScoped<IPortalCategoryNotificationBuilder, ChangeTerminDataPortalCategoryBuilder>();
+        services.AddScoped<IPortalCategoryNotificationBuilder, CustomMessagePortalCategoryBuilder>();
         services
             .AddScoped<IPortalNotificationBuilder,
                 TvJahnOrchesterApp.Application.Features.Notification.Services.PortalNotificationBuilder>();

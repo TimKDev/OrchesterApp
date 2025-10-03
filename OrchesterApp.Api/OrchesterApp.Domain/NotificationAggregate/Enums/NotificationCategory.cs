@@ -2,5 +2,6 @@
 
 public enum NotificationCategory
 {
-    ChangeTerminData
+    ChangeTerminData,
+    CustomMessage
 }

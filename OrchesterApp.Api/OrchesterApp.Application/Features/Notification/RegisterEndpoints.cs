@@ -10,6 +10,7 @@ namespace TvJahnOrchesterApp.Application.Features.Notification
         {
             app.MapGetNotificationForUserEndpoint();
             app.MapAcknowledgeNotificationEndpoint();
+            app.MapSendCustomNotificationEndpoint();
         }
     }
 }
