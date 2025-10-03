@@ -1,6 +1,6 @@
 .notification-button {
   position: fixed;
-  top: 8px;
+  top: calc(8px + env(safe-area-inset-top));
   right: 16px;
   z-index: 1000;
   --color: var(--ion-color-medium);

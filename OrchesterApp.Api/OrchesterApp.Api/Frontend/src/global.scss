@@ -28,8 +28,8 @@
 /* PWA Fullscreen Support */
 /* Handle safe areas for devices with notches (iPhone X+, etc.) */
 html, body {
-  padding: env(safe-area-inset-top) env(safe-area-inset-right) env(safe-area-inset-bottom) env(safe-area-inset-left);
   margin: 0;
+  padding: 0;
   height: 100vh;
   height: 100dvh; /* Dynamic viewport height for mobile browsers */
 }
@@ -40,15 +40,34 @@ ion-app {
   min-height: 100dvh;
 }
 
-/* Handle status bar area in fullscreen mode */
-@media (display-mode: fullscreen) {
-  html, body {
-    padding-top: env(safe-area-inset-top);
-  }
-  
-  /* Adjust header padding for fullscreen */
-  ion-header {
-    padding-top: env(safe-area-inset-top);
+/* iOS PWA Safe Area Support */
+/* Apply safe area insets to ion-header to prevent content from going under status bar */
+ion-header {
+  padding-top: env(safe-area-inset-top);
+}
+
+/* For iOS PWA: Ensure toolbar respects the safe area padding */
+ion-header ion-toolbar:first-of-type {
+  padding-top: 0; /* Reset as parent handles it */
+}
+
+/* Handle bottom safe area for tab bars */
+ion-tab-bar {
+  padding-bottom: env(safe-area-inset-bottom);
+}
+
+/* Handle status bar area in fullscreen/standalone mode */
+@supports (padding: env(safe-area-inset-top)) {
+  @media (display-mode: fullscreen), (display-mode: standalone) {
+    /* iOS PWA specific adjustments */
+    ion-header {
+      padding-top: env(safe-area-inset-top);
+    }
+    
+    /* Menu content should also respect safe areas */
+    ion-menu ion-content {
+      --padding-top: env(safe-area-inset-top);
+    }
   }
 }
 
