@@ -139,21 +139,7 @@ export class TerminDetailsComponent implements OnInit {
     const {data, role} = await modal.onWillDismiss();
     if (role === 'cancel') return;
     data.terminId = this.terminId;
-    
-    // Check if termin is today or in the future
-    const terminStartDate = new Date(data.startZeit);
-    const today = new Date();
-    today.setHours(0, 0, 0, 0);
-    terminStartDate.setHours(0, 0, 0, 0);
-    
-    if (terminStartDate >= today) {
-      // Ask user if emails should be sent
-      const shouldEmailBeSend = await this.askForEmailNotification();
-      this.updateTermin(data, shouldEmailBeSend);
-    } else {
-      // Termin is in the past, don't send emails
-      this.updateTermin(data, false);
-    }
+    this.updateTermin(data);
   }
 
   public downloadFile(objectName: string): void {
@@ -169,13 +155,13 @@ export class TerminDetailsComponent implements OnInit {
       });
   }
 
-  private updateTermin(data: UpdateTerminModal, shouldEmailBeSend: boolean) {
+  private updateTermin(data: UpdateTerminModal) {
     if (!data.dokumente) {
       data.dokumente = [];
     }
 
     this.us.autoUnsubscribe(
-      this.terminService.updateTerminDetails({...data, dokumente: data.dokumente.map(d => d.name), shouldEmailBeSend})).pipe(
+      this.terminService.updateTerminDetails({...data, dokumente: data.dokumente.map(d => d.name)})).pipe(
       switchMap(() => {
         const filesToAdd = data.dokumente.filter(d => !!d.file);
         return filesToAdd.length == 0 ? of(true) : combineLatest(filesToAdd.map(d => this.fileUploadService.uploadFile(d.name, d.file!)));
@@ -186,27 +172,6 @@ export class TerminDetailsComponent implements OnInit {
         this.refreshService.refreshComponent('TerminListeComponent');
         this.refreshService.refreshComponent('Dashboard');
       });
-  }
-
-  private async askForEmailNotification(): Promise<boolean> {
-    const alert = await this.alertController.create({
-      header: 'E-Mail Benachrichtigung',
-      message: 'Möchten Sie die betroffenen Orchestermitglieder per E-Mail über diese Terminänderungen informieren?',
-      buttons: [
-        {
-          text: 'Nein',
-          role: 'cancel',
-        },
-        {
-          text: 'Ja',
-          role: 'confirm',
-        },
-      ]
-    });
-    
-    await alert.present();
-    const alertResult = await alert.onDidDismiss();
-    return alertResult.role === 'confirm';
   }
 
   private updateResponse(data: UpdateTerminResponseRequest) {
