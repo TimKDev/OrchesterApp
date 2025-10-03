@@ -1,7 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { AlertController, ModalController } from '@ionic/angular';
-import { combineLatest, map, tap } from 'rxjs';
+import { catchError, combineLatest, map, of, tap } from 'rxjs';
 import { confirmDialog } from 'src/app/core/helper/confirm';
 import { Unsubscribe } from 'src/app/core/helper/unsubscribe';
 import { DropdownItem } from 'src/app/core/interfaces/dropdown-item';
@@ -16,6 +16,9 @@ import { MitgliedUpdateModalComponent } from '../mitglied-update-modal/mitglied-
 import { AuthenticationService } from 'src/app/authentication/services/authentication.service';
 import { RolesService } from 'src/app/authentication/services/roles.service';
 import { PhotoService } from 'src/app/core/services/photo.service';
+import { SendCustomNotificationModalComponent } from '../send-custom-notification-modal/send-custom-notification-modal.component';
+import { NotificationApiService } from 'src/app/core/services/notification-api.service';
+import { SendCustomNotificationRequest } from 'src/app/core/interfaces/send-custom-notification-request.interface';
 
 @Component({
   selector: 'app-mitglieder-details',
@@ -39,7 +42,8 @@ export class MitgliederDetailsComponent implements OnInit {
     private refreshService: RefreshService,
     private authenticationService: AuthenticationService,
     private rolesService: RolesService,
-    public alertController: AlertController
+    public alertController: AlertController,
+    private notificationApiService: NotificationApiService
   ) { }
 
   ngOnInit() {
@@ -77,6 +81,13 @@ export class MitgliederDetailsComponent implements OnInit {
         action: 'share',
       },
       handler: () => this.openAdminUpdateOrchesterMemberModal()
+    },
+    {
+      text: 'Benachrichtigung senden',
+      data: {
+        action: 'share',
+      },
+      handler: () => this.openSendCustomNotificationModal()
     },
     {
       text: 'Zurück',
@@ -150,4 +161,44 @@ export class MitgliederDetailsComponent implements OnInit {
     })
   }
 
+  public async openSendCustomNotificationModal() {
+    if (!this.data) return;
+    
+    const modal = await this.modalCtrl.create({
+      component: SendCustomNotificationModalComponent,
+      componentProps: {
+        "mitgliedsId": this.mitgliedsId,
+        "mitgliedsName": this.data.orchesterMitglied.vorname + ' ' + this.data.orchesterMitglied.nachname
+      }
+    });
+    modal.present();
+    this.setOpen(false);
+
+    const { data, role } = await modal.onWillDismiss();
+    if (role === 'cancel') return;
+    this.sendCustomNotification(data);
+  }
+
+  private async sendCustomNotification(data: SendCustomNotificationRequest) {
+    this.us.autoUnsubscribe(
+      this.notificationApiService.sendCustomNotification(data).pipe(
+        catchError(async (error) => {
+          const alert = await this.alertController.create({
+            header: 'Fehler',
+            message: 'Nachricht konnte nicht gesendet werden.',
+            buttons: ['OK']
+          });
+          await alert.present();
+          return of(null);
+        })
+      )
+    ).subscribe(async () => {
+          const alert = await this.alertController.create({
+            header: 'Erfolg',
+            message: 'Nachricht wurde erfolgreich gesendet.',
+            buttons: ['OK']
+          });
+          await alert.present();
+        });
+  }
 }

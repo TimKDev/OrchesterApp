@@ -3,6 +3,7 @@ import { AuthHttpClientService } from './auth-http-client.service';
 import { Observable } from 'rxjs';
 import { NotificationsForUserResponse } from './notifications-for-user-response.interface';
 import { AcknowledgeNotificationRequest } from '../interfaces/acknowledge-notification-request.interface';
+import { SendCustomNotificationRequest } from '../interfaces/send-custom-notification-request.interface';
 
 @Injectable({
   providedIn: 'root'
@@ -17,5 +18,9 @@ export class NotificationApiService {
 
   public acknowledgeNotifications(request: AcknowledgeNotificationRequest): Observable<void> {
     return this.http.post<void>('api/notifications/acknowledge/', request);
+  }
+
+  public sendCustomNotification(request: SendCustomNotificationRequest): Observable<void> {
+    return this.http.post<void>('api/notification/send-custom', request);
   }
 }

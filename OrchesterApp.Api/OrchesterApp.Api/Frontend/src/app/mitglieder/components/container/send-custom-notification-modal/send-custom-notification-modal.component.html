@@ -1,0 +1,33 @@
+<ion-header>
+  <ion-toolbar>
+    <ion-buttons slot="start">
+      <ion-button (click)="cancel()">Zurück</ion-button>
+    </ion-buttons>
+    <ion-title>Nachricht senden</ion-title>
+    <ion-buttons slot="end">
+      <ion-button (click)="confirm()" [strong]="true"
+        [disabled]="formGroup.invalid">Senden</ion-button>
+    </ion-buttons>
+  </ion-toolbar>
+</ion-header>
+<ion-content class="ion-padding">
+  <h2>Nachricht an {{mitgliedsName}}</h2>
+  <form [formGroup]="formGroup">
+    <ion-list>
+      <ion-item>
+        <ion-input formControlName="title" labelPlacement="stacked" label="Titel"
+          placeholder="Nachrichtentitel" type="text"></ion-input>
+      </ion-item>
+      <ion-item>
+        <ion-textarea [autoGrow]="true" formControlName="message" labelPlacement="stacked" label="Nachricht"
+          placeholder="Nachrichtentext" rows="5"></ion-textarea>
+      </ion-item>
+      <ion-item>
+        <ion-checkbox formControlName="shouldEmailBeSend">
+          <ion-label>Auch per E-Mail senden</ion-label>
+        </ion-checkbox>
+      </ion-item>
+    </ion-list>
+  </form>
+</ion-content>
+

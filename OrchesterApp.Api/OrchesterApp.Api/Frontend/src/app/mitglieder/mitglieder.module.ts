@@ -9,6 +9,7 @@ import { MitgliederDetailsComponent } from './components/container/mitglieder-de
 import { MitgliedAdminUpdateModalComponent } from './components/container/mitglied-admin-update-modal/mitglied-admin-update-modal.component';
 import { MitgliedCreateModalComponent } from './components/container/mitglied-create-modal/mitglied-create-modal.component';
 import { MitgliedUpdateModalComponent } from './components/container/mitglied-update-modal/mitglied-update-modal.component';
+import { SendCustomNotificationModalComponent } from './components/container/send-custom-notification-modal/send-custom-notification-modal.component';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 
@@ -19,7 +20,8 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
     MitgliederDetailsComponent,
     MitgliedAdminUpdateModalComponent,
     MitgliedCreateModalComponent,
-    MitgliedUpdateModalComponent
+    MitgliedUpdateModalComponent,
+    SendCustomNotificationModalComponent
   ],
   imports: [
     SharedModule,
