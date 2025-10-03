@@ -42,5 +42,6 @@ export interface UpdateTerminModal {
   orchestermitgliedIds: string[] | null,
   weitereInformationen?: string,
   image?: string,
-  dokumente: FileItem[]
+  dokumente: FileItem[],
+  shouldEmailBeSend: boolean
 }

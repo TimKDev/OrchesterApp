@@ -70,29 +70,11 @@ public class CustomMessageEmailSender : INotificationCategoryEmailSender
 
     private static string BuildHtmlContent(CustomMessageNotification notification)
     {
-        try
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName =
-                "TvJahnOrchesterApp.Application.Features.Termin.NotificationCategoryEmailSender.CustomMessageEmailTemplate.html";
+        var template = File.ReadAllText(Path.Combine(AppContext.BaseDirectory,
+            "Features/Notification/NotificationCategoryEmailSender/ChangeTerminDataEmailTemplate.html"));
 
-            using var stream = assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-            {
-                throw new InvalidOperationException($"Embedded resource '{resourceName}' not found.");
-            }
-
-            using var reader = new StreamReader(stream);
-            var template = reader.ReadToEnd();
-
-            return template
-                .Replace("{{TITLE}}", notification.Title)
+        return template.Replace("{{TITLE}}", notification.Title)
                 .Replace("{{MESSAGE}}", notification.Message);
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException("Failed to load email template.", ex);
-        }
     }
 }
 

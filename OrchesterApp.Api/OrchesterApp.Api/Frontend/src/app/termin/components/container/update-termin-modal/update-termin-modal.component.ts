@@ -1,7 +1,7 @@
 import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, Validators } from '@angular/forms';
-import { ModalController } from '@ionic/angular';
+import { AlertController, ModalController } from '@ionic/angular';
 import { FileUploadService } from 'src/app/core/services/file-upload.service';
 import { PhotoService } from 'src/app/core/services/photo.service';
 import { TerminDetailsResponse } from 'src/app/termin/interfaces/termin-details-response';
@@ -41,6 +41,7 @@ export class UpdateTerminModalComponent  implements OnInit {
   constructor(
     private modalCtrl: ModalController,
     private formBuilder: FormBuilder,
+    public alertController: AlertController,
     private photoService: PhotoService,
     public fileUploadService: FileUploadService
   ) { }
@@ -94,7 +95,7 @@ export class UpdateTerminModalComponent  implements OnInit {
     this.formGroup.markAsDirty();
   }
 
-  confirm() {
+  async confirm() {
     let value = this.formGroup.getRawValue();
     let startZeit = new Date(value.terminDate!);
     let endZeit = new Date(value.terminDate!);
@@ -106,12 +107,42 @@ export class UpdateTerminModalComponent  implements OnInit {
       endZeit.setHours(value.endZeit[0] + value.endZeit[1]);
       endZeit.setMinutes(value.endZeit[3] + value.endZeit[4]);
     }
+
+    const terminStartDate = new Date(startZeit);
+    const today = new Date();
+    today.setHours(0, 0, 0, 0);
+    terminStartDate.setHours(0, 0, 0, 0);
+    
+    let shouldEmailBeSend = terminStartDate >= today ? await this.askForEmailNotification() : false;
+
     return this.modalCtrl.dismiss({
       ...value,
       startZeit: startZeit,
       endZeit: endZeit,
-      dokumente: this.dokuments
+      dokumente: this.dokuments,
+      shouldEmailBeSend: shouldEmailBeSend
     }, 'confirm');
+  }
+
+  private async askForEmailNotification(): Promise<boolean> {
+    const alert = await this.alertController.create({
+      header: 'E-Mail Benachrichtigung',
+      message: 'Möchten Sie die betroffenen Orchestermitglieder per E-Mail über diese Terminänderungen informieren?',
+      buttons: [
+        {
+          text: 'Nein',
+          role: 'cancel',
+        },
+        {
+          text: 'Ja',
+          role: 'confirm',
+        },
+      ]
+    });
+    
+    await alert.present();
+    const alertResult = await alert.onDidDismiss();
+    return alertResult.role === 'confirm';
   }
 }
 

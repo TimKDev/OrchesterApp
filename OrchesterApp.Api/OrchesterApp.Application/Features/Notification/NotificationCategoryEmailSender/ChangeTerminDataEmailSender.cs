@@ -1,7 +1,5 @@
-﻿using System.Reflection;
-using System.Text;
+﻿using System.Text;
 using Microsoft.Extensions.Logging;
-using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.UserAggregate;
@@ -43,7 +41,7 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
 
             var changesContent = BuildChangesContent(changeTerminDataNotification);
             var textContent = BuildTextContent(changeTerminDataNotification);
-            var htmlContent = BuildHtmlContent(changesContent, changeTerminDataNotification.Author, 
+            var htmlContent = BuildHtmlContent(changesContent, changeTerminDataNotification.Author,
                 changeTerminDataNotification.TerminName, changeTerminDataNotification.TerminStartZeit);
 
             var emailSubject = $"Termindaten haben sich geändert: {changeTerminDataNotification.TerminName}";
@@ -189,32 +187,16 @@ public class ChangeTerminDataEmailSender : INotificationCategoryEmailSender
         return content.ToString();
     }
 
-    private static string BuildHtmlContent(string changesContent, string author, string terminName, DateTime terminStartZeit)
+    private static string BuildHtmlContent(string changesContent, string author, string terminName,
+        DateTime terminStartZeit)
     {
-        try
-        {
-            var assembly = Assembly.GetExecutingAssembly();
-            var resourceName =
-                "TvJahnOrchesterApp.Application.Features.Termin.NotificationCategoryEmailSender.ChangeTerminDataEmailTemplate.html";
+        var template = File.ReadAllText(Path.Combine(AppContext.BaseDirectory,
+            "Features/Notification/NotificationCategoryEmailSender/ChangeTerminDataEmailTemplate.html"));
 
-            using var stream = assembly.GetManifestResourceStream(resourceName);
-            if (stream == null)
-            {
-                throw new InvalidOperationException($"Embedded resource '{resourceName}' not found.");
-            }
-
-            using var reader = new StreamReader(stream);
-            var template = reader.ReadToEnd();
-
-            return template
-                .Replace("{{CHANGES_CONTENT}}", changesContent)
-                .Replace("{{Author}}", author)
-                .Replace("{{TERMIN_NAME}}", terminName)
-                .Replace("{{TERMIN_START_ZEIT}}", terminStartZeit.ToString("dd.MM.yyyy"));
-        }
-        catch (Exception ex)
-        {
-            throw new InvalidOperationException("Failed to load email template.", ex);
-        }
+        return template
+            .Replace("{{CHANGES_CONTENT}}", changesContent)
+            .Replace("{{Author}}", author)
+            .Replace("{{TERMIN_NAME}}", terminName)
+            .Replace("{{TERMIN_START_ZEIT}}", terminStartZeit.ToString("dd.MM.yyyy"));
     }
 }
