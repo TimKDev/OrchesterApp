@@ -5,6 +5,7 @@ using Microsoft.AspNetCore.Routing;
 using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
+using OrchesterApp.Domain.UserNotificationAggregate.Enums;
 using TvJahnOrchesterApp.Application.Common.Interfaces;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;

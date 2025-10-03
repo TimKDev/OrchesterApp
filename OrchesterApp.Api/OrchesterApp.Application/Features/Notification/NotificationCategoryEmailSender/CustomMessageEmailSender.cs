@@ -2,8 +2,10 @@ using System.Reflection;
 using System.Text;
 using Microsoft.Extensions.Logging;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.UserAggregate;
+using OrchesterApp.Domain.UserNotificationAggregate;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Models;
 
