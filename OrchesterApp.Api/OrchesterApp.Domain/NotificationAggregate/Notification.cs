@@ -1,4 +1,6 @@
 using OrchesterApp.Domain.Common.Models;
+using OrchesterApp.Domain.NotificationAggregate.Enums;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.ValueObjects;
 
 namespace OrchesterApp.Domain.NotificationAggregate

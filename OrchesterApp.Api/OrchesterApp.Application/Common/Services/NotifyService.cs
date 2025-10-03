@@ -1,6 +1,8 @@
 ﻿using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.UserAggregate.ValueObjects;
+using OrchesterApp.Domain.UserNotificationAggregate;
+using OrchesterApp.Domain.UserNotificationAggregate.Enums;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 

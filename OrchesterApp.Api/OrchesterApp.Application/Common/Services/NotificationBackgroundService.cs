@@ -4,6 +4,7 @@ using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
 using Microsoft.Extensions.Logging;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces;
 
 namespace TvJahnOrchesterApp.Application.Common.Services;

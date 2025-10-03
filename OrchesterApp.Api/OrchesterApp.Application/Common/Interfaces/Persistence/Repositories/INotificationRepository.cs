@@ -1,4 +1,5 @@
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 
 namespace TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories
 {

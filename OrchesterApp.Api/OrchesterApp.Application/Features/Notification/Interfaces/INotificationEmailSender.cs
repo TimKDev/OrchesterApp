@@ -1,4 +1,5 @@
 ﻿using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.UserNotificationAggregate;
 
 namespace TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 

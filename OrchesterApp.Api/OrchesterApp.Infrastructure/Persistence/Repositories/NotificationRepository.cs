@@ -1,5 +1,6 @@
 using Microsoft.EntityFrameworkCore;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 
 namespace OrchesterApp.Infrastructure.Persistence.Repositories

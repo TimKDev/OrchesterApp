@@ -1,6 +1,6 @@
 ﻿using OrchesterApp.Domain.Common.Models;
 
-namespace OrchesterApp.Domain.NotificationAggregate;
+namespace OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 
 public sealed class NotificationId : AggregateRootId<Guid>
 {

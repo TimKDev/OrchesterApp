@@ -1,6 +1,7 @@
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Metadata.Builders;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.ValueObjects;
 
 namespace OrchesterApp.Infrastructure.Persistence.Configurations

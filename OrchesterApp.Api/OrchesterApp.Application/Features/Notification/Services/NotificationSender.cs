@@ -1,5 +1,8 @@
 ﻿using MediatR;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
+using OrchesterApp.Domain.UserNotificationAggregate;
+using OrchesterApp.Domain.UserNotificationAggregate.Enums;
 using TvJahnOrchesterApp.Application.Common.ExtensionMethods;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
