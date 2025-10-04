@@ -21,8 +21,7 @@
       'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</b></ion-text><br />
     <ion-note color="medium" class="ion-text-wrap">
       <ng-container *ngIf="!(terminEndTime < dateNow)">
-        <span [class.red]="(terminResponse === 'Nicht Zurückgemeldet')"
-        [class.green]="(terminResponse === 'Zugesagt')">{{terminResponse}}</span>
+        <span [ngClass]="getResponseColorClass()">{{getResponseText()}}</span>
         <br>
       </ng-container>
       <ng-container *ngIf="terminEndTime < dateNow">

@@ -13,6 +13,7 @@
         [terminResponse]="termin.zugesagt | dropdown : data.responseDropdownValues"
         [terminArt]="termin.terminArt" [terminStartTime]="termin.startZeit" [image]="termin.image"
         [terminEndTime]="termin.endZeit" [istAnwesend]="termin.istAnwesend" [highAuth]="false"
+        [fristAsDate]="termin.fristAsDate" [ersteWarnungVorFristAsDate]="termin.ersteWarnungVorFristAsDate"
         (openTermin)="openTermin(termin.terminId)">
       </app-termin-item>
       <ion-item *ngIf="(data.terminData | selectTerminsFromDate : date.value).length === 0">

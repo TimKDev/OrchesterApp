@@ -12,7 +12,7 @@
       date: 'dd.MM.YYYY'}}: {{terminStartTime | date :
       'HH:mm'}}-{{terminEndTime | date : 'HH:mm'}}</ion-text><br />
     <ion-note color="medium" class="ion-text-wrap">
-      <span [class.red]="(terminResponse === 'Nicht Zurückgemeldet')">{{terminResponse}}</span>
+      <span [ngClass]="getResponseColorClass()">{{getResponseText()}}</span>
     </ion-note>
   </ion-label>
   <div class="metadata-end-wrapper" style="margin: 0;" slot="end">

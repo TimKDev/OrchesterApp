@@ -156,6 +156,8 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
 
                 if (!request.ShouldSendNotification)
                 {
+                    await unitOfWork.SaveChangesAsync(cancellationToken);
+                    
                     return termin;
                 }
 

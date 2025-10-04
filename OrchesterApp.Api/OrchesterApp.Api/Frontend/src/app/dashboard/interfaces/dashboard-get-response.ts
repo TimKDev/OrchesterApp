@@ -20,5 +20,7 @@ export interface TerminOverview {
    startZeit: Date,
    endZeit: Date,
    zugesagt: number,
-   image?: string
+   image?: string,
+   fristAsDate?: Date,
+   ersteWarnungVorFristAsDate?: Date
 }

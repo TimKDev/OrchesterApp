@@ -46,7 +46,9 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             int NoResponse,
             int PositiveResponse,
             int NegativeResponse,
-            string? Image);
+            string? Image,
+            DateTime? FristAsDate,
+            DateTime? ErsteWarnungVorFristAsDate);
 
         private class GetAllTermineQueryHandler : IRequestHandler<GetAllTermineQuery, GetAllTermineResponse>
         {
@@ -114,7 +116,8 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                         termin.TerminStatus, termin.EinsatzPlan.StartZeit, termin.EinsatzPlan.EndZeit,
                         currrentUserRückmeldung?.Zugesagt ?? (int)RückmeldungsartEnum.NichtZurückgemeldet,
                         currrentUserRückmeldung?.IstAnwesend ?? false, countNoResponse, countPositiveResponse,
-                        countNegativeResponse, TransformImageService.ConvertByteArrayToBase64(termin.Image));
+                        countNegativeResponse, TransformImageService.ConvertByteArrayToBase64(termin.Image),
+                        termin.GetDeadlineDateTime(), termin.GetWarningDateTime());
 
                     terminResult.Add(terminEntry);
                 }

@@ -19,5 +19,7 @@ export interface TermineListData{
   noResponse: number,
   positiveResponse: number,
   negativeResponse: number,
-  image?: string
+  image?: string,
+  fristAsDate?: Date,
+  ersteWarnungVorFristAsDate?: Date
 }

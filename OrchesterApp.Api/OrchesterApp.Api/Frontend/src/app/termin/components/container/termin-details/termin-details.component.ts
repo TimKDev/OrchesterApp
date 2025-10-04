@@ -36,6 +36,42 @@ export class TerminDetailsComponent implements OnInit {
 
   private data?: TerminDetailsResponse;
 
+  getResponseColorClass(responseText: string): string {
+    if (!this.data || !this.data.terminRückmeldung) return '';
+    
+    if (responseText !== 'Nicht Zurückgemeldet') {
+      return '';
+    }
+
+    const now = new Date();
+    const oneWeekFromNow = new Date(now.getTime() + 7 * 24 * 60 * 60 * 1000);
+    const terminStart = new Date(this.data.termin.startZeit);
+    
+    // Red if deadline passed OR termin starts in less than one week
+    if ((this.data.termin.fristAsDate && new Date(this.data.termin.fristAsDate) < now) || terminStart < oneWeekFromNow) {
+      return 'red';
+    }
+    if (this.data.termin.ersteWarnungVorFristAsDate && new Date(this.data.termin.ersteWarnungVorFristAsDate) < now) {
+      return 'yellow';
+    }
+    return '';
+  }
+
+  getResponseText(responseText: string): string {
+    if (!this.data || !this.data.terminRückmeldung) return responseText;
+    
+    if (responseText !== 'Nicht Zurückgemeldet') {
+      return responseText;
+    }
+
+    const now = new Date();
+    if (this.data.termin.ersteWarnungVorFristAsDate && new Date(this.data.termin.ersteWarnungVorFristAsDate) < now && 
+        (!this.data.termin.fristAsDate || new Date(this.data.termin.fristAsDate) >= now)) {
+      return 'Frist läuft bald ab';
+    }
+    return responseText;
+  }
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,

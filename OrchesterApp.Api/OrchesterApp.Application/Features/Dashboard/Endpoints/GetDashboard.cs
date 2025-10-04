@@ -30,7 +30,9 @@ namespace TvJahnOrchesterApp.Application.Features.Dashboard.Endpoints
             DateTime StartZeit,
             DateTime EndZeit,
             int Zugesagt,
-            string? Image);
+            string? Image,
+            DateTime? FristAsDate,
+            DateTime? ErsteWarnungVorFristAsDate);
 
         public record BirthdayListEntry(string Name, string? Image, DateTime Birthday);
 
@@ -78,7 +80,8 @@ namespace TvJahnOrchesterApp.Application.Features.Dashboard.Endpoints
                     x.EinsatzPlan.StartZeit, x.EinsatzPlan.EndZeit,
                     x.TerminRückmeldungOrchesterMitglieder
                         .First(r => r.OrchesterMitgliedsId == currentOrchesterMember.Id).Zugesagt,
-                    TransformImageService.ConvertByteArrayToBase64(x.Image))
+                    TransformImageService.ConvertByteArrayToBase64(x.Image),
+                    x.GetDeadlineDateTime(), x.GetWarningDateTime())
                 );
                 // Next Birthdays:
                 var orchesterMembersWithBirthdayInNextDays =

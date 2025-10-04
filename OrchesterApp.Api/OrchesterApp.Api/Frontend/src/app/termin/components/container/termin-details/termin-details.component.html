@@ -95,8 +95,8 @@
                 [class.color-red]="data['terminRückmeldung'].zugesagt === 2"></div>
               <div>
                 <b>Meine Rückmeldung:</b> <br>
-                <span [class.red]="((data['terminRückmeldung'].zugesagt | dropdown : data.responseDropdownValues)  === 'Nicht Zurückgemeldet') && !(data.termin.endZeit < dateNow)">
-                  {{data["terminRückmeldung"].zugesagt | dropdown : data.responseDropdownValues }}
+                <span [ngClass]="!(data.termin.endZeit < dateNow) ? getResponseColorClass(data['terminRückmeldung'].zugesagt | dropdown : data.responseDropdownValues) : ''">
+                  {{ !(data.termin.endZeit < dateNow) ? getResponseText(data["terminRückmeldung"].zugesagt | dropdown : data.responseDropdownValues) : (data["terminRückmeldung"].zugesagt | dropdown : data.responseDropdownValues) }}
                 </span>
               </div>
               <div class="comment-div" *ngIf="data['terminRückmeldung'].kommentarZusage">

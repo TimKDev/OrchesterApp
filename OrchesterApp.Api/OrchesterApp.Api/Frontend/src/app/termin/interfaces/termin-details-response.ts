@@ -31,6 +31,7 @@ export interface TerminDetails {
   frist?: string,
   fristAsDate?: Date,
   ersteWarnungVorFrist?: string,
+  ersteWarnungVorFristAsDate?: Date,
 }
 
 export interface TerminRückmeldung {
