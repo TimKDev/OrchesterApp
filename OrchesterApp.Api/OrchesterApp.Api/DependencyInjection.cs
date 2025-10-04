@@ -57,9 +57,15 @@ namespace OrchesterApp.Api
                 options.AddPolicy(MyCorsPolicy,
                     policy =>
                     {
-                        policy.AllowAnyOrigin()
+                        policy.WithOrigins(
+                                "http://localhost:8100",
+                                "http://localhost:40180",
+                                "http://localhost:4200",
+                                "https://orchester-app.tim-kempkens.com"
+                            )
                             .AllowAnyHeader()
-                            .AllowAnyMethod();
+                            .AllowAnyMethod()
+                            .AllowCredentials();
                     });
             });
         }

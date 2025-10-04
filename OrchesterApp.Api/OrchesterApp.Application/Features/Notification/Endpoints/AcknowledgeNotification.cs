@@ -4,9 +4,9 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.UserNotificationAggregate.ValueObjects;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 
 namespace TvJahnOrchesterApp.Application.Features.Notification.Endpoints;
 

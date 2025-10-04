@@ -1,10 +1,10 @@
-﻿using OrchesterApp.Domain.NotificationAggregate;
-using OrchesterApp.Domain.UserNotificationAggregate;
+﻿using OrchesterApp.Domain.UserNotificationAggregate;
 
-namespace TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
+namespace TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 
 public interface INotificationEmailSender
 {
-    Task SendEmailsForNotificationAsync(Notification notification, IList<UserNotification> userNotifications,
+    Task SendEmailsForNotificationAsync(OrchesterApp.Domain.NotificationAggregate.Notification notification,
+        IList<UserNotification> userNotifications,
         CancellationToken cancellationToken);
 }

@@ -44,6 +44,7 @@ namespace OrchesterApp.Api
                 app.MapControllers();
                 app.RegisterEndpointsFeatures();
                 app.MapFallbackToFile("/");
+                app.MapPortalPushMessages();
                 app.Run();
             }
         }

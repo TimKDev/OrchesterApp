@@ -1,14 +1,13 @@
 ﻿using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
-using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.UserAggregate;
 using OrchesterApp.Domain.UserNotificationAggregate;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
+using TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 
-namespace TvJahnOrchesterApp.Application.Common.Services;
+namespace TvJahnOrchesterApp.Application.Features.Notification.Services;
 
 public class NotificationEmailSender : INotificationEmailSender
 {
@@ -29,7 +28,8 @@ public class NotificationEmailSender : INotificationEmailSender
             notificationCategoryEmailSender.ToDictionary(s => s.NotificationCategory, s => s);
     }
 
-    public async Task SendEmailsForNotificationAsync(Notification notification,
+    public async Task SendEmailsForNotificationAsync(
+        OrchesterApp.Domain.NotificationAggregate.Notification notification,
         IList<UserNotification> userNotifications,
         CancellationToken cancellationToken)
     {

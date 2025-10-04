@@ -14,12 +14,13 @@ using OrchesterApp.Infrastructure.Persistence;
 using OrchesterApp.Infrastructure.Persistence.Repositories;
 using OrchesterApp.Infrastructure.Persistence.Repositories.DropdownRepositories;
 using OrchesterApp.Infrastructure.Services;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using OrchesterApp.Infrastructure.Extensions;
 using OrchesterApp.Infrastructure.FileStorage;
+using OrchesterApp.Infrastructure.PortalPushMessages;
+using TvJahnOrchesterApp.Application.Features.PortalPushMessage.Interfaces;
 
 namespace OrchesterApp.Infrastructure
 {
@@ -30,10 +31,19 @@ namespace OrchesterApp.Infrastructure
         {
             services
                 .AddPersistence(configuration)
+                .AddPortalPushMessages()
                 .AddEmail(configuration)
                 .AddMinioStorage(configuration)
                 .AddAuthentication(configuration)
                 .AddScoped<InitDatabaseService>();
+
+            return services;
+        }
+
+        private static IServiceCollection AddPortalPushMessages(this IServiceCollection services)
+        {
+            services.AddSignalR();
+            services.AddScoped<IPortalPushMessageManager, PortalPushMessageManager>();
 
             return services;
         }
@@ -148,8 +158,29 @@ namespace OrchesterApp.Infrastructure
                         .GetBytes(secretValue!)),
                     ClockSkew = TimeSpan.Zero
                 };
+
+                // Configure JWT authentication for SignalR
+                options.Events = new JwtBearerEvents
+                {
+                    OnMessageReceived = context =>
+                    {
+                        var accessToken = context.Request.Query["access_token"];
+
+                        // If the request is for our hub...
+                        var path = context.HttpContext.Request.Path;
+                        if (!string.IsNullOrEmpty(accessToken) &&
+                            path.StartsWithSegments("/hubs"))
+                        {
+                            // Read the token out of the query string
+                            context.Token = accessToken;
+                        }
+
+                        return Task.CompletedTask;
+                    }
+                };
             });
 
+            services.AddHttpContextAccessor();
             services.AddScoped<IJwtHandler, JwtHandler>();
             services.AddTransient<ITokenService, TokenService>();
             services.AddScoped<ICurrentUserService, CurrentUserService>();

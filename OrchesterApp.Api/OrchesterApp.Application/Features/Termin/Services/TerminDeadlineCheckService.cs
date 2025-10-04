@@ -1,26 +1,23 @@
 using Microsoft.Extensions.DependencyInjection;
-using Microsoft.Extensions.Logging;
 using OrchesterApp.Domain.Common.Enums;
-using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
-using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
-using OrchesterApp.Domain.TerminAggregate;
 using OrchesterApp.Domain.UserNotificationAggregate.Enums;
-using TvJahnOrchesterApp.Application.Common.Interfaces;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
+using TvJahnOrchesterApp.Application.Features.Termin.Interfaces;
 
-namespace TvJahnOrchesterApp.Application.Common.Services;
+namespace TvJahnOrchesterApp.Application.Features.Termin.Services;
 
 public class TerminDeadlineCheckService : ITerminDeadlineCheckService
 {
     private readonly IServiceProvider _serviceProvider;
     private readonly INotificationBackgroundService _notificationBackgroundService;
 
-    public TerminDeadlineCheckService(IServiceProvider serviceProvider, INotificationBackgroundService notificationBackgroundService)
+    public TerminDeadlineCheckService(IServiceProvider serviceProvider,
+        INotificationBackgroundService notificationBackgroundService)
     {
         _serviceProvider = serviceProvider;
         _notificationBackgroundService = notificationBackgroundService;
@@ -36,13 +33,16 @@ public class TerminDeadlineCheckService : ITerminDeadlineCheckService
         var now = DateTime.UtcNow;
 
         var futureTermine = await terminRepository.GetFutureTerminsAsync(cancellationToken);
-        
+
         var terminsWithMissingResponses = futureTermine.Where(termin =>
             termin.TerminRückmeldungOrchesterMitglieder.Any(r =>
                 r.Zugesagt == (int)RückmeldungsartEnum.NichtZurückgemeldet)).ToList();
-        
-        var notifications = await notificationRepository.QueryByTerminAndCategoryAsync(terminsWithMissingResponses.Select(x => x.Id).ToList(), [NotificationCategory.TerminMissingResponse, NotificationCategory.TerminReminderBeforeDeadline], cancellationToken);
-        
+
+        var notifications = await notificationRepository.QueryByTerminAndCategoryAsync(
+            terminsWithMissingResponses.Select(x => x.Id).ToList(),
+            [NotificationCategory.TerminMissingResponse, NotificationCategory.TerminReminderBeforeDeadline],
+            cancellationToken);
+
         var notificationIdsToBeSend = new List<NotificationId>();
 
         foreach (var termin in terminsWithMissingResponses)
@@ -50,7 +50,7 @@ public class TerminDeadlineCheckService : ITerminDeadlineCheckService
             var notificationIds = await HandleTerminAsync(termin, now, notifications, notifyService, cancellationToken);
             notificationIdsToBeSend.AddRange(notificationIds);
         }
-        
+
         await unitOfWork.SaveChangesAsync(cancellationToken);
 
         foreach (var notificationId in notificationIdsToBeSend)
@@ -59,8 +59,10 @@ public class TerminDeadlineCheckService : ITerminDeadlineCheckService
         }
     }
 
-    private async Task<List<NotificationId>> HandleTerminAsync( Termin termin, DateTime now,
-        Notification[] notifications, INotifyService notifyService,CancellationToken cancellationToken)
+    private async Task<List<NotificationId>> HandleTerminAsync(OrchesterApp.Domain.TerminAggregate.Termin termin,
+        DateTime now,
+        OrchesterApp.Domain.NotificationAggregate.Notification[] notifications, INotifyService notifyService,
+        CancellationToken cancellationToken)
     {
         var deadlineDateTime = termin.GetDeadlineDateTime();
         var warningDateTime = termin.GetWarningDateTime();
@@ -77,30 +79,31 @@ public class TerminDeadlineCheckService : ITerminDeadlineCheckService
 
         var memberWithoutResponseIds = membersWithoutResponse.Select(m => m.OrchesterMitgliedsId).ToList();
 
-        if (warningDateTime.HasValue && now >= warningDateTime.Value && 
-            now < (deadlineDateTime ?? DateTime.MaxValue) && 
-            !notifications.Any(n => n.TerminId! == termin.Id && n.Category == NotificationCategory.TerminReminderBeforeDeadline))
+        if (warningDateTime.HasValue && now >= warningDateTime.Value &&
+            now < (deadlineDateTime ?? DateTime.MaxValue) &&
+            !notifications.Any(n =>
+                n.TerminId! == termin.Id && n.Category == NotificationCategory.TerminReminderBeforeDeadline))
         {
-            
             var reminderNotification = TerminReminderNotification.New(
                 termin.Id,
                 termin.Name,
                 termin.EinsatzPlan.StartZeit,
                 deadlineDateTime!.Value
             );
-            
+
             await notifyService.PublishNotificationAsync(
                 reminderNotification,
                 memberWithoutResponseIds,
                 [NotificationSink.Portal, NotificationSink.Email],
                 cancellationToken
             );
-            
+
             result.Add(reminderNotification.Id);
         }
 
         if (deadlineDateTime.HasValue && now >= deadlineDateTime.Value &&
-            !notifications.Any(n => n.TerminId! == termin.Id && n.Category == NotificationCategory.TerminMissingResponse))
+            !notifications.Any(
+                n => n.TerminId! == termin.Id && n.Category == NotificationCategory.TerminMissingResponse))
         {
             var missingResponseNotification = TerminMissingResponseNotification.New(
                 termin.Id,
@@ -114,11 +117,10 @@ public class TerminDeadlineCheckService : ITerminDeadlineCheckService
                 [NotificationSink.Portal, NotificationSink.Email],
                 cancellationToken
             );
-            
+
             result.Add(missingResponseNotification.Id);
         }
-        
+
         return result;
     }
 }
-

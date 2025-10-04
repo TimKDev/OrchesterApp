@@ -5,7 +5,6 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using Microsoft.AspNetCore.Builder;
 using TvJahnOrchesterApp.Application.Features.Dropdown.Services;
@@ -26,7 +25,8 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Endpoints
                 .RequireAuthorization();
         }
 
-        private static async Task<OrchesterMitgliederDropdownResponse[]> GetDropdownValues(CancellationToken cancellationToken, ISender sender)
+        private static async Task<OrchesterMitgliederDropdownResponse[]> GetDropdownValues(
+            CancellationToken cancellationToken, ISender sender)
         {
             return await sender.Send(new GetOrchesterMitgliederDropdownQuery());
         }
@@ -35,7 +35,8 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Endpoints
 
         private record OrchesterMitgliederDropdownResponse(Guid Value, string Text);
 
-        private class GetDropdownQueryHandler : IRequestHandler<GetOrchesterMitgliederDropdownQuery, OrchesterMitgliederDropdownResponse[]>
+        private class GetDropdownQueryHandler : IRequestHandler<GetOrchesterMitgliederDropdownQuery,
+            OrchesterMitgliederDropdownResponse[]>
         {
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepository;
 
@@ -44,9 +45,11 @@ namespace TvJahnOrchesterApp.Application.Features.Dropdown.Endpoints
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
             }
 
-            public async Task<OrchesterMitgliederDropdownResponse[]> Handle(GetOrchesterMitgliederDropdownQuery request, CancellationToken cancellationToken)
+            public async Task<OrchesterMitgliederDropdownResponse[]> Handle(GetOrchesterMitgliederDropdownQuery request,
+                CancellationToken cancellationToken)
             {
-                return (await orchesterMitgliedRepository.GetAllNames(cancellationToken)).Select(m => new OrchesterMitgliederDropdownResponse(m.Id.Value, $"{m.Vorname} {m.Nachname}")).ToArray();
+                return (await orchesterMitgliedRepository.GetAllNames(cancellationToken)).Select(m =>
+                    new OrchesterMitgliederDropdownResponse(m.Id.Value, $"{m.Vorname} {m.Nachname}")).ToArray();
             }
         }
     }

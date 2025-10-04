@@ -6,6 +6,8 @@ import { filter } from 'rxjs/operators';
 import { NotificationApiService  } from './core/services/notification-api.service';
 import { NotificationService } from './core/services/notification.service';
 import { Subscription } from 'rxjs';
+import { PortalPushMessageService, PortalPushMessageTypes } from './core/services/portal-push-message.service';
+import { AuthenticationService } from './authentication/services/authentication.service';
 
 @Component({
   selector: 'app-root',
@@ -16,6 +18,7 @@ export class AppComponent implements OnInit, OnDestroy {
   showSidenav: boolean = true;
   unreadNotifications: number = 0;
   unreadNotificationsSubscription?: Subscription;
+  portalPushMessageSubscription?: Subscription;
 
   constructor(
     private platform: Platform,
@@ -23,24 +26,39 @@ export class AppComponent implements OnInit, OnDestroy {
     private themeService: ThemeService, //Nicht entfernen!
     private router: Router,
     private notificationService: NotificationService,
-    private notificationApiService: NotificationApiService
+    private notificationApiService: NotificationApiService,
+    private portalPushMessageService: PortalPushMessageService,
+    private authService: AuthenticationService
   ) {
     this.initializeApp();
     this.setupRouterListener();
   }
 
-  ngOnInit(): void {
+  async ngOnInit() {
+    // Load authentication tokens before starting SignalR connection
+    await this.authService.loadTokensFromStorage();
+    
+    this.portalPushMessageService.startConnection();
+
+    this.portalPushMessageSubscription = this.portalPushMessageService.portalPushMessageSubject.pipe(
+      filter(message => message.type == PortalPushMessageTypes.Notifications)
+    )
+    .subscribe(() => {
+      debugger
+      this.updateNotificationNumber();
+    })
+
     this.unreadNotificationsSubscription = this.notificationService.numberOfUnread.subscribe(numberOfUnread => {
       this.unreadNotifications = numberOfUnread;
     });
 
-    this.notificationApiService.getNotificationsForUser().subscribe((response) => {
-    this.notificationService.numberOfUnread.next(response.notifications.filter(n => !n.isRead).length);
-    });
+    this.updateNotificationNumber();
   }
 
   ngOnDestroy(): void {
+    this.portalPushMessageService.stopConnection();
     this.unreadNotificationsSubscription?.unsubscribe();
+    this.portalPushMessageSubscription?.unsubscribe();
   }
 
   // Nicht entfernen!! Ohne funktioniert Tabellen Styling nicht mehr???
@@ -50,6 +68,12 @@ export class AppComponent implements OnInit, OnDestroy {
         // Theme service will automatically initialize with saved theme or default to dark
         // No need to force dark mode here anymore
       });
+    });
+  }
+
+  private updateNotificationNumber(){
+    this.notificationApiService.getNotificationsForUser().subscribe((response) => {
+      this.notificationService.numberOfUnread.next(response.notifications.filter((n: any) => !n.isRead).length);
     });
   }
 

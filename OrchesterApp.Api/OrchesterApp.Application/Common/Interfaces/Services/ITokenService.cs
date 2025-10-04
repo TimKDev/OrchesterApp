@@ -1,6 +1,6 @@
 ﻿using OrchesterApp.Domain.UserAggregate;
 
-namespace TvJahnOrchesterApp.Application.Common.Interfaces.Authentication
+namespace TvJahnOrchesterApp.Application.Common.Interfaces.Services
 {
     public interface ITokenService
     {

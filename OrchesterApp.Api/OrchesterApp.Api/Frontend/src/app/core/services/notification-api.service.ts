@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
 import { AuthHttpClientService } from './auth-http-client.service';
 import { Observable } from 'rxjs';
-import { NotificationsForUserResponse } from './notifications-for-user-response.interface';
 import { AcknowledgeNotificationRequest } from '../interfaces/acknowledge-notification-request.interface';
 import { SendCustomNotificationRequest } from '../interfaces/send-custom-notification-request.interface';
+import { NotificationsForUserResponse } from '../interfaces/notifications-for-user-response.interface';
 
 @Injectable({
   providedIn: 'root'

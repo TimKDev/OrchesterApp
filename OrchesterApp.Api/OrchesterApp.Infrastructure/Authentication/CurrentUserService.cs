@@ -3,8 +3,8 @@ using Microsoft.AspNetCore.Identity;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate;
 using OrchesterApp.Domain.UserAggregate;
 using OrchesterApp.Domain.UserAggregate.ValueObjects;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 
 namespace OrchesterApp.Infrastructure.Authentication

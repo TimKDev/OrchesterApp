@@ -6,6 +6,11 @@ using Microsoft.Extensions.Logging;
 using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
+using TvJahnOrchesterApp.Application.Features.Notification.Services;
+using TvJahnOrchesterApp.Application.Features.PortalPushMessage.Interfaces;
+using TvJahnOrchesterApp.Application.Features.PortalPushMessage.Messages;
+using TvJahnOrchesterApp.Application.Features.PortalPushMessage.Models;
 
 namespace TvJahnOrchesterApp.Application.Common.Services;
 
@@ -45,6 +50,14 @@ public class NotificationBackgroundService : BackgroundService, INotificationBac
 
                 using var scope = _serviceProvider.CreateScope();
                 var sender = scope.ServiceProvider.GetRequiredService<ISender>();
+
+                var portalPushNotificationManager =
+                    scope.ServiceProvider.GetRequiredService<IPortalPushMessageManager>();
+
+                var notificationPortalPushMessage =
+                    new NotificationPortalPushMessage(PortalPushNotificationUserGroup.All);
+
+                await portalPushNotificationManager.SendAsync(notificationPortalPushMessage);
 
                 await sender.Send(new NotificationSender.Command([notificationId]), stoppingToken);
             }

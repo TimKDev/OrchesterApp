@@ -15,7 +15,6 @@ using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.ValueObjects;
 using OrchesterApp.Domain.UserNotificationAggregate.Enums;
 using TvJahnOrchesterApp.Application.Common.Interfaces;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
@@ -157,7 +156,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 if (!request.ShouldSendNotification)
                 {
                     await unitOfWork.SaveChangesAsync(cancellationToken);
-                    
+
                     return termin;
                 }
 
@@ -198,7 +197,8 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 }
 
                 var terminDataChangedNotification =
-                    ChangeTerminDataNotification.New(termin.Id, oldTerminData, newTerminData, author, termin.Name, termin.EinsatzPlan.StartZeit);
+                    ChangeTerminDataNotification.New(termin.Id, oldTerminData, newTerminData, author, termin.Name,
+                        termin.EinsatzPlan.StartZeit);
 
                 var mitgliederForNotification = termin.TerminRückmeldungOrchesterMitglieder
                     .Where(r => r.Zugesagt is (int)RückmeldungsartEnum.Zugesagt

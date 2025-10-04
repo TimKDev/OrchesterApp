@@ -4,8 +4,8 @@ using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.UserAggregate;
 using OrchesterApp.Domain.UserNotificationAggregate;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Models;
+using TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 
 namespace TvJahnOrchesterApp.Application.Features.Notification.NotificationCategoryEmailSender;
 
@@ -72,8 +72,6 @@ public class CustomMessageEmailSender : INotificationCategoryEmailSender
             "Features/Notification/NotificationCategoryEmailSender/ChangeTerminDataEmailTemplate.html"));
 
         return template.Replace("{{TITLE}}", notification.Title)
-                .Replace("{{MESSAGE}}", notification.Message);
+            .Replace("{{MESSAGE}}", notification.Message);
     }
 }
-
-

@@ -4,10 +4,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using OrchesterApp.Domain.UserAggregate;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 {
@@ -34,7 +34,9 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             private readonly ICurrentUserService currentUserService;
             private readonly IUnitOfWork unitOfWork;
 
-            public DeleteOwnUserCommandHandler(UserManager<User> userManager, IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork, ICurrentUserService currentUserService)
+            public DeleteOwnUserCommandHandler(UserManager<User> userManager,
+                IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork,
+                ICurrentUserService currentUserService)
             {
                 this.userManager = userManager;
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;

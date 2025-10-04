@@ -1,7 +1,7 @@
 ﻿using OrchesterApp.Domain.UserAggregate;
 using OrchesterApp.Domain.UserAggregate.ValueObjects;
 
-namespace TvJahnOrchesterApp.Application.Common.Interfaces.Authentication
+namespace TvJahnOrchesterApp.Application.Common.Interfaces.Services
 {
     public interface ICurrentUserService
     {

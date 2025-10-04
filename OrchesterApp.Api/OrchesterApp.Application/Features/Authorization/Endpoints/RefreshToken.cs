@@ -4,12 +4,12 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors;
 using OrchesterApp.Domain.UserAggregate;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 {
@@ -20,7 +20,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             app.MapPost("api/authentication/refresh", PostRefreshToken);
         }
 
-        private static async Task<IResult> PostRefreshToken([FromBody] RefreshTokenQuery refreshTokenQuery, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostRefreshToken([FromBody] RefreshTokenQuery refreshTokenQuery,
+            CancellationToken cancellationToken, ISender sender)
         {
             var authResult = await sender.Send(refreshTokenQuery);
             return Results.Ok(authResult);
@@ -35,7 +36,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             private readonly ITokenService tokenService;
             private readonly IOrchesterMitgliedRepository orchesterMitgliedRepo;
 
-            public RefreshTokenQueryHandler(IJwtHandler jwtHandler, UserManager<User> userManager, ITokenService tokenService, IOrchesterMitgliedRepository orchesterMitgliedRepo)
+            public RefreshTokenQueryHandler(IJwtHandler jwtHandler, UserManager<User> userManager,
+                ITokenService tokenService, IOrchesterMitgliedRepository orchesterMitgliedRepo)
             {
                 this.jwtHandler = jwtHandler;
                 this.userManager = userManager;
@@ -43,7 +45,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
                 this.orchesterMitgliedRepo = orchesterMitgliedRepo;
             }
 
-            public async Task<AuthenticationResult> Handle(RefreshTokenQuery request, CancellationToken cancellationToken)
+            public async Task<AuthenticationResult> Handle(RefreshTokenQuery request,
+                CancellationToken cancellationToken)
             {
                 var principal = jwtHandler.GetPrincipalFromExpiredToken(request.Token);
                 var username = principal?.Identity?.Name;
@@ -67,15 +70,15 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 await tokenService.AddRefreshTokenToUserInDBAsync(user, newRefreshToken);
                 var orchesterMitglied = await orchesterMitgliedRepo.GetByUserIdAsync(user.Id, cancellationToken);
-                if(orchesterMitglied is null)
+                if (orchesterMitglied is null)
                 {
                     throw new Exception("Orchestermitglied wurde nicht gefunden");
                 }
 
-                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}", user.Email, newToken, newRefreshToken, roles.ToArray(), TransformImageService.ConvertByteArrayToBase64(orchesterMitglied.Image));
+                return new AuthenticationResult(user.Id, $"{orchesterMitglied.Vorname} {orchesterMitglied.Nachname}",
+                    user.Email, newToken, newRefreshToken, roles.ToArray(),
+                    TransformImageService.ConvertByteArrayToBase64(orchesterMitglied.Image));
             }
         }
-
-
     }
 }

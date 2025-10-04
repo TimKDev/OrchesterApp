@@ -4,9 +4,10 @@ import { Router } from '@angular/router';
 import { Observable, NEVER, catchError, Subject, bufferWhen, debounceTime, filter, mergeMap, Subscription } from 'rxjs';
 import { NotificationApiService } from 'src/app/core/services/notification-api.service';
 import { NotificationDto } from 'src/app/core/interfaces/notification-dto.interface';
-import { NotificationUrgency } from 'src/app/core/services/notification-urgency.enum';
+import { NotificationUrgency } from 'src/app/core/enums/notification-urgency.enum';
 import { NotificationService } from 'src/app/core/services/notification.service';
-import { NotificationType } from 'src/app/core/services/notification-type.enum';
+import { NotificationType } from 'src/app/core/enums/notification-type.enum';
+import { PortalPushMessageService, PortalPushMessageTypes } from 'src/app/core/services/portal-push-message.service';
 
 interface NotificationGroup {
   date: string;
@@ -28,26 +29,37 @@ export class NotificationsComponent implements OnInit, OnDestroy{
 
   private addUnreadMessageSubject = new Subject<string>();
   private unreadMessageSubscription?: Subscription;
+  private portalPushMessageSubscription?: Subscription;
 
   constructor(
     private location: Location,
     private router: Router,
     private notificationApiService: NotificationApiService,
-    private notificationService : NotificationService
+    private notificationService : NotificationService,
+    private portalPushMessageService : PortalPushMessageService
   ) {}
 
   ngOnInit() {
     this.loadNotifications();
+
     this.unreadMessageSubscription = this.addUnreadMessageSubject.pipe(
       bufferWhen(() => this.addUnreadMessageSubject.pipe(debounceTime(1000))),
       filter(buffer => buffer.length > 0),
       mergeMap(buffer => this.notificationApiService.acknowledgeNotifications(
         {userNotificationIds : buffer}))
     ).subscribe();
+
+    this.portalPushMessageSubscription = this.portalPushMessageService.portalPushMessageSubject.pipe(
+      filter(message => message.type == PortalPushMessageTypes.Notifications)
+    ).subscribe(() => {
+      debugger
+      this.loadNotifications();
+    });
   }
 
   ngOnDestroy(): void {
     this.unreadMessageSubscription?.unsubscribe();
+    this.portalPushMessageSubscription?.unsubscribe();
   }
 
   private loadNotifications(refreshEvent: any = null) {

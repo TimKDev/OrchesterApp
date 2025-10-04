@@ -5,8 +5,8 @@ using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.UserAggregate;
 using OrchesterApp.Domain.UserNotificationAggregate;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Models;
+using TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 
 namespace TvJahnOrchesterApp.Application.Features.Notification.NotificationCategoryEmailSender;
 
@@ -15,7 +15,8 @@ public class TerminMissingResponseEmailSender : INotificationCategoryEmailSender
     private readonly ILogger<TerminMissingResponseEmailSender> _logger;
     private readonly string _frontendUrl;
 
-    public TerminMissingResponseEmailSender(ILogger<TerminMissingResponseEmailSender> logger, IConfiguration configuration)
+    public TerminMissingResponseEmailSender(ILogger<TerminMissingResponseEmailSender> logger,
+        IConfiguration configuration)
     {
         _logger = logger;
         _frontendUrl = configuration["FrontendUrl"] ?? "http://localhost:8100";
@@ -42,7 +43,8 @@ public class TerminMissingResponseEmailSender : INotificationCategoryEmailSender
                 continue;
             }
 
-            var terminLink = $"{_frontendUrl}/tabs/termin/details/{missingResponseNotification.TerminId!.Value}/overview";
+            var terminLink =
+                $"{_frontendUrl}/tabs/termin/details/{missingResponseNotification.TerminId!.Value}/overview";
             var textContent = BuildTextContent(missingResponseNotification, terminLink);
             var htmlContent = BuildHtmlContent(missingResponseNotification, terminLink);
 
@@ -89,4 +91,3 @@ public class TerminMissingResponseEmailSender : INotificationCategoryEmailSender
             .Replace("{{TERMIN_LINK}}", terminLink);
     }
 }
-

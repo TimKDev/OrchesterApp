@@ -5,10 +5,10 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Routing;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using OrchesterApp.Domain.UserAggregate;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models.Errors;
 
 namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
@@ -20,13 +20,15 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             app.MapPost("api/authentication/register", PostRegisterUser);
         }
 
-        private static async Task<IResult> PostRegisterUser([FromBody] RegisterUserCommand registerUserCommand, CancellationToken cancellationToken, ISender sender)
+        private static async Task<IResult> PostRegisterUser([FromBody] RegisterUserCommand registerUserCommand,
+            CancellationToken cancellationToken, ISender sender)
         {
             await sender.Send(registerUserCommand);
             return Results.Ok("Registrierung war erfolgreich.");
         }
 
-        private record RegisterUserCommand(string RegisterationKey, string Email, string Password, string ClientUri) : IRequest<Unit>;
+        private record RegisterUserCommand(string RegisterationKey, string Email, string Password, string ClientUri)
+            : IRequest<Unit>;
 
         private class RegisterUserCommandValidator : AbstractValidator<RegisterUserCommand>
         {
@@ -44,7 +46,9 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             private readonly IUnitOfWork unitOfWork;
             private readonly ITokenService tokenService;
 
-            public RegisterUserCommandHandler(UserManager<User> userManager, IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork, ITokenService tokenService)
+            public RegisterUserCommandHandler(UserManager<User> userManager,
+                IOrchesterMitgliedRepository orchesterMitgliedRepository, IUnitOfWork unitOfWork,
+                ITokenService tokenService)
             {
                 this.userManager = userManager;
                 this.orchesterMitgliedRepository = orchesterMitgliedRepository;
@@ -55,7 +59,9 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
             //TTODO: Methode in kleinere Methoden unterteilen (Clean Code). Versuchen möglichst viel Logik in die Domäne zu verlegen.
             public async Task<Unit> Handle(RegisterUserCommand request, CancellationToken cancellationToken)
             {
-                var orchesterMitglied = await orchesterMitgliedRepository.GetByRegistrationKeyAsync(request.RegisterationKey, cancellationToken);
+                var orchesterMitglied =
+                    await orchesterMitgliedRepository.GetByRegistrationKeyAsync(request.RegisterationKey,
+                        cancellationToken);
 
                 if (orchesterMitglied is null)
                 {
@@ -73,7 +79,8 @@ namespace TvJahnOrchesterApp.Application.Features.Authorization.Endpoints
 
                 if (!result.Succeeded)
                 {
-                    throw new IdentityRegistrationException(string.Join(", ", result.Errors.Select(e => e.Description)));
+                    throw new IdentityRegistrationException(string.Join(", ",
+                        result.Errors.Select(e => e.Description)));
                 }
 
                 var createdUser = await userManager.FindByEmailAsync(request.Email);

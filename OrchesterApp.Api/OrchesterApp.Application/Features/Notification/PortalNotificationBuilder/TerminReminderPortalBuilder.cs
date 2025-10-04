@@ -2,7 +2,6 @@ using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.NotificationAggregate.Models;
 using OrchesterApp.Domain.NotificationAggregate.Notifications;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 
 namespace TvJahnOrchesterApp.Application.Features.Notification.PortalNotificationBuilder;
@@ -21,4 +20,3 @@ public class TerminReminderPortalBuilder : IPortalCategoryNotificationBuilder
         return reminderNotification.GetPortalNotificationContent();
     }
 }
-

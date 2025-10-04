@@ -4,6 +4,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 using TvJahnOrchesterApp.Application.Features.Authorization.Models;
+using TvJahnOrchesterApp.Application.Features.Termin.Interfaces;
 
 namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints;
 
@@ -32,10 +33,9 @@ public static class TriggerDeadlineCheck
             _deadlineCheckService = deadlineCheckService;
         }
 
-        public  Task Handle(TriggerDeadlineCheckCommand request, CancellationToken cancellationToken)
+        public Task Handle(TriggerDeadlineCheckCommand request, CancellationToken cancellationToken)
         {
-             return _deadlineCheckService.CheckTerminDeadlinesAsync(cancellationToken);
+            return _deadlineCheckService.CheckTerminDeadlinesAsync(cancellationToken);
         }
     }
 }
-

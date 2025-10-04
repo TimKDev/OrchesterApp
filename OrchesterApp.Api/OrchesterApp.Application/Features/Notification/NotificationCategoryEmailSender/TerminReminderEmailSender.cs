@@ -5,8 +5,8 @@ using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.UserAggregate;
 using OrchesterApp.Domain.UserNotificationAggregate;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Models;
+using TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 
 namespace TvJahnOrchesterApp.Application.Features.Notification.NotificationCategoryEmailSender;
 
@@ -91,4 +91,3 @@ public class TerminReminderEmailSender : INotificationCategoryEmailSender
             .Replace("{{TERMIN_LINK}}", terminLink);
     }
 }
-

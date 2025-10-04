@@ -3,12 +3,11 @@ using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
 using OrchesterApp.Domain.UserNotificationAggregate;
 using OrchesterApp.Domain.UserNotificationAggregate.Enums;
-using TvJahnOrchesterApp.Application.Common.ExtensionMethods;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
+using TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 
-namespace TvJahnOrchesterApp.Application.Common.Services;
+namespace TvJahnOrchesterApp.Application.Features.Notification.Services;
 
 public static class NotificationSender
 {

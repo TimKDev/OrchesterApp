@@ -2,7 +2,7 @@
 using System.IdentityModel.Tokens.Jwt;
 using System.Security.Cryptography;
 using OrchesterApp.Domain.UserAggregate;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 
 namespace OrchesterApp.Infrastructure.Authentication
 {
@@ -51,6 +51,7 @@ namespace OrchesterApp.Infrastructure.Authentication
             {
                 return false;
             }
+
             return true;
         }
 
@@ -61,6 +62,7 @@ namespace OrchesterApp.Infrastructure.Authentication
             {
                 throw new Exception("User not found");
             }
+
             user.SetRefreshToken(null);
             await _userManager.UpdateAsync(user);
         }

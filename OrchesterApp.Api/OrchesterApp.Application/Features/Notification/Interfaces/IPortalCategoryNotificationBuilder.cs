@@ -1,7 +1,6 @@
 ﻿using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.NotificationAggregate.Models;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Notifications;
 
 namespace TvJahnOrchesterApp.Application.Features.Notification.Interfaces;
 

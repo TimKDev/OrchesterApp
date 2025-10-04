@@ -5,11 +5,11 @@ using System.IdentityModel.Tokens.Jwt;
 using System.Security.Claims;
 using System.Text;
 using OrchesterApp.Domain.UserAggregate;
-using TvJahnOrchesterApp.Application.Common.Interfaces.Authentication;
+using TvJahnOrchesterApp.Application.Common.Interfaces.Services;
 
 namespace OrchesterApp.Infrastructure.Authentication
 {
-    public class JwtHandler: IJwtHandler
+    public class JwtHandler : IJwtHandler
     {
         private readonly JwtSettings _jwtSettings;
         private readonly UserManager<User> _userManager;
@@ -63,13 +63,15 @@ namespace OrchesterApp.Infrastructure.Authentication
                 ValidateIssuer = false,
                 ValidateIssuerSigningKey = true,
                 IssuerSigningKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_jwtSettings.Secret)),
-                ValidateLifetime = false 
+                ValidateLifetime = false
             };
             var tokenHandler = new JwtSecurityTokenHandler();
             SecurityToken securityToken;
             var principal = tokenHandler.ValidateToken(token, tokenValidationParameters, out securityToken);
             var jwtSecurityToken = securityToken as JwtSecurityToken;
-            if (principal is null || jwtSecurityToken == null || !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256, StringComparison.InvariantCultureIgnoreCase))
+            if (principal is null || jwtSecurityToken == null ||
+                !jwtSecurityToken.Header.Alg.Equals(SecurityAlgorithms.HmacSha256,
+                    StringComparison.InvariantCultureIgnoreCase))
             {
                 throw new SecurityTokenException("Invalid token");
             }
