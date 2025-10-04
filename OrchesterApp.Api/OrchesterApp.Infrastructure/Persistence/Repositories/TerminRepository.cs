@@ -27,10 +27,10 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
             return _context.Set<Termin>().ToArrayAsync(cancellationToken);
         }
 
-        public Task<Termin[]> GetTerminsOfLast12Months(CancellationToken cancellationToken)
+        public Task<Termin[]> GetFutureTerminsAsync(CancellationToken cancellationToken)
         {
             return _context.Set<Termin>()
-                .Where(t => t.EinsatzPlan.StartZeit >= DateTime.UtcNow.AddMonths(-12))
+                .Where(t => t.EinsatzPlan.StartZeit >= DateTime.UtcNow && t.Frist != null)
                 .ToArrayAsync(cancellationToken);
         }
 

@@ -75,7 +75,7 @@ public static class GetNotificationsForUser
                     userNotification.Id.Value, portalMessage.Title, portalMessage.Message, userNotification.IsRead,
                     notification.Type,
                     notification.Urgency,
-                    notification.TerminId, notification.CreatedAt
+                    notification.TerminId?.Value, notification.CreatedAt
                 ));
             }
 

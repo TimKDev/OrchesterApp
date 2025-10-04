@@ -39,7 +39,7 @@ export class NotificationsComponent implements OnInit, OnDestroy{
   ngOnInit() {
     this.loadNotifications();
     this.unreadMessageSubscription = this.addUnreadMessageSubject.pipe(
-      bufferWhen(() => this.addUnreadMessageSubject.pipe(debounceTime(3000))),
+      bufferWhen(() => this.addUnreadMessageSubject.pipe(debounceTime(1000))),
       filter(buffer => buffer.length > 0),
       mergeMap(buffer => this.notificationApiService.acknowledgeNotifications(
         {userNotificationIds : buffer}))
@@ -125,7 +125,7 @@ export class NotificationsComponent implements OnInit, OnDestroy{
         return 'information-circle-outline';
       case NotificationType.Warning:
         return 'warning-outline';
-      case NotificationType.Error:
+      case NotificationType.Failure:
         return 'alert-circle-outline';
       case NotificationType.Success:
         return 'checkmark-circle-outline';
@@ -153,7 +153,7 @@ export class NotificationsComponent implements OnInit, OnDestroy{
     switch (type) {
       case NotificationType.Success:
         return 'success';
-      case NotificationType.Error:
+      case NotificationType.Failure:
         return 'danger';
       default:
         return this.getNotificationColor(urgency);

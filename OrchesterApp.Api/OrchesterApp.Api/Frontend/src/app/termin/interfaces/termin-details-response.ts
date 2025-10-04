@@ -27,7 +27,10 @@ export interface TerminDetails {
   uniform: number[],
   weitereInformationen?: string,
   image?: string,
-  dokumente?: string[]
+  dokumente?: string[],
+  frist?: string,
+  fristAsDate?: Date,
+  ersteWarnungVorFrist?: string,
 }
 
 export interface TerminRückmeldung {

@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Routing;
@@ -8,7 +9,6 @@ using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence;
 using OrchesterApp.Domain.OrchesterMitgliedAggregate.ValueObjects;
 using OrchesterApp.Domain.TerminAggregate.Entities;
 using OrchesterApp.Domain.Common.ValueObjects;
-using OrchesterApp.Domain.NotificationAggregate;
 using OrchesterApp.Domain.NotificationAggregate.Models;
 using OrchesterApp.Domain.NotificationAggregate.Notifications;
 using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
@@ -57,7 +57,21 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             string? WeitereInformationen,
             string? Image,
             string[] Dokumente,
-            bool ShouldEmailBeSend) : IRequest<OrchesterApp.Domain.TerminAggregate.Termin>;
+            bool ShouldSendNotification,
+            bool ShouldEmailBeSend,
+            TimeSpan? Frist,
+            TimeSpan? ErsteWarnungVorFrist) : IRequest<OrchesterApp.Domain.TerminAggregate.Termin>;
+
+        private class UpdateTerminCommandValidation : AbstractValidator<UpdateTerminCommand>
+        {
+            public UpdateTerminCommandValidation()
+            {
+                RuleFor(x => x.Frist)
+                    .NotNull()
+                    .When(x => x.ErsteWarnungVorFrist is not null)
+                    .WithMessage("Frist cannot be null when ErsteWarnungVorFrist is set.");
+            }
+        }
 
         private class
             UpdateTerminCommandHandler : IRequestHandler<UpdateTerminCommand,
@@ -103,6 +117,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 termin.UpdateName(request.TerminName);
                 termin.UpdateTerminArt(request.TerminArt);
                 termin.UpdateTerminStatus(request.TerminStatus);
+                termin.UpdateFristen(request.Frist, request.ErsteWarnungVorFrist);
                 var imageCompressed = TransformImageService.ConvertToCompressedByteArray(request.Image);
                 termin.UpdateImage(imageCompressed);
 
@@ -139,6 +154,11 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                     termin.UpdateTerminRückmeldungOrchestermitglied(terminRückmeldungOrchesterMitglieder);
                 }
 
+                if (!request.ShouldSendNotification)
+                {
+                    return termin;
+                }
+
                 var newTerminData = new TerminData(
                     termin.TerminStatus,
                     termin.EinsatzPlan.StartZeit,
@@ -148,7 +168,6 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                     termin.EinsatzPlan.EinsatzplanUniformMappings.Select(u => u.UniformId).ToList(),
                     termin.EinsatzPlan.EinsatzplanNotenMappings.Select(n => n.NotenId).ToList());
 
-                //TODO Vllt auslagern in ein Domain Event aber trotzdem noch in einer Transaktion
                 var author = await _currentUserService.GetCurrentOrchesterMitgliedAsync(cancellationToken);
                 var notificationId =
                     await PublishChangeNotification(termin, oldTerminData, newTerminData, author.GetName(),
@@ -171,7 +190,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 string author,
                 bool shouldEmailBeSend)
             {
-                if (termin.IsInPast() || oldTerminData == newTerminData)
+                if (termin.IsInPast())
                 {
                     return null;
                 }

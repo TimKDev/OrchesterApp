@@ -1,4 +1,5 @@
-﻿using MediatR;
+﻿using FluentValidation;
+using MediatR;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
@@ -17,7 +18,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
         public static void MapTerminCreateEndpoint(this IEndpointRouteBuilder app)
         {
             app.MapPost("api/termin/create", PostTerminCreate)
-                .RequireAuthorization(r => r.RequireRole(new string[] { RoleNames.Admin, RoleNames.Vorstand }));
+                .RequireAuthorization(r => r.RequireRole(RoleNames.Admin, RoleNames.Vorstand));
         }
 
         private static async Task<IResult> PostTerminCreate([FromBody] CreateTerminCommand createTerminCommand,
@@ -44,7 +45,20 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             int[] Uniform,
             Guid[]? OrchestermitgliedIds,
             string? WeitereInformationen,
-            string? Image) : IRequest<OrchesterApp.Domain.TerminAggregate.Termin>;
+            string? Image,
+            TimeSpan? Frist,
+            TimeSpan? ErsteWarnungVorFrist) : IRequest<OrchesterApp.Domain.TerminAggregate.Termin>;
+        
+        private class CreateTerminCommandValidation : AbstractValidator<CreateTerminCommand>
+        {
+            public CreateTerminCommandValidation()
+            {
+                RuleFor(x => x.Frist)
+                    .NotNull()
+                    .When(x => x.ErsteWarnungVorFrist is not null)
+                    .WithMessage("Frist cannot be null when ErsteWarnungVorFrist is set.");
+            }
+        }
 
         private class
             CreateTerminCommandHandler : IRequestHandler<CreateTerminCommand,
@@ -86,7 +100,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                 var termin = OrchesterApp.Domain.TerminAggregate.Termin.Create(terminRückmeldungOrchesterMitglieder,
                     request.Name, request.TerminArt, request.StartZeit, request.EndZeit, treffpunkt,
                     request.Noten?.ToList(), request.Uniform?.ToList(), zusätzlicheInfo: request.WeitereInformationen,
-                    image: compressedImage);
+                    image: compressedImage, frist: request.Frist, ersteWarnungVorFrist: request.ErsteWarnungVorFrist);
 
                 return await terminRepository.Save(termin, cancellationToken);
             }

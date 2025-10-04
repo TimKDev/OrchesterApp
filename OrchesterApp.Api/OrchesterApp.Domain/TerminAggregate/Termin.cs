@@ -24,6 +24,8 @@ namespace OrchesterApp.Domain.TerminAggregate
 
         public AbstimmungsId? AbstimmungsId { get; private set; }
         public IReadOnlyList<TerminDokument> Dokumente => _dokumente.AsReadOnly();
+        public TimeSpan? Frist { get; private set; }
+        public TimeSpan? ErsteWarnungVorFrist { get; private set; }
 
         private Termin()
         {
@@ -31,8 +33,13 @@ namespace OrchesterApp.Domain.TerminAggregate
 
         private Termin(TerminId id, TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder,
             string name, int? terminArt, EinsatzPlan einsatzPlan, int terminStatus, byte[]? image = null,
-            AbstimmungsId? abstimmungsId = null) : base(id)
+            AbstimmungsId? abstimmungsId = null, TimeSpan? frist = null, TimeSpan? ersteWarnungVorFrist = null) : base(id)
         {
+            if (frist is null && ersteWarnungVorFrist is not null)
+            {
+                throw new ArgumentException("Frist must be set, if ersteWarnungVorFrist is set.");
+            }
+            
             Name = name;
             TerminArt = terminArt;
             EinsatzPlan = einsatzPlan;
@@ -40,13 +47,15 @@ namespace OrchesterApp.Domain.TerminAggregate
             _terminRückmeldungOrchesterMitglieder = terminRückmeldungOrchesterMitglieder.ToList();
             TerminStatus = terminStatus;
             Image = image;
+            Frist = frist;
+            ErsteWarnungVorFrist = ersteWarnungVorFrist;
         }
 
         public static Termin Create(TerminRückmeldungOrchestermitglied[] terminRückmeldungOrchesterMitglieder,
             string name, int? terminArt, DateTime startZeit, DateTime endZeit, Adresse treffPunkt, List<int>? noten,
             List<int>? uniform, AbstimmungsId? abstimmungsId = null,
             TerminStatusEnum terminStatus = TerminStatusEnum.Zugesagt, string? zusätzlicheInfo = null,
-            byte[]? image = null)
+            byte[]? image = null, TimeSpan? frist = null, TimeSpan? ersteWarnungVorFrist = null)
         {
             var notenMappings = noten?.Select(EinsatzplanNotenMapping.Create);
             var uniformMappings = uniform?.Select(EinsatzplanUniformMapping.Create);
@@ -54,7 +63,7 @@ namespace OrchesterApp.Domain.TerminAggregate
                 zusätzlicheInfo);
 
             return new Termin(TerminId.CreateUnique(), terminRückmeldungOrchesterMitglieder, name, terminArt,
-                einsatzplan, (int)terminStatus, image, abstimmungsId);
+                einsatzplan, (int)terminStatus, image, abstimmungsId, frist, ersteWarnungVorFrist);
         }
 
         public void AddMitgliedToTermin(OrchesterMitglied mitglied)
@@ -67,7 +76,7 @@ namespace OrchesterApp.Domain.TerminAggregate
         }
 
         public void RückmeldenZuTermin(OrchesterMitgliedsId orchesterMitgliedsId, int zugesagt,
-            string? kommentar = null, OrchesterMitgliedsId otherOrchesterId = null)
+            string? kommentar = null, OrchesterMitgliedsId? otherOrchesterId = null)
         {
             var terminRückmeldungOrchesterMitglied =
                 _terminRückmeldungOrchesterMitglieder.Find(t => t.OrchesterMitgliedsId == orchesterMitgliedsId) ??
@@ -163,6 +172,26 @@ namespace OrchesterApp.Domain.TerminAggregate
         public bool IsNow()
         {
             return EinsatzPlan.StartZeit <= DateTime.UtcNow && EinsatzPlan.EndZeit >= DateTime.UtcNow;
+        }
+
+        public void UpdateFristen(TimeSpan? frist, TimeSpan? ersteWarnungVorFrist)
+        {
+            if (frist is null && ersteWarnungVorFrist is not null)
+            {
+                throw new ArgumentException("Frist must be set, if ersteWarnungVorFrist is set.");
+            }
+            Frist = frist;
+            ErsteWarnungVorFrist = ersteWarnungVorFrist;
+        }
+
+        public DateTime? GetDeadlineDateTime()
+        {
+            return Frist.HasValue ? EinsatzPlan.StartZeit - Frist.Value : null;
+        }
+
+        public DateTime? GetWarningDateTime()
+        {
+            return ErsteWarnungVorFrist.HasValue ? GetDeadlineDateTime() - ErsteWarnungVorFrist.Value : null;
         }
     }
 }

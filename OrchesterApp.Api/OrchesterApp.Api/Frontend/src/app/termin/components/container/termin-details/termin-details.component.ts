@@ -195,4 +195,25 @@ export class TerminDetailsComponent implements OnInit {
   private navigateToTerminReturnMessages() {
     this.router.navigate(['tabs', 'termin', 'return-messages', this.terminId]);
   }
+
+  getDeadlineDate(termin: any): Date | null {
+    if (!termin.frist) return null;
+    
+    const fristDays = this.parseTimeSpanToDays(termin.frist);
+    if (fristDays === null) return null;
+    
+    const deadline = new Date(termin.startZeit);
+    deadline.setDate(deadline.getDate() - fristDays);
+    return deadline;
+  }
+
+  private parseTimeSpanToDays(timeSpan: string): number | null {
+    // Parse TimeSpan format "d.hh:mm:ss" or "hh:mm:ss"
+    const parts = timeSpan.split('.');
+    if (parts.length === 2) {
+      // Format: "d.hh:mm:ss"
+      return parseInt(parts[0], 10);
+    }
+    return null;
+  }
 }

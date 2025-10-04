@@ -13,6 +13,8 @@ public static class NotificationFactory
                 notification),
             NotificationCategory.CustomMessage => CustomMessageNotification.Create(
                 notification),
+            NotificationCategory.TerminReminderBeforeDeadline => TerminReminderNotification.Create(notification),
+            NotificationCategory.TerminMissingResponse => TerminMissingResponseNotification.Create(notification),
             _ => throw new ArgumentOutOfRangeException()
         };
     }

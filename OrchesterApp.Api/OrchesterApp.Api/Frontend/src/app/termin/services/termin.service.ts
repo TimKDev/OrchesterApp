@@ -71,4 +71,8 @@ export class TerminService {
   public downloadFile(objectName: string){
     return this.http.getBlob(`api/files/download/${objectName}`);
   }
+
+  public triggerDeadlineCheck(){
+    return this.http.post('api/termin/check-deadlines', {});
+  }
 }

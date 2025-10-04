@@ -49,6 +49,26 @@
         <ion-item>
           <ion-input formControlName="endZeit" type="time" labelPlacement="stacked" label="Endzeit" placeholder="Endzeit"></ion-input>
         </ion-item>
+      </ion-list>
+
+      <ion-list class="mg-top">
+        <ion-list-header color="tertiary">
+          <ion-label style="color: white;">Rückmeldung & Erinnerungen</ion-label>
+        </ion-list-header>
+        <ion-item>
+          <ion-input formControlName="fristDays" type="number" labelPlacement="stacked" 
+            label="Frist (Tage vor Termin)"></ion-input>
+        </ion-item>
+        <ion-item>
+          <ion-input formControlName="ersteWarnungVorFristDays" type="number" labelPlacement="stacked" 
+            label="Erste Warnung (Tage vor Frist)"></ion-input>
+        </ion-item>
+      </ion-list>
+
+      <ion-list class="mg-top">
+        <ion-list-header color="tertiary">
+          Zusätzliche Informationen
+        </ion-list-header>
         <ion-item>
           <ion-select label="Noten" label-placement="stacked" formControlName="noten" [multiple]="true">
             <ion-select-option *ngFor="let noten of data.notenDropdown"

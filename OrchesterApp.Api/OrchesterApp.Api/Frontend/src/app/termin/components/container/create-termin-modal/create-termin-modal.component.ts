@@ -37,7 +37,9 @@ export class CreateTerminModalComponent  implements OnInit {
     uniform: [] as number[],
     orchestermitgliedIds: null as string[] | null,
     weitereInformationen: [''],
-    image: ['']
+    image: [''],
+    fristDays: [null as number | null],
+    ersteWarnungVorFristDays: [null as number | null]
   });
 
   terminOnlyForSpecificMembers = false;
@@ -63,6 +65,20 @@ export class CreateTerminModalComponent  implements OnInit {
       uniformDropdown: uniformDropdown.filter(d => d.value !== null), 
       orchesterMitgliederDropdown 
     })));
+
+    this.formGroup.get('terminArt')?.valueChanges.subscribe(terminArt => {
+      if (terminArt === 1) { // Auftritt
+        this.formGroup.patchValue({
+          fristDays: 60, 
+          ersteWarnungVorFristDays: 7 
+        });
+      } else if (terminArt === 2) { // Probe
+        this.formGroup.patchValue({
+          fristDays: 1, 
+          ersteWarnungVorFristDays: null
+        });
+      }
+    });
   }
 
   clickedCheckbox(){
@@ -103,10 +119,16 @@ export class CreateTerminModalComponent  implements OnInit {
       endZeit.setHours(23);
       endZeit.setMinutes(59);
     }
+    
+    const frist = value.fristDays ? `${value.fristDays}.00:00:00` : undefined;
+    const ersteWarnungVorFrist = value.ersteWarnungVorFristDays ? `${value.ersteWarnungVorFristDays}.00:00:00` : undefined;
+    
     return this.modalCtrl.dismiss({
       ...value, 
       startZeit: startZeit,
-      endZeit: endZeit
+      endZeit: endZeit,
+      frist: frist,
+      ersteWarnungVorFrist: ersteWarnungVorFrist
     }, 'confirm');
   }
 

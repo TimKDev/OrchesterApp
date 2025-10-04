@@ -7,6 +7,8 @@ import { AuthenticationService, CLIENT_URI_EMAIL_CONFIRMATION, CLIENT_URI_PASSWO
 import { AuthorizedAuthServiceService } from 'src/app/authentication/services/authorized-auth-service.service';
 import { confirmDialog } from 'src/app/core/helper/confirm';
 import { ThemeService } from 'src/app/shared/services/theme.service';
+import { RolesService } from 'src/app/authentication/services/roles.service';
+import { TerminService } from 'src/app/termin/services/termin.service';
 
 @Component({
   selector: 'app-settings',
@@ -15,6 +17,7 @@ import { ThemeService } from 'src/app/shared/services/theme.service';
 })
 export class SettingsComponent implements OnInit {
   isDarkMode: boolean = false;
+  isAdmin: boolean = false;
 
   constructor(
     private authService: AuthenticationService,
@@ -23,6 +26,8 @@ export class SettingsComponent implements OnInit {
     private loadingController: LoadingController,
     private alertController: AlertController,
     private themeService: ThemeService,
+    private rolesService: RolesService,
+    private terminService: TerminService,
   ) { }
 
   ngOnInit() {
@@ -30,6 +35,9 @@ export class SettingsComponent implements OnInit {
     this.themeService.theme$.subscribe(theme => {
       this.isDarkMode = theme === 'dark';
     });
+    
+    // Check if user is admin
+    this.isAdmin = this.rolesService.isCurrentUserAdmin;
   }
 
   toggleTheme() {
@@ -169,6 +177,36 @@ export class SettingsComponent implements OnInit {
       this.authService.logout();
       this.router.navigate(['auth']);
     })
+  }
+
+  async triggerDeadlineCheck() {
+    const loading = await this.loadingController.create({
+      message: 'Prüfe Deadlines...',
+    });
+    await loading.present();
+
+    this.terminService.triggerDeadlineCheck()
+      .pipe(
+        catchError(async (error) => {
+          await loading.dismiss();
+          const alert = await this.alertController.create({
+            header: 'Fehler',
+            message: 'Die Deadline-Prüfung konnte nicht durchgeführt werden.',
+            buttons: ['OK']
+          });
+          await alert.present();
+          throw error;
+        })
+      )
+      .subscribe(async () => {
+        await loading.dismiss();
+        const alert = await this.alertController.create({
+          header: 'Erfolg',
+          message: 'Die Deadline-Prüfung wurde erfolgreich durchgeführt. Erinnerungen wurden an alle Benutzer ohne Rückmeldung versendet.',
+          buttons: ['OK']
+        });
+        await alert.present();
+      });
   }
 
 }

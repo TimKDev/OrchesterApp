@@ -59,6 +59,10 @@
               {{data.termin.startZeit | date : 'dd.MM.YYYY'}}: {{data.termin.startZeit | date :
               'HH:mm'}}-{{data.termin.endZeit | date : 'HH:mm'}}
             </ion-card-subtitle>
+            <ion-card-subtitle *ngIf="data.termin.frist" style="margin-top: 8px; color: #2563eb;">
+              <ion-icon name="time-outline" style="vertical-align: middle; margin-right: 4px;"></ion-icon>
+              <b>Rückmeldung bis:</b> {{getDeadlineDate(data.termin) | date : 'dd.MM.YYYY HH:mm'}}
+            </ion-card-subtitle>
             <ion-card-subtitle *ngIf="data.termin.terminStatus === 3">
               <i class="termin-abgesagt">Termin wurde abgesagt!</i>
             </ion-card-subtitle>

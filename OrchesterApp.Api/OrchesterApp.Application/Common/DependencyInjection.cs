@@ -20,6 +20,9 @@ public static class DependencyInjection
         services.AddHostedService<NotificationBackgroundService>(provider =>
             provider.GetRequiredService<NotificationBackgroundService>());
 
+        services.AddScoped<ITerminDeadlineCheckService, TerminDeadlineCheckService>();
+        services.AddHostedService<TerminDeadlineBackgroundService>();
+
         return services;
     }
 }

@@ -92,7 +92,7 @@ namespace TvJahnOrchesterApp.Application.Features.OrchesterMitglied.Endpoints
 
                 orchesterMitglied.UpdatePositions(request.Position);
 
-                var termineOfLast12Months = await _terminRepository.GetTerminsOfLast12Months(cancellationToken);
+                var termineOfLast12Months = await _terminRepository.GetFutureTerminsAsync(cancellationToken);
 
                 foreach (var termin in termineOfLast12Months)
                 {

@@ -37,6 +37,12 @@ namespace OrchesterApp.Infrastructure.Persistence.Configurations
             builder.Property(x => x.Name)
                 .HasMaxLength(100);
 
+            builder.Property(t => t.Frist)
+                .IsRequired(false);
+
+            builder.Property(t => t.ErsteWarnungVorFrist)
+                .IsRequired(false);
+
             builder.OwnsOne(x => x.EinsatzPlan, ConfigureEinsatzplanTable);
 
             builder.OwnsMany(x => x.TerminRückmeldungOrchesterMitglieder,

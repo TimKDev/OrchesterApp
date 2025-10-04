@@ -53,7 +53,11 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
             int[] Uniform,
             string? WeitereInformationen,
             string? Image,
-            string[] Dokumente);
+            string[] Dokumente,
+            TimeSpan? Frist,
+            TimeSpan? ErsteWarnungVorFrist,
+            DateTime? FristAsDate
+            );
 
         private record TerminRückmeldung(
             int Zugesagt,
@@ -118,7 +122,7 @@ namespace TvJahnOrchesterApp.Application.Features.Termin.Endpoints
                         termin.EinsatzPlan.EinsatzplanUniformMappings.Select(t => t.UniformId).ToArray(),
                         termin.EinsatzPlan.WeitereInformationen,
                         TransformImageService.ConvertByteArrayToBase64(termin.Image),
-                        termin.Dokumente.Select(t => t.Name).ToArray()),
+                        termin.Dokumente.Select(t => t.Name).ToArray(), termin.Frist, termin.ErsteWarnungVorFrist, termin.GetDeadlineDateTime()),
                     currrentUserRueckmeldung is null
                         ? null
                         : new TerminRückmeldung(currrentUserRueckmeldung.Zugesagt,

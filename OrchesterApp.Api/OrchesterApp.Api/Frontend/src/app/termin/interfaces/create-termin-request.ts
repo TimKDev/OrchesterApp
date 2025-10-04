@@ -12,5 +12,7 @@ export interface CreateTerminRequest {
   longitude?: number,
   noten: number[],
   uniform: number[],
-  orchestermitgliedIds: string[]
+  orchestermitgliedIds: string[],
+  frist?: string,
+  ersteWarnungVorFrist?: string
 }

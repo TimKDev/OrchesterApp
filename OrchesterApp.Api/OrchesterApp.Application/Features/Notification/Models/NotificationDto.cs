@@ -11,6 +11,6 @@ public record NotificationDto(
     bool IsRead,
     NotificationType Type,
     NotificationUrgency Urgency,
-    TerminId? TerminId,
+    Guid? TerminId,
     DateTime CreatedAt
 );

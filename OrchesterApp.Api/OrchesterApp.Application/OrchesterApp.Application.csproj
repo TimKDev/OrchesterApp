@@ -33,6 +33,12 @@
         <EmbeddedResource Include="Features\Notification\NotificationCategoryEmailSender\CustomMessageEmailTemplate.html">
             <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
         </EmbeddedResource>
+        <EmbeddedResource Include="Features\Notification\NotificationCategoryEmailSender\TerminReminderEmailTemplate.html">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
+        <EmbeddedResource Include="Features\Notification\NotificationCategoryEmailSender\TerminMissingResponseEmailTemplate.html">
+            <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+        </EmbeddedResource>
     </ItemGroup>
 
 </Project>

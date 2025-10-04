@@ -56,4 +56,19 @@
 
   </ion-list>
 
+  <ion-list [inset]="true" *ngIf="isAdmin">
+    <ion-list-header>
+      <ion-label style="color: #2563eb;">Admin Funktionen</ion-label>
+    </ion-list-header>
+
+    <ion-item button detail="true" (click)="triggerDeadlineCheck()">
+      <ion-icon name="notifications-outline" style="margin-right: 16px;"></ion-icon>
+      <ion-label>
+        <h2>Frist-Prüfung ausführen</h2>
+        <p class="ion-text-wrap" style="font-size: 13px;">Versendet Erinnerungen für Rückmeldungen</p>
+      </ion-label>
+    </ion-item>
+
+  </ion-list>
+
 </ion-content>

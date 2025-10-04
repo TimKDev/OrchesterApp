@@ -3,5 +3,7 @@
 public enum NotificationCategory
 {
     ChangeTerminData,
-    CustomMessage
+    CustomMessage,
+    TerminReminderBeforeDeadline,
+    TerminMissingResponse
 }

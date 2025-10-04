@@ -40,7 +40,7 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
         {
             return _context.Set<UserNotification>()
                 .Where(un => un.UserId == userId && un.NotificationSink == NotificationSink.Portal)
-                .OrderBy(un => un.CreatedAt)
+                .OrderByDescending(un => un.CreatedAt)
                 .Take(limitResult)
                 .ToArrayAsync(cancellationToken);
         }

@@ -20,7 +20,9 @@ export interface UpdateTerminRequest {
   weitereInformationen?: string,
   image?: string,
   dokumente: string[],
-  shouldEmailBeSend: boolean
+  shouldEmailBeSend: boolean,
+  frist?: string,
+  ersteWarnungVorFrist?: string
 }
 
 export interface UpdateTerminModal {
@@ -43,5 +45,7 @@ export interface UpdateTerminModal {
   weitereInformationen?: string,
   image?: string,
   dokumente: FileItem[],
-  shouldEmailBeSend: boolean
+  shouldEmailBeSend: boolean,
+  fristDays?: number,
+  ersteWarnungVorFristDays?: number
 }

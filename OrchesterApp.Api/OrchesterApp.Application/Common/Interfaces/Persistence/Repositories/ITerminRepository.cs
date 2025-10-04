@@ -8,7 +8,7 @@ namespace TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositor
         Task<Termin> Save(Termin termin, CancellationToken cancellationToken);
 
         Task<Termin[]> GetAll(CancellationToken cancellationToken);
-        Task<Termin[]> GetTerminsOfLast12Months(CancellationToken cancellationToken);
+        Task<Termin[]> GetFutureTerminsAsync(CancellationToken cancellationToken);
 
         Task<Termin> GetById(Guid guid, CancellationToken cancellationToken);
 

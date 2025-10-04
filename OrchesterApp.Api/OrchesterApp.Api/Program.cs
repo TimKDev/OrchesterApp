@@ -21,7 +21,7 @@ namespace OrchesterApp.Api
 
             var app = builder.Build();
             {
-                using (var serviceScope = app.Services.GetService<IServiceScopeFactory>().CreateScope())
+                using (var serviceScope = app.Services.GetService<IServiceScopeFactory>()!.CreateScope())
                 {
                     var initDataBaseService = serviceScope.ServiceProvider.GetRequiredService<InitDatabaseService>();
                     initDataBaseService.OnStartUp().Wait();

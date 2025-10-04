@@ -1,6 +1,8 @@
 using Microsoft.EntityFrameworkCore;
 using OrchesterApp.Domain.NotificationAggregate;
+using OrchesterApp.Domain.NotificationAggregate.Enums;
 using OrchesterApp.Domain.NotificationAggregate.ValueObjects;
+using OrchesterApp.Domain.TerminAggregate.ValueObjects;
 using TvJahnOrchesterApp.Application.Common.Interfaces.Persistence.Repositories;
 
 namespace OrchesterApp.Infrastructure.Persistence.Repositories
@@ -36,6 +38,14 @@ namespace OrchesterApp.Infrastructure.Persistence.Repositories
             _context.Set<Notification>().Remove(itemToRemove);
 
             return true;
+        }
+
+        public Task<Notification[]> QueryByTerminAndCategoryAsync(List<TerminId> terminIds, List<NotificationCategory> categories,
+            CancellationToken cancellationToken)
+        {
+            return _context.Set<Notification>()
+                .Where(n => terminIds.Contains(n.TerminId!) && categories.Contains(n.Category))
+                .ToArrayAsync(cancellationToken);
         }
     }
 }
