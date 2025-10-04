@@ -37,14 +37,13 @@ export class AppComponent implements OnInit, OnDestroy {
   async ngOnInit() {
     // Load authentication tokens before starting SignalR connection
     await this.authService.loadTokensFromStorage();
-    
+
     this.portalPushMessageService.startConnection();
 
     this.portalPushMessageSubscription = this.portalPushMessageService.portalPushMessageSubject.pipe(
       filter(message => message.type == PortalPushMessageTypes.Notifications)
     )
     .subscribe(() => {
-      debugger
       this.updateNotificationNumber();
     })
 

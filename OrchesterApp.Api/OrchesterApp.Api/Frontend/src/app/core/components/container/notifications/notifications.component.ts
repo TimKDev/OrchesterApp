@@ -52,7 +52,6 @@ export class NotificationsComponent implements OnInit, OnDestroy{
     this.portalPushMessageSubscription = this.portalPushMessageService.portalPushMessageSubject.pipe(
       filter(message => message.type == PortalPushMessageTypes.Notifications)
     ).subscribe(() => {
-      debugger
       this.loadNotifications();
     });
   }
